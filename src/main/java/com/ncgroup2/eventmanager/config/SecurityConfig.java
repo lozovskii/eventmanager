@@ -13,8 +13,10 @@ import javax.sql.DataSource;
 @EnableAutoConfiguration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String USER = "SELECT USERNAME, PASSWORD, ENABLED FROM \"USER\" WHERE USERNAME=?";
-    private static final String AUTHORITIES = "SELECT USERNAME, ROLE FROM \"ROLE\" WHERE USERNAME=?";
+    private static final String USER = "SELECT LOGIN, PASSWORD, TRUE FROM \"Customer\" WHERE LOGIN=?";
+    private static final String AUTHORITIES = "select \"Customer\".login, \"Role\".name from \"Customer\" " +
+            "join \"Customer_Role\" on \"Customer\".id = \"Customer_Role\".customer_id\n" +
+            "join \"Role\" on \"Role\".id = \"Customer_Role\".role_id WHERE \"Customer\".login = ?";
 
     @Autowired
     DataSource dataSource;
@@ -28,10 +30,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http)  throws Exception  {
-        http.authorizeRequests().antMatchers("/", "home").permitAll()
+        http
+                .authorizeRequests()
+                .antMatchers("/", "home").permitAll()
                 .antMatchers("/user").hasRole("USER")
                 .anyRequest().authenticated()
-                .and().formLogin().loginPage("/login").permitAll()
-                .and().logout().permitAll();
+                    .and()
+                .formLogin().loginPage("/login").permitAll()
+                    .and()
+                .logout().permitAll();
     }
 }
