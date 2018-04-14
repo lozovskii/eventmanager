@@ -13,22 +13,22 @@ import javax.sql.DataSource;
 @EnableAutoConfiguration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String USER = "SELECT USERNAME, PASSWORD, ENABLED FROM \"USER\" WHERE USERNAME=?";
-    private static final String AUTHORITIES = "SELECT USERNAME, ROLE FROM \"ROLE\" WHERE USERNAME=?";
-
+    private static final String USER = "SELECT LOGIN, PASSWORD, TRUE FROM \"Customer\" WHERE LOGIN=?";
+    private static final String AUTHORITIES = "select \"Customer\".login, \"Role\".name from \"Customer\" " + "join\"Customer_Role\" on \"Customer\".id = \"Customer_Role\".customer_id\n" +
+            "join \"Role\" on \"Role\".id = \"Customer_Role\".role_id WHERE \"Customer\".login = ?";
     @Autowired
     DataSource dataSource;
 
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource)
-                .usersByUsernameQuery(USER)
-                .authoritiesByUsernameQuery(AUTHORITIES);
+                .usersByUsernameQuery(USER).authoritiesByUsernameQuery(AUTHORITIES);
+
     }
 
     @Override
-    protected void configure(HttpSecurity http)  throws Exception  {
-        http.authorizeRequests().antMatchers("/", "home").permitAll()
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests().antMatchers("/", "home", "/register","/registration_complete").permitAll()
                 .antMatchers("/user").hasRole("USER")
                 .anyRequest().authenticated()
                 .and().formLogin().loginPage("/login").permitAll()

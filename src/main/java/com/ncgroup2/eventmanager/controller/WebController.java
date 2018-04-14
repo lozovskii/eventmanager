@@ -20,4 +20,9 @@ public class WebController {
     public String login() {
         return "login";
     }
+
+//    @RequestMapping(value = "/register")
+//    public String register() {
+//        return "register";
+//    }
 }
