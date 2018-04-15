@@ -1,38 +1,85 @@
 package com.ncgroup2.eventmanager.controller;
 
-import com.ncgroup2.eventmanager.dao.CustomerDAO;
+import com.ncgroup2.eventmanager.beans.Customer;
+import com.ncgroup2.eventmanager.events.OnRegistrationCompleteEvent;
 import com.ncgroup2.eventmanager.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import com.ncgroup2.eventmanager.beans.Customer;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.Valid;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
 @Controller
 public class RegisterControler {
     @Autowired
     CustomerService customerService;
-
+    @Autowired
+    ApplicationEventPublisher eventPublisher;
 
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String showRegister(Model model) {
 
         model.addAttribute("customer", new Customer());
-        return "register";
+        return "registration/register";
     }
+
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String addUser(@Valid @ModelAttribute("customer") Customer customer, BindingResult result,Model model) {
-        if(customerService.isCustomerPresent(customer.getLogin())) {
-            model.addAttribute("exist",true);
-            return "register";
+    public String addUser(@Valid @ModelAttribute("customer") Customer customer, BindingResult result, Model model, WebRequest request) {
+        if (customerService.isCustomerPresent(customer.getLogin())) {
+            model.addAttribute("customer_exist", true);
+            return "registration/register";
         }
-        customerService.register(customer);
-        return "registration_complete";
+
+        if(!customerService.isEmailUnique(customer.getEmail())) {
+            model.addAttribute("email_exist", true);
+            return "registration/register";
+        }
+
+        if(customer.getPassword().trim().isEmpty()) {
+            model.addAttribute("empty_password",true);
+            return "registration/register";
+        }
+
+        Customer registered = customerService.register(customer);
+//        try {
+        String appUrl = request.getContextPath();
+        eventPublisher.publishEvent(new OnRegistrationCompleteEvent
+                (registered, request.getLocale(), appUrl));
+//        } catch (Exception me) {
+//            return "error";
+//        }
+        return "registration/registration_complete";
+    }
+
+    @RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)
+    public String confirmRegistration
+            (WebRequest request, Model model, @RequestParam("token") String token) {
+        Customer customer = customerService.getByToken(token);
+        if (customer == null) {
+            model.addAttribute("message", "Invalid token");
+            return "/registration/badUser";
+        }
+        Instant expireDate = customer.getRegistrationDate().plus(24, ChronoUnit.HOURS);
+
+        if (Instant.now().isAfter(expireDate)) {
+            model.addAttribute("message", "This link is no longer valid. Please, register again");
+            customerService.removeCustomer(customer);
+            return "/registration/badUser";
+        }
+
+        customerService.confirmCustomer(customer);
+
+
+        return "registration//successful_confirmation";
     }
 }

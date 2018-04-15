@@ -1,7 +1,6 @@
-
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" >
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
     <title>Welcome Security with Spring Boot!</title>
@@ -18,22 +17,37 @@
 <div class="row col-sm-6"
      style="border: 1px ridge #003312; padding:20px; float: none; margin: 0 auto;">
     <h5 class="text-center" style="font-size: 25px">Register</h5>
-    <!--<div th:if="${param.error}">-->
-    <!--<p style="color: red">UserName or PassWord is wrong. Please-->
-    <!--check again!</p>-->
 
-    <!--</div>-->
-    <div class="alert alert-info" th:if="${exist}">
+    <div class="alert alert-info" th:if="${customer_exist}">
         <p class="text text-center">
-            User with this Email already Exist
+            This login is already taken
         </p>
     </div>
-    <form th:action="@{/register}"  th:object="${customer}" method="post">
+    <div class="alert alert-info" th:if="${email_exist}">
+        <p class="text text-center">
+            This email is already taken
+        </p>
+    </div>
+
+    <div class="alert alert-info" th:if="${empty_password}">
+        <p class="text text-center">
+            You forgot to enter password
+        </p>
+    </div>
+
+    <form th:action="@{/register}" th:object="${customer}" method="post">
         <div class="form-group">
             <label for="login">User Name: </label>
-            <input type="text" class="form-control" id="login" th:field="*{login}" placeholder="Enter UserName"
+            <input type="text" class="form-control" id="login" th:field="*{login}" placeholder="Enter User Name"
                    name="username"/>
         </div>
+
+        <div class="form-group">
+            <label for="email">Email: </label>
+            <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="Enter Email"
+                   name="email"/>
+        </div>
+
         <div class="form-group">
             <label for="password">Password: </label>
             <input type="password" class="form-control" id="password" th:field="*{password}"
