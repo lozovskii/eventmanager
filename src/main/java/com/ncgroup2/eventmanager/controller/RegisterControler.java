@@ -5,6 +5,9 @@ import com.ncgroup2.eventmanager.events.OnRegistrationCompleteEvent;
 import com.ncgroup2.eventmanager.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,6 +27,8 @@ public class RegisterControler {
     CustomerService customerService;
     @Autowired
     ApplicationEventPublisher eventPublisher;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
@@ -49,7 +54,7 @@ public class RegisterControler {
             model.addAttribute("empty_password",true);
             return "registration/register";
         }
-
+        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
         Customer registered = customerService.register(customer);
 //        try {
         String appUrl = request.getContextPath();
@@ -82,4 +87,10 @@ public class RegisterControler {
 
         return "registration//successful_confirmation";
     }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 }
