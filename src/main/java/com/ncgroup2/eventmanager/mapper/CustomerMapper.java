@@ -13,7 +13,7 @@ public class CustomerMapper implements RowMapper<Customer> {
     @Override
     public Customer mapRow(ResultSet resultSet, int rowNum) throws SQLException {
         Customer customer = new Customer();
-        customer.setId(resultSet.getLong("id"));
+        customer.setId(resultSet.getString("id"));
         customer.setLogin(resultSet.getString("login"));
         customer.setPassword(resultSet.getString("password"));
         customer.setEmail(resultSet.getString("email"));
