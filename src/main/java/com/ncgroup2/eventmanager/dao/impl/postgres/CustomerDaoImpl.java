@@ -37,7 +37,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao{
     @Override
     public void updateField(Customer customer, String fieldName, Object fieldValue) {
 
-        String sql = "UPDATE \"Customer\" SET " + fieldName + " = ? WHERE id = ?";
+        String sql = "UPDATE \"Customer\" SET " + fieldName + " = ? WHERE id = CAST (? AS uuid)";
 
         Object[] params = new Object[]{
                 fieldValue,
