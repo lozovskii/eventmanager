@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -21,9 +22,16 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao{
 
     public static final String BASE_SQL = "SELECT * FROM \"Customer\" ";
 
+//    @Autowired
+//    CustomerDaoImpl(DataSource dataSource) {
+//        this.setDataSource(dataSource);
+//    }
     @Autowired
-    CustomerDaoImpl(DataSource dataSource) {
-        this.setDataSource(dataSource);
+    DataSource dataSource;
+
+    @PostConstruct
+    private void initialize(){
+        setDataSource(dataSource);
     }
 
     @Override
