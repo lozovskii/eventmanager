@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link th:href="@{/css/app.css}" rel="stylesheet" />
+    <title>Hello World!</title>
+</head>
+<body class="security-app">
+
+<div class="lc-block">
+    <h1>
+        Hello
+    </h1>
+    <form action="/logout" method="post">
+        <input type="submit" class="button red big" value="Sign Out" /> <input
+            type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+    </form>
+</div>
+
+</body>
+</html>

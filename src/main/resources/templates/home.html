@@ -1,12 +1,16 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Security with Spring Boot</title>
-</head>
-<body>
-<h1>Hello, This is Home page!</h1>
-<a style="color: blue" th:href="@{/user}">User Page</a>
+    <link th:href="@{/css/app.css}" rel="stylesheet" />
+    <title>Spring Security Example - ProgrammingFree</title>
+</head>>
+<body class="security-app">
+<div class="lc-block">
+    <h1>Welcome!</h1>
+    <div class="alert-normal">
+        Click <a href="/hello">here</a> to see a
+        greeting.
+    </div>
+</div>
 </body>
 </html>
