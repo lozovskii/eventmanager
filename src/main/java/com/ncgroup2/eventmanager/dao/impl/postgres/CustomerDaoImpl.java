@@ -21,10 +21,10 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao{
 
     public static final String BASE_SQL = "SELECT * FROM \"Customer\" ";
 
-    @Autowired
-    CustomerDaoImpl(DataSource dataSource) {
-        this.setDataSource(dataSource);
-    }
+//    @Autowired
+//    CustomerDaoImpl(DataSource dataSource) {
+//        this.setDataSource(dataSource);
+//    }
 
     @Override
     public void updateField(Customer customer, String fieldName, Object fieldValue) {
