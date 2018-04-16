@@ -1,6 +1,6 @@
-package com.ncgroup2.eventmanager.events;
+package com.ncgroup2.eventmanager.event;
 
-import com.ncgroup2.eventmanager.beans.Customer;
+import com.ncgroup2.eventmanager.entity.Customer;
 import org.springframework.context.ApplicationEvent;
 
 import java.util.Locale;
