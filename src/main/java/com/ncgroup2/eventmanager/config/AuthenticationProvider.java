@@ -1,13 +1,18 @@
 package com.ncgroup2.eventmanager.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 
+import javax.sql.DataSource;
+
 @Configuration
 public class AuthenticationProvider {
+
+    @Autowired
+    DataSource dataSource;
 
 //    @Bean(name = "dataSource")
 //    public DriverManagerDataSource dataSource() {
@@ -26,7 +31,7 @@ public class AuthenticationProvider {
 
         JdbcDaoImpl impl = new JdbcDaoImpl();
 
-        //impl.setDataSource(dataSource());
+        impl.setDataSource(dataSource);
         impl.setUsersByUsernameQuery(
                 "SELECT login, password, isverified FROM \"Customer\" WHERE login = ?"
         );

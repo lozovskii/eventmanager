@@ -1,7 +1,7 @@
 package com.ncgroup2.eventmanager.service;
 
-import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.dao.impl.postgres.CustomerDaoImpl;
+import com.ncgroup2.eventmanager.entity.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +16,7 @@ public class CustomerService {
 
         customerDaoImpl.addCustomer(customer);
 
-        return customerDaoImpl.getByField("token",customer.getToken());
+        return customerDaoImpl.getByField("login",customer.getLogin());
     }
 
     public boolean isCustomerPresent(String login) {
