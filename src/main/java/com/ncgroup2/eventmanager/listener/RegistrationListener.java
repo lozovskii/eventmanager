@@ -1,8 +1,8 @@
-package com.ncgroup2.eventmanager.listeners;
+package com.ncgroup2.eventmanager.listener;
 
-import com.ncgroup2.eventmanager.beans.Customer;
-import com.ncgroup2.eventmanager.events.OnRegistrationCompleteEvent;
-import com.ncgroup2.eventmanager.services.CustomerService;
+import com.ncgroup2.eventmanager.entity.Customer;
+import com.ncgroup2.eventmanager.event.OnRegistrationCompleteEvent;
+import com.ncgroup2.eventmanager.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
