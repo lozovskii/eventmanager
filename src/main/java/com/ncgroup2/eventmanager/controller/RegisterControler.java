@@ -87,10 +87,4 @@ public class RegisterControler {
 
         return "registration//successful_confirmation";
     }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
 }

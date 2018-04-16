@@ -13,7 +13,7 @@ public class Customer {
     private String name;
     private String secondName;
     private String phone;
-    private boolean status;
+    private boolean isVerified;
     private Instant registrationDate;
     private String token;
     private byte[] image;
@@ -21,7 +21,7 @@ public class Customer {
     public Customer() {
         Random random = new Random();
         id = random.nextInt(1000);
-        status=false;
+        isVerified =false;
     }
 
     public String getEmail() {
@@ -80,12 +80,12 @@ public class Customer {
         this.phone = phone;
     }
 
-    public boolean isStatus() {
-        return status;
+    public boolean isVerified() {
+        return isVerified;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setVerified(boolean verified) {
+        this.isVerified = verified;
     }
 
     public Instant getRegistrationDate() {

@@ -29,7 +29,7 @@ public class CustomerService {
     }
 @Transactional
     public void confirmCustomer(Customer customer) {
-        customerDAO.updateField(customer,"status", Boolean.TRUE);
+        customerDAO.updateField(customer,"isVerified", Boolean.TRUE);
         customerDAO.updateField(customer,"token","");
     }
 

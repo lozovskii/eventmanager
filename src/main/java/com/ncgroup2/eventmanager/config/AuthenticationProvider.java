@@ -27,7 +27,7 @@ public class AuthenticationProvider {
 
         impl.setDataSource(dataSource());
         impl.setUsersByUsernameQuery(
-                "SELECT login, password, true FROM \"Customer\" WHERE login = ?"
+                "SELECT login, password, isverified FROM \"Customer\" WHERE login = ?"
         );
         impl.setAuthoritiesByUsernameQuery(
                 "SELECT \"Customer\".login, \"Role\".name FROM \"Customer\" JOIN \"Customer_Role\" " +

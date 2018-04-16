@@ -35,7 +35,7 @@ public class CustomerDAO extends JdbcDaoSupport {
 
     @Transactional
     public Customer insert(Customer customer) {
-        String sql = "insert into \"Customer\" (id,login,password,email,name,second_name,phone,status,registration_date) values(?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into \"Customer\" (id,login,password,email,name,second_name,phone,isverified,registration_date) values(?,?,?,?,?,?,?,?,?)";
         Object[] params = new Object[]{
                 customer.getId(),
                 customer.getLogin(),
@@ -44,7 +44,7 @@ public class CustomerDAO extends JdbcDaoSupport {
                 customer.getName(),
                 customer.getSecondName(),
                 customer.getPhone(),
-                customer.isStatus(),
+                customer.isVerified(),
                 new Timestamp(Instant.now().toEpochMilli())};
         this.getJdbcTemplate().update(sql, params);
 

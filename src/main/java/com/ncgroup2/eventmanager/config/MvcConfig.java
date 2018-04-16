@@ -22,7 +22,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
     public InternalResourceViewResolver viewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
 
-        resolver.setPrefix("/templates/");
+        resolver.setPrefix("/templates/*");
         resolver.setSuffix(".html");
 
         return resolver;
