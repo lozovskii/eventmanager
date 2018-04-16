@@ -71,22 +71,26 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao{
     @Override
     public void addCustomer(Customer customer) {
 
-        String sql = "INSERT INTO \"Customer\" (login,password,email,name,second_name,phone,isverified,registration_date) values(?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO \"Customer\" " +
+                "(id,name,second_name,phone,login,email,password,isverified,registration_date) " +
+                "values(uuid_generate_v1(),?,?,?,?,?,?,?,?)";
 
         Object[] params = new Object[]{
-                customer.getLogin(),
-                customer.getPassword(),
-                customer.getEmail(),
                 customer.getName(),
                 customer.getSecondName(),
                 customer.getPhone(),
+                customer.getLogin(),
+                customer.getEmail(),
+                customer.getPassword(),
                 customer.isVerified(),
                 new Timestamp(Instant.now().toEpochMilli())};
         this.getJdbcTemplate().update(sql, params);
 
-        String sqlRole = "INSERT INTO \"Customer_Role\" (customer_id,role_id) VALUES (\n" +
-                "                (SELECT id FROM \"Customer\" WHERE login = ? ),\n" +
-                "                (SELECT id FROM \"Role\" WHERE name = 'USER'))";
+        String sqlRole = "INSERT INTO \"Customer_Role\" VALUES (" +
+                "uuid_generate_v1()," +
+                "(SELECT id FROM \"Customer\" WHERE login = ?)," +
+                "(SELECT id FROM \"Role\" WHERE name = 'USER')" +
+                ")";
 
         Object[] roleParams = new Object[]{customer.getLogin()};
         this.getJdbcTemplate().update(sqlRole, roleParams);

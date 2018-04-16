@@ -46,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers("/register","/registration**", "registrationConfirm").anonymous();
 
-        http.authorizeRequests().antMatchers("/").authenticated();
+        http.authorizeRequests().antMatchers("/hello").authenticated();
 
         http.authorizeRequests().and().formLogin().loginPage("/login")
                 .defaultSuccessUrl("/hello")
