@@ -1,12 +1,10 @@
 package com.ncgroup2.eventmanager.controller;
 
-import com.ncgroup2.eventmanager.beans.Customer;
-import com.ncgroup2.eventmanager.events.OnRegistrationCompleteEvent;
-import com.ncgroup2.eventmanager.services.CustomerService;
+import com.ncgroup2.eventmanager.entity.Customer;
+import com.ncgroup2.eventmanager.event.OnRegistrationCompleteEvent;
+import com.ncgroup2.eventmanager.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -69,7 +67,7 @@ public class RegisterControler {
     @RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)
     public String confirmRegistration
             (WebRequest request, Model model, @RequestParam("token") String token) {
-        Customer customer = customerService.getByToken(token);
+        Customer customer = customerService.getCustomer(token);
         if (customer == null) {
             model.addAttribute("message", "Invalid token");
             return "/registration/badUser";
@@ -78,7 +76,7 @@ public class RegisterControler {
 
         if (Instant.now().isAfter(expireDate)) {
             model.addAttribute("message", "This link is no longer valid. Please, register again");
-            customerService.removeCustomer(customer);
+            customerService.deleteCustomer(customer);
             return "/registration/badUser";
         }
 
