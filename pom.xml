@@ -69,11 +69,13 @@
 			<artifactId>postgresql</artifactId>
 			<scope>42.2.2</scope>
 		</dependency>
-		<dependency>
-			<groupId>jstl</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
-		</dependency>
+
+		<!-- We work with thymeleaf!! -->
+		<!--<dependency>-->
+			<!--<groupId>jstl</groupId>-->
+			<!--<artifactId>jstl</artifactId>-->
+			<!--<version>1.2</version>-->
+		<!--</dependency>-->
 		<dependency>
 		<groupId>org.springframework.security</groupId>
 		<artifactId>spring-security-test</artifactId>
@@ -82,7 +84,7 @@
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-mail</artifactId>
+			<artifactId>spring-boot-starter-mail </artifactId>
 		</dependency>
 
 	</dependencies>
