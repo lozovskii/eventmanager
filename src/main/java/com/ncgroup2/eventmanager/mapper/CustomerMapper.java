@@ -1,6 +1,6 @@
-package com.ncgroup2.eventmanager.mappers;
+package com.ncgroup2.eventmanager.mapper;
 
-import com.ncgroup2.eventmanager.beans.Customer;
+import com.ncgroup2.eventmanager.entity.Customer;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
