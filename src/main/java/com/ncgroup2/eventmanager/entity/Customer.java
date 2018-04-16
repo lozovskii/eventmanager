@@ -1,16 +1,15 @@
-package com.ncgroup2.eventmanager.beans;
+package com.ncgroup2.eventmanager.entity;
 
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Random;
 
-public class Customer {
+public class Customer extends Entity{
 
-    private long id;
     private String email;
     private String login;
     private String password;
-    private String name;
     private String secondName;
     private String phone;
     private boolean isVerified;
@@ -32,14 +31,6 @@ public class Customer {
         this.email = email;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getLogin() {
         return login;
     }
@@ -54,14 +45,6 @@ public class Customer {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getSecondName() {
@@ -110,5 +93,22 @@ public class Customer {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", isVerified=" + isVerified +
+                ", registrationDate=" + registrationDate +
+                ", token='" + token + '\'' +
+                ", image=" + Arrays.toString(image) +
+                '}';
     }
 }
