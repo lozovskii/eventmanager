@@ -19,7 +19,6 @@ public class Customer extends Entity{
 
     public Customer() {
         Random random = new Random();
-        id = random.nextInt(1000);
         isVerified =false;
     }
 
