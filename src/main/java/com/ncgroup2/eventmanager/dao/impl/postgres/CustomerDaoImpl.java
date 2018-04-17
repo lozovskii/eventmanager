@@ -108,7 +108,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao{
         //String sqlCustomerRole = "DELETE FROM \"Customer_Role\" WHERE customer_id = ?";
         //FK записи в БД мають параметр ON DELETE CASCADE
 
-        String sqlCustomer = "DELETE FROM \"Customer\" WHERE id = ?";
+        String sqlCustomer = "DELETE FROM \"Customer\" WHERE id = CAST (? AS uuid)";
 
         Object[] params = new Object[]{customer.getId()};
 
