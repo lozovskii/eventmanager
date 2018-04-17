@@ -82,6 +82,6 @@ public class RegisterControler {
         customerService.confirmCustomer(customer);
 
 
-        return "registration//successful_confirmation";
+        return "registration/successful_confirmation";
     }
 }
