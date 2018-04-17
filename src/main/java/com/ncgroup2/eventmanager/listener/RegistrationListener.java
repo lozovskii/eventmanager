@@ -2,7 +2,7 @@ package com.ncgroup2.eventmanager.listener;
 
 import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.event.OnRegistrationCompleteEvent;
-import com.ncgroup2.eventmanager.service.CustomerService;
+import com.ncgroup2.eventmanager.service.entityservice.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
@@ -43,7 +43,9 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(recipientAddress);
         email.setSubject(subject);
-        email.setText(message  + "http://localhost:8090" + confirmationUrl);
+        //email.setText(message  + "http://localhost:8090" + confirmationUrl);
+        // changed link for heroku address
+        email.setText(message  + "https://rocky-dusk-73382.herokuapp.com" + confirmationUrl);
         mailSender.send(email);
     }
 }
