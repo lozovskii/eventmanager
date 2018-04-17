@@ -5,7 +5,7 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.Random;
 
-public class Customer extends Entity{
+public class Customer extends Entity {
 
     private String email;
     private String login;

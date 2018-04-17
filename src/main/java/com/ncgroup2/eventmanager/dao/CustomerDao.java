@@ -6,7 +6,6 @@ import java.util.Collection;
 
 public interface CustomerDao {
 
-
     void addCustomer(Customer customer);
 
     void deleteCustomer(Customer customer);
