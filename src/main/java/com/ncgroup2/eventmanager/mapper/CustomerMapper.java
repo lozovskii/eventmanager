@@ -21,7 +21,8 @@ public class CustomerMapper implements RowMapper<Customer> {
         customer.setSecondName(resultSet.getString("second_name"));
         customer.setVerified(resultSet.getBoolean("isVerified"));
         customer.setPhone(resultSet.getString("phone"));
-        customer.setRegistrationDate(Instant.ofEpochMilli(resultSet.getTimestamp("registration_date").getTime()));
+        customer.setRegistrationDate(Instant.ofEpochMilli(
+                resultSet.getTimestamp("registration_date").getTime()));
         return customer;
     }
 }

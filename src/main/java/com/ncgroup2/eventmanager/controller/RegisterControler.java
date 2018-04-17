@@ -28,7 +28,6 @@ public class RegisterControler {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String showRegister(Model model) {
 

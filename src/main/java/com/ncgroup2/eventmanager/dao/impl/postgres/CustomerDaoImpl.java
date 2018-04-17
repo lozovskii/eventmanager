@@ -71,6 +71,8 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao{
     @Override
     public void addCustomer(Customer customer) {
 
+        // Add uuid_generate_v1()
+
         String sql = "INSERT INTO \"Customer\" " +
                 "(id,name,second_name,phone,login,email,password,isverified,registration_date)" +
                 " values(uuid_generate_v1(),?,?,?,?,?,?,?,?)";
