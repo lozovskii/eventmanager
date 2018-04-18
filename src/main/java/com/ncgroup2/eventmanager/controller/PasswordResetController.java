@@ -1,10 +1,12 @@
 package com.ncgroup2.eventmanager.controller;
 
+import com.ncgroup2.eventmanager.dao.impl.postgres.CustomerDaoImpl;
 import com.ncgroup2.eventmanager.entity.Customer;
-import com.ncgroup2.eventmanager.event.OnPasswordResetEvent;
 import com.ncgroup2.eventmanager.service.entityservice.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,10 +14,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
+import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 @Controller
 public class PasswordResetController {
@@ -27,25 +28,26 @@ public class PasswordResetController {
     ApplicationEventPublisher eventPublisher;
 
     @Autowired
+    private JavaMailSender mailSender;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
 
     @RequestMapping(value = "/reset", method = RequestMethod.GET)
     public String showReset(Model model) {
 
-        model.addAttribute("customer", new Customer());
         return "/reset";
 
     }
 
-
     @RequestMapping(value = "/reset", method = RequestMethod.POST)
     public String resetPassword(
 
-            @Valid @ModelAttribute("customer") Customer customer,
             Model model,
+            @ModelAttribute("email")
             @RequestParam("email") String userEmail,
-            WebRequest request) {
+            HttpServletRequest request) {
 
         if(customerService.isEmailUnique(userEmail)) {
 
@@ -54,15 +56,87 @@ public class PasswordResetController {
 
         }else {
 
-            String appUrl = request.getContextPath();
+            Customer customer = customerService.getCustomerByEmail(userEmail);
 
-            eventPublisher.publishEvent(new OnPasswordResetEvent
-                    (customer, request.getLocale(), appUrl));
+            String token = UUID.randomUUID().toString();
+
+            customerService.createVerificationToken(customer, token);
+
+            String recipientAddress = customer.getEmail();
+
+            String subject = "Password reset";
+
+            String confirmationUrl
+                    = "/resetPassword?token=" + token;
+
+            String message = "Confirmation link: \n";
+
+            SimpleMailMessage email = new SimpleMailMessage();
+
+            email.setTo(recipientAddress);
+
+            email.setSubject(subject);
+
+            email.setText(message  + "https://rocky-dusk-73382.herokuapp.com" + confirmationUrl);
+
+            mailSender.send(email);
 
             return "/reset_complete";
 
         }
-}
+    }
+
+        @RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
+        public String displayResetPasswordPage(
+                Model model,
+                @RequestParam ("token") String token) {
+
+            Customer customer = customerService.getCustomer(token);
+
+            if (customer == null) {
+
+                model.addAttribute("customer_not_found", true);
+
+                return "/registration/badUser";
+            }
+
+            model.addAttribute("token", token);
+
+            return "/reset_password";
+
+        }
+
+    @RequestMapping(value = "/setNewPassword", method = RequestMethod.POST)
+    public String setPassword(
+            Model model,
+            @RequestParam ("password") String password,
+            @RequestParam ("token") String token)
+    {
+
+        Customer customer = customerService.getCustomer(token);
+
+        System.out.println(token);
+
+        System.out.println(customer.getEmail());
+
+        if (customer == null) {
+
+            model.addAttribute("customer_not_found", true);
+
+            return "/registration/badUser";
+
+        } else{
+
+
+            customer.setPassword(password);
+            customerService.updatePassword(customer);
+
+        }
+
+
+        return "/reset_complete";
+
+    }
 
 }
 
