@@ -53,4 +53,11 @@ public class CustomerService {
         customerDaoImpl.updateField(customer,"token","");
     }
 
+    @Transactional
+    public void updatePassword(Customer customer) {
+
+        customerDaoImpl.updateField(customer,"password", customer.getPassword());
+        customerDaoImpl.updateField(customer,"token","");
+    }
+
 }
