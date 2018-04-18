@@ -13,16 +13,15 @@ import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Collection;
 
 @Repository
 @Transactional
-public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao{
+public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
     public static final String BASE_SQL = "SELECT * FROM \"Customer\" ";
 
-//    @Autowired
+    //    @Autowired
 //    CustomerDaoImpl(DataSource dataSource) {
 //        this.setDataSource(dataSource);
 //    }
@@ -30,7 +29,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao{
     DataSource dataSource;
 
     @PostConstruct
-    private void initialize(){
+    private void initialize() {
         setDataSource(dataSource);
     }
 
@@ -48,24 +47,14 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao{
 
     }
 
-
+    @Override
     public Customer getByField(String fieldName, String fieldValue) {
-
-        String sql = BASE_SQL + "WHERE " + fieldName + " = ?";
-
-        Object[] params = new Object[]{fieldValue};
-        CustomerMapper mapper = new CustomerMapper();
-
-        try {
-
-            return this.getJdbcTemplate().queryForObject(sql, params, mapper);
-
-        } catch (EmptyResultDataAccessException e) {
-
+        Collection<Customer> customers = getCustomers(fieldName, fieldValue);
+        if (customers != null) {
+            return getCustomers(fieldName, fieldValue).iterator().next();
+        } else {
             return null;
-
         }
-
     }
 
     @Override
@@ -120,21 +109,51 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao{
     @Override
     public Collection<Customer> getCustomers(String fieldName, String fieldValue) {
 
-        Collection<Customer>  customers = new ArrayList<>();
+        String sql = BASE_SQL + "WHERE " + fieldName + " = ?";
 
-        customers.add(getByField(fieldName,fieldValue));
+        Object[] params = new Object[]{fieldValue};
+        CustomerMapper mapper = new CustomerMapper();
 
-        return customers;
+        try {
+            return this.getJdbcTemplate().query(sql, params, mapper);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
     public Collection<Customer> getCustomers() {
-        return null;
+
+        CustomerMapper mapper = new CustomerMapper();
+
+        try {
+            return this.getJdbcTemplate().query(BASE_SQL, mapper);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
 
     @Override
     public void updateCustomer(Customer customer) {
+        String sql = "UPDATE \"Customer\" SET " +
+                "name = ? " +
+                "second_name = ? " +
+                "password = ? " +
+                "phone = ? " +
+                "isverified = ? " +
+                "token = ? " +
+                "image = ? " +
+                " WHERE id = CAST (? AS uuid)";
+        Object[] params = new Object[]{
+                customer.getName(),
+                customer.getSecondName(),
+                customer.getPassword(),
+                customer.getPhone(),
+                customer.isVerified(),
+                customer.getToken(),
+                customer.getImage()};
 
+        this.getJdbcTemplate().update(sql, params);
     }
 }
