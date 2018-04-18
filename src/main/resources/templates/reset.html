@@ -21,11 +21,11 @@
         </p>
     </div>
 
-    <form th:action="@{/reset}" th:object="${customer}" method="post">
+    <form th:action="@{/reset}" method="post">
 
         <div class="form-group">
             <label for="email">Email: </label>
-            <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="Enter Email"
+            <input type="email" class="form-control" id="email" placeholder="Enter Email"
                    name="email"/>
         </div>
 
