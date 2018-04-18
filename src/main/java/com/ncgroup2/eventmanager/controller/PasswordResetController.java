@@ -128,7 +128,8 @@ public class PasswordResetController {
         } else{
 
 
-            customer.setPassword(password);
+            customer.setPassword(passwordEncoder.encode(password));
+
             customerService.updatePassword(customer);
 
         }
