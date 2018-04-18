@@ -46,6 +46,11 @@ public class CustomerService {
         return customerDaoImpl.getByField("token", token);
     }
 
+    public Customer getCustomerByEmail(String email) {
+
+        return customerDaoImpl.getByField("email", email);
+    }
+
     @Transactional
     public void confirmCustomer(Customer customer) {
 
