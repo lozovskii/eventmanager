@@ -21,6 +21,12 @@
         </p>
     </div>
 
+    <div class="alert alert-info" th:if="${link_sent}">
+        <p class="text text-center">
+            We sent link for reset password
+        </p>
+    </div>
+
     <form th:action="@{/reset}" method="post">
 
         <div class="form-group">
