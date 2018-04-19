@@ -5,7 +5,7 @@
     <title>Security with Spring Boot</title>
 </head>
 <body>
-<div>
+<div th:if="${name.equals(customer.login)}">
     <a style="color: blue" th:href="@{/profile/{login}/edit(login=${customer.login})}">Edit</a>
 </div>
 <form action="/logout" method="post">

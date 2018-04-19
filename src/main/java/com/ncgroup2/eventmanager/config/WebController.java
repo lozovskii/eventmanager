@@ -19,12 +19,6 @@ public class WebController {
         return "home";
     }
 
-    @RequestMapping(value = "/hello")
-    public String hello(Principal principal, Model model) {
-        model.addAttribute("name", principal.getName());
-        return "hello";
-    }
-
     @RequestMapping(value = "/login")
     public String login() {
         return "login";
