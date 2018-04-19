@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("profile")
 public class CustomerController {
@@ -18,9 +20,10 @@ public class CustomerController {
     CustomerService customerService;
 
     @RequestMapping(value = "{login}")
-    public String getCustomerByLogin(@PathVariable("login") String login, Model model) {
+    public String getCustomerByLogin(@PathVariable("login") String login, Principal principal, Model model) {
         Customer customer = customerService.getByLogin(login);
         model.addAttribute("customer", customer);
+        model.addAttribute("name", principal.getName());
 
         return "profile";
     }
@@ -34,9 +37,13 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "{login}/edit", method = RequestMethod.POST)
-    public String editPost(@ModelAttribute("customer") Customer customer) {
+    public String editPost(@PathVariable("login") String login, @ModelAttribute("customer") Customer customer,
+                           Model model) {
+        model.addAttribute("name", customer.getFirstName());
+        model.addAttribute("second_name", customer.getLastName());
+        model.addAttribute("phone", customer.getPhone());
         customerService.edit(customer);
 
-        return "redirect:/{login}";
+        return "redirect:/profile/{login}";
     }
 }

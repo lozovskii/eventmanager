@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.security.Principal;
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -29,14 +31,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/").permitAll();
         http.authorizeRequests()
-                .antMatchers("/login","logout").anonymous();
+                .antMatchers("/login").anonymous();
         http.authorizeRequests()
-                .antMatchers("/register","/registration**", "registrationConfirm").anonymous();
+                .antMatchers("/logout").authenticated();
         http.authorizeRequests()
-                .antMatchers("/hello").authenticated();
+                .antMatchers("/profile/**").authenticated();
         http.authorizeRequests()
-                .and().formLogin().loginPage("/login").defaultSuccessUrl("/")
-                .and().logout().logoutSuccessUrl("/");
+                .and().formLogin().loginPage("/login")
+                .and().logout().logoutSuccessUrl("/login");
     }
 
     @Bean(name = "passwordEncoder")

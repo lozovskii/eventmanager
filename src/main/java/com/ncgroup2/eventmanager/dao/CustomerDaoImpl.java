@@ -13,20 +13,21 @@ import javax.sql.DataSource;
 @Transactional
 public class CustomerDaoImpl implements CustomerDao {
 
-    private final static String getByLogin = "SELECT * FROM \"Customer\" WHERE login = '";
-    private final static String update = "UPDATE \"Customer\" SET name = ?, second_name = ?, phone = ? WHERE login = '";
-
     @Autowired
     DataSource dataSource;
 
     @Override
     public Customer getByLogin(String login) {
-        return new JdbcTemplate(dataSource).query(getByLogin + login + "'", new CustomerRowMapper()).get(0);
+        return new JdbcTemplate(dataSource).query(
+                "SELECT * FROM \"Customer\" WHERE login = '" + login + "'", new CustomerRowMapper()).get(0);
     }
 
     @Override
     public void edit(Customer customer) {
-        new JdbcTemplate(dataSource).update(update, new Object[]
-                {customer.getFirstName(),customer.getLastName(),customer.getPhone()});
+        new JdbcTemplate(dataSource).update(
+                "UPDATE \"Customer\" SET name = '" + customer.getFirstName() + "', " +
+                        "second_name = '" + customer.getLastName() +"', " +
+                        "phone = '" + customer.getPhone() + "' WHERE " +
+                        "login = '" + customer.getLogin() + "'");
     }
 }

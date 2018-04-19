@@ -6,8 +6,13 @@
 </head>
 <body>
 <div>
-
+    <a style="color: blue" th:href="@{/profile/{login}/edit(login=${customer.login})}">Edit</a>
 </div>
+<form action="/logout" method="post">
+    <th:block th:text="${name}" />
+    <input type="submit" class="button red big" value="Sign Out" />
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+</form>
 <table>
     <tr>
         <th>First Name</th>

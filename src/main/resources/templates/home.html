@@ -6,11 +6,11 @@
 </head>
 <body>
     <h1>Hello, This is Home page!</h1>
-    <div>
+    <div th:if="${name == null}">
         <a style="color: blue" th:href="@{/login}">Login</a>
     </div>
-    <div>
-        <a style="color: blue" th:href="@{/profile/}">Profile</a>
+    <div th:if="${name != null}">
+        <a style="color: blue" th:href="@{/profile/{name}(name=${name})}">Profile</a>
     </div>
 </body>
 </html>
