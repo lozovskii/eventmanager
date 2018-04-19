@@ -32,35 +32,26 @@ public class RegisterControler {
     public String showRegister(Model model) {
 
         model.addAttribute("customer", new Customer());
-        return "registration/register";
+        return "/registration/register";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String addUser(@Valid @ModelAttribute("customer") Customer customer, BindingResult result, Model model, WebRequest request) {
-        if (customerService.isCustomerPresent(customer.getLogin())) {
-            model.addAttribute("customer_exist", true);
-            return "registration/register";
-        }
-
-        if(!customerService.isEmailUnique(customer.getEmail())) {
-            model.addAttribute("email_exist", true);
-            return "registration/register";
-        }
+    public String addUser(@Valid @ModelAttribute("customer") Customer customer,
+                          BindingResult result, Model model, WebRequest request) {
 
         if(customer.getPassword().trim().isEmpty()) {
             model.addAttribute("empty_password",true);
-            return "registration/register";
+            return "/registration/register";
         }
+
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
         Customer registered = customerService.register(customer);
-//        try {
+
         String appUrl = request.getContextPath();
         eventPublisher.publishEvent(new OnRegistrationCompleteEvent
                 (registered, request.getLocale(), appUrl));
-//        } catch (Exception me) {
-//            return "error";
-//        }
-        return "registration/registration_complete";
+
+        return "/registration/registration_complete";
     }
 
     @RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)
@@ -80,7 +71,6 @@ public class RegisterControler {
         }
 
         customerService.confirmCustomer(customer);
-
 
         return "registration/successful_confirmation";
     }
