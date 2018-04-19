@@ -20,37 +20,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.authorizeRequests()
-//        .antMatchers("/css/**").permitAll()
-//        .antMatchers("/", "home", "/register","/registration/*","/registrationConfirm").permitAll()
-//                .antMatchers("/hello").hasRole("USER")
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin().loginPage("/login").permitAll()
-//                .and()
-//                .logout().permitAll()
-//                .and()
-//                .csrf().disable();
         http.csrf().disable();
-
-        http.authorizeRequests().antMatchers("/").permitAll();
-
-        http.authorizeRequests().antMatchers("/login","logout").anonymous();
-
-        http.authorizeRequests().antMatchers("/register","/registration**", "registrationConfirm").anonymous();
-
-        http.authorizeRequests().antMatchers("/hello").authenticated();
-
-        http.authorizeRequests().and().formLogin().loginPage("/login")
-                .defaultSuccessUrl("/hello")
-                .and().logout().logoutSuccessUrl("/login");
+        http.authorizeRequests()
+                .antMatchers("/").permitAll();
+        http.authorizeRequests()
+                .antMatchers("/login","logout").anonymous();
+        http.authorizeRequests()
+                .antMatchers("/register","/registration**", "registrationConfirm").anonymous();
+        http.authorizeRequests()
+                .antMatchers("/hello").authenticated();
+        http.authorizeRequests()
+                .and().formLogin().loginPage("/login").defaultSuccessUrl("/")
+                .and().logout().logoutSuccessUrl("/");
     }
 
     @Bean(name = "passwordEncoder")

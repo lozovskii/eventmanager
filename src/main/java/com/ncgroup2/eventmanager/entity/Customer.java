@@ -1,57 +1,38 @@
 package com.ncgroup2.eventmanager.entity;
 
+public class Customer {
 
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.Random;
-
-public class Customer extends Entity {
-
-    private String email;
-    private String login;
-    private String password;
-    private String secondName;
+    private String firstName;
+    private String lastName;
     private String phone;
-    private boolean isVerified;
-    private Instant registrationDate;
-    private String token;
-    private byte[] image;
+    private String login;
+    private String email;
 
     public Customer() {
-        Random random = new Random();
-        isVerified =false;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
+    public Customer(String firstName, String lastName, String phone, String login, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.login = login;
         this.email = email;
     }
 
-    public String getLogin() {
-        return login;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getPassword() {
-        return password;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getSecondName() {
-        return secondName;
-    }
-
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPhone() {
@@ -62,52 +43,30 @@ public class Customer extends Entity {
         this.phone = phone;
     }
 
-    public boolean isVerified() {
-        return isVerified;
+    public String getLogin() {
+        return login;
     }
 
-    public void setVerified(boolean verified) {
-        this.isVerified = verified;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
-    public Instant getRegistrationDate() {
-        return registrationDate;
+    public String getEmail() {
+        return email;
     }
 
-    public void setRegistrationDate(Instant registrationDate) {
-        this.registrationDate = registrationDate;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
     public String toString() {
         return "Customer{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", secondName='" + secondName + '\'' +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", phone='" + phone + '\'' +
-                ", isVerified=" + isVerified +
-                ", registrationDate=" + registrationDate +
-                ", token='" + token + '\'' +
-                ", image=" + Arrays.toString(image) +
+                ", login='" + login + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }
