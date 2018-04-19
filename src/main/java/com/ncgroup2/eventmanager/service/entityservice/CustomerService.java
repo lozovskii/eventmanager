@@ -46,10 +46,22 @@ public class CustomerService {
         return customerDaoImpl.getByField("token", token);
     }
 
+    public Customer getCustomerByEmail(String email) {
+
+        return customerDaoImpl.getByField("email", email);
+    }
+
     @Transactional
     public void confirmCustomer(Customer customer) {
 
         customerDaoImpl.updateField(customer,"isVerified", Boolean.TRUE);
+        customerDaoImpl.updateField(customer,"token","");
+    }
+
+    @Transactional
+    public void updatePassword(Customer customer) {
+
+        customerDaoImpl.updateField(customer,"password", customer.getPassword());
         customerDaoImpl.updateField(customer,"token","");
     }
 

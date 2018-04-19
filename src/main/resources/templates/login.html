@@ -17,7 +17,12 @@
         <div>
             <input type="submit" value="Sign In" class="button red small" />
         </div>
+
+        <a th:href="@{/reset}">Reset password</a>
     </div>
+
+
+
     <input type="hidden" name="${_csrf.parameterName}"
            value="${_csrf.token}" />
 </form>
