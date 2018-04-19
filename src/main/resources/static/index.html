@@ -7,8 +7,7 @@ Licence: Free to use under our free template licence terms
 Licence URI: http://www.os-templates.com/template-terms
 -->
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+      xmlns:th="http://www.thymeleaf.org">
 <!-- To declare your language - read more here: https://www.w3.org/International/questions/qa-html-language-declarations -->
 <head>
 <title>PEM</title>
@@ -30,13 +29,13 @@ Licence URI: http://www.os-templates.com/template-terms
       <li><a href="#pem_inspiration">Inspiration</a></li>
       <li><a href="#pem_events">Events</a></li>
 
-      <li sec:authorize="isAuthenticated()" class="active">
-          <a href="../templates/profile.html" id="profile_id">
-              <span sec:authentication="name"></span>
-            </a>
-      </li>
+      <!--<li sec:authorize="isAuthenticated()" class="active">-->
+          <!--<a href="../templates/profile.html" id="profile_id">-->
+              <!--<span sec:authentication="name"></span>-->
+            <!--</a>-->
+      <!--</li>-->
 
-        <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Sign Out</a></li>
+        <li><a href="/logout">Sign Out</a></li>
 
     </ul>
     <!-- ################################################################################################ -->
@@ -65,7 +64,7 @@ Licence URI: http://www.os-templates.com/template-terms
       <footer>
         <ul class="nospace inline pushright">
           <li><button class="btn" onclick="document.getElementById('id01').style.display='block'">Sign In</button></li>
-          <li><a class="btn inverse" href="#">Sign Up</a></li>
+          <li><button class="btn inverse" onclick="document.getElementById('id02').style.display='block'">Sign Up</button></li>
         </ul>
       </footer>
     </article>
@@ -243,12 +242,13 @@ class="close" title="Close Modal">&times;</span>
       <img src="images/demo/avatar.png" alt="Avatar" class="avatar">
     </div>
 
-    <div th:if="${param.error}" class="alert alert-error">
-      Invalid username and password.
-    </div>
-    <div th:if="${param.logout}" class="alert alert-success">
-      You have been logged out.
-    </div>
+    <!--<div class="alert alert-error" th:if="${error}">-->
+      <!--Invalid username and password.-->
+    <!--</div>-->
+
+    <!--<div  class="alert alert-success" th:if="${successful_logout}">-->
+      <!--You have been logged out.-->
+    <!--</div>-->
 
     <div class="container">
       <label for="username"><b>Login</b></label>
@@ -265,17 +265,46 @@ class="close" title="Close Modal">&times;</span>
       <span class="psw">Forgot <a href="#">password?</a></span>
     </div>
   </form>
-</div> 
+</div>
 
 
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- Registration Form -->
 
+<!-- The Modal -->
+<div id="id02" class="modal">
+  <span onclick="document.getElementById('id02').style.display='none'"
+        class="close" title="Close Modal">&times;</span>
+
+  <!-- Modal Content -->
+  <form class="modal-content animate" th:action="@{/register}" th:object="${customer}"  method="post">
+
+    <div class="container">
+      <label for="login"><b>Login</b></label>
+      <input type="text" placeholder="Enter login" th:field="*{login}" id="login" name="login" required>
+
+      <label for="email"><b>E-mail</b></label>
+      <input type="email" placeholder="Enter e-mail" th:field="*{email}" id="email" name="email" required>
+
+      <label for="reg_password"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" th:field="*{password}" id="reg_password" name="password" required>
+
+      <button class="btn" type="submit">Register me!</button>
+    </div>
+
+    <div class="container" style="background-color:#f1f1f1">
+      <button type="button" onclick="document.getElementById('id02').style.display='none'" class="btn">Cancel</button>
+    </div>
+  </form>
+</div>
 
 
 
 <!-- JAVASCRIPTS -->
-<script src="layout/scripts/script.js"></script>
-<script src="layout/scripts/jquery.min.js"></script>
-<script src="layout/scripts/jquery.backtotop.js"></script>
-<script src="layout/scripts/jquery.mobilemenu.js"></script>
+<script src="scripts/script.js"></script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/jquery.backtotop.js"></script>
+<script src="scripts/jquery.mobilemenu.js"></script>
 </body>
 </html>
