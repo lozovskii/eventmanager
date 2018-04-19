@@ -27,17 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.authorizeRequests()
-//        .antMatchers("/css/**").permitAll()
-//        .antMatchers("/", "home", "/register","/registration/*","/registrationConfirm").permitAll()
-//                .antMatchers("/hello").hasRole("USER")
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin().loginPage("/login").permitAll()
-//                .and()
-//                .logout().permitAll()
-//                .and()
-//                .csrf().disable();
+
         http.csrf().disable();
 
         http.authorizeRequests().antMatchers("/").permitAll();
@@ -46,11 +36,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers("/register","/registration**", "registrationConfirm").anonymous();
 
-        http.authorizeRequests().antMatchers("/hello").authenticated();
+        http.authorizeRequests().antMatchers("/profile").authenticated();
 
-        http.authorizeRequests().and().formLogin().loginPage("/login")
-                .defaultSuccessUrl("/hello")
-                .and().logout().logoutSuccessUrl("/login");
+        http.authorizeRequests()
+                .and()
+                    .formLogin()
+                        .loginPage("/")
+                .defaultSuccessUrl("/profile")
+                .and()
+                .logout()
+                    .logoutSuccessUrl("/");
     }
 
     @Bean(name = "passwordEncoder")
