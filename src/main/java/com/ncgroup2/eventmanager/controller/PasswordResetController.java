@@ -37,7 +37,7 @@ public class PasswordResetController {
     @RequestMapping(value = "/reset", method = RequestMethod.GET)
     public String showReset(Model model) {
 
-        return "/reset";
+        return "reset/reset";
 
     }
 
@@ -52,7 +52,7 @@ public class PasswordResetController {
         if(customerService.isEmailUnique(userEmail)) {
 
             model.addAttribute("customer_not_found", true);
-            return "/reset";
+            return "reset/reset";
 
         }else {
 
@@ -81,7 +81,9 @@ public class PasswordResetController {
 
             mailSender.send(email);
 
-            return "/reset_complete";
+            model.addAttribute("link_sent",true);
+
+            return "reset/reset";
 
         }
     }
@@ -102,7 +104,7 @@ public class PasswordResetController {
 
             model.addAttribute("token", token);
 
-            return "/reset_password";
+            return "reset/reset_password";
 
         }
 
@@ -135,7 +137,7 @@ public class PasswordResetController {
         }
 
 
-        return "/reset_complete";
+        return "reset/reset_complete";
 
     }
 
