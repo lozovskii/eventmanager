@@ -15,11 +15,11 @@
     </tr>
     <th:block th:each="customer : ${customers}">
         <tr>
-            <td th:text="${customer.firstName}" />
-            <td th:text="${customer.lastName}" />
-            <td th:text="${customer.phone}" />
-            <td th:text="${customer.email}" />
-            <td th:text="${customer.login}" />
+            <td th:text="${customer.firstName}"></td>
+            <td th:text="${customer.lastName}"></td>
+            <td th:text="${customer.phone}"></td>
+            <td th:text="${customer.email}"></td>
+            <td th:text="${customer.login}"></td>
         </tr>
     </th:block>
 </table>

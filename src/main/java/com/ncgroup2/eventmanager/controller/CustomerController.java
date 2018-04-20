@@ -3,8 +3,6 @@ package com.ncgroup2.eventmanager.controller;
 import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,7 +37,7 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String editPost(@ModelAttribute("customer") Customer customer, Model model) {
+    public String editPost(@ModelAttribute("customer") Customer customer) {
         customerService.edit(customer);
 
         return "redirect:/profile/" + SecurityContextHolder.getContext().getAuthentication().getName();

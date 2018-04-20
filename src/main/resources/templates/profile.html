@@ -8,7 +8,10 @@
 <div>
     <div>
         <form action="/profile/search" method="post">
-            Search customer: <input type="text" th:name="search" />
+            <label>
+                Search customer:
+                <input type="text" th:name="search"/>
+            </label>
             <input type="submit" value="Search" />
         </form>
     </div>
@@ -34,11 +37,11 @@
         <th>Login</th>
     </tr>
     <tr th:object="${customer}">
-        <td th:text="${customer.firstName}" />
-        <td th:text="${customer.lastName}" />
-        <td th:text="${customer.phone}" />
-        <td th:text="${customer.email}" />
-        <td th:text="${customer.login}" />
+        <td th:text="${customer.firstName}"></td>
+        <td th:text="${customer.lastName}"></td>
+        <td th:text="${customer.phone}"></td>
+        <td th:text="${customer.email}"></td>
+        <td th:text="${customer.login}"></td>
     </tr>
 </table>
 </body>
