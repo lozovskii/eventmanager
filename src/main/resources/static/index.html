@@ -64,9 +64,9 @@ Licence URI: http://www.os-templates.com/template-terms
       <footer>
         <ul class="nospace inline pushright">
           <li><button class="btn" onclick="document.getElementById('id01').style.display='block'">Sign In</button></li>
-         <!-- <li><button class="btn inverse" onclick="document.getElementById('id02').style.display='block'">Sign Up</button></li> -->
+          <li><button class="btn inverse" onclick="document.getElementById('id02').style.display='block'">Sign Up</button></li>
 
-          <li><a class="btn inverse" href="/register">Sign Up</a></li>
+          <!--<li><a class="btn inverse" href="/register">Sign Up</a></li>-->
 
         </ul>
       </footer>
@@ -264,43 +264,74 @@ class="close" title="Close Modal">&times;</span>
     </div>
 
     <div class="container" style="background-color:#f1f1f1">
+
       <button type="button" onclick="document.getElementById('id01').style.display='none'" class="btn">Cancel</button>
-      <span class="psw"><a href="/reset">Forgot password?</a></span>
+
+      <span class="psw"><a onclick="
+        document.getElementById('id01').style.display='none';
+        document.getElementById('id03').style.display='block'">Forgot password?</a></span>
+
     </div>
   </form>
 </div>
 
 
-<!-- ################################################################################################ -->
-<!-- ################################################################################################ -->
-<!-- Registration Form -->
+ <!--################################################################################################-->
+ <!--################################################################################################-->
+ <!--Registration Form-->
 
-<!--&lt;!&ndash; The Modal &ndash;&gt;-->
-<!--<div id="id02" class="modal">-->
-  <!--<span onclick="document.getElementById('id02').style.display='none'"-->
-        <!--class="close" title="Close Modal">&times;</span>-->
+<!-- The Modal -->
+<div id="id02" class="modal">
+  <span onclick="document.getElementById('id02').style.display='none'"
+        class="close" title="Close Modal">&times;</span>
 
-  <!--&lt;!&ndash; Modal Content &ndash;&gt;-->
-  <!--<form class="modal-content animate" th:action="@{/register}" th:object="${customer}"  method="post">-->
+  <!-- Modal Content -->
+  <form class="modal-content animate" action="/register" th:object="${customer}"  method="post">
 
-    <!--<div class="container">-->
-      <!--<label for="login"><b>Login</b></label>-->
-      <!--<input type="text" placeholder="Enter login" th:field="*{login}" id="login" name="login" required>-->
+    <div class="container">
+      <label for="login"><b>Login</b></label>
+      <input type="text" placeholder="Enter login" th:field="*{login}" id="login" name="login" required>
 
-      <!--<label for="email"><b>E-mail</b></label>-->
-      <!--<input type="email" placeholder="Enter e-mail" th:field="*{email}" id="email" name="email" required>-->
+      <label for="email"><b>E-mail</b></label>
+      <input type="email" placeholder="Enter e-mail" th:field="*{email}" id="email" name="email" required>
 
-      <!--<label for="reg_password"><b>Password</b></label>-->
-      <!--<input type="password" placeholder="Enter Password" th:field="*{password}" id="reg_password" name="password" required>-->
+      <label for="reg_password"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" th:field="*{password}" id="reg_password" name="password" required>
 
-      <!--<button class="btn" type="submit">Register me!</button>-->
+      <button class="btn" type="submit">Register me!</button>
 
-        <!--<button type="button" onclick="document.getElementById('id02').style.display='none'" class="btn">Cancel</button>-->
+        <button type="button" onclick="document.getElementById('id02').style.display='none'" class="btn">Cancel</button>
 
-    <!--</div>-->
+    </div>
 
-  <!--</form>-->
-<!--</div>-->
+  </form>
+</div>
+
+
+<!--################################################################################################-->
+<!--################################################################################################-->
+<!--Reset Form-->
+
+<!-- The Modal -->
+<div id="id03" class="modal">
+  <span onclick="document.getElementById('id03').style.display='none'"
+        class="close" title="Close Modal">&times;</span>
+
+  <!-- Modal Content -->
+  <form class="modal-content animate" action="/reset" method="post">
+
+    <div class="container">
+      <label for="email"><b>E-mail</b></label>
+      <input type="email" placeholder="Enter e-mail" id="email" name="email" required>
+
+      <button class="btn" type="submit">Reset password</button>
+
+      <button type="button" onclick="document.getElementById('id03').style.display='none'" class="btn">Cancel</button>
+
+    </div>
+
+  </form>
+</div>
 
 
 
