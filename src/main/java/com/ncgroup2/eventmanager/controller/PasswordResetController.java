@@ -99,7 +99,7 @@ public class PasswordResetController {
 
                 model.addAttribute("customer_not_found", true);
 
-                return "/registration/badUser";
+                return "reset/reset";
             }
 
             model.addAttribute("token", token);
@@ -125,7 +125,7 @@ public class PasswordResetController {
 
             model.addAttribute("customer_not_found", true);
 
-            return "/registration/badUser";
+            return "reset/reset";
 
         } else{
 
