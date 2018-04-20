@@ -22,7 +22,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 @Controller
-public class RegisterControler {
+public class RegisterController {
     @Autowired
     CustomerService customerService;
     @Autowired
