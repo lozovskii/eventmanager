@@ -53,6 +53,7 @@ img.avatar {
 span.psw {
     float: right;
     padding-top: 16px;
+    cursor: pointer;
 }
 
 
@@ -84,7 +85,7 @@ span.psw {
 /* Modal Content/Box */
 .modal-content {
     background-color: #fefefe;
-    margin: 5px auto; /* 15% from the top and centered */
+    margin: 8% auto; /* 15% from the top and centered */
     border: 1px solid #888;
     width: 40%; /* Could be more or less, depending on screen size */
 }
