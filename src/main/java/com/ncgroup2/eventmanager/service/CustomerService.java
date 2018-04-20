@@ -8,4 +8,5 @@ public interface CustomerService {
     Customer getByLogin(String login);
     void edit(Customer customer);
     List<Customer> search(String search);
+    List<Customer> getFriends(String login);
 }

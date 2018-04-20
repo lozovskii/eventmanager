@@ -15,6 +15,9 @@
     <div th:if="${name.equals(customer.login)}">
         <a style="color: blue" th:href="@{/profile/edit}">Edit</a>
     </div>
+    <div>
+        <a style="color: blue" th:href="@{/profile/friends}">Friends</a>
+    </div>
     <th:block >
         <form action="/logout" method="post">
             <input type="submit" class="button red big" value="Sign Out" />

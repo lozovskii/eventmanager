@@ -50,6 +50,15 @@ public class CustomerController {
         List<Customer> customers = customerService.search(search);
         model.addAttribute("customers", customers);
 
-        return "searchCustomerList";
+        return "customerList";
+    }
+
+    @RequestMapping(value = "/friends", method = RequestMethod.GET)
+    public String getFriends(Model model) {
+        List<Customer> customers = customerService.getFriends(
+                SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("customers", customers);
+
+        return "customerList";
     }
 }

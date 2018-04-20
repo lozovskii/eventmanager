@@ -29,4 +29,10 @@ public class CustomerServiceImpl implements CustomerService {
     public List<Customer> search(String search) {
         return customerDao.search(search);
     }
+
+    @Override
+    @Transactional
+    public List<Customer> getFriends(String login) {
+        return customerDao.getFriends(login);
+    }
 }

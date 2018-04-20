@@ -64,4 +64,13 @@ public class CustomerDaoImpl implements CustomerDao {
             return null;
         }
     }
+
+    @Override
+    public List<Customer> getFriends(String login) {
+        String query = "SELECT * FROM \"Customer\" WHERE id IN " +
+                "(SELECT recipient_id FROM \"Relationship\" R INNER JOIN \"Customer\" C ON R.sender_id = C.id " +
+                "WHERE C.login = '" + login + "' AND R.status = 3)";
+
+        return new JdbcTemplate(dataSource).query(query, new CustomerRowMapper());
+    }
 }
