@@ -54,15 +54,25 @@ public class CustomerService {
     @Transactional
     public void confirmCustomer(Customer customer) {
 
-        customerDaoImpl.updateField(customer,"isVerified", Boolean.TRUE);
-        customerDaoImpl.updateField(customer,"token","");
+        customer.setVerified(true);
+        customer.setToken("");
+
+        customerDaoImpl.updateCustomer(customer);
+
+//  Improved Logic - 1 request instead 2
+//        customerDaoImpl.updateField(customer,"isVerified", Boolean.TRUE);
+//        customerDaoImpl.updateField(customer,"token","");
     }
 
     @Transactional
     public void updatePassword(Customer customer) {
 
-        customerDaoImpl.updateField(customer,"password", customer.getPassword());
-        customerDaoImpl.updateField(customer,"token","");
+        customer.setToken("");
+
+        customerDaoImpl.updateCustomer(customer);
+//  Improved Logic - 1 request instead 2
+//        customerDaoImpl.updateField(customer,"password", customer.getPassword());
+//        customerDaoImpl.updateField(customer,"token","");
     }
 
 }
