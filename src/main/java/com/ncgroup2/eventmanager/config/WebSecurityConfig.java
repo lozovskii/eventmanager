@@ -32,9 +32,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers("/").permitAll();
 
+        http.authorizeRequests().antMatchers("/register").permitAll();
+
         http.authorizeRequests().antMatchers("/login","logout").anonymous();
 
-        http.authorizeRequests().antMatchers("/register", "/registration**", "registrationConfirm").anonymous();
+//        http.authorizeRequests().antMatchers("/register", "/registration**", "registrationConfirm").anonymous();
 
         http.authorizeRequests().antMatchers("/profile").authenticated();
 
