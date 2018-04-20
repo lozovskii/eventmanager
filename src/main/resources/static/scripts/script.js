@@ -13,7 +13,7 @@ window.onclick = function(event) {
             if (event.target == modal3){
                 modal3.style.display = "none";
             }
-}
+};
 
 
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -23,5 +23,5 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         document.querySelector(this.getAttribute('href')).scrollIntoView({
             behavior: 'smooth'
         });
-    });
+    })
 });
