@@ -2,23 +2,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Security with Spring Boot</title>
+    <title>Profile</title>
 </head>
 <body>
 <div>
-    <form action="/profile/search" method="post">
-        Search customer: <input type="text" th:name="search" />
-        <input type="submit" value="Search" />
-    </form>
+    <div>
+        <form action="/profile/search" method="post">
+            Search customer: <input type="text" th:name="search" />
+            <input type="submit" value="Search" />
+        </form>
+    </div>
+    <div th:if="${name.equals(customer.login)}">
+        <a style="color: blue" th:href="@{/profile/edit}">Edit</a>
+    </div>
+    <th:block >
+        <form action="/logout" method="post">
+            <input type="submit" class="button red big" value="Sign Out" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+        </form>
+    </th:block>
 </div>
-<div th:if="${name.equals(customer.login)}">
-    <a style="color: blue" th:href="@{/profile/edit}">Edit</a>
-</div>
-<form action="/logout" method="post">
-    <th:block th:text="${name}" />
-    <input type="submit" class="button red big" value="Sign Out" />
-    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-</form>
 <table>
     <tr>
         <th>First Name</th>

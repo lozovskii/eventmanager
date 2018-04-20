@@ -2,15 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Security with Spring Boot</title>
+    <title>Landing Page</title>
 </head>
 <body>
-    <h1>Hello, This is Home page!</h1>
+    <h1>Hello, This is landing page!</h1>
     <div th:if="${name == null}">
         <a style="color: blue" th:href="@{/login}">Login</a>
     </div>
     <div th:if="${name != null}">
         <a style="color: blue" th:href="@{/profile/{name}(name=${name})}">Profile</a>
+        <form action="/logout" method="post">
+            <input type="submit" class="button red big" value="Sign Out" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+        </form>
     </div>
 </body>
 </html>
