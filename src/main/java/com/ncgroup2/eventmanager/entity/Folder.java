@@ -6,7 +6,7 @@ public class Folder extends Entity {
 
     String title;
 
-    Event[] events;
+    Event[] notes;
 
     public String getCustomer_id() {
         return customer_id;
@@ -24,12 +24,12 @@ public class Folder extends Entity {
         this.title = title;
     }
 
-    public Event[] getEvents() {
-        return events;
+    public Event[] getNotes() {
+        return notes;
     }
 
-    public void setEvents(Event[] events) {
-        this.events = events;
+    public void setNotes(Event[] notes) {
+        this.notes = notes;
     }
 
     @Override
