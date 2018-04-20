@@ -3,6 +3,7 @@ package com.ncgroup2.eventmanager.controller;
 import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.event.OnRegistrationCompleteEvent;
 import com.ncgroup2.eventmanager.service.entityservice.CustomerService;
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.Valid;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
@@ -32,26 +34,35 @@ public class RegisterControler {
     public String showRegister(Model model) {
 
         model.addAttribute("customer", new Customer());
-        return "/registration/register";
+        return "registration/register";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String addUser(@Valid @ModelAttribute("customer") Customer customer,
                           BindingResult result, Model model, WebRequest request) {
 
-        if(customer.getPassword().trim().isEmpty()) {
-            model.addAttribute("empty_password",true);
-            return "/registration/register";
+        if (customer.getPassword().trim().isEmpty()) {
+            model.addAttribute("empty_password", true);
+            return "registration/register";
         }
 
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
-        Customer registered = customerService.register(customer);
 
-        String appUrl = request.getContextPath();
-        eventPublisher.publishEvent(new OnRegistrationCompleteEvent
-                (registered, request.getLocale(), appUrl));
+//        try {
 
-        return "/registration/registration_complete";
+            Customer registered = customerService.register(customer);
+
+            String appUrl = request.getContextPath();
+            eventPublisher.publishEvent(new OnRegistrationCompleteEvent
+                    (registered, request.getLocale(), appUrl));
+
+            return "/registration/registration_complete";
+
+//        } catch (SQLException ex) {
+//
+//            model.addAttribute("login_email_exist", true);
+//            return "/register";
+//        }
     }
 
     @RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)
