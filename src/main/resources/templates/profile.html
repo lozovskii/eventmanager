@@ -5,8 +5,14 @@
     <title>Security with Spring Boot</title>
 </head>
 <body>
+<div>
+    <form action="/profile/search" method="post">
+        Search customer: <input type="text" th:name="search" />
+        <input type="submit" value="Search" />
+    </form>
+</div>
 <div th:if="${name.equals(customer.login)}">
-    <a style="color: blue" th:href="@{/profile/{login}/edit(login=${customer.login})}">Edit</a>
+    <a style="color: blue" th:href="@{/profile/edit}">Edit</a>
 </div>
 <form action="/logout" method="post">
     <th:block th:text="${name}" />
