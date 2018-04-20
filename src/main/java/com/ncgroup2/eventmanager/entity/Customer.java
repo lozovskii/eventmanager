@@ -15,11 +15,12 @@ public class Customer extends Entity {
     private boolean isVerified;
     private Instant registrationDate;
     private String token;
-    private byte[] image;
+    private byte[] avatar;
 
     public Customer() {
-        Random random = new Random();
-        isVerified =false;
+
+        isVerified = false;
+
     }
 
     public String getEmail() {
@@ -86,12 +87,12 @@ public class Customer extends Entity {
         this.token = token;
     }
 
-    public byte[] getImage() {
-        return image;
+    public byte[] getAvatar() {
+        return avatar;
     }
 
-    public void setImage(byte[] image) {
-        this.image = image;
+    public void setAvatar(byte[] avatar) {
+        this.avatar = avatar;
     }
 
     @Override
@@ -107,7 +108,22 @@ public class Customer extends Entity {
                 ", isVerified=" + isVerified +
                 ", registrationDate=" + registrationDate +
                 ", token='" + token + '\'' +
-                ", image=" + Arrays.toString(image) +
                 '}';
+    }
+
+
+    // Params for UPDATE. Don't include registrationDate (not update)
+    @Override
+    public Object[] getParams() {
+        return new Object[]{
+                this.getName(),
+                this.getSecondName(),
+                this.getPassword(),
+                this.getPhone(),
+                this.isVerified(),
+                this.getToken(),
+                this.getAvatar(),
+                this.getId()
+        };
     }
 }
