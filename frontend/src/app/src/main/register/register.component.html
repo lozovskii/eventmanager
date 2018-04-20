@@ -1,0 +1,43 @@
+<div class="col-md-12">
+  <div class="col-md-6" style="margin:0 auto">
+    <h2>Register</h2>
+  <form [formGroup]="registerForm" name="form" role="form" (ngSubmit)="register(registerForm.value)"  novalidate> <!--#regform="ngForm"-->
+
+      <div class="form-group">
+        <label>First Name</label>
+        <input formControlName="name" [ngModel]="name" id="name" type="text" class="form-control" required />  <!--[(ngModel)]="user.name" #name="ngModel"-->
+        <!--<div *ngIf="regform.submitted && !name.valid" class="help-block">First Name is required</div>-->
+      </div>
+
+      <div class="form-group">
+        <label for="secondName">Last Name</label>
+        <input formControlName="secondName" id = "secondName" type="text" class="form-control" name="lastName"  required /><!--[(ngModel)]="user.secondName" #secondName="ngModel"-->
+        <!--<div *ngIf="regform.submitted && !secondName.valid" class="help-block">Last Name is required</div>-->
+      </div>
+
+      <div class="form-group">
+        <label for="login">Username</label>
+        <input formControlName="login" id ="login" type="text" class="form-control" name="username" required />
+        <!--<div *ngIf="regform.submitted && !login.valid" class="help-block">Username is required</div>-->
+      </div>
+
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input formControlName="email" id = "email" type="text" class="form-control" name="email" required />
+        <!--<div *ngIf="regform.submitted && !email.valid" class="help-block">Email is required</div>-->
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input formControlName="password" id = "password" type="password" class="form-control" name="password" required />
+        <!--<div *ngIf="regform.submitted && !password.valid" class="help-block">Password is required</div>-->
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Register</button>
+        <!--<img *ngIf="loading" src="data:"/>-->
+        <a [routerLink]="['/login']" class="btn btn-link">Cancel</a>
+      </div>
+  </form>
+  </div>
+</div>
