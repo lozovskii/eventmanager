@@ -21,10 +21,6 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
     public static final String BASE_SQL = "SELECT * FROM \"Customer\" ";
 
-    //    @Autowired
-//    CustomerDaoImpl(DataSource dataSource) {
-//        this.setDataSource(dataSource);
-//    }
     @Autowired
     DataSource dataSource;
 
@@ -60,21 +56,24 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
     @Override
     public void addCustomer(Customer customer) {
 
-        // Add uuid_generate_v1()
-
         String sql = "INSERT INTO \"Customer\" " +
                 "(id,name,second_name,phone,login,email,password,isverified,registration_date)" +
                 " values(uuid_generate_v1(),?,?,?,?,?,?,?,?)";
 
-        Object[] params = new Object[]{
-                customer.getName(),
-                customer.getSecondName(),
-                customer.getPhone(),
-                customer.getLogin(),
-                customer.getEmail(),
-                customer.getPassword(),
-                customer.isVerified(),
-                new Timestamp(Instant.now().toEpochMilli())};
+        Object[] params = customer.getParams();
+
+        params[params.length] = new Timestamp(Instant.now().toEpochMilli());
+
+//                new Object[]{
+//                customer.getName(),
+//                customer.getSecondName(),
+//                customer.getPhone(),
+//                customer.getLogin(),
+//                customer.getEmail(),
+//                customer.getPassword(),
+//                customer.isVerified(),
+//                new Timestamp(Instant.now().toEpochMilli())};
+
         this.getJdbcTemplate().update(sql, params);
 
         String sqlRole = "INSERT INTO \"Customer_Role\" VALUES (" +
@@ -86,22 +85,16 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
         Object[] roleParams = new Object[]{customer.getLogin()};
         this.getJdbcTemplate().update(sqlRole, roleParams);
 
-        //return getByField("login", customer.getLogin());
-
     }
 
     @Transactional
     @Override
     public void deleteCustomer(Customer customer) {
 
-        //String sqlCustomerRole = "DELETE FROM \"Customer_Role\" WHERE customer_id = ?";
-        //FK записи в БД мають параметр ON DELETE CASCADE
-
         String sqlCustomer = "DELETE FROM \"Customer\" WHERE id = CAST (? AS uuid)";
 
         Object[] params = new Object[]{customer.getId()};
 
-        //this.getJdbcTemplate().update(sqlCustomerRole, params);
         this.getJdbcTemplate().update(sqlCustomer, params);
 
     }
@@ -136,6 +129,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
     @Override
     public void updateCustomer(Customer customer) {
+
         String sql = "UPDATE \"Customer\" SET " +
                 "name = ? " +
                 "second_name = ? " +
@@ -143,16 +137,10 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
                 "phone = ? " +
                 "isverified = ? " +
                 "token = ? " +
-                "image = ? " +
+                "avatar = ? " +
                 " WHERE id = CAST (? AS uuid)";
-        Object[] params = new Object[]{
-                customer.getName(),
-                customer.getSecondName(),
-                customer.getPassword(),
-                customer.getPhone(),
-                customer.isVerified(),
-                customer.getToken(),
-                customer.getImage()};
+
+        Object[] params = customer.getParams();
 
         this.getJdbcTemplate().update(sql, params);
     }
