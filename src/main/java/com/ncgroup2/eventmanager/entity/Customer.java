@@ -118,8 +118,10 @@ public class Customer extends Entity {
         return new Object[]{
                 this.getName(),
                 this.getSecondName(),
-                this.getPassword(),
                 this.getPhone(),
+                this.getLogin(),
+                this.getEmail(),
+                this.getPassword(),
                 this.isVerified(),
                 this.getToken(),
                 this.getAvatar(),
