@@ -57,12 +57,12 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
     public void addCustomer(Customer customer) {
 
         String sql = "INSERT INTO \"Customer\" " +
-                "(id,name,second_name,phone,login,email,password,isverified,registration_date)" +
-                " values(uuid_generate_v1(),?,?,?,?,?,?,?,?)";
+                "(id,name,second_name,phone,login,email,password,isverified,token,avatar,registration_date)" +
+                " values(uuid_generate_v1(),?,?,?,?,?,?,?,?,?,?)";
 
         Object[] params = customer.getParams();
 
-        params[params.length] = new Timestamp(Instant.now().toEpochMilli());
+        params[params.length-1] = new Timestamp(Instant.now().toEpochMilli());
 
 //                new Object[]{
 //                customer.getName(),
@@ -133,8 +133,10 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
         String sql = "UPDATE \"Customer\" SET " +
                 "name = ? " +
                 "second_name = ? " +
-                "password = ? " +
                 "phone = ? " +
+                "login = ? " +
+                "email = ? " +
+                "password = ? " +
                 "isverified = ? " +
                 "token = ? " +
                 "avatar = ? " +
