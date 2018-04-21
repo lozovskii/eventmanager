@@ -1,6 +1,5 @@
 package com.ncgroup2.eventmanager.controller;
 
-import com.ncgroup2.eventmanager.dao.impl.postgres.CustomerDaoImpl;
 import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.service.entityservice.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,7 +98,7 @@ public class PasswordResetController {
 
                 model.addAttribute("customer_not_found", true);
 
-                return "/registration/badUser";
+                return "reset/reset";
             }
 
             model.addAttribute("token", token);
@@ -125,7 +124,7 @@ public class PasswordResetController {
 
             model.addAttribute("customer_not_found", true);
 
-            return "/registration/badUser";
+            return "reset/reset";
 
         } else{
 

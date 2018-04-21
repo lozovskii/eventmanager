@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<!--
+Template Name: Jovaphile
+Author: <a href="http://www.os-templates.com/">OS Templates</a>
+Author URI: http://www.os-templates.com/
+Licence: Free to use under our free template licence terms
+Licence URI: http://www.os-templates.com/template-terms
+-->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<!-- To declare your language - read more here: https://www.w3.org/International/questions/qa-html-language-declarations -->
+<head>
+<title>PEM</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link href="styles/layout.css" rel="stylesheet" type="text/css" media="all">
+<link href="styles/login_style.css" rel="stylesheet" type="text/css" media="all">
+</head>
+<body id="top">
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<div class="wrapper row0">
+  <nav id="mainav" class="hoc clear"> 
+    <!-- ################################################################################################ -->
+    <ul class="clear">
+      <li class="active"><a href="index.html">Home</a></li>      
+      <li><a href="#pem_features">Features</a></li>
+      <li><a href="#pem_inspiration">Inspiration</a></li>
+      <li><a href="#pem_events">Events</a></li>
+
+      <!--<li sec:authorize="isAuthenticated()" class="active">-->
+          <!--<a href="../templates/profile.html" id="profile_id">-->
+              <!--<span sec:authentication="name"></span>-->
+            <!--</a>-->
+      <!--</li>-->
+
+        <!--<li><a th:href="@{/profile/{name}(name=${name})}"></li>-->
+
+        <li th:if="${name != null}"><a href="/logout">Sign Out</a></li>
+
+    </ul>
+    <!-- ################################################################################################ -->
+  </nav>
+</div>
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<div class="wrapper row1">
+  <header id="header" class="hoc clear"> 
+    <!-- ################################################################################################ -->
+    <h1><a href="index.html">PEM</a></h1>
+    <p>Perfect event manager</p>
+    <!-- ################################################################################################ -->
+  </header>
+</div>
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<div class="wrapper bgded overlay light" style="background-image:url('images/demo/backgrounds/01.jpg');">
+  <div id="pageintro" class="hoc clear"> 
+    <!-- ################################################################################################ -->
+    <article>
+      <h3 class="heading">Perfect event manager</h3>
+      <p>Create, participate, live!</p>
+      <footer>
+        <ul class="nospace inline pushright">
+          <li><button class="btn" onclick="document.getElementById('id01').style.display='block'">Sign In</button></li>
+          <li><button class="btn inverse" onclick="document.getElementById('id02').style.display='block'">Sign Up</button></li>
+
+          <!--<li><a class="btn inverse" href="/register">Sign Up</a></li>-->
+
+        </ul>
+      </footer>
+    </article>
+    <!-- ################################################################################################ -->
+  </div>
+</div>
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<div class="wrapper row3">
+  <main class="hoc container clear"> 
+    <!-- main body -->
+    <!-- ################################################################################################ -->
+    <div id="pem_features" class="sectiontitle">
+      <h6 class="heading">PEM Best Features</h6>
+    </div>
+    <ul class="nospace group">
+      <li class="one_third first btmspace-50">
+        <article>
+          <h6 class="heading font-x1"><i class="fa fa-2x fa-dashcube"></i> <a href="#">Friends</a></h6>
+          <p></p>
+        </article>
+      </li>
+      <li class="one_third btmspace-50">
+        <article>
+          <h6 class="heading font-x1"><i class="fa fa-2x fa-language"></i> <a href="#">Google Maps</a></h6>
+          <p></p>
+        </article>
+      </li>
+      <li class="one_third btmspace-50">
+        <article>
+          <h6 class="heading font-x1"><i class="fa fa-2x fa-database"></i> <a href="#">Event Management</a></h6>
+          <p></p>
+        </article>
+      </li>
+      <li class="one_third first">
+        <article>
+          <h6 class="heading font-x1"><i class="fa fa-2x fa-diamond"></i> <a href="#">Chats</a></h6>
+          <p></p>
+        </article>
+      </li>
+      <li class="one_third">
+        <article>
+          <h6 class="heading font-x1"><i class="fa fa-2x fa-sliders"></i> <a href="#">Customization</a></h6>
+          <p></p>
+        </article>
+      </li>
+      <li class="one_third">
+        <article>
+          <h6 class="heading font-x1"><i class="fa fa-2x fa-slack"></i> <a href="#">Wish Lists</a></h6>
+          <p></p>
+        </article>
+      </li>
+    </ul>
+    <!-- ################################################################################################ -->
+    <!-- / main body -->
+    <div class="clear"></div>
+  </main>
+</div>
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<div id="pem_inspiration" class="wrapper bgded overlay" style="background-image:url('images/demo/backgrounds/sky_background.jpeg');">
+  <div class="hoc container testimonials clear"> 
+    <!-- ################################################################################################ -->
+    <article><img src="images/demo/Hazrat_Inayat_Khan.jpg" alt="">
+      <blockquote> Some people look for a beautiful place. Others make a place beautiful.</blockquote>
+      <h6 class="heading font-x1">Hazrat Inayat Khan</h6>
+      <em>Sufi teacher</em></article>
+    <!-- ################################################################################################ -->
+  </div>
+</div>
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<div id="pem_events" class="wrapper row3">
+  <div class="hoc container clear"> 
+    <!-- ################################################################################################ -->
+    <div class="sectiontitle">
+      <h6 class="heading">Some Events</h6>
+    </div>
+    <ul class="nospace group latest">
+      <li class="one_third first">
+        <article>
+          <figure><a class="imgover" href="#"><img src="images/demo/event1.jpg" alt=""></a></figure>
+          <div class="txtwrap">
+            <h4 class="heading"><a href="#">Concert</a></h4>
+            <ul class="nospace meta">
+              <li><i class="fa fa-user"></i> <a href="#">Admin</a></li>
+              <li><i class="fa fa-tag"></i> <a href="#">Concert</a></li>
+            </ul>
+            <p>Kontsert Vladimira Sirenko i Miroslavyi Kotorovich v Natsionalnoy filarmonii</p>
+          </div>
+        </article>
+      </li>
+      <li class="one_third">
+        <article>
+          <figure><a class="imgover" href="#"><img src="images/demo/event2.jpg" alt=""></a></figure>
+          <div class="txtwrap">
+            <h4 class="heading"><a href="#">Performance</a></h4>
+            <ul class="nospace meta">
+              <li><i class="fa fa-user"></i> <a href="#">Admin</a></li>
+              <li><i class="fa fa-tag"></i> <a href="#">Show</a></li>
+            </ul>
+            <p>Spektakl «Mazepa» v Molodom teatre</p>
+          </div>
+        </article>
+      </li>
+      <li class="one_third">
+        <article>
+          <figure><a class="imgover" href="#"><img src="images/demo/event3.jpg" alt=""></a></figure>
+          <div class="txtwrap">
+            <h4 class="heading"><a href="#">Tribute</a></h4>
+            <ul class="nospace meta">
+              <li><i class="fa fa-user"></i> <a href="#">Admin</a></li>
+              <li><i class="fa fa-tag"></i> <a href="#">Show</a></li>
+            </ul>
+            <p>Nirvana tribute show in Atlas</p>
+          </div>
+        </article>
+      </li>
+    </ul>
+    <!-- ################################################################################################ -->
+  </div>
+</div>
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<div class="wrapper row2">
+  <article class="hoc container cta clear"> 
+    <!-- ################################################################################################ -->
+    <h3 class="heading">Create and share</h3>
+    <p>Join the team</p>
+    <footer><a class="btn" href="#">Sign up</a></footer>
+    <!-- ################################################################################################ -->
+  </article>
+</div>
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<div class="wrapper row5">
+  <div id="copyright" class="hoc clear"> 
+    <!-- ################################################################################################ -->
+    <p class="fl_left">Copyright &copy; 2018 - All Rights Reserved - <a href="http://rocky-dusk-73382.herokuapp.com/">rocky-dusk-73382.herokuapp.com</a></p>
+    <p class="fl_right">Template by <a target="_blank" href="http://www.os-templates.com/" title="Free Website Templates">OS Templates</a></p>
+    <!-- ################################################################################################ -->
+  </div>
+</div>
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<a id="backtotop" href="#top"><i class="fa fa-chevron-up"></i></a>
+
+
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- Login Form -->
+
+<!-- The Modal -->
+<div id="id01" class="modal">
+  <span onclick="document.getElementById('id01').style.display='none'"
+class="close" title="Close Modal">&times;</span>
+
+  <!-- Modal Content -->
+  <form class="modal-content animate" th:action="@{/login}" method="post">
+    <div class="imgcontainer">
+      <img src="images/demo/avatar.png" alt="Avatar" class="avatar">
+    </div>
+
+    <!--<div class="alert alert-error" th:if="${error}">-->
+      <!--Invalid username and password.-->
+    <!--</div>-->
+
+    <!--<div  class="alert alert-success" th:if="${successful_logout}">-->
+      <!--You have been logged out.-->
+    <!--</div>-->
+
+    <div class="container">
+      <label for="username"><b>Login</b></label>
+      <input type="text" placeholder="Enter login or e-mail" id="username" name="username" required>
+
+      <label for="password"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" id="password" name="password" required>
+
+      <button class="btn" type="submit">Login</button>
+    </div>
+
+    <div class="container" style="background-color:#f1f1f1">
+
+      <button type="button" onclick="document.getElementById('id01').style.display='none'" class="btn">Cancel</button>
+
+      <span class="psw"><a onclick="
+        document.getElementById('id01').style.display='none';
+        document.getElementById('id03').style.display='block'">Forgot password?</a></span>
+
+    </div>
+  </form>
+</div>
+
+
+ <!--################################################################################################-->
+ <!--################################################################################################-->
+ <!--Registration Form-->
+
+<!-- The Modal -->
+<div id="id02" class="modal">
+  <span onclick="document.getElementById('id02').style.display='none'"
+        class="close" title="Close Modal">&times;</span>
+
+  <!-- Modal Content -->
+  <form class="modal-content animate" action="/register" th:object="${customer}"  method="post">
+
+    <div class="container">
+      <label for="login"><b>Login</b></label>
+      <input type="text" placeholder="Enter login" th:field="*{login}" id="login" name="login" required>
+
+      <label for="email"><b>E-mail</b></label>
+      <input type="email" placeholder="Enter e-mail" th:field="*{email}" id="email" name="email" required>
+
+      <label for="reg_password"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" th:field="*{password}" id="reg_password" name="password" required>
+
+      <button class="btn" type="submit">Register me!</button>
+
+        <button type="button" onclick="document.getElementById('id02').style.display='none'" class="btn">Cancel</button>
+
+    </div>
+
+  </form>
+</div>
+
+
+<!--################################################################################################-->
+<!--################################################################################################-->
+<!--Reset Form-->
+
+<!-- The Modal -->
+<div id="id03" class="modal">
+  <span onclick="document.getElementById('id03').style.display='none'"
+        class="close" title="Close Modal">&times;</span>
+
+  <!-- Modal Content -->
+  <form class="modal-content animate" action="/reset" method="post">
+
+    <div class="container">
+      <label for="email"><b>E-mail</b></label>
+      <input type="email" placeholder="Enter e-mail" id="email" name="email" required>
+
+      <button class="btn" type="submit">Reset password</button>
+
+      <button type="button" onclick="document.getElementById('id03').style.display='none'" class="btn">Cancel</button>
+
+    </div>
+
+  </form>
+</div>
+
+
+
+<!-- JAVASCRIPTS -->
+<script src="scripts/script.js"></script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/jquery.backtotop.js"></script>
+<script src="scripts/jquery.mobilemenu.js"></script>
+</body>
+</html>

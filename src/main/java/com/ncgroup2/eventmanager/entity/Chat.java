@@ -8,6 +8,11 @@ public class Chat extends Entity {
     public Chat() {
     }
 
+    @Override
+    public Object[] getParams() {
+        return new Object[0];
+    }
+
     public Chat(String eventId, boolean withOwner) {
         this.eventId = eventId;
         this.withOwner = withOwner;
