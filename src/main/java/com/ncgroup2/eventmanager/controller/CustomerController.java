@@ -48,7 +48,7 @@ public class CustomerController {
         List<Customer> customers = customerService.search(search);
         model.addAttribute("customers", customers);
 
-        return "customerList";
+        return "search";
     }
 
     @RequestMapping(value = "/friends", method = RequestMethod.GET)
@@ -57,6 +57,13 @@ public class CustomerController {
                 SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("customers", customers);
 
-        return "customerList";
+        return "friends";
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    public String delete(@RequestParam("login") String login, Model model) {
+        customerService.delete(login);
+
+        return "redirect:/profile/friends";
     }
 }

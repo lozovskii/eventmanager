@@ -73,4 +73,22 @@ public class CustomerDaoImpl implements CustomerDao {
 
         return new JdbcTemplate(dataSource).query(query, new CustomerRowMapper());
     }
+
+    @Override
+    public void delete(String login) {
+        String query1 = "DELETE FROM \"Relationship\" " +
+                "WHERE sender_id IN (SELECT id FROM \"Customer\" " +
+                "WHERE login = '" + SecurityContextHolder.getContext().getAuthentication().getName() + "') " +
+                "AND recipient_id IN (SELECT id FROM \"Customer\" WHERE login = '" + login + "')";
+
+        String query2 = "DELETE FROM \"Relationship\" " +
+                "WHERE sender_id IN (SELECT id FROM \"Customer\" WHERE login = '" + login + "') " +
+                "AND recipient_id IN (SELECT id FROM \"Customer\" " +
+                "WHERE login = '" + SecurityContextHolder.getContext().getAuthentication().getName() + "')";
+
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        jdbcTemplate.update(query1);
+        jdbcTemplate.update(query2);
+    }
 }

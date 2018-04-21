@@ -25,14 +25,17 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    @Transactional
     public List<Customer> search(String search) {
         return customerDao.search(search);
     }
 
     @Override
-    @Transactional
     public List<Customer> getFriends(String login) {
         return customerDao.getFriends(login);
+    }
+
+    @Override
+    public void delete(String login) {
+        customerDao.delete(login);
     }
 }

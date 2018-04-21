@@ -14,19 +14,15 @@
             </label>
             <input type="submit" value="Search" />
         </form>
-    </div>
-    <div th:if="${name.equals(customer.login)}">
-        <a style="color: blue" th:href="@{/profile/edit}">Edit</a>
-    </div>
-    <div>
-        <a style="color: blue" th:href="@{/profile/friends}">Friends</a>
-    </div>
-    <th:block >
         <form action="/logout" method="post">
             <input type="submit" class="button red big" value="Sign Out" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         </form>
-    </th:block>
+    </div>
+    <div th:if="${name.equals(customer.login)}">
+        <a style="color: blue" th:href="@{/profile/edit}">Edit</a>
+        <a style="color: blue" th:href="@{/profile/friends}">Friends</a>
+    </div>
 </div>
 <table>
     <tr>

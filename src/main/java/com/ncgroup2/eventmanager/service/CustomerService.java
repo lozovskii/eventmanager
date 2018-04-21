@@ -9,4 +9,5 @@ public interface CustomerService {
     void edit(Customer customer);
     List<Customer> search(String search);
     List<Customer> getFriends(String login);
+    void delete(String login);
 }
