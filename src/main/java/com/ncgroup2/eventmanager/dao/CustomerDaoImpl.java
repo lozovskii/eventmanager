@@ -56,7 +56,7 @@ public class CustomerDaoImpl implements CustomerDao {
             } else {
                 return null;
             }
-        } else if (search == "" || search == null) {
+        } else if (search.equals("")) {
             String query = "SELECT * FROM \"Customer\"";
 
             return new JdbcTemplate(dataSource).query(query, new CustomerRowMapper());
