@@ -144,10 +144,6 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
         Object[] params = customer.getParams();
 
-        for (int i = 0; i < params.length; i++) {
-            System.out.println(params[i]);
-        }
-
         this.getJdbcTemplate().update(sql, params);
     }
 }
