@@ -17,11 +17,6 @@ public class Event extends Entity {
 
     }
 
-    @Override
-    public Object[] getParams() {
-        return new Object[0];
-    }
-
     public Instant getStartTime() {
         return startTime;
     }
@@ -96,5 +91,20 @@ public class Event extends Entity {
                 ", status='" + status + '\'' +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public Object[] getParams() {
+        return new Object[]{
+                this.getName(),
+                this.getFolderId(),
+                this.getCreatorId(),
+                this.getStartTime(),
+                this.getEndTime(),
+                this.getPriority(),
+                this.isPublic(),
+                this.getFrequency(),
+                this.getStatus()
+        };
     }
 }
