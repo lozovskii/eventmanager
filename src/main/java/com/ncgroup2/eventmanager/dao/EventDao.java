@@ -7,4 +7,6 @@ public interface EventDao {
     void createEvent(String creatorId, Event event);
 
     void deleteEvent(Event event);
+
+    void updateField(Event event, String fieldName, Object fieldValue);
 }
