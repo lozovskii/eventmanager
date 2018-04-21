@@ -131,18 +131,22 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
     public void updateCustomer(Customer customer) {
 
         String sql = "UPDATE \"Customer\" SET " +
-                "name = ? " +
-                "second_name = ? " +
-                "phone = ? " +
-                "login = ? " +
-                "email = ? " +
-                "password = ? " +
-                "isverified = ? " +
-                "token = ? " +
+                "name = ?, " +
+                "second_name = ?, " +
+                "phone = ?, " +
+                "login = ?, " +
+                "email = ?, " +
+                "password = ?, " +
+                "isverified = ?, " +
+                "token = ?, " +
                 "avatar = ? " +
                 " WHERE id = CAST (? AS uuid)";
 
         Object[] params = customer.getParams();
+
+        for (int i = 0; i < params.length; i++) {
+            System.out.println(params[i]);
+        }
 
         this.getJdbcTemplate().update(sql, params);
     }
