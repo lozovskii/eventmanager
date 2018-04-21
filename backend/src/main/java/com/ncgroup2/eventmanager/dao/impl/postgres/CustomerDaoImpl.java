@@ -137,4 +137,14 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao{
     public void updateCustomer(Customer customer) {
 
     }
+
+    @Override
+    public void deleteUnverifiedCustomers() {
+
+        String sqlUnverified = "DELETE FROM \"Customer\"" +
+                               "WHERE isVerified = \'false\'" +
+                               "AND (LOCALTIMESTAMP - registration_date) >= \'24 hour\';";
+
+        this.getJdbcTemplate().update(sqlUnverified);
+    }
 }

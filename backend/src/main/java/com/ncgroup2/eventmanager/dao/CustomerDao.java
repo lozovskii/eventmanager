@@ -20,4 +20,5 @@ public interface CustomerDao {
 
     void updateField(Customer customer, String fieldName, Object fieldValue);
 
+    void deleteUnverifiedCustomers();
 }
