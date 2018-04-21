@@ -26,7 +26,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
                      "VALUES(uuid_generate_v1()," + event.getName() + "," + null + "," + creatorId + "," +
                       event.getStartTime() + "," + event.getEndTime()  + "," + event.getPriority() + "," +
                       event.isPublic() + "," + event.getFrequency() + "," +
-                      event.getStatus();
+                      event.getStatus() + ")";
 
         this.getJdbcTemplate().update(query);
     }
