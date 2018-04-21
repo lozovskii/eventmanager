@@ -1,10 +1,19 @@
 package com.ncgroup2.eventmanager.entity;
 
-public class Entity {
+import java.util.UUID;
+
+abstract class Entity {
 
     protected String id;
 
     protected String name;
+
+    Entity(){
+
+        UUID uuid = UUID.randomUUID();
+
+        this.id = uuid.toString();
+    }
 
     public String getId() {
         return id;
@@ -22,5 +31,5 @@ public class Entity {
         this.name = name;
     }
 
-    
+    abstract public Object[] getParams();
 }
