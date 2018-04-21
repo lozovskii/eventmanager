@@ -36,7 +36,7 @@ public class PasswordResetController {
     @RequestMapping(value = "/reset", method = RequestMethod.GET)
     public String showReset(Model model) {
 
-        return "reset/reset";
+        return "redirect:/index.html";
 
     }
 
@@ -51,7 +51,7 @@ public class PasswordResetController {
         if(customerService.isEmailUnique(userEmail)) {
 
             model.addAttribute("customer_not_found", true);
-            return "reset/reset";
+            return "redirect:/index.html?not_found";
 
         }else {
 
@@ -82,7 +82,7 @@ public class PasswordResetController {
 
             model.addAttribute("link_sent",true);
 
-            return "reset/reset";
+            return "redirect:/index.html";
 
         }
     }
@@ -98,7 +98,7 @@ public class PasswordResetController {
 
                 model.addAttribute("customer_not_found", true);
 
-                return "reset/reset";
+                return "redirect:/index.html?not_found";
             }
 
             model.addAttribute("token", token);
@@ -124,7 +124,7 @@ public class PasswordResetController {
 
             model.addAttribute("customer_not_found", true);
 
-            return "reset/reset";
+            return "redirect:/index.html?not_found";
 
         } else{
 
@@ -136,7 +136,7 @@ public class PasswordResetController {
         }
 
 
-        return "reset/reset_complete";
+        return "redirect:/index.html";
 
     }
 
