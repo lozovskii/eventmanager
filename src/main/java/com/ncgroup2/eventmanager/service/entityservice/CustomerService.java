@@ -2,6 +2,7 @@ package com.ncgroup2.eventmanager.service.entityservice;
 
 import com.ncgroup2.eventmanager.dao.impl.postgres.CustomerDaoImpl;
 import com.ncgroup2.eventmanager.entity.Customer;
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +14,7 @@ public class CustomerService {
     @Autowired
     CustomerDaoImpl customerDaoImpl;
 
-    public Customer register(Customer customer) {
+    public Customer register(Customer customer) throws PSQLException {
 
         customerDaoImpl.addCustomer(customer);
 

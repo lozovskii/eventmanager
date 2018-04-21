@@ -48,7 +48,7 @@ public class RegisterController {
 
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
 
-//        try {
+        try {
 
             Customer registered = customerService.register(customer);
 
@@ -58,11 +58,11 @@ public class RegisterController {
 
             return "/registration/registration_complete";
 
-//        } catch (SQLException ex) {
-//
-//            model.addAttribute("login_email_exist", true);
-//            return "/register";
-//        }
+        } catch (PSQLException ex) {
+
+            model.addAttribute("login_email_exist", true);
+            return "/register";
+        }
     }
 
     @RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)
