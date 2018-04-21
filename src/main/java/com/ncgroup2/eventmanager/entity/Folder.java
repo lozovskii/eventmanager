@@ -40,4 +40,9 @@ public class Folder extends Entity {
                 ", id='" + id + '\'' +
                 '}';
     }
+
+    @Override
+    public Object[] getParams() {
+        return new Object[0];
+    }
 }

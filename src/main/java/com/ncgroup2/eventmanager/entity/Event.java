@@ -17,6 +17,11 @@ public class Event extends Entity {
 
     }
 
+    @Override
+    public Object[] getParams() {
+        return new Object[0];
+    }
+
     public Instant getStartTime() {
         return startTime;
     }
