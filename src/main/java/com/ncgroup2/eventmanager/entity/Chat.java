@@ -8,11 +8,6 @@ public class Chat extends Entity {
     public Chat() {
     }
 
-    @Override
-    public Object[] getParams() {
-        return new Object[0];
-    }
-
     public Chat(String eventId, boolean withOwner) {
         this.eventId = eventId;
         this.withOwner = withOwner;
@@ -40,5 +35,14 @@ public class Chat extends Entity {
                 "eventId=" + eventId +
                 ", withOwner=" + withOwner +
                 '}';
+    }
+
+    @Override
+    public Object[] getParams() {
+        return new Object[]{
+                this.getName(),
+                this.getEventId(),
+                this.isWithOwner()
+        };
     }
 }

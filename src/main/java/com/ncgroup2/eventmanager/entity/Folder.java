@@ -43,6 +43,11 @@ public class Folder extends Entity {
 
     @Override
     public Object[] getParams() {
-        return new Object[0];
+        return new Object[]{
+                this.getName(),
+                this.getCustomer_id(),
+                this.getTitle(),
+                this.getNotes()
+        };
     }
 }
