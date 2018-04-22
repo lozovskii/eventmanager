@@ -28,31 +28,23 @@ public class RegisterController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String showRegister(Model model) {
-
-        model.addAttribute("customer", new Customer());
-        return "redirect:/index.html";
-    }
-
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String addUser(@Valid @ModelAttribute("customer") Customer customer,
                           BindingResult result, Model model, WebRequest request) {
 
         if (customerService.isCustomerPresent(customer.getLogin())) {
             model.addAttribute("customer_exist", true);
-            return "redirect:/index.html?customer_exist";
+            return "redirect:/?login_exist";
         }
 
         if (!customerService.isEmailUnique(customer.getEmail())) {
             model.addAttribute("email_exist", true);
-            System.out.println(customer.getEmail());
-            return "redirect:/index.html?email_exist";
+            return "redirect:/?email_exist";
         }
 
         if (customer.getPassword().trim().isEmpty()) {
             model.addAttribute("empty_password", true);
-            return "redirect:/index.html?empty_password";
+            return "redirect:/?empty_password";
         }
 
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
@@ -62,7 +54,7 @@ public class RegisterController {
         eventPublisher.publishEvent(new OnRegistrationCompleteEvent
                 (registered, request.getLocale(), appUrl));
 
-        return "/registration/registration_complete";
+        return "redirect:/?link_sent";
     }
 
     @RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)
@@ -71,18 +63,18 @@ public class RegisterController {
         Customer customer = customerService.getCustomer(token);
         if (customer == null) {
             model.addAttribute("message", "Invalid token");
-            return "/registration/badUser";
+            return "redirect:/?invalid_token";
         }
         Instant expireDate = customer.getRegistrationDate().plus(24, ChronoUnit.HOURS);
 
         if (Instant.now().isAfter(expireDate)) {
             model.addAttribute("message", "This link is no longer valid. Please, register again");
             customerService.deleteCustomer(customer);
-            return "/registration/badUser";
+            return "redirect:/?date_expired";
         }
 
         customerService.confirmCustomer(customer);
 
-        return "registration/successful_confirmation";
+        return "redirect:/?successful_confirmation";
     }
 }
