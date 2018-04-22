@@ -3,7 +3,6 @@ package com.ncgroup2.eventmanager.controller;
 import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.event.OnRegistrationCompleteEvent;
 import com.ncgroup2.eventmanager.service.entityservice.CustomerService;
-import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.Valid;
-import java.sql.SQLException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
@@ -46,7 +44,7 @@ public class RegisterController {
             return "redirect:/index.html?customer_exist";
         }
 
-        if(!customerService.isEmailUnique(customer.getEmail())) {
+        if (!customerService.isEmailUnique(customer.getEmail())) {
             model.addAttribute("email_exist", true);
             System.out.println(customer.getEmail());
             return "redirect:/index.html?email_exist";
@@ -58,22 +56,13 @@ public class RegisterController {
         }
 
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+        Customer registered = customerService.register(customer);
 
-        try {
+        String appUrl = request.getContextPath();
+        eventPublisher.publishEvent(new OnRegistrationCompleteEvent
+                (registered, request.getLocale(), appUrl));
 
-            Customer registered = customerService.register(customer);
-
-            String appUrl = request.getContextPath();
-            eventPublisher.publishEvent(new OnRegistrationCompleteEvent
-                    (registered, request.getLocale(), appUrl));
-
-            return "/registration/registration_complete";
-
-        } catch (PSQLException ex) {
-
-            model.addAttribute("login_email_exist", true);
-            return "/register";
-        }
+        return "/registration/registration_complete";
     }
 
     @RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)
