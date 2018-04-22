@@ -46,7 +46,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
     @Override
     public Customer getByField(String fieldName, String fieldValue) {
         Collection<Customer> customers = getCustomers(fieldName, fieldValue);
-        if (customers != null) {
+        if (!customers.isEmpty()) {
             return getCustomers(fieldName, fieldValue).iterator().next();
         } else {
             return null;
