@@ -7,14 +7,16 @@ Licence: Free to use under our free template licence terms
 Licence URI: http://www.os-templates.com/template-terms
 -->
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <!-- To declare your language - read more here: https://www.w3.org/International/questions/qa-html-language-declarations -->
 <head>
 <title>PEM</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<link href="styles/layout.css" rel="stylesheet" type="text/css" media="all">
-<link href="styles/login_style.css" rel="stylesheet" type="text/css" media="all">
+<link href="../static/styles/layout.css" rel="stylesheet" type="text/css" media="all">
+<link href="../static/styles/login_style.css" rel="stylesheet" type="text/css" media="all">
 </head>
 <body id="top">
 <!-- ################################################################################################ -->
@@ -28,6 +30,7 @@ Licence URI: http://www.os-templates.com/template-terms
       <li><a href="#pem_features">Features</a></li>
       <li><a href="#pem_inspiration">Inspiration</a></li>
       <li><a href="#pem_events">Events</a></li>
+        <!--<p th:text="Hello World!"></p>-->
 
       <!--<li sec:authorize="isAuthenticated()" class="active">-->
           <!--<a href="../templates/profile.html" id="profile_id">-->
@@ -37,7 +40,7 @@ Licence URI: http://www.os-templates.com/template-terms
 
         <!--<li><a th:href="@{/profile/{name}(name=${name})}"></li>-->
 
-        <li th:if="${name != null}"><a href="/logout">Sign Out</a></li>
+        <li sec:authorize="isAuthenticated()"><a href="/logout">Sign Out</a></li>
 
     </ul>
     <!-- ################################################################################################ -->
@@ -57,7 +60,7 @@ Licence URI: http://www.os-templates.com/template-terms
 <!-- ################################################################################################ -->
 <!-- ################################################################################################ -->
 <!-- ################################################################################################ -->
-<div class="wrapper bgded overlay light" style="background-image:url('images/demo/backgrounds/01.jpg');">
+<div class="wrapper bgded overlay light" style="background-image:url('../static/images/demo/backgrounds/01.jpg');">
   <div id="pageintro" class="hoc clear"> 
     <!-- ################################################################################################ -->
     <article>
@@ -136,10 +139,10 @@ Licence URI: http://www.os-templates.com/template-terms
 <!-- ################################################################################################ -->
 <!-- ################################################################################################ -->
 <!-- ################################################################################################ -->
-<div id="pem_inspiration" class="wrapper bgded overlay" style="background-image:url('images/demo/backgrounds/sky_background.jpeg');">
+<div id="pem_inspiration" class="wrapper bgded overlay" style="background-image:url('../static/images/demo/backgrounds/sky_background.jpeg');">
   <div class="hoc container testimonials clear"> 
     <!-- ################################################################################################ -->
-    <article><img src="images/demo/Hazrat_Inayat_Khan.jpg" alt="">
+    <article><img src="../static/images/demo/Hazrat_Inayat_Khan.jpg" alt="">
       <blockquote> Some people look for a beautiful place. Others make a place beautiful.</blockquote>
       <h6 class="heading font-x1">Hazrat Inayat Khan</h6>
       <em>Sufi teacher</em></article>
@@ -158,7 +161,7 @@ Licence URI: http://www.os-templates.com/template-terms
     <ul class="nospace group latest">
       <li class="one_third first">
         <article>
-          <figure><a class="imgover" href="#"><img src="images/demo/event1.jpg" alt=""></a></figure>
+          <figure><a class="imgover" href="#"><img src="../static/images/demo/event1.jpg" alt=""></a></figure>
           <div class="txtwrap">
             <h4 class="heading"><a href="#">Concert</a></h4>
             <ul class="nospace meta">
@@ -171,7 +174,7 @@ Licence URI: http://www.os-templates.com/template-terms
       </li>
       <li class="one_third">
         <article>
-          <figure><a class="imgover" href="#"><img src="images/demo/event2.jpg" alt=""></a></figure>
+          <figure><a class="imgover" href="#"><img src="../static/images/demo/event2.jpg" alt=""></a></figure>
           <div class="txtwrap">
             <h4 class="heading"><a href="#">Performance</a></h4>
             <ul class="nospace meta">
@@ -184,7 +187,7 @@ Licence URI: http://www.os-templates.com/template-terms
       </li>
       <li class="one_third">
         <article>
-          <figure><a class="imgover" href="#"><img src="images/demo/event3.jpg" alt=""></a></figure>
+          <figure><a class="imgover" href="#"><img src="../static/images/demo/event3.jpg" alt=""></a></figure>
           <div class="txtwrap">
             <h4 class="heading"><a href="#">Tribute</a></h4>
             <ul class="nospace meta">
@@ -244,7 +247,7 @@ class="close" title="Close Modal">&times;</span>
   <!-- Modal Content -->
   <form class="modal-content animate" th:action="@{/login}" method="post">
     <div class="imgcontainer">
-      <img src="images/demo/avatar.png" alt="Avatar" class="avatar">
+      <img src="../static/images/demo/avatar.png" alt="Avatar" class="avatar">
     </div>
 
     <!--<div class="alert alert-error" th:if="${error}">-->
@@ -288,7 +291,20 @@ class="close" title="Close Modal">&times;</span>
         class="close" title="Close Modal">&times;</span>
 
   <!-- Modal Content -->
-  <form class="modal-content animate" action="/register" th:object="${customer}"  method="post">
+  <form class="modal-content animate" action="/register" th:action="@{/register}" th:object="${customer}"  method="post">
+
+    <div th:if="${login_exist}">
+      <p class="text text-center">
+        This login is already taken
+      </p>
+    </div>
+
+    <div th:if="${email_exist}">
+      <p class="text text-center">
+        This email is already taken
+      </p>
+    </div>
+
 
     <div class="container">
       <label for="login"><b>Login</b></label>
@@ -338,9 +354,9 @@ class="close" title="Close Modal">&times;</span>
 
 
 <!-- JAVASCRIPTS -->
-<script src="scripts/script.js"></script>
-<script src="scripts/jquery.min.js"></script>
-<script src="scripts/jquery.backtotop.js"></script>
-<script src="scripts/jquery.mobilemenu.js"></script>
+<script src="../static/scripts/script.js"></script>
+<script src="../static/scripts/jquery.min.js"></script>
+<script src="../static/scripts/jquery.backtotop.js"></script>
+<script src="../static/scripts/jquery.mobilemenu.js"></script>
 </body>
 </html>
