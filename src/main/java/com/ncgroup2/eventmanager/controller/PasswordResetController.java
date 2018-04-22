@@ -24,38 +24,26 @@ public class PasswordResetController {
     CustomerService customerService;
 
     @Autowired
-    ApplicationEventPublisher eventPublisher;
-
-    @Autowired
     private JavaMailSender mailSender;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
 
-    @RequestMapping(value = "/reset", method = RequestMethod.GET)
-    public String showReset(Model model) {
-
-        return "redirect:/index.html";
-
-    }
-
     @RequestMapping(value = "/reset", method = RequestMethod.POST)
     public String resetPassword(
 
             Model model,
-            @ModelAttribute("email")
-            @RequestParam("email") String userEmail,
-            HttpServletRequest request) {
+            @RequestParam(required = false, value="reset_email") String reset_email) {
 
-        if(customerService.isEmailUnique(userEmail)) {
+        if(customerService.isEmailUnique(reset_email)) {
 
             model.addAttribute("customer_not_found", true);
-            return "redirect:/index.html?not_found";
+            return "redirect:/?not_found";
 
         }else {
 
-            Customer customer = customerService.getCustomerByEmail(userEmail);
+            Customer customer = customerService.getCustomerByEmail(reset_email);
 
             String token = UUID.randomUUID().toString();
 
@@ -82,9 +70,9 @@ public class PasswordResetController {
 
             model.addAttribute("link_sent",true);
 
-            return "redirect:/index.html";
 
-        }
+
+        } return "redirect:/";
     }
 
         @RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
@@ -98,7 +86,7 @@ public class PasswordResetController {
 
                 model.addAttribute("customer_not_found", true);
 
-                return "redirect:/index.html?not_found";
+                return "redirect:/?not_found";
             }
 
             model.addAttribute("token", token);
@@ -124,7 +112,7 @@ public class PasswordResetController {
 
             model.addAttribute("customer_not_found", true);
 
-            return "redirect:/index.html?not_found";
+            return "redirect:/?not_found";
 
         } else{
 
@@ -136,7 +124,7 @@ public class PasswordResetController {
         }
 
 
-        return "redirect:/index.html";
+        return "redirect:/";
 
     }
 
