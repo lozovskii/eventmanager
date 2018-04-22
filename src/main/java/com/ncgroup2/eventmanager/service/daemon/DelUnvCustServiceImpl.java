@@ -1,4 +1,4 @@
-package com.ncgroup2.eventmanager.service.domens;
+package com.ncgroup2.eventmanager.service.daemon;
 import com.ncgroup2.eventmanager.dao.impl.postgres.CustomerDaoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
