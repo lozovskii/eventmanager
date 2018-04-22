@@ -1,0 +1,24 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Your Notification</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>Description</th>
+        <th>Action</th>
+    </tr>
+    <th:block th:each="notification : ${notifications}">
+        <tr>
+            <td th:text="${notification.getKey().status}"></td>
+            <td><a th:href="@{/profile/acceptFriend(id=${notification.getValue().toString()})}">Accept</a>
+                ||
+                <a th:href="@{/profile/rejectFriend(id=${notification.getValue().toString()})}">Reject</a>
+            </td>
+        </tr>
+    </th:block>
+</table>
+</body>
+</html>

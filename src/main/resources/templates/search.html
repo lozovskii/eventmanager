@@ -12,6 +12,7 @@
         <th>Phone</th>
         <th>E-mail</th>
         <th>Login</th>
+        <th>Action</th>
     </tr>
     <th:block th:each="customer : ${customers}">
         <tr>
@@ -20,6 +21,7 @@
             <td th:text="${customer.phone}"></td>
             <td th:text="${customer.email}"></td>
             <td th:text="${customer.login}"></td>
+            <td><a th:href="@{/profile/addFriend(login=${customer.login})}">Add</a></td>
         </tr>
     </th:block>
 </table>

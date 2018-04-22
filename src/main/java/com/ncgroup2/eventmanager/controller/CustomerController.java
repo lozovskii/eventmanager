@@ -1,6 +1,7 @@
 package com.ncgroup2.eventmanager.controller;
 
 import com.ncgroup2.eventmanager.entity.Customer;
+import com.ncgroup2.eventmanager.entity.Notification;
 import com.ncgroup2.eventmanager.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/profile")
@@ -61,9 +63,39 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public String delete(@RequestParam("login") String login, Model model) {
+    public String delete(@RequestParam("login") String login) {
         customerService.delete(login);
 
         return "redirect:/profile/friends";
+    }
+
+    @RequestMapping(value = "/addFriend", method = RequestMethod.GET)
+    public String addFriend(@RequestParam("login") String login) {
+        customerService.addFriend(login);
+
+        return "redirect:/profile/" + SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
+    @RequestMapping(value = "/acceptFriend", method = RequestMethod.GET)
+    public String acceptFriend(@RequestParam("id") String uuid) {
+        customerService.acceptFriend(uuid);
+
+        return "redirect:/profile/notifications";
+    }
+
+    @RequestMapping(value = "/rejectFriend", method = RequestMethod.GET)
+    public String rejectFriend(@RequestParam("id") String uuid) {
+        customerService.rejectFriend(uuid);
+
+        return "redirect:/profile/notifications";
+    }
+
+    @RequestMapping(value = "/notifications", method = RequestMethod.GET)
+    public String getNotifications(Model model) {
+        Map<Notification, String> notifications = customerService.getNotifications(
+                SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("notifications", notifications);
+
+        return "notifications";
     }
 }
