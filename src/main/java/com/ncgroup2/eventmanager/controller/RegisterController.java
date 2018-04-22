@@ -34,16 +34,27 @@ public class RegisterController {
     public String showRegister(Model model) {
 
         model.addAttribute("customer", new Customer());
-        return "registration/register";
+        return "redirect:/index.html";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String addUser(@Valid @ModelAttribute("customer") Customer customer,
                           BindingResult result, Model model, WebRequest request) {
 
+        if (customerService.isCustomerPresent(customer.getLogin())) {
+            model.addAttribute("customer_exist", true);
+            return "redirect:/index.html?customer_exist";
+        }
+
+        if(!customerService.isEmailUnique(customer.getEmail())) {
+            model.addAttribute("email_exist", true);
+            System.out.println(customer.getEmail());
+            return "redirect:/index.html?email_exist";
+        }
+
         if (customer.getPassword().trim().isEmpty()) {
             model.addAttribute("empty_password", true);
-            return "registration/register";
+            return "redirect:/index.html?empty_password";
         }
 
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
