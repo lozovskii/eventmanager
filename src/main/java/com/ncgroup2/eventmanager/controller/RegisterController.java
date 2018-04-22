@@ -34,7 +34,7 @@ public class RegisterController {
 
         if (customerService.isCustomerPresent(customer.getLogin())) {
             model.addAttribute("customer_exist", true);
-            return "redirect:/?login_exist";
+            return "redirect:/?customer_exist";
         }
 
         if (!customerService.isEmailUnique(customer.getEmail())) {
