@@ -14,7 +14,7 @@ public class CustomerService {
     @Autowired
     CustomerDaoImpl customerDaoImpl;
 
-    public Customer register(Customer customer) throws PSQLException {
+    public Customer register(Customer customer) {
 
         customerDaoImpl.addCustomer(customer);
 
