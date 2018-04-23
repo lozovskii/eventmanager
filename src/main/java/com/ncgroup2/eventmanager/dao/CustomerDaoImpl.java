@@ -46,16 +46,13 @@ public class CustomerDaoImpl implements CustomerDao {
 
             String[] subStr = search.toLowerCase().split(" ");
 
-            if (subStr.length == 1) {
-                String query = "SELECT * FROM \"Customer\" WHERE LOWER(name) LIKE '"
-                        +subStr[0]+"%' OR LOWER(second_name) LIKE '"+subStr[0]+"%'";
-
-                return new JdbcTemplate(dataSource).query(query, new CustomerRowMapper());
-            } else if (subStr.length == 2) {
+            if (subStr.length == 2) {
                 String query1 = "SELECT * FROM \"Customer\" WHERE LOWER(name) LIKE '"
-                        +subStr[0]+"%' AND LOWER(second_name) LIKE '"+subStr[1]+"%'";
+                        +subStr[0]+"%' AND LOWER(second_name) LIKE '"+subStr[1]+"%' AND login != '" +
+                        SecurityContextHolder.getContext().getAuthentication().getName() + "'";
                 String query2 = "SELECT * FROM \"Customer\" WHERE LOWER(second_name) LIKE '"
-                        +subStr[0]+"%' AND LOWER(name) LIKE '"+subStr[1]+"%'";
+                        +subStr[0]+"%' AND LOWER(name) LIKE '"+subStr[1]+"%' AND login != '" +
+                        SecurityContextHolder.getContext().getAuthentication().getName() + "'";
                 String result = query1 + " UNION " + query2;
 
                 return new JdbcTemplate(dataSource).query(result, new CustomerRowMapper());
@@ -63,7 +60,8 @@ public class CustomerDaoImpl implements CustomerDao {
                 return null;
             }
         } else if (search.equals("")) {
-            String query = "SELECT * FROM \"Customer\"";
+            String query = "SELECT * FROM \"Customer\" WHERE login != '" +
+                    SecurityContextHolder.getContext().getAuthentication().getName() + "'";
 
             return new JdbcTemplate(dataSource).query(query, new CustomerRowMapper());
         } else {
