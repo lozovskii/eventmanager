@@ -44,6 +44,7 @@ Licence URI: http://www.os-templates.com/template-terms
         <!-- ################################################################################################ -->
         <h1><a href="/">PEM</a></h1>
         <p>Perfect event manager</p>
+        <h2 th:text="${param.q}"></h2>
         <!-- ################################################################################################ -->
     </header>
 </div>
@@ -251,14 +252,6 @@ Licence URI: http://www.os-templates.com/template-terms
             <img src="/images/demo/avatar.png" alt="Avatar" class="avatar">
         </div>
 
-        <div class="alert alert-error" th:if="${error}">
-            Invalid username and password.
-        </div>
-
-        <div class="alert alert-success" th:if="${successful_logout}">
-            You have been logged out.
-        </div>
-
         <div class="container">
             <label for="username"><b>Login</b></label>
             <input type="text" placeholder="Enter login or e-mail" id="username" name="username" required>
@@ -295,19 +288,6 @@ Licence URI: http://www.os-templates.com/template-terms
     <!-- Modal Content -->
     <form class="modal-content animate" th:action="@{/register}" th:object="${customer}" method="post">
 
-        <div th:if="${login_exist}">
-            <p class="text text-center">
-                This login is already taken
-            </p>
-        </div>
-
-        <div th:if="${email_exist}">
-            <p class="text text-center">
-                This email is already taken
-            </p>
-        </div>
-
-
         <div class="container">
             <label for="login"><b>Login</b></label>
             <input type="text" placeholder="Enter login" th:field="*{login}" id="login" name="login" required>
@@ -340,16 +320,11 @@ Licence URI: http://www.os-templates.com/template-terms
         class="close" title="Close Modal">&times;</span>
 
     <!-- Modal Content -->
-    <form class="modal-content animate" th:action="@{/reset}" method="post">
-
-        <div th:if="${customer_not_found}">
-            <p class="text text-center">
-                Customer not found.
-            </p>
-        </div>
+    <form class="modal-content animate" action="" th:action="@{/reset}" method="post">
 
         <div class="container">
-            <label for="reset_email"><b>E-mail</b></label>
+            <label for="email"><b>E-mail</b></label>
+
             <input type="email" placeholder="Enter e-mail" id="reset_email" name="reset_email"
                    required="true">
 
