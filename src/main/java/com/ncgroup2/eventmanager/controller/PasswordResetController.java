@@ -1,9 +1,10 @@
 package com.ncgroup2.eventmanager.controller;
 
 import com.ncgroup2.eventmanager.entity.Customer;
+import com.ncgroup2.eventmanager.service.sender.Sender;
 import com.ncgroup2.eventmanager.service.entityservice.CustomerService;
+import com.ncgroup2.eventmanager.service.sender.SubjectEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
 @Controller
@@ -34,12 +34,15 @@ public class PasswordResetController {
     public String resetPassword(
 
             Model model,
-            @RequestParam(required = false, value="reset_email") String reset_email) {
+            @RequestParam("reset_email") String reset_email
+            ) {
+
+        System.out.println(reset_email);
 
         if(customerService.isEmailUnique(reset_email)) {
 
             model.addAttribute("customer_not_found", true);
-            return "redirect:/?not_found";
+            return "redirect:/?q=customer_not_found";
 
         }else {
 
@@ -68,11 +71,10 @@ public class PasswordResetController {
 
             mailSender.send(email);
 
-            model.addAttribute("link_sent",true);
+//            new Sender(customer.getEmail(), SubjectEnum.RESET_PASSWORD, token)
+//                    .sendEmail();
 
-
-
-        } return "redirect:/";
+        } return "redirect:/?q=successfully_reset";
     }
 
         @RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
@@ -86,7 +88,7 @@ public class PasswordResetController {
 
                 model.addAttribute("customer_not_found", true);
 
-                return "redirect:/?not_found";
+                return "redirect:/?q=customer_not_found";
             }
 
             model.addAttribute("token", token);
@@ -112,7 +114,7 @@ public class PasswordResetController {
 
             model.addAttribute("customer_not_found", true);
 
-            return "redirect:/?not_found";
+            return "redirect:/?q=customer_not_found";
 
         } else{
 
