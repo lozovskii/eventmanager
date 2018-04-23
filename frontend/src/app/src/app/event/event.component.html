@@ -1,0 +1,69 @@
+<div class="col-md-12">
+  <div class="col-md-6" style="margin:0 auto">
+
+    <h2>Create Event</h2>
+
+    <form [formGroup]="eventForm" name="form" role="form" (ngSubmit)="create(eventForm.value)"  novalidate>
+      <div class="form-group">
+        <div class="form-group">
+          <label>Title</label>
+          <input formControlName="name"  id="name" type="text" class="form-control" name="name" required />
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea formControlName="description"  id="description" rows="5" cols="45" class="form-control" name="description"></textarea>
+        </div>
+      </div>
+      <br>
+      <div class="form-group">
+        <div class="form-group">
+          <label>Day: </label>
+          <input type="date" formControlName="day" class="dateTimeInput">
+        </div>
+        <div class="form-group">
+          <label>Start time</label>
+          <input formControlName="startTime"  id="startTime" type="time" class="form-control" name="startTime"/>
+        </div>
+        <div class="form-group">
+          <label>End time</label>
+          <input formControlName="endTime"  id="endTime" type="time" class="form-control" name="endTime"/>
+        </div>
+      </div>
+      <br>
+      <div class="form-group">
+        <div class="form-group">
+          <label>Priority</label>
+          <select formControlName="priority"  id="priority" type="text" class="form-control" name="priority" required>
+            <option value="Low">Low</option>
+            <option value="Average">Average</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Visibility</label>
+          <select formControlName="visibility"  id="visibility" type="text" class="form-control" name="visibility" required>
+            <option value="Public">Public</option>
+            <option value="For friends only">For friends only</option>
+            <option value="Private">Private</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Frequency</label>
+          <input formControlName="frequencyValue"  id="frequencyValue" type="number" class="form-control" name="frequencyValue" required />
+          <select formControlName="frequency"  id="frequency" type="text" class="form-control" name="frequency" required>
+            <option value="day">day</option>
+            <option value="week">week</option>
+            <option value="month">month</option>
+            <option value="year">year</option>
+          </select>
+        </div>
+      </div>
+      <br>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a [routerLink]="['/content']" class="btn btn-link">Cancel</a>
+      </div>
+    </form>
+
+  </div>
+</div>
