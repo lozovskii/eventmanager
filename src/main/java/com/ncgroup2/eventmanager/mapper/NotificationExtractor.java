@@ -13,11 +13,9 @@ public class NotificationExtractor implements ResultSetExtractor<Notification> {
     public Notification extractData(ResultSet resultSet) throws SQLException, DataAccessException {
         Notification notification = new Notification();
 
-        notification.setStatus(resultSet.getString("status"));
-        notification.setSender(resultSet.getString("sender_id"));
-        notification.setRecipient(resultSet.getString("recipient_id"));
-        notification.setToken(resultSet.getString("token"));
-        notification.setRequest(resultSet.getString("request"));
+        notification.setName(resultSet.getString("name"));
+        notification.setSecond_name(resultSet.getString("second_name"));
+        notification.setId(resultSet.getString("id"));
 
         return notification;
     }
