@@ -17,6 +17,9 @@ import { LandingPageComponent } from './landing-page/index';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { ReCaptchaModule } from 'angular2-recaptcha';
+import { EventComponent } from './event/event.component';
+import { ContentComponent } from './content/content.component';
+import {EventService} from "./_services/event.service";
 
 
 @NgModule({
@@ -37,14 +40,16 @@ import { ReCaptchaModule } from 'angular2-recaptcha';
     RegisterComponent,
     LandingPageComponent,
     NavbarComponent,
-    FooterComponent
+    FooterComponent,
+    EventComponent,
+    ContentComponent
   ],
   providers: [
     AuthGuard,
     AlertService,
     AuthenticationService,
-    UserService
-
+    UserService,
+    EventService
     // provider used to create fake backend
   ],
   bootstrap: [AppComponent]
