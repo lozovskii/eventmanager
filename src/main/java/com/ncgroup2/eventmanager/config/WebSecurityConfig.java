@@ -42,11 +42,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .formLogin()
                         .loginPage("/login")
-                .failureUrl("/?error")
+                .failureUrl("/?q=error")
                 .defaultSuccessUrl("/profile")
                 .and()
                 .logout()
-                    .logoutSuccessUrl("/?successful_logout");
+                    .logoutSuccessUrl("/?q=successful_logout");
     }
 
     @Bean(name = "passwordEncoder")
