@@ -8,19 +8,19 @@
 <div>
     <form th:action="@{edit}" th:object="${customer}" method="post">
         <div>
-            <label th:for="*{firstName}">First Name</label>
+            <label th:for="*{name}">First Name</label>
             <label>
-                <input type="text" th:field="*{firstName}" />
+                <input type="text" th:field="*{name}" />
             </label>
         </div>
         <div>
-            <label th:for="*{lastName}">Last Name</label>
+            <label th:for="*{secondName}">Last Name</label>
             <label>
-                <input type="text" th:field="*{lastName}" />
+                <input type="text" th:field="*{secondName}" />
             </label>
         </div>
         <div>
-            <label th:for="*{phone}">First Name</label>
+            <label th:for="*{phone}">Phone</label>
             <label>
                 <input type="text" th:field="*{phone}" />
             </label>

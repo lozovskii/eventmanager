@@ -1,8 +1,8 @@
-package com.ncgroup2.eventmanager.service;
+package com.ncgroup2.eventmanager.service.entityservice;
 
 import com.ncgroup2.eventmanager.dao.CustomerDao;
 import com.ncgroup2.eventmanager.entity.Customer;
-import com.ncgroup2.eventmanager.entity.Notification;
+import com.ncgroup2.eventmanager.entity.Relationship;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +40,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Notification> getNotifications(String login) {
+    public List<Relationship> getNotifications(String login) {
         return customerDao.getNotifications(login);
     }
 

@@ -35,8 +35,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/profile/**").authenticated();
         http.authorizeRequests()
-                .and().formLogin().loginPage("/login")
-                .and().logout().logoutSuccessUrl("/login");
+                .and()
+                    .formLogin()
+                        .loginPage("/login")
+                            .defaultSuccessUrl("/")
+                .and()
+                    .logout()
+                        .logoutSuccessUrl("/login");
     }
 
     @Bean(name = "passwordEncoder")

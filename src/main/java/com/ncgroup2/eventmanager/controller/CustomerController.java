@@ -1,8 +1,8 @@
 package com.ncgroup2.eventmanager.controller;
 
 import com.ncgroup2.eventmanager.entity.Customer;
-import com.ncgroup2.eventmanager.entity.Notification;
-import com.ncgroup2.eventmanager.service.CustomerService;
+import com.ncgroup2.eventmanager.entity.Relationship;
+import com.ncgroup2.eventmanager.service.entityservice.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -91,9 +91,9 @@ public class CustomerController {
 
     @RequestMapping(value = "/notifications", method = RequestMethod.GET)
     public String getNotifications(Model model) {
-        List<Notification> notifications = customerService.getNotifications(
+        List<Relationship> relationships = customerService.getNotifications(
                 SecurityContextHolder.getContext().getAuthentication().getName());
-        model.addAttribute("notifications", notifications);
+        model.addAttribute("relationships", relationships);
 
         return "notifications";
     }

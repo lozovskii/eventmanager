@@ -1,9 +1,10 @@
-package com.ncgroup2.eventmanager.dao;
+package com.ncgroup2.eventmanager.dao.impl.postgres;
 
+import com.ncgroup2.eventmanager.dao.CustomerDao;
 import com.ncgroup2.eventmanager.entity.Customer;
-import com.ncgroup2.eventmanager.entity.Notification;
-import com.ncgroup2.eventmanager.mapper.CustomerRowMapper;
-import com.ncgroup2.eventmanager.mapper.NotificationRowMapper;
+import com.ncgroup2.eventmanager.entity.Relationship;
+import com.ncgroup2.eventmanager.mapper.CustomerMapper;
+import com.ncgroup2.eventmanager.mapper.RelationshipMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,13 +27,13 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public Customer getByLogin(String login) {
         return new JdbcTemplate(dataSource).query(
-                "SELECT * FROM \"Customer\" WHERE login = '" + login + "'", new CustomerRowMapper()).get(0);
+                "SELECT * FROM \"Customer\" WHERE login = '" + login + "'", new CustomerMapper()).get(0);
     }
 
     @Override
     public void edit(Customer customer) {
-        String query = "UPDATE \"Customer\" SET name = '" + customer.getFirstName() + "', " +
-                "second_name = '" + customer.getLastName() +"', " +
+        String query = "UPDATE \"Customer\" SET name = '" + customer.getName() + "', " +
+                "second_name = '" + customer.getSecondName() +"', " +
                 "phone = '" + customer.getPhone() + "' WHERE " +
                 "login = '" + SecurityContextHolder.getContext().getAuthentication().getName() + "'";
 
@@ -55,7 +56,7 @@ public class CustomerDaoImpl implements CustomerDao {
                         SecurityContextHolder.getContext().getAuthentication().getName() + "'";
                 String result = query1 + " UNION " + query2;
 
-                return new JdbcTemplate(dataSource).query(result, new CustomerRowMapper());
+                return new JdbcTemplate(dataSource).query(result, new CustomerMapper());
             } else {
                 return null;
             }
@@ -63,7 +64,7 @@ public class CustomerDaoImpl implements CustomerDao {
             String query = "SELECT * FROM \"Customer\" WHERE login != '" +
                     SecurityContextHolder.getContext().getAuthentication().getName() + "'";
 
-            return new JdbcTemplate(dataSource).query(query, new CustomerRowMapper());
+            return new JdbcTemplate(dataSource).query(query, new CustomerMapper());
         } else {
             return null;
         }
@@ -77,7 +78,7 @@ public class CustomerDaoImpl implements CustomerDao {
                 "SELECT sender_friend_id FROM \"Relationship\" R INNER JOIN \"Customer\" C " +
                 "ON R.recipient_friend_id = C.id WHERE C.login = '" + login + "' AND R.status = 3);";
 
-        return new JdbcTemplate(dataSource).query(query, new CustomerRowMapper());
+        return new JdbcTemplate(dataSource).query(query, new CustomerMapper());
     }
 
     @Override
@@ -101,13 +102,10 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public void addFriend(String login) {
         if (!checkAddFriend(login)) {
-            String query = "INSERT INTO \"Relationship\" (sender_friend_id, recipient_friend_id, status, token) VALUES (" +
+            String query = "INSERT INTO \"Relationship\" (sender_friend_id, recipient_friend_id, status) VALUES (" +
                     "(SELECT id FROM \"Customer\" WHERE login = '" +
                     SecurityContextHolder.getContext().getAuthentication().getName() + "')," +
-                    "(SELECT id FROM \"Customer\" WHERE login = '" + login + "'),1," +
-                    "(123456)" +
-                    "FROM \"Customer\" WHERE login = '" +
-                    SecurityContextHolder.getContext().getAuthentication().getName() + "'))";
+                    "(SELECT id FROM \"Customer\" WHERE login = '" + login + "'),1)";
 
                     JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
@@ -117,9 +115,8 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public void acceptFriend(String token) {
-        String query = "UPDATE \"Relationship\" SET status = 3, token = NULL " +
-                "WHERE token = '" + token + "' AND recipient_friend_id IN (" +
-                "SELECT id FROM \"Customer\" WHERE login = '"
+        String query = "UPDATE \"Relationship\" SET status = 3 WHERE id = '" + token + "' " +
+                "AND recipient_friend_id IN (SELECT id FROM \"Customer\" WHERE login = '"
                 + SecurityContextHolder.getContext().getAuthentication().getName() + "')";
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
@@ -129,7 +126,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public void rejectFriend(String token) {
-        String query = "UPDATE \"Relationship\" SET status = 2 WHERE token = '" + token + "'";
+        String query = "UPDATE \"Relationship\" SET status = 2 WHERE id = '" + token + "'";
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
@@ -137,14 +134,14 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public List<Notification> getNotifications(String login) {
+    public List<Relationship> getNotifications(String login) {
         String query =
                 "SELECT c.name, c.second_name, r.id FROM \"Customer\" c, \"Relationship\" r " +
                 "WHERE r.recipient_friend_id IN (SELECT id FROM \"Customer\" WHERE login = '" + login + "' ) " +
                 "AND status = 1 " +
                 "AND c.login!='" + login + "'";
 
-        return new JdbcTemplate(dataSource).query(query, new NotificationRowMapper());
+        return new JdbcTemplate(dataSource).query(query, new RelationshipMapper());
     }
 
     private boolean checkAddFriend(String login) {
@@ -156,7 +153,7 @@ public class CustomerDaoImpl implements CustomerDao {
                     + SecurityContextHolder.getContext().getAuthentication().getName() + "') AND recipient_friend_id IN " +
                     "(SELECT id FROM \"Customer\" WHERE login = '" + login + "') AND status = 3";
 
-            String query1 = "SELECT * FROM \"Relationship\" WHERE recipient_id IN " +
+            String query1 = "SELECT * FROM \"Relationship\" WHERE recipient_friend_id IN " +
                     "(SELECT id FROM \"Customer\" WHERE login = '"
                     + SecurityContextHolder.getContext().getAuthentication().getName() + "') AND sender_friend_id IN " +
                     "(SELECT id FROM \"Customer\" WHERE login = '" + login + "') AND status = 3";
