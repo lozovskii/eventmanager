@@ -1,6 +1,6 @@
 package com.ncgroup2.eventmanager.entity;
 
-public class Entity {
+public abstract class Entity {
 
     protected String id;
 
@@ -22,5 +22,5 @@ public class Entity {
         this.name = name;
     }
 
-    
+    public abstract Object[] getParams();
 }

@@ -110,4 +110,20 @@ public class Customer extends Entity {
                 ", image=" + Arrays.toString(image) +
                 '}';
     }
+
+    @Override
+    public Object[] getParams() {
+        return new Object[]{
+                this.getName(),
+                this.getEmail(),
+                this.getLogin(),
+                this.getPassword(),
+                this.getSecondName(),
+                this.getPhone(),
+                this.isVerified(),
+                this.getRegistrationDate(),
+                this.getToken(),
+                this.getImage()
+        };
+    }
 }

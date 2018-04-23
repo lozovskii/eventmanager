@@ -42,4 +42,15 @@ private String link;
                 ", link='" + link + '\'' +
                 '}';
     }
+
+    @Override
+    public Object[] getParams() {
+        return new Object[]{
+                this.getName(),
+                this.getDescription(),
+                this.getImage(),
+                this.getLink()
+        };
+    }
+
 }
