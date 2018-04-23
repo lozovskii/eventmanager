@@ -11,9 +11,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 @Transactional
@@ -72,9 +73,11 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public List<Customer> getFriends(String login) {
-        String query = "SELECT * FROM \"Customer\" WHERE id IN " +
-                "(SELECT recipient_id FROM \"Relationship\" R INNER JOIN \"Customer\" C ON R.sender_id = C.id " +
-                "WHERE C.login = '" + login + "' AND R.status = 3)";
+        String query = "SELECT * FROM \"Customer\" WHERE id IN (" +
+                "SELECT recipient_id FROM \"Relationship\" R INNER JOIN \"Customer\" C " +
+                "ON R.sender_id = C.id WHERE C.login = '" + login + "' AND R.status = 3 UNION " +
+                "SELECT sender_id FROM \"Relationship\" R INNER JOIN \"Customer\" C " +
+                "ON R.recipient_id = C.id WHERE C.login = '" + login + "' AND R.status = 3);";
 
         return new JdbcTemplate(dataSource).query(query, new CustomerRowMapper());
     }
@@ -99,74 +102,86 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public void addFriend(String login) {
-        String query1 = "INSERT INTO \"Relationship\" (sender_id, recipient_id, status) " +
-                "VALUES ((SELECT id FROM \"Customer\" WHERE login = '" +
-                SecurityContextHolder.getContext().getAuthentication().getName() + "')," +
-                "(SELECT id FROM \"Customer\" WHERE login = '" + login + "'),1)";
+        if (!checkAddFriend(login)) {
+            String query = "INSERT INTO \"Relationship\" (sender_id, recipient_id, status, request) VALUES (" +
+                    "(SELECT id FROM \"Customer\" WHERE login = '" +
+                    SecurityContextHolder.getContext().getAuthentication().getName() + "')," +
+                    "(SELECT id FROM \"Customer\" WHERE login = '" + login + "'),1," +
+                    "(SELECT concat(name,' ',second_name,' wants to add you to your friends list') " +
+                    "FROM \"Customer\" WHERE login = '" +
+                    SecurityContextHolder.getContext().getAuthentication().getName() + "'))";
 
-        String query2 = "INSERT INTO \"Notification\" (sender_id, recipient_id, status) VALUES (" +
-                "(SELECT id FROM \"Customer\" WHERE login = '" +
-                SecurityContextHolder.getContext().getAuthentication().getName() + "')," +
-                "(SELECT id FROM \"Customer\" WHERE login = '" + login + "')," +
-                "(SELECT concat(name,' ',second_name,' wants to add you to your friends list') " +
-                "FROM \"Customer\" WHERE login = '" +
-                SecurityContextHolder.getContext().getAuthentication().getName() + "'))";
+                    JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-
-        jdbcTemplate.update(query1);
-        jdbcTemplate.update(query2);
+            jdbcTemplate.update(query);
+        }
     }
 
     @Override
-    public void acceptFriend(String uuid) {
-        String query1 = "DELETE FROM \"Notification\" WHERE sender_id = '" + uuid + "'" +
-                " AND recipient_id IN (SELECT id FROM \"Customer\" WHERE login = '" +
-                SecurityContextHolder.getContext().getAuthentication().getName() + "')";
-
-        String query2 = "UPDATE \"Relationship\" SET status = 3 WHERE sender_id = '" + uuid + "'" +
-                " AND recipient_id IN (SELECT id FROM \"Customer\" WHERE login = '" +
-                SecurityContextHolder.getContext().getAuthentication().getName() + "');";
-
-        String query3 = "INSERT INTO \"Relationship\" (sender_id, recipient_id, status) VALUES (" +
-                "(SELECT id FROM \"Customer\" WHERE login = '" +
-                SecurityContextHolder.getContext().getAuthentication().getName() + "'),'" + uuid + "',3)";
+    public void acceptFriend(String token) {
+        String query = "UPDATE \"Relationship\" SET status = 3, request = NULL, token = NULL " +
+                "WHERE token = '" + token + "' AND recipient_id IN (" +
+                "SELECT id FROM \"Customer\" WHERE login = '"
+                + SecurityContextHolder.getContext().getAuthentication().getName() + "')";
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-        jdbcTemplate.update(query1);
-        jdbcTemplate.update(query2);
-        jdbcTemplate.update(query3);
+        jdbcTemplate.update(query);
     }
 
     @Override
-    public void rejectFriend(String uuid) {
-        String query1 = "DELETE FROM \"Notification\" WHERE sender_id = '" + uuid + "'" +
-                " AND recipient_id IN (SELECT id FROM \"Customer\" WHERE login = '" +
-                SecurityContextHolder.getContext().getAuthentication().getName() + "')";
-
-        String query2 = "DELETE FROM \"Relationship\" WHERE sender_id = '" + uuid + "'" +
-                " AND recipient_id IN (SELECT id FROM \"Customer\" WHERE login = '" +
-                SecurityContextHolder.getContext().getAuthentication().getName() + "')";
+    public void rejectFriend(String token) {
+        String query = "UPDATE \"Relationship\" SET status = 2 WHERE token = '" + token + "'";
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-        jdbcTemplate.update(query1);
-        jdbcTemplate.update(query2);
+        jdbcTemplate.update(query);
     }
 
     @Override
-    public Map<Notification, String> getNotifications(String login) {
-        String query = "SELECT * FROM \"Notification\" WHERE recipient_id IN " +
-                "(SELECT id FROM \"Customer\" WHERE login = '" + login + "')";
+    public List<Notification> getNotifications(String login) {
+        String query = "SELECT * FROM \"Relationship\" WHERE recipient_id IN " +
+                "(SELECT id FROM \"Customer\" WHERE login = '" + login + "') AND status = 1";
 
-        Map<Notification, String> map = new HashMap<>();
-        List<Notification> notifications = new JdbcTemplate(dataSource).query(query, new NotificationRowMapper());
+        return new JdbcTemplate(dataSource).query(query, new NotificationRowMapper());
+    }
 
-        for(Notification notification : notifications) {
-            map.put(notification, notification.getSender());
+    private boolean checkAddFriend(String login) {
+        boolean isExist = false;
+
+        try {
+            String query = "SELECT * FROM \"Relationship\" WHERE sender_id IN " +
+                    "(SELECT id FROM \"Customer\" WHERE login = '"
+                    + SecurityContextHolder.getContext().getAuthentication().getName() + "') AND recipient_id IN " +
+                    "(SELECT id FROM \"Customer\" WHERE login = '" + login + "') AND status = 3";
+
+            String query1 = "SELECT * FROM \"Relationship\" WHERE recipient_id IN " +
+                    "(SELECT id FROM \"Customer\" WHERE login = '"
+                    + SecurityContextHolder.getContext().getAuthentication().getName() + "') AND sender_id IN " +
+                    "(SELECT id FROM \"Customer\" WHERE login = '" + login + "') AND status = 3";
+
+            PreparedStatement ps = dataSource.getConnection().prepareStatement(query);
+            PreparedStatement ps1 = dataSource.getConnection().prepareStatement(query1);
+            ResultSet rs = ps.executeQuery();
+            ResultSet rs1 = ps1.executeQuery();
+
+            if (rs.next()) {
+                isExist = true;
+            }
+
+            if (rs1.next()) {
+                isExist = true;
+            }
+
+            rs.close();
+            rs1.close();
+            ps.close();
+            ps1.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-        return map;
+        return isExist;
     }
 }

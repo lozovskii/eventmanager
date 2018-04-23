@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/profile")
@@ -77,22 +76,22 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/acceptFriend", method = RequestMethod.GET)
-    public String acceptFriend(@RequestParam("id") String uuid) {
-        customerService.acceptFriend(uuid);
+    public String acceptFriend(@RequestParam("token") String token) {
+        customerService.acceptFriend(token);
 
         return "redirect:/profile/notifications";
     }
 
     @RequestMapping(value = "/rejectFriend", method = RequestMethod.GET)
-    public String rejectFriend(@RequestParam("id") String uuid) {
-        customerService.rejectFriend(uuid);
+    public String rejectFriend(@RequestParam("token") String token) {
+        customerService.rejectFriend(token);
 
         return "redirect:/profile/notifications";
     }
 
     @RequestMapping(value = "/notifications", method = RequestMethod.GET)
     public String getNotifications(Model model) {
-        Map<Notification, String> notifications = customerService.getNotifications(
+        List<Notification> notifications = customerService.getNotifications(
                 SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("notifications", notifications);
 

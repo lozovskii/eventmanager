@@ -16,6 +16,8 @@ public class NotificationExtractor implements ResultSetExtractor<Notification> {
         notification.setStatus(resultSet.getString("status"));
         notification.setSender(resultSet.getString("sender_id"));
         notification.setRecipient(resultSet.getString("recipient_id"));
+        notification.setToken(resultSet.getString("token"));
+        notification.setRequest(resultSet.getString("request"));
 
         return notification;
     }

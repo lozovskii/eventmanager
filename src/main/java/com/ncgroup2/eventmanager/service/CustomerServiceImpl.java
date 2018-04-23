@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -42,7 +40,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Map<Notification, String> getNotifications(String login) {
+    public List<Notification> getNotifications(String login) {
         return customerDao.getNotifications(login);
     }
 
@@ -52,12 +50,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void acceptFriend(String uuid) {
-        customerDao.acceptFriend(uuid);
+    public void acceptFriend(String token) {
+        customerDao.acceptFriend(token);
     }
 
     @Override
-    public void rejectFriend(String uuid) {
-        customerDao.rejectFriend(uuid);
+    public void rejectFriend(String token) {
+        customerDao.rejectFriend(token);
     }
 }

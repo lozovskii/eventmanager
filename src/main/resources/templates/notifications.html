@@ -12,10 +12,10 @@
     </tr>
     <th:block th:each="notification : ${notifications}">
         <tr>
-            <td th:text="${notification.getKey().status}"></td>
-            <td><a th:href="@{/profile/acceptFriend(id=${notification.getValue().toString()})}">Accept</a>
+            <td th:text="${notification.request}"></td>
+            <td><a th:href="@{/profile/acceptFriend(token=${notification.token})}">Accept</a>
                 ||
-                <a th:href="@{/profile/rejectFriend(id=${notification.getValue().toString()})}">Reject</a>
+                <a th:href="@{/profile/rejectFriend(token=${notification.token})}">Reject</a>
             </td>
         </tr>
     </th:block>
