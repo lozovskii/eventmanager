@@ -27,30 +27,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.authorizeRequests()
-//        .antMatchers("/css/**").permitAll()
-//        .antMatchers("/", "home", "/register","/registration/*","/registrationConfirm").permitAll()
-//                .antMatchers("/hello").hasRole("USER")
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin().loginPage("/login").permitAll()
-//                .and()
-//                .logout().permitAll()
-//                .and()
-//                .csrf().disable();
+
         http.csrf().disable();
 
         http.authorizeRequests().antMatchers("/").permitAll();
 
         http.authorizeRequests().antMatchers("/login","logout").anonymous();
 
-        http.authorizeRequests().antMatchers("/register","/registration**", "registrationConfirm").anonymous();
+//        http.authorizeRequests().antMatchers("/register", "/registration**", "registrationConfirm").anonymous();
 
-        http.authorizeRequests().antMatchers("/hello").authenticated();
+        http.authorizeRequests().antMatchers("/profile").authenticated();
 
-        http.authorizeRequests().and().formLogin().loginPage("/login")
-                .defaultSuccessUrl("/hello")
-                .and().logout().logoutSuccessUrl("/login");
+        http.authorizeRequests()
+                .and()
+                    .formLogin()
+                        .loginPage("/login")
+                .failureUrl("/?q=error")
+                .defaultSuccessUrl("/profile")
+                .and()
+                .logout()
+                    .logoutSuccessUrl("/?q=successful_logout");
     }
 
     @Bean(name = "passwordEncoder")
