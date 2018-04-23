@@ -74,7 +74,7 @@ public class PasswordResetController {
 //            new Sender(customer.getEmail(), SubjectEnum.RESET_PASSWORD, token)
 //                    .sendEmail();
 
-        } return "redirect:/?q=successfully_reset";
+        } return "redirect:/?q=We_sent_confirmation_email";
     }
 
         @RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
