@@ -12,8 +12,10 @@ import {EventService} from "../_services/event.service";
 })
 export class EventComponent implements OnInit {
   event: Event;
-  // loading = false;
+  events: Event[];
+  loading = false;
   eventForm: FormGroup;
+  eventsForm: FormGroup;
 
   constructor(private router: Router,
               private eventService: EventService,
@@ -36,23 +38,38 @@ export class EventComponent implements OnInit {
       description: [''],
       status: ['']
     });
+    this.eventsForm = this.formBuilder.group({});
   }
 
   create(eventFromForm: Event) {
-    eventFromForm.startTime = eventFromForm.day + ' ' + eventFromForm.startTime + ':00';
-    eventFromForm.endTime = eventFromForm.day + ' ' + eventFromForm.endTime + ':00';
-    eventFromForm.frequency =  eventFromForm.frequencyValue + '-' +  eventFromForm.frequency;
+    if((eventFromForm.day != null) && (eventFromForm.day != '')) {
+      eventFromForm.startTime = eventFromForm.day + ' ' + eventFromForm.startTime + ':00';
+      eventFromForm.endTime = eventFromForm.day + ' ' + eventFromForm.endTime + ':00';
+      eventFromForm.frequency = eventFromForm.frequencyValue + '-' + eventFromForm.frequency;
+    }
     console.log('event: ' + JSON.stringify(eventFromForm));
-    // this.loading = true;
+    this.loading = true;
     this.eventService.create(eventFromForm)
       .subscribe(
         data => {
-          // this.alertService.success('Registration successful', true);
-          this.router.navigate(['/content']);
+          if(eventFromForm.day = '') {
+            this.alertService.success('Event successfully created!', true);
+            this.router.navigate(['/content']);
+          }else{
+            this.alertService.success('Note successfully created!', true);
+            this.router.navigate(['/content']);
+          }
         },
         error => {
           this.alertService.error(error);
-          // this.loading = false;
+          this.loading = false;
         });
   }
+
+  getEvents(): void {
+    this.eventService.getAllEvents()
+      .subscribe((events) => this.events = events);
+  }
+
+
 }

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ncgroup2.eventmanager.entity.Event;
 
+import java.util.List;
+
 @Service
 public class EventServiceImpl implements EventService {
 
@@ -13,8 +15,18 @@ public class EventServiceImpl implements EventService {
     EventDaoImpl eventDaoImpl;
 
     @Override
-    public Event createEvent(Event event) {
+    public void createEvent(Event event) {
         eventDaoImpl.createEvent(event);
-        return null;
+    }
+
+    @Override
+    public void changeVisibility(String visibilityType, Event event) {
+        eventDaoImpl.updateField(event,"visibility", visibilityType);
+    }
+
+    @Override
+    public List<Event> getAllEvents() {
+        List<Event> events = eventDaoImpl.getAllEvents();
+        return events;
     }
 }

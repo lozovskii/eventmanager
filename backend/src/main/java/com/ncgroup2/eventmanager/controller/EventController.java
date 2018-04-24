@@ -1,15 +1,11 @@
 package com.ncgroup2.eventmanager.controller;
 
-import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.entity.Event;
 import com.ncgroup2.eventmanager.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -24,10 +20,17 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<Event> create(@RequestBody Event event){
+    public void create(@RequestBody Event event){
         System.out.println(event.toString());
-        Event createdEvent = eventService.createEvent(event);
-        return new ResponseEntity<>(createdEvent, HttpStatus.OK);
+        eventService.createEvent(event);
+    }
+
+    @GetMapping
+    public List<Event> getEvents(){
+        System.out.println("Controller works!");
+        List<Event> events = eventService.getAllEvents();
+        System.out.println(events);
+        return events;
     }
 }
 

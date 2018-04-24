@@ -1,17 +1,57 @@
 <div class="col-md-12">
+
+  <form [formGroup]="eventsForm" name="form" role="form" (ngSubmit)="getEvents()" novalidate>
+    <button type="submit" class="btn btn-primary">View</button>
+
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Name</th>
+        <th scope="col">FolderId</th>
+        <th scope="col">CreatorId</th>
+        <th scope="col">startTime</th>
+        <th scope="col">endTime</th>
+        <th scope="col">Priority</th>
+        <th scope="col">Frequency</th>
+        <th scope="col">Description</th>
+        <th scope="col">statusId</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let event of events">
+        <th scope="row">{{event.id}}</th>
+        <td>{{event.name}}</td>
+        <td>{{event.folderId}}</td>
+        <td>{{event.creatorId}}</td>
+        <td>{{event.startTime}}</td>
+        <td>{{event.endTime}}</td>
+        <td>{{event.priority}}</td>
+        <td>{{event.frequency}}</td>
+        <td>{{event.description}}</td>
+        <td>{{event.status}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </form>
+
+
   <div class="col-md-6" style="margin:0 auto">
 
     <h2>Create Event</h2>
 
-    <form [formGroup]="eventForm" name="form" role="form" (ngSubmit)="create(eventForm.value)"  novalidate>
+
+    <br>
+    <form [formGroup]="eventForm" name="form" role="form" (ngSubmit)="create(eventForm.value)" novalidate>
       <div class="form-group">
         <div class="form-group">
           <label>Title</label>
-          <input formControlName="name"  id="name" type="text" class="form-control" name="name" required />
+          <input formControlName="name" id="name" type="text" class="form-control" name="name" required/>
         </div>
         <div class="form-group">
           <label>Description</label>
-          <textarea formControlName="description"  id="description" rows="5" cols="45" class="form-control" name="description"></textarea>
+          <textarea formControlName="description" id="description" rows="5" cols="45" class="form-control"
+                    name="description"></textarea>
         </div>
       </div>
       <br>
@@ -22,18 +62,18 @@
         </div>
         <div class="form-group">
           <label>Start time</label>
-          <input formControlName="startTime"  id="startTime" type="time" class="form-control" name="startTime"/>
+          <input formControlName="startTime" id="startTime" type="time" class="form-control" name="startTime"/>
         </div>
         <div class="form-group">
           <label>End time</label>
-          <input formControlName="endTime"  id="endTime" type="time" class="form-control" name="endTime"/>
+          <input formControlName="endTime" id="endTime" type="time" class="form-control" name="endTime"/>
         </div>
       </div>
       <br>
       <div class="form-group">
         <div class="form-group">
           <label>Priority</label>
-          <select formControlName="priority"  id="priority" type="text" class="form-control" name="priority" required>
+          <select formControlName="priority" id="priority" type="text" class="form-control" name="priority" required>
             <option value="Low">Low</option>
             <option value="Average">Average</option>
             <option value="High">High</option>
@@ -41,7 +81,8 @@
         </div>
         <div class="form-group">
           <label>Visibility</label>
-          <select formControlName="visibility"  id="visibility" type="text" class="form-control" name="visibility" required>
+          <select formControlName="visibility" id="visibility" type="text" class="form-control" name="visibility"
+                  required>
             <option value="Public">Public</option>
             <option value="For friends only">For friends only</option>
             <option value="Private">Private</option>
@@ -49,8 +90,9 @@
         </div>
         <div class="form-group">
           <label>Frequency</label>
-          <input formControlName="frequencyValue"  id="frequencyValue" type="number" class="form-control" name="frequencyValue" required />
-          <select formControlName="frequency"  id="frequency" type="text" class="form-control" name="frequency" required>
+          <input formControlName="frequencyValue" id="frequencyValue" type="number" class="form-control"
+                 name="frequencyValue" required/>
+          <select formControlName="frequency" id="frequency" type="text" class="form-control" name="frequency" required>
             <option value="day">day</option>
             <option value="week">week</option>
             <option value="month">month</option>
