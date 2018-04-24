@@ -3,7 +3,7 @@ package com.ncgroup2.eventmanager.entity;
 import java.util.Arrays;
 
 public class Item extends Entity {
-    private String name;
+
     private String description;
     private byte[] image;
     private String link;
@@ -12,18 +12,10 @@ public class Item extends Entity {
     }
 
     public Item(String name, String description, byte[] image, String link) {
-        this.name = name;
+        super.name = name;
         this.description = description;
         this.image = image;
         this.link = link;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override
