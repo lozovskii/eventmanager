@@ -1,6 +1,7 @@
 package com.ncgroup2.eventmanager.dao.impl.postgres;
 
-import com.ncgroup2.eventmanager.dao.FolderDao;
+import com.ncgroup2.eventmanager.dao.DAO;
+import com.ncgroup2.eventmanager.entity.Entity;
 import com.ncgroup2.eventmanager.entity.Folder;
 import com.ncgroup2.eventmanager.mapper.FolderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import java.util.Collection;
 
 @Repository
 @Transactional
-public class FolderDaoImpl extends JdbcDaoSupport  implements FolderDao {
+public class FolderDaoImpl extends JdbcDaoSupport  implements DAO {
 
     public static final String BASE_SQL = "SELECT * FROM \"Folder\" ";
 
@@ -27,48 +28,41 @@ public class FolderDaoImpl extends JdbcDaoSupport  implements FolderDao {
         setDataSource(dataSource);
     }
 
+
     @Override
-    public void addFolder(Folder folder) {
-        String sql = "INSERT INTO \"Folder\" " +
-                "(id, customer_id, name)" +
-                " values(uuid_generate_v1(),?,?)";
+    public Collection<Folder> getAllEntities() {
 
-        Object[] params = folder.getParams();
+        FolderMapper mapper = new FolderMapper();
 
-        this.getJdbcTemplate().update(sql, params);
+        try {
+
+            return this.getJdbcTemplate().query(BASE_SQL, mapper);
+
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
-    @Override
-    public void deleteFolder(Folder folder) {
-
-        String query = "DELETE FROM Folder WHERE id = CAST (? AS uuid)";
-
-        Object[] params = new Object[]{
-                folder.getId()
-        };
-
-        this.getJdbcTemplate().update(query,params);
-    }
 
     @Override
-    public Folder getByField(String fieldName, String fieldValue) {
+    public Folder getEntityByField(String fieldName, Object fieldValue) {
 
-        Collection<Folder> customers = getFolders(fieldName, fieldValue);
+        String value = String.valueOf(fieldValue);
+
+        Collection<Folder> customers = getEntitiesByField(fieldName, value);
 
         if (!customers.isEmpty()) {
 
-            return getFolders(fieldName, fieldValue).iterator().next();
+            return customers.iterator().next();
 
         } else {
 
             return null;
         }
-
     }
 
     @Override
-    public Collection<Folder> getFolders(String fieldName, String fieldValue) {
-
+    public Collection<Folder> getEntitiesByField(String fieldName, Object fieldValue) {
 
         String sql = BASE_SQL + "WHERE " + fieldName + " = ?";
 
@@ -81,46 +75,78 @@ public class FolderDaoImpl extends JdbcDaoSupport  implements FolderDao {
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
-
     }
 
     @Override
-    public Collection<Folder> getFolders() {
+    public Folder getEntityById(Object id) {
+
+        String sql = BASE_SQL + "WHERE id = CAST (" + id + " AS uuid) ";
+
+        Object[] params = new Object[]{id};
 
         FolderMapper mapper = new FolderMapper();
 
         try {
-            return this.getJdbcTemplate().query(BASE_SQL, mapper);
+
+            return this.getJdbcTemplate().queryForObject(sql, params, mapper);
+
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
 
     @Override
-    public void updateFolder(Folder folder) {
-
+    public void updateEntity(Entity entity) {
 
         String sql = "UPDATE \"Folder\" SET " +
                 "name = ?, " +
-                "customer_id = ?, " +
+                "customer_id = ? " +
                 " WHERE id = CAST (? AS uuid)";
 
-        Object[] params = folder.getParams();
+        Object[] params = entity.getParams();
 
         this.getJdbcTemplate().update(sql, params);
-
     }
 
     @Override
-    public void updateField(Folder folder, String fieldName, Object fieldValue) {
+    public void updateEntityField(Object id, String fieldName, Object fieldValue) {
+
+        String folderId = String.valueOf(id);
 
         String sql = "UPDATE \"Folder\" SET " + fieldName + " = ? WHERE id = CAST (? AS uuid)";
 
         Object[] params = new Object[]{
                 fieldValue,
-                folder.getId()
+                folderId
         };
 
         this.getJdbcTemplate().update(sql, params);
     }
+
+
+    @Override
+    public void deleteEntity(Object id) {
+
+        String folderId = String.valueOf(id);
+
+        String query = "DELETE FROM Folder WHERE id = CAST (? AS uuid)";
+
+        Object[] params = new Object[]{ folderId };
+
+        this.getJdbcTemplate().update(query,params);
+    }
+
+    @Override
+    public void createEntity(Entity entity) {
+
+        String sql = "INSERT INTO \"Folder\" " +
+                "(id, customer_id, name)" +
+                " values(uuid_generate_v1(),?,?)";
+
+        Object[] params = entity.getParams();
+
+        this.getJdbcTemplate().update(sql, params);
+
+    }
+
 }
