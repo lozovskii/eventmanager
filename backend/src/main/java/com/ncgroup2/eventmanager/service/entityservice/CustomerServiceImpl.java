@@ -53,4 +53,14 @@ public class CustomerServiceImpl implements CustomerService{
         customerDaoImpl.updateField(customer,"token","");
     }
 
+    @Override
+    public Customer getById(String id) {
+        return customerDaoImpl.getByField("id",id);
+    }
+
+    @Override
+    public Customer findByLogin(String login) {
+        return customerDaoImpl.getByField("login",login);
+    }
+
 }

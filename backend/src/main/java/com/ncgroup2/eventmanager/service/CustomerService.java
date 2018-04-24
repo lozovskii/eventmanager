@@ -11,5 +11,7 @@ public interface CustomerService {
     void deleteCustomer(Customer customer);
     Customer getCustomer(String token);
     void confirmCustomer(Customer customer);
+    Customer getById(String id);
 
+    Customer findByLogin(String login);
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { User } from '../_models/user';
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class UserService {
@@ -10,13 +11,19 @@ export class UserService {
     return this.http.get<User[]>('/api/users');
   }
 
-  getById(id: number) {
-    return this.http.get('/api/users/' + id);
-  }
+  getByLogin(login: string): Observable<any> {
+     let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token });
+     let params = new HttpParams();
+     params.set('login',JSON.parse(localStorage.getItem('currentUser')).login);
 
+  console.log('login parameter '+params.get('login'));
+    return this.http.get('/api/users/?login='+JSON.parse(localStorage.getItem('currentUser')).login, {headers:headers, params:params})
+
+      // .map((response: Response) => response.json());
+  }
   create(user: User){
     console.log('here: ' + JSON.stringify(user));
-    return this.http.post<User>('/api/users', user);
+    return this.http.post<User>('/api/register', user);
   }
 
   update(user: User) {
