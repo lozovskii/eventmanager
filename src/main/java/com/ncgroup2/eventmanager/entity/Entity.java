@@ -2,7 +2,7 @@ package com.ncgroup2.eventmanager.entity;
 
 import java.util.UUID;
 
-abstract class Entity {
+public abstract class Entity {
 
     protected String id;
 

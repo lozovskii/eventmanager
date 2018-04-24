@@ -1,8 +1,10 @@
 package com.ncgroup2.eventmanager.dao;
 
+import com.ncgroup2.eventmanager.entity.Entity;
+
 import java.util.Collection;
 
-public interface DAO <E, K> {
+public interface DAO <E extends Entity, K > {
 
     Collection<E> getAllEntities();
 
