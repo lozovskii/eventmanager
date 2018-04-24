@@ -27,4 +27,5 @@ public interface CustomerDao {
     void addFriend(String login);
     void acceptFriend(String token);
     void rejectFriend(String token);
+    void uploadAvatar(Customer customer);
 }

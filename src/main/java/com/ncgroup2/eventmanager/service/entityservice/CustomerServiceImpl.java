@@ -114,4 +114,9 @@ public class CustomerServiceImpl implements CustomerService {
     public void rejectFriend(String token) {
         customerDao.rejectFriend(token);
     }
+
+    @Override
+    public void uploadAvatar(Customer customer) {
+        customerDao.uploadAvatar(customer);
+    }
 }

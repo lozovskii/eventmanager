@@ -8,8 +8,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.security.Principal;
+import java.util.Base64;
 import java.util.List;
 
 @Controller
@@ -96,5 +100,42 @@ public class ProfileController {
         model.addAttribute("relationships", relationships);
 
         return "notifications";
+    }
+
+    @RequestMapping(value = "/edit/upload", method = RequestMethod.GET)
+    public String avatarUploadGet(Model model) {
+        Customer customer = customerService
+                .getByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("customer", customer);
+
+        return "upload";
+    }
+
+    @RequestMapping(value = "/edit/upload", method = RequestMethod.POST)
+    public String avatarUploadPost(@RequestParam("file") MultipartFile file, @ModelAttribute("customer") Customer customer,
+                               RedirectAttributes attributes) {
+        if (file.isEmpty()) {
+            attributes.addFlashAttribute("message", "Please select a file");
+            return "redirect:/profile/edit/upload/status";
+        }
+
+        try {
+            byte[] encoded = Base64.getEncoder().encode(file.getBytes());
+            String s = new String(encoded);
+            customer.setAvatar(s);
+
+            customerService.uploadAvatar(customer);
+            attributes.addFlashAttribute("message", "Successfully!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "redirect:/profile/edit/upload/status";
+    }
+
+    @RequestMapping(value = "/edit/upload/status", method = RequestMethod.GET)
+    public String uploadStatus(Principal principal, Model model) {
+        model.addAttribute("name", principal.getName());
+        return "status";
     }
 }

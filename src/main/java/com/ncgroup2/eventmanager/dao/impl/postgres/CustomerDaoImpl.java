@@ -271,6 +271,14 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
         return new JdbcTemplate(dataSource).query(query, new RelationshipMapper());
     }
 
+    @Override
+    public void uploadAvatar(Customer customer) {
+        String query = "UPDATE \"Customer\" SET avatar = 'data:image/png;base64," + customer.getAvatar() + "' WHERE " +
+                "login = '" + SecurityContextHolder.getContext().getAuthentication().getName() + "'";
+
+        new JdbcTemplate(dataSource).update(query);
+    }
+
     private boolean checkAddFriend(String login) {
         boolean isExist = false;
 
