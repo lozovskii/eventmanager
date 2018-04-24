@@ -1,10 +1,10 @@
 package com.ncgroup2.eventmanager.controller;
 
 import com.ncgroup2.eventmanager.entity.Customer;
-import com.ncgroup2.eventmanager.event.OnRegistrationCompleteEvent;
 import com.ncgroup2.eventmanager.service.entityservice.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,18 +18,16 @@ import org.springframework.web.context.request.WebRequest;
 import javax.validation.Valid;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 
 @Controller
 public class RegisterController {
-
     @Autowired
     CustomerService customerService;
-
     @Autowired
-    ApplicationEventPublisher eventPublisher;
-
+    private PasswordEncoder passwordEncoder;
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private JavaMailSender mailSender;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String addUser(@Valid @ModelAttribute("customer") Customer customer,
@@ -51,10 +49,27 @@ public class RegisterController {
         }
 
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
-        Customer registered = customerService.register(customer);
 
-        String appUrl = request.getContextPath();
-        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), appUrl));
+        String token = UUID.randomUUID().toString();
+
+        customer.setToken(token);
+//        customerService.createVerificationToken(customer, token);
+
+        customerService.register(customer);
+
+        String recipientAddress = customer.getEmail();
+        String subject = "Registration Confirmation";
+        String confirmationUrl
+                = "/registrationConfirm?token=" + token;
+        String message = "Confirmation link: \n";
+
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(recipientAddress);
+        email.setSubject(subject);
+        //email.setText(message  + "http://localhost:8090" + confirmationUrl);
+        // changed link for heroku address
+        email.setText(message  + "https://rocky-dusk-73382.herokuapp.com" + confirmationUrl);
+        mailSender.send(email);
 
         return "redirect:/?q=link_sent";
     }
@@ -67,7 +82,6 @@ public class RegisterController {
             model.addAttribute("message", "Invalid token");
             return "redirect:/?q=invalid_token";
         }
-
         Instant expireDate = customer.getRegistrationDate().plus(24, ChronoUnit.HOURS);
 
         if (Instant.now().isAfter(expireDate)) {

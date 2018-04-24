@@ -2,13 +2,16 @@ package com.ncgroup2.eventmanager.entity;
 
 import java.util.UUID;
 
-abstract class Entity {
+public abstract class Entity {
 
     protected String id;
+
     protected String name;
 
     Entity(){
+
         UUID uuid = UUID.randomUUID();
+
         this.id = uuid.toString();
     }
 

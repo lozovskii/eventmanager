@@ -1,5 +1,6 @@
 package com.ncgroup2.eventmanager.service.sender;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -12,11 +13,15 @@ public class Sender {
     JavaMailSender mailSender;
 
     private String recipientAddress;
+
     private String subject;
+
     private String confirmationUrl;
+
     private String text;
 
     public Sender(){
+
     }
 
     public Sender(String recipientAddress, SubjectEnum subjectEnum, String token) {
@@ -27,9 +32,11 @@ public class Sender {
         this.recipientAddress = recipientAddress;
 
         switch (subjectEnum){
+
             case REGISTRATION: {
                 this.subject = "Registration";
                 this.confirmationUrl = "/registrationConfirm";
+
             } break;
 
             case FRIEND_REQUEST: {
@@ -60,10 +67,17 @@ public class Sender {
     }
 
     public void sendEmail() {
+
         SimpleMailMessage email = new SimpleMailMessage();
+
         email.setTo(recipientAddress);
+
         email.setSubject(subject);
+
         email.setText(text);
+
         mailSender.send(email);
+
     }
 }
+

@@ -1,6 +1,5 @@
 package com.ncgroup2.eventmanager.service.daemon;
-
-import com.ncgroup2.eventmanager.dao.CustomerDao;
+import com.ncgroup2.eventmanager.dao.impl.postgres.CustomerDaoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -9,10 +8,12 @@ import org.springframework.stereotype.Component;
 public class DelUnvCustServiceImpl {
 
     @Autowired
-    CustomerDao customerDao;
+    CustomerDaoImpl customerDaoImpl;
 
     @Scheduled(fixedDelay = 3600000)
     public void DeleteUnverifiedCustomers() {
-        customerDao.deleteUnverifiedCustomers();
+
+        customerDaoImpl.deleteUnverifiedCustomers();
+        System.out.println("Unverified customers (more then 24 hours)successfully deleted!");
     }
 }

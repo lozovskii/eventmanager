@@ -1,21 +1,25 @@
 package com.ncgroup2.eventmanager.entity;
 
+
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.Random;
 
 public class Customer extends Entity {
 
-    private String secondName;
     private String email;
     private String login;
     private String password;
+    private String secondName;
     private String phone;
     private boolean isVerified;
     private Instant registrationDate;
     private String token;
-    private String avatar;
+    private byte[] image;
 
     public Customer() {
-        isVerified = false;
+
+        isVerified =false;
     }
 
     public String getEmail() {
@@ -63,7 +67,7 @@ public class Customer extends Entity {
     }
 
     public void setVerified(boolean verified) {
-        isVerified = verified;
+        this.isVerified = verified;
     }
 
     public Instant getRegistrationDate() {
@@ -82,11 +86,11 @@ public class Customer extends Entity {
         this.token = token;
     }
 
-    public String getAvatar() {
+    public byte[] getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(String avatar) {
+    public void setAvatar(byte[] avatar) {
         this.avatar = avatar;
     }
 
@@ -103,9 +107,13 @@ public class Customer extends Entity {
                 ", isVerified=" + isVerified +
                 ", registrationDate=" + registrationDate +
                 ", token='" + token + '\'' +
+                ", image=" + Arrays.toString(image) +
                 '}';
     }
 
+
+    // Params for UPDATE. Don't include registrationDate (not update)
+    @Override
     public Object[] getParams() {
         return new Object[]{
                 this.getName(),

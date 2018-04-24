@@ -1,6 +1,7 @@
 package com.ncgroup2.eventmanager.dao.impl.postgres;
 
 import com.ncgroup2.eventmanager.dao.EventDao;
+import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.entity.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -22,8 +23,8 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     public void createEvent(String creatorId, Event event) {
 
         String query = "INSERT INTO \"Event\" " +
-                "(id,name,folder_id, creator_id ,start_time,end_time,priority,isPublic,frequency,status)" +
-                "VALUES(uuid_generate_v1(),?,?,?,?,?,?,?,?,?)";
+                     "(id,name,folder_id, creator_id ,start_time,end_time,priority,isPublic,frequency,status)" +
+                     "VALUES(uuid_generate_v1(),?,?,?,?,?,?,?,?,?)";
 
         Object[] params = new Object[]{
                 event.getName(),
@@ -38,6 +39,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         };
 
         this.getJdbcTemplate().update(query,params);
+
     }
 
     @Override
@@ -62,5 +64,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         };
 
         this.getJdbcTemplate().update(sql, params);
+
     }
+
 }

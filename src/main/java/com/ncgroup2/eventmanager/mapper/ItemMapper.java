@@ -11,13 +11,11 @@ public class ItemMapper implements RowMapper<Item> {
     @Override
     public Item mapRow(ResultSet resultSet, int rowNum) throws SQLException {
         Item item = new Item();
-
         item.setId(resultSet.getString("id"));
         item.setName(resultSet.getString("name"));
         item.setDescription(resultSet.getString("description"));
         item.setImage(resultSet.getBytes("image"));
         item.setLink(resultSet.getString("link"));
-
-        return item;
+        return null;
     }
 }

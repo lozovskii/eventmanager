@@ -1,30 +1,69 @@
 package com.ncgroup2.eventmanager.service.entityservice;
 
+import com.ncgroup2.eventmanager.dao.impl.postgres.CustomerDaoImpl;
 import com.ncgroup2.eventmanager.entity.Customer;
-import com.ncgroup2.eventmanager.entity.Relationship;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.List;
 
-public interface CustomerService {
-    Customer register(Customer customer);
-    boolean isCustomerPresent(String login);
-    void createVerificationToken(Customer customer, String token);
-    boolean isEmailUnique(String email);
-    void deleteCustomer(Customer customer);
-    Customer getCustomer(String token);
-    Customer getCustomerByEmail(String email);
-    void confirmCustomer(Customer customer);
-    void updatePassword(Customer customer);
+@Service
+public class CustomerService {
 
-    Customer getByLogin(String login);
-    void edit(Customer customer);
-    List<Customer> search(String search);
-    List<Customer> getFriends(String login);
-    void delete(String login);
-    List<Relationship> getNotifications(String login);
-    void addFriend(String login);
-    void acceptFriend(String token);
-    void rejectFriend(String token);
-    void uploadAvatar(Customer customer);
+    @Autowired
+    CustomerDaoImpl customerDaoImpl;
+
+    public void register(Customer customer) {
+
+        customerDaoImpl.addCustomer(customer);
+    }
+
+    public boolean isCustomerPresent(String login) {
+
+        return customerDaoImpl.getByField("login",login)!=null;
+    }
+
+    public void createVerificationToken(Customer customer, String token) {
+
+        customerDaoImpl.updateField(customer, "token",  token);
+    }
+
+    public boolean isEmailUnique(String email) {
+
+        return customerDaoImpl.getByField("email",email)==null;
+    }
+
+
+    public void deleteCustomer(Customer customer) {
+
+        customerDaoImpl.deleteCustomer(customer);
+    }
+
+    public Customer getCustomer(String token) {
+
+        return customerDaoImpl.getByField("token", token);
+    }
+
+    public Customer getCustomerByEmail(String email) {
+
+        return customerDaoImpl.getByField("email", email);
+    }
+
+    @Transactional
+    public void confirmCustomer(Customer customer) {
+
+        customer.setVerified(true);
+        customer.setToken("");
+
+        customerDaoImpl.updateCustomer(customer);
+    }
+
+    @Transactional
+    public void updatePassword(Customer customer) {
+
+        customer.setToken("");
+
+        customerDaoImpl.updateCustomer(customer);
+    }
+
 }

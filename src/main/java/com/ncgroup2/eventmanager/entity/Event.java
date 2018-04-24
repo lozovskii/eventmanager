@@ -60,7 +60,7 @@ public class Event extends Entity {
     public void setStatus(String status) {
         this.status = status;
     }
-
+    
     public Long getFolderId() {
         return folderId;
     }

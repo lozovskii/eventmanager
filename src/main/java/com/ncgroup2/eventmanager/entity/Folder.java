@@ -3,7 +3,9 @@ package com.ncgroup2.eventmanager.entity;
 public class Folder extends Entity {
 
     String customer_id;
-    String title;
+
+    String name;
+
     Event[] notes;
 
     public String getCustomer_id() {
@@ -12,14 +14,6 @@ public class Folder extends Entity {
 
     public void setCustomer_id(String customer_id) {
         this.customer_id = customer_id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public Event[] getNotes() {
@@ -34,7 +28,7 @@ public class Folder extends Entity {
     public String toString() {
         return "Folder{" +
                 "customer_id='" + customer_id + '\'' +
-                ", title='" + title + '\'' +
+                ", name='" + name + '\'' +
                 ", id='" + id + '\'' +
                 '}';
     }
@@ -44,8 +38,7 @@ public class Folder extends Entity {
         return new Object[]{
                 this.getName(),
                 this.getCustomer_id(),
-                this.getTitle(),
-                this.getNotes()
+                this.getId()
         };
     }
 }

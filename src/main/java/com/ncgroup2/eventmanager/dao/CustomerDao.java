@@ -1,21 +1,24 @@
 package com.ncgroup2.eventmanager.dao;
 
 import com.ncgroup2.eventmanager.entity.Customer;
-import com.ncgroup2.eventmanager.entity.Relationship;
 
 import java.util.Collection;
-import java.util.List;
 
 public interface CustomerDao {
 
     void addCustomer(Customer customer);
+
     void deleteCustomer(Customer customer);
+
     Customer getByField(String fieldName, String fieldValue);
+
     Collection<Customer> getCustomers(String fieldName, String fieldValue);
+
     Collection<Customer> getCustomers();
+
     void updateCustomer(Customer customer);
+
     void updateField(Customer customer, String fieldName, Object fieldValue);
-    void deleteUnverifiedCustomers();
 
     // PROFILE METHODS
     Customer getByLogin(String login);
@@ -28,4 +31,5 @@ public interface CustomerDao {
     void acceptFriend(String token);
     void rejectFriend(String token);
     void uploadAvatar(Customer customer);
+    void deleteUnverifiedCustomers();
 }
