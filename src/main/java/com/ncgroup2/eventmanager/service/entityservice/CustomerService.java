@@ -3,9 +3,20 @@ package com.ncgroup2.eventmanager.service.entityservice;
 import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.entity.Relationship;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface CustomerService {
+    Customer register(Customer customer);
+    boolean isCustomerPresent(String login);
+    void createVerificationToken(Customer customer, String token);
+    boolean isEmailUnique(String email);
+    void deleteCustomer(Customer customer);
+    Customer getCustomer(String token);
+    Customer getCustomerByEmail(String email);
+    void confirmCustomer(Customer customer);
+    void updatePassword(Customer customer);
+
     Customer getByLogin(String login);
     void edit(Customer customer);
     List<Customer> search(String search);

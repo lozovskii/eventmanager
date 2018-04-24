@@ -14,7 +14,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/profile")
-public class CustomerController {
+public class ProfileController {
 
     @Autowired
     CustomerService customerService;

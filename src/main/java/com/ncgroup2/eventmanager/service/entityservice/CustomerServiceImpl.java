@@ -5,7 +5,9 @@ import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.entity.Relationship;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -13,6 +15,60 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     CustomerDao customerDao;
+
+    @Override
+    public Customer register(Customer customer) {
+        customerDao.addCustomer(customer);
+
+        return customerDao.getByField("login", customer.getLogin());
+    }
+
+    @Override
+    public boolean isCustomerPresent(String login) {
+        return customerDao.getByField("login",login) != null;
+    }
+
+    @Override
+    public void createVerificationToken(Customer customer, String token) {
+        customerDao.updateField(customer, "token",  token);
+    }
+
+    @Override
+    public boolean isEmailUnique(String email) {
+        return customerDao.getByField("email",email) == null;
+    }
+
+    @Override
+    public void deleteCustomer(Customer customer) {
+        customerDao.deleteCustomer(customer);
+    }
+
+    @Override
+    public Customer getCustomer(String token) {
+        return customerDao.getByField("token", token);
+    }
+
+    @Override
+    public Customer getCustomerByEmail(String email) {
+        return customerDao.getByField("email", email);
+    }
+
+    @Override
+    @Transactional
+    public void confirmCustomer(Customer customer) {
+        customer.setVerified(true);
+        customer.setToken("");
+
+        customerDao.updateCustomer(customer);
+    }
+
+    @Override
+    @Transactional
+    public void updatePassword(Customer customer) {
+        customer.setToken("");
+
+        customerDao.updateCustomer(customer);
+    }
 
     @Override
     public Customer getByLogin(String login) {
