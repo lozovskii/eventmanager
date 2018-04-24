@@ -42,7 +42,7 @@ import {EventService} from "./_services/event.service";
     NavbarComponent,
     FooterComponent,
     EventComponent,
-    ContentComponent
+    ContentComponent,
   ],
   providers: [
     AuthGuard,

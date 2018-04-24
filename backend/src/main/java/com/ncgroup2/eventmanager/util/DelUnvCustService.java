@@ -5,7 +5,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DelUnvCustServiceImpl {
+public class DelUnvCustService {
 
     @Autowired
     CustomerDaoImpl customerDaoImpl;
