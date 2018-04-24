@@ -17,7 +17,7 @@ import java.util.Base64;
 import java.util.List;
 
 @Controller
-@RequestMapping("/profile")
+//@RequestMapping("/profile")
 public class ProfileController {
 
     @Autowired
@@ -29,7 +29,7 @@ public class ProfileController {
         model.addAttribute("customer", customer);
         model.addAttribute("name", principal.getName());
 
-        return "profile";
+        return "/profile";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)

@@ -1,8 +1,10 @@
 package com.ncgroup2.eventmanager.dao;
 
 import com.ncgroup2.eventmanager.entity.Customer;
+import com.ncgroup2.eventmanager.entity.Relationship;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface CustomerDao {
 

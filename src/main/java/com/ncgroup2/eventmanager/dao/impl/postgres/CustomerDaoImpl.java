@@ -2,18 +2,25 @@ package com.ncgroup2.eventmanager.dao.impl.postgres;
 
 import com.ncgroup2.eventmanager.dao.CustomerDao;
 import com.ncgroup2.eventmanager.entity.Customer;
+import com.ncgroup2.eventmanager.entity.Relationship;
 import com.ncgroup2.eventmanager.mapper.CustomerMapper;
+import com.ncgroup2.eventmanager.mapper.RelationshipMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -64,16 +71,6 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
         params[params.length-1] = new Timestamp(Instant.now().toEpochMilli());
 
-//                new Object[]{
-//                customer.getName(),
-//                customer.getSecondName(),
-//                customer.getPhone(),
-//                customer.getLogin(),
-//                customer.getEmail(),
-//                customer.getPassword(),
-//                customer.isVerified(),
-//                new Timestamp(Instant.now().toEpochMilli())};
-
         this.getJdbcTemplate().update(sql, params);
 
         String sqlRole = "INSERT INTO \"Customer_Role\" VALUES (" +
@@ -95,7 +92,6 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
         Object[] params = new Object[]{customer.getId()};
 
-        //this.getJdbcTemplate().update(sqlCustomerRole, params);
         this.getJdbcTemplate().update(sqlCustomer, params);
 
     }
@@ -157,13 +153,12 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
         this.getJdbcTemplate().update(sqlUnverified);
     }
-}
 
     // PROFILE METHODS IMPLEMENTATION
 
     @Override
     public Customer getByLogin(String login) {
-        return new JdbcTemplate(dataSource).query(
+        return this.getJdbcTemplate().query(
                 "SELECT * FROM \"Customer\" WHERE login = '" + login + "'", new CustomerMapper()).get(0);
     }
 
@@ -174,7 +169,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
                 "phone = '" + customer.getPhone() + "' WHERE " +
                 "login = '" + SecurityContextHolder.getContext().getAuthentication().getName() + "'";
 
-        new JdbcTemplate(dataSource).update(query);
+        this.getJdbcTemplate().update(query);
     }
 
     @Override
@@ -193,7 +188,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
                         SecurityContextHolder.getContext().getAuthentication().getName() + "'";
                 String result = query1 + " UNION " + query2;
 
-                return new JdbcTemplate(dataSource).query(result, new CustomerMapper());
+                return this.getJdbcTemplate().query(result, new CustomerMapper());
             } else {
                 return null;
             }
@@ -201,7 +196,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
             String query = "SELECT * FROM \"Customer\" WHERE login != '" +
                     SecurityContextHolder.getContext().getAuthentication().getName() + "'";
 
-            return new JdbcTemplate(dataSource).query(query, new CustomerMapper());
+            return this.getJdbcTemplate().query(query, new CustomerMapper());
         } else {
             return null;
         }
@@ -215,7 +210,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
                 "SELECT sender_friend_id FROM \"Relationship\" R INNER JOIN \"Customer\" C " +
                 "ON R.recipient_friend_id = C.id WHERE C.login = '" + login + "' AND R.status = 3);";
 
-        return new JdbcTemplate(dataSource).query(query, new CustomerMapper());
+        return this.getJdbcTemplate().query(query, new CustomerMapper());
     }
 
     @Override
@@ -230,10 +225,8 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
                 "AND recipient_friend_id IN (SELECT id FROM \"Customer\" " +
                 "WHERE login = '" + SecurityContextHolder.getContext().getAuthentication().getName() + "')";
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-
-        jdbcTemplate.update(query1);
-        jdbcTemplate.update(query2);
+        this.getJdbcTemplate().update(query1);
+        this.getJdbcTemplate().update(query2);
     }
 
     @Override
@@ -244,9 +237,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
                     SecurityContextHolder.getContext().getAuthentication().getName() + "')," +
                     "(SELECT id FROM \"Customer\" WHERE login = '" + login + "'),1)";
 
-                    JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-
-            jdbcTemplate.update(query);
+            this.getJdbcTemplate().update(query);
         }
     }
 
@@ -256,18 +247,14 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
                 "AND recipient_friend_id IN (SELECT id FROM \"Customer\" WHERE login = '"
                 + SecurityContextHolder.getContext().getAuthentication().getName() + "')";
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-
-        jdbcTemplate.update(query);
+        this.getJdbcTemplate().update(query);
     }
 
     @Override
     public void rejectFriend(String token) {
         String query = "UPDATE \"Relationship\" SET status = 2 WHERE id = '" + token + "'";
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-
-        jdbcTemplate.update(query);
+        this.getJdbcTemplate().update(query);
     }
 
     @Override
@@ -278,7 +265,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
                 "AND status = 1 " +
                 "AND c.login!='" + login + "'";
 
-        return new JdbcTemplate(dataSource).query(query, new RelationshipMapper());
+        return this.getJdbcTemplate().query(query, new RelationshipMapper());
     }
 
     @Override
@@ -286,7 +273,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
         String query = "UPDATE \"Customer\" SET avatar = 'data:image/png;base64," + customer.getAvatar() + "' WHERE " +
                 "login = '" + SecurityContextHolder.getContext().getAuthentication().getName() + "'";
 
-        new JdbcTemplate(dataSource).update(query);
+        this.getJdbcTemplate().update(query);
     }
 
     private boolean checkAddFriend(String login) {

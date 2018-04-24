@@ -1,25 +1,16 @@
 package com.ncgroup2.eventmanager.entity;
 
-public class Relationship {
+public class Relationship extends Entity{
 
-    private String id;
-    private String name;
     private String second_name;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public Object[] getParams() {
+        return new Object[]{
+                getName(),
+                getSecond_name(),
+                getId()
+        };
     }
 
     public String getSecond_name() {

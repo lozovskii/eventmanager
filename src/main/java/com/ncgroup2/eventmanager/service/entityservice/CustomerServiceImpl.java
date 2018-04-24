@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -17,10 +16,8 @@ public class CustomerServiceImpl implements CustomerService {
     CustomerDao customerDao;
 
     @Override
-    public Customer register(Customer customer) {
+    public void register(Customer customer) {
         customerDao.addCustomer(customer);
-
-        return customerDao.getByField("login", customer.getLogin());
     }
 
     @Override
