@@ -2,7 +2,6 @@ package com.ncgroup2.eventmanager.service.entityservice;
 
 import com.ncgroup2.eventmanager.dao.impl.postgres.CustomerDaoImpl;
 import com.ncgroup2.eventmanager.entity.Customer;
-import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,11 +13,9 @@ public class CustomerService {
     @Autowired
     CustomerDaoImpl customerDaoImpl;
 
-    public Customer register(Customer customer) {
+    public void register(Customer customer) {
 
         customerDaoImpl.addCustomer(customer);
-
-        return customerDaoImpl.getByField("login",customer.getLogin());
     }
 
     public boolean isCustomerPresent(String login) {
@@ -59,10 +56,6 @@ public class CustomerService {
         customer.setToken("");
 
         customerDaoImpl.updateCustomer(customer);
-
-//  Improved Logic - 1 request instead 2
-//        customerDaoImpl.updateField(customer,"isVerified", Boolean.TRUE);
-//        customerDaoImpl.updateField(customer,"token","");
     }
 
     @Transactional
@@ -71,9 +64,6 @@ public class CustomerService {
         customer.setToken("");
 
         customerDaoImpl.updateCustomer(customer);
-//  Improved Logic - 1 request instead 2
-//        customerDaoImpl.updateField(customer,"password", customer.getPassword());
-//        customerDaoImpl.updateField(customer,"token","");
     }
 
 }
