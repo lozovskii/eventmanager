@@ -16,8 +16,10 @@ import java.security.Principal;
 import java.util.Base64;
 import java.util.List;
 
+import static org.springframework.util.Base64Utils.encodeToString;
+
 @Controller
-//@RequestMapping("/profile")
+@RequestMapping("/profile")
 public class ProfileController {
 
     @Autowired
@@ -29,7 +31,7 @@ public class ProfileController {
         model.addAttribute("customer", customer);
         model.addAttribute("name", principal.getName());
 
-        return "/profile";
+        return "/profile/profile";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
@@ -38,7 +40,7 @@ public class ProfileController {
                 .getByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("customer", customer);
 
-        return "edit";
+        return "/profile/edit";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
@@ -53,7 +55,7 @@ public class ProfileController {
         List<Customer> customers = customerService.search(search);
         model.addAttribute("customers", customers);
 
-        return "search";
+        return "/profile/search";
     }
 
     @RequestMapping(value = "/friends", method = RequestMethod.GET)
@@ -62,7 +64,7 @@ public class ProfileController {
                 SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("customers", customers);
 
-        return "friends";
+        return "/profile/friends";
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
@@ -99,7 +101,7 @@ public class ProfileController {
                 SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("relationships", relationships);
 
-        return "notifications";
+        return "/profile/notifications";
     }
 
     @RequestMapping(value = "/edit/upload", method = RequestMethod.GET)
@@ -108,7 +110,7 @@ public class ProfileController {
                 .getByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("customer", customer);
 
-        return "upload";
+        return "/profile/upload";
     }
 
     @RequestMapping(value = "/edit/upload", method = RequestMethod.POST)
@@ -120,10 +122,7 @@ public class ProfileController {
         }
 
         try {
-            byte[] encoded = Base64.getEncoder().encode(file.getBytes());
-            String s = new String(encoded);
-            customer.setAvatar(s);
-
+            customer.setAvatar(encodeToString(file.getBytes()));
             customerService.uploadAvatar(customer);
             attributes.addFlashAttribute("message", "Successfully!");
         } catch (IOException e) {
@@ -136,6 +135,6 @@ public class ProfileController {
     @RequestMapping(value = "/edit/upload/status", method = RequestMethod.GET)
     public String uploadStatus(Principal principal, Model model) {
         model.addAttribute("name", principal.getName());
-        return "status";
+        return "/profile/status";
     }
 }
