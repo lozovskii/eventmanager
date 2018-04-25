@@ -27,7 +27,7 @@ Licence URI: http://www.os-templates.com/template-terms
             <li><a href="/#pem_features">Features</a></li>
             <li><a href="/#pem_inspiration">Inspiration</a></li>
             <li><a href="/#pem_events">Events</a></li>
-            <li sec:authorize="isAuthenticated()"><a href="/profile">Profile</a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{'/profile/'+${#authentication.name}}">Profile</a></li>
             <li sec:authorize="isAuthenticated()"><a href="/logout">Sign Out</a></li>
 
         </ul>
