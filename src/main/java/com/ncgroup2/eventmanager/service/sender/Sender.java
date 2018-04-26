@@ -20,11 +20,7 @@ public class Sender {
 
     private String text;
 
-    public Sender(){
-
-    }
-
-    public Sender(String recipientAddress, SubjectEnum subjectEnum, String token) {
+    public void sendEmail(String recipientAddress, SubjectEnum subjectEnum, String token) {
 
         String message = "Confirmation link: \n";
         String hosting = "https://rocky-dusk-73382.herokuapp.com";
@@ -64,9 +60,11 @@ public class Sender {
 
         this.text = message + hosting + confirmationUrl;
 
+        send();
+
     }
 
-    public void sendEmail() {
+    public void send() {
 
         SimpleMailMessage email = new SimpleMailMessage();
 

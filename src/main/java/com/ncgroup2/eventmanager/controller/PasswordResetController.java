@@ -24,7 +24,7 @@ public class PasswordResetController {
     CustomerService customerService;
 
     @Autowired
-    private JavaMailSender mailSender;
+    private Sender mailSender;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -52,27 +52,7 @@ public class PasswordResetController {
 
             customerService.createVerificationToken(customer, token);
 
-            String recipientAddress = customer.getEmail();
-
-            String subject = "Password reset";
-
-            String confirmationUrl
-                    = "/resetPassword?token=" + token;
-
-            String message = "Confirmation link: \n";
-
-            SimpleMailMessage email = new SimpleMailMessage();
-
-            email.setTo(recipientAddress);
-
-            email.setSubject(subject);
-
-            email.setText(message  + "https://rocky-dusk-73382.herokuapp.com" + confirmationUrl);
-
-            mailSender.send(email);
-
-//            new Sender(customer.getEmail(), SubjectEnum.RESET_PASSWORD, token)
-//                    .sendEmail();
+            mailSender.sendEmail(customer.getEmail(), SubjectEnum.RESET_PASSWORD, token);
 
         } return "redirect:/?q=We_sent_confirmation_email";
     }
