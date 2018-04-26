@@ -1,9 +1,7 @@
 package com.ncgroup2.eventmanager.entity;
 
-
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.Random;
 
 public class Customer extends Entity {
 
@@ -15,12 +13,11 @@ public class Customer extends Entity {
     private boolean isVerified;
     private Instant registrationDate;
     private String token;
-    private byte[] avatar;
+    private String avatar;
 
     public Customer() {
 
-        isVerified = false;
-
+        isVerified =false;
     }
 
     public String getEmail() {
@@ -87,11 +84,11 @@ public class Customer extends Entity {
         this.token = token;
     }
 
-    public byte[] getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(byte[] avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 
@@ -102,12 +99,13 @@ public class Customer extends Entity {
                 ", email='" + email + '\'' +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
+                ", name='" + getName() + '\'' +
                 ", secondName='" + secondName + '\'' +
                 ", phone='" + phone + '\'' +
                 ", isVerified=" + isVerified +
                 ", registrationDate=" + registrationDate +
                 ", token='" + token + '\'' +
+                ", image=" + avatar +
                 '}';
     }
 
