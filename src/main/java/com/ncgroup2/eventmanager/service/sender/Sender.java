@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class Sender {
 
     @Autowired
-    JavaMailSender mailSender;
+    private JavaMailSender mailSender;
 
     private String recipientAddress;
 
@@ -64,7 +64,7 @@ public class Sender {
 
     }
 
-    public void send() {
+    private void send() {
 
         SimpleMailMessage email = new SimpleMailMessage();
 
