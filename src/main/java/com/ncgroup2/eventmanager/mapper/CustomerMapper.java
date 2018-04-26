@@ -5,24 +5,22 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Instant;
-
 
 public class CustomerMapper implements RowMapper<Customer> {
 
     @Override
-    public Customer mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+    public Customer mapRow(ResultSet resultSet, int i) throws SQLException {
         Customer customer = new Customer();
+
         customer.setId(resultSet.getString("id"));
-        customer.setLogin(resultSet.getString("login"));
-        customer.setPassword(resultSet.getString("password"));
-        customer.setEmail(resultSet.getString("email"));
         customer.setName(resultSet.getString("name"));
         customer.setSecondName(resultSet.getString("second_name"));
-        customer.setVerified(resultSet.getBoolean("isVerified"));
         customer.setPhone(resultSet.getString("phone"));
-        customer.setRegistrationDate(Instant.ofEpochMilli(
-                resultSet.getTimestamp("registration_date").getTime()));
+        customer.setLogin(resultSet.getString("login"));
+        customer.setEmail(resultSet.getString("email"));
+        customer.setPassword(resultSet.getString("password"));
+        customer.setAvatar(resultSet.getString("avatar"));
+
         return customer;
     }
 }

@@ -11,9 +11,11 @@ public class ChatMapper implements RowMapper<Chat> {
     @Override
     public Chat mapRow(ResultSet resultSet, int i) throws SQLException {
         Chat chat = new Chat();
+
         chat.setId(resultSet.getString("id"));
         chat.setEventId(resultSet.getString("event_id"));
         chat.setWithOwner(resultSet.getBoolean("withOwner"));
+
         return chat;
     }
 }

@@ -20,33 +20,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http.csrf().disable();
-
-        http.authorizeRequests().antMatchers("/").permitAll();
-
-        http.authorizeRequests().antMatchers("/login","logout").anonymous();
-
-//        http.authorizeRequests().antMatchers("/register", "/registration**", "registrationConfirm").anonymous();
-
-        http.authorizeRequests().antMatchers("/profile").authenticated();
-
+        http.authorizeRequests()
+                .antMatchers("/").permitAll();
+        http.authorizeRequests()
+                .antMatchers("/login").anonymous();
+        http.authorizeRequests()
+                .antMatchers("/logout").authenticated();
+        http.authorizeRequests()
+                .antMatchers("/profile/**").authenticated();
         http.authorizeRequests()
                 .and()
-                    .formLogin()
-                        .loginPage("/login")
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/")
                 .failureUrl("/?q=error")
-                .defaultSuccessUrl("/profile")
                 .and()
                 .logout()
-                    .logoutSuccessUrl("/?q=successful_logout");
+                .logoutSuccessUrl("/?q=Successful_logout");
     }
 
     @Bean(name = "passwordEncoder")

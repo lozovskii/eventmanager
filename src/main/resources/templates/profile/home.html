@@ -1,3 +1,24 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns="http://www.w3.org/1999/xhtml"-->
+      <!--xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+    <!--<title>Landing Page</title>-->
+<!--</head>-->
+<!--<body>-->
+    <!--<h1>Hello, This is landing page!</h1>-->
+    <!--<div th:if="${name == null}">-->
+        <!--<a style="color: blue" th:href="@{/login}">Login</a>-->
+    <!--</div>-->
+    <!--<div th:if="${name != null}">-->
+        <!--<a style="color: blue" th:href="@{/profile/{name}(name=${name})}">Profile</a>-->
+        <!--<form action="/logout" method="post">-->
+            <!--<input type="submit" class="button red big" value="Sign Out" />-->
+            <!--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />-->
+        <!--</form>-->
+    <!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
 <!--
 Template Name: Jovaphile
@@ -12,10 +33,10 @@ Licence URI: http://www.os-templates.com/template-terms
 <!-- To declare your language - read more here: https://www.w3.org/International/questions/qa-html-language-declarations -->
 <head>
     <title>PEM</title>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link href="/styles/layout.css" rel="stylesheet" type="text/css" media="all" />
-    <link href="/styles/login_style.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="/styles/layout.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/styles/login_style.css" rel="stylesheet" type="text/css" media="all">
 </head>
 <body id="top">
 <!-- ################################################################################################ -->
@@ -29,7 +50,7 @@ Licence URI: http://www.os-templates.com/template-terms
             <li><a href="#pem_features">Features</a></li>
             <li><a href="#pem_inspiration">Inspiration</a></li>
             <li><a href="#pem_events">Events</a></li>
-            <li sec:authorize="isAuthenticated()"><a th:href="@{'/profile/'+${#authentication.name}}">Profile</a></li>
+            <li sec:authorize="isAuthenticated()"><a href="/profile">Profile</a></li>
             <li sec:authorize="isAuthenticated()"><a href="/logout">Sign Out</a></li>
 
         </ul>
