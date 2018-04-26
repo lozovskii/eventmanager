@@ -2,9 +2,9 @@ package com.ncgroup2.eventmanager.controller;
 
 import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.service.entityservice.CustomerService;
+import com.ncgroup2.eventmanager.service.sender.Sender;
+import com.ncgroup2.eventmanager.service.sender.SubjectEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +27,7 @@ public class RegisterController {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private JavaMailSender mailSender;
+    private Sender mailSender;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String addUser(@Valid @ModelAttribute("customer") Customer customer,
@@ -53,23 +53,10 @@ public class RegisterController {
         String token = UUID.randomUUID().toString();
 
         customer.setToken(token);
-//        customerService.createVerificationToken(customer, token);
 
         customerService.register(customer);
 
-        String recipientAddress = customer.getEmail();
-        String subject = "Registration Confirmation";
-        String confirmationUrl
-                = "/registrationConfirm?token=" + token;
-        String message = "Confirmation link: \n";
-
-        SimpleMailMessage email = new SimpleMailMessage();
-        email.setTo(recipientAddress);
-        email.setSubject(subject);
-        //email.setText(message  + "http://localhost:8090" + confirmationUrl);
-        // changed link for heroku address
-        email.setText(message  + "https://rocky-dusk-73382.herokuapp.com" + confirmationUrl);
-        mailSender.send(email);
+        mailSender.sendEmail(customer.getEmail(), SubjectEnum.REGISTRATION , token);
 
         return "redirect:/?q=link_sent";
     }
