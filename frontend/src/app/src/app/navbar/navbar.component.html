@@ -4,7 +4,13 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-    <div class="navbar-nav">
+
+    <div class="navbar-nav" *ngIf = "navbar">
+      <a [routerLink]="['/home']" class="navbar-brand">Home </a>
+      <a [routerLink]="['/login']" class="navbar-brand">Log Out </a>
+    </div>
+
+    <div class="navbar-nav" *ngIf = "!navbar">
       <a [routerLink]="['/login']" class="navbar-brand">Log In </a>
       <a [routerLink]="['/register']" class="navbar-brand">Registration</a>
     </div>
