@@ -17,12 +17,12 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void register(Customer customer) {
-        customerDao.addCustomer(customer);
+        customerDao.create(customer);
     }
 
     @Override
     public boolean isCustomerPresent(String login) {
-        return customerDao.getByField("login",login) != null;
+        return customerDao.getEntityByField("login",login) != null;
     }
 
     @Override
@@ -32,22 +32,22 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public boolean isEmailUnique(String email) {
-        return customerDao.getByField("email",email) == null;
+        return customerDao.getEntitiesByField("email",email) == null;
     }
 
     @Override
     public void deleteCustomer(Customer customer) {
-        customerDao.deleteCustomer(customer);
+        customerDao.delete(customer);
     }
 
     @Override
     public Customer getCustomer(String token) {
-        return customerDao.getByField("token", token);
+        return customerDao.getEntityByField("token", token);
     }
 
     @Override
     public Customer getCustomerByEmail(String email) {
-        return customerDao.getByField("email", email);
+        return customerDao.getEntityByField("email", email);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setVerified(true);
         customer.setToken("");
 
-        customerDao.updateCustomer(customer);
+        customerDao.update(customer);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class CustomerServiceImpl implements CustomerService {
     public void updatePassword(Customer customer) {
         customer.setToken("");
 
-        customerDao.updateCustomer(customer);
+        customerDao.update(customer);
     }
 
     @Override

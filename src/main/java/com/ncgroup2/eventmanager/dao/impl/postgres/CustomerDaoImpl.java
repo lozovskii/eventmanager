@@ -2,6 +2,7 @@ package com.ncgroup2.eventmanager.dao.impl.postgres;
 
 import com.ncgroup2.eventmanager.dao.CustomerDao;
 import com.ncgroup2.eventmanager.entity.Customer;
+import com.ncgroup2.eventmanager.entity.Entity;
 import com.ncgroup2.eventmanager.entity.Relationship;
 import com.ncgroup2.eventmanager.mapper.CustomerMapper;
 import com.ncgroup2.eventmanager.mapper.RelationshipMapper;
@@ -37,31 +38,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
     }
 
     @Override
-    public void updateField(Customer customer, String fieldName, Object fieldValue) {
-
-        String sql = "UPDATE \"Customer\" SET " + fieldName + " = ? WHERE id = CAST (? AS uuid)";
-
-        Object[] params = new Object[]{
-                fieldValue,
-                customer.getId()
-        };
-
-        this.getJdbcTemplate().update(sql, params);
-
-    }
-
-    @Override
-    public Customer getByField(String fieldName, String fieldValue) {
-        Collection<Customer> customers = getCustomers(fieldName, fieldValue);
-        if (!customers.isEmpty()) {
-            return getCustomers(fieldName, fieldValue).iterator().next();
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public void addCustomer(Customer customer) {
+    public void create(Customer customer) {
 
         String sql = "INSERT INTO \"Customer\" " +
                 "(id,name,second_name,phone,login,email,password,isverified,token,avatar,registration_date)" +
@@ -84,20 +61,34 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
     }
 
-    @Transactional
     @Override
-    public void deleteCustomer(Customer customer) {
+    public Customer getById(Object id) {
+        String sql = BASE_SQL + "WHERE id = CAST (" + id + " AS uuid) ";
 
-        String sqlCustomer = "DELETE FROM \"Customer\" WHERE id = CAST (? AS uuid)";
+        Object[] params = new Object[]{id};
 
-        Object[] params = new Object[]{customer.getId()};
+        CustomerMapper mapper = new CustomerMapper();
 
-        this.getJdbcTemplate().update(sqlCustomer, params);
+        try {
+            return this.getJdbcTemplate().queryForObject(sql, params, mapper);
 
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
-    public Collection<Customer> getCustomers(String fieldName, String fieldValue) {
+    public Customer getEntityByField(String fieldName, Object fieldValue) {
+        Collection<Customer> customers = getEntitiesByField(fieldName, fieldValue);
+        if (!customers.isEmpty()) {
+            return getEntitiesByField(fieldName, fieldValue).iterator().next();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public Collection<Customer> getEntitiesByField(String fieldName, Object fieldValue) {
 
         String sql = BASE_SQL + "WHERE " + fieldName + " = ?";
 
@@ -112,7 +103,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
     }
 
     @Override
-    public Collection<Customer> getCustomers() {
+    public Collection<Customer> getAll() {
 
         CustomerMapper mapper = new CustomerMapper();
 
@@ -123,9 +114,22 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
         }
     }
 
+    @Override
+    public void updateField(Object id, String fieldName, Object fieldValue) {
+
+        String sql = "UPDATE \"Customer\" SET " + fieldName + " = ? WHERE id = CAST (? AS uuid)";
+
+        Object[] params = new Object[]{
+                fieldValue,
+                id
+        };
+
+        this.getJdbcTemplate().update(sql, params);
+
+    }
 
     @Override
-    public void updateCustomer(Customer customer) {
+    public void update(Customer customer) {
 
         String sql = "UPDATE \"Customer\" SET " +
                 "name = ?, " +
@@ -137,11 +141,22 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
                 "isverified = ?, " +
                 "token = ?, " +
                 "avatar = ? " +
-                " WHERE id = CAST (? AS uuid)";
+                " WHERE id = CAST (? AS UUID)";
 
         Object[] params = customer.getParams();
 
         this.getJdbcTemplate().update(sql, params);
+    }
+
+    @Transactional
+    public void delete(Object id) {
+
+        String sqlCustomer = "DELETE FROM \"Customer\" WHERE id = CAST (? AS uuid)";
+
+        Object[] params = new Object[]{id};
+
+        this.getJdbcTemplate().update(sqlCustomer, params);
+
     }
 
     @Override
@@ -153,6 +168,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
         this.getJdbcTemplate().update(sqlUnverified);
     }
+
 
     // PROFILE METHODS IMPLEMENTATION
 
