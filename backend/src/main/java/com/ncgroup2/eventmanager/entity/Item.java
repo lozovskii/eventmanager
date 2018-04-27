@@ -18,16 +18,6 @@ public class Item extends Entity {
         this.link = link;
     }
 
-    @Override
-    public Object[] getParams() {
-        return new Object[]{
-                this.name,
-                this.description,
-                this.image,
-                this.link
-        };
-    }
-
     public String getDescription() {
         return description;
     }

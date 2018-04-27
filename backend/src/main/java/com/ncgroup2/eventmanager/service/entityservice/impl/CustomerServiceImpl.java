@@ -1,10 +1,12 @@
-package com.ncgroup2.eventmanager.service.entityservice;
+package com.ncgroup2.eventmanager.service.entityservice.impl;
 
+import com.ncgroup2.eventmanager.dao.CustomerDao;
+import com.ncgroup2.eventmanager.entity.Relationship;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.ncgroup2.eventmanager.entity.Customer;
-import com.ncgroup2.eventmanager.service.CustomerService;
+import com.ncgroup2.eventmanager.service.entityservice.CustomerService;
 
 import java.util.List;
 
@@ -118,11 +120,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer getById(String id) {
-        return customerDaoImpl.getByField("id",id);
+        return customerDao.getByField("id",id);
     }
 
     @Override
     public Customer findByLogin(String login) {
-        return customerDaoImpl.getByField("login",login);
+        return customerDao.getByField("login",login);
     }
 }

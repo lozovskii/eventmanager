@@ -81,7 +81,6 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
         Object[] roleParams = new Object[]{customer.getLogin()};
         this.getJdbcTemplate().update(sqlRole, roleParams);
-
     }
 
     @Transactional

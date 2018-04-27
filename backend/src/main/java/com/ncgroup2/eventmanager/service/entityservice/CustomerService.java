@@ -1,6 +1,9 @@
-package com.ncgroup2.eventmanager.service;
+package com.ncgroup2.eventmanager.service.entityservice;
 
 import com.ncgroup2.eventmanager.entity.Customer;
+import com.ncgroup2.eventmanager.entity.Relationship;
+
+import java.util.List;
 
 public interface CustomerService {
 
@@ -24,4 +27,8 @@ public interface CustomerService {
     void acceptFriend(String token);
     void rejectFriend(String token);
     void uploadAvatar(Customer customer);
+
+    Customer getById(String id);
+
+    Customer findByLogin(String login);
 }

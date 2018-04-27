@@ -1,16 +1,16 @@
 package com.ncgroup2.eventmanager.service.sender;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class Sender {
 
-    @Autowired
-    private JavaMailSender mailSender;
+//    @Autowired
+//    private JavaMailSender mailSender;
 
     private String recipientAddress;
 
@@ -74,7 +74,7 @@ public class Sender {
 
         email.setText(text);
 
-        mailSender.send(email);
+//        mailSender.send(email);
 
     }
 }

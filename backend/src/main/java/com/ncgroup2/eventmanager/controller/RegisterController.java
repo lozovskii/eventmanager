@@ -1,14 +1,11 @@
 package com.ncgroup2.eventmanager.controller;
 
 import com.ncgroup2.eventmanager.entity.Customer;
-import com.ncgroup2.eventmanager.event.OnRegistrationCompleteEvent;
-import com.ncgroup2.eventmanager.service.CustomerService;
+import com.ncgroup2.eventmanager.service.entityservice.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,16 +19,19 @@ import java.time.temporal.ChronoUnit;
 @RequestMapping("/api")
 public class RegisterController {
 
+    @Autowired
     private CustomerService customerService;
+    @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
     private ApplicationEventPublisher eventPublisher;
 
-    @Autowired
-    public RegisterController(CustomerService customerService, PasswordEncoder passwordEncoder, ApplicationEventPublisher eventPublisher) {
-        this.customerService = customerService;
-        this.passwordEncoder = passwordEncoder;
-        this.eventPublisher = eventPublisher;
-    }
+
+//    public RegisterController(CustomerService customerService, PasswordEncoder passwordEncoder, ApplicationEventPublisher eventPublisher) {
+//        this.customerService = customerService;
+//        this.passwordEncoder = passwordEncoder;
+//        this.eventPublisher = eventPublisher;
+//    }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
@@ -53,17 +53,18 @@ public class RegisterController {
         Customer registered;
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
         try {
-            registered = customerService.register(customer);
+//            registered = customerService.register(customer);
+            customerService.register(customer);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email or login is already taken");
         }
 //        try {
-        String appUrl = request.getContextPath();
-        eventPublisher.publishEvent(new OnRegistrationCompleteEvent
-                (registered, request.getLocale(), appUrl));
-//        } catch (Exception me) {
-//            return "error";
-//        }
+//        String appUrl = request.getContextPath();
+//        eventPublisher.publishEvent(new OnRegistrationCompleteEvent
+//                (registered, request.getLocale(), appUrl));
+////        } catch (Exception me) {
+////            return "error";
+////        }
         return ResponseEntity.status(HttpStatus.OK).body("Registration completed");
     }
 
