@@ -6,21 +6,21 @@ import java.util.Collection;
 
 public interface DAO <E extends Entity, K > {
 
-    Collection<E> getAllEntities();
+    Collection<E> getAll();
 
-    E getEntityById(K id);
+    E getById(K id);
 
     E getEntityByField(String fieldName, K fieldValue);
 
     Collection<E> getEntitiesByField(String fieldName, K fieldValue);
 
-    void updateEntity(E entity);
+    void update(E entity);
 
-    void updateEntityField(K id, String fieldName, K fieldValue);
+    void updateField(K id, String fieldName, K fieldValue);
 
-    void deleteEntity(K id);
+    void delete(K id);
 
-    void createEntity(E entity);
+    void create(E entity);
 
 
 }
