@@ -3,12 +3,14 @@ import { HttpClient } from '@angular/common/http';
 
 import { Event } from '../_models/event';
 import {Observable} from 'rxjs/Observable';
+import {UserService} from "./user.service";
 
 @Injectable()
 export class EventService {
   private eventsUrl = 'api/events';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private userService : UserService) {
   }
 
   create(event: Event) {
@@ -17,7 +19,13 @@ export class EventService {
   }
 
   getAllEvents(): Observable<Event[]> {
-
     return this.http.get<Event[]>(this.eventsUrl)
   }
+
+  getEventsByCustId(): Observable<Event[]> {
+    let custId = this.userService.getCurrentId();
+    const url = `${this.eventsUrl}/${custId}`;
+    return this.http.get<Event[]>(url)
+  }
+
 }

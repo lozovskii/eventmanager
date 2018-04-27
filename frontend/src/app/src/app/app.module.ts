@@ -18,8 +18,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { ReCaptchaModule } from 'angular2-recaptcha';
 import { EventComponent } from './event/event.component';
-import { ContentComponent } from './content/content.component';
 import {EventService} from "./_services/event.service";
+import { EventlistComponent } from './eventlist/eventlist.component';
 
 
 @NgModule({
@@ -42,7 +42,7 @@ import {EventService} from "./_services/event.service";
     NavbarComponent,
     FooterComponent,
     EventComponent,
-    ContentComponent,
+    EventlistComponent,
   ],
   providers: [
     AuthGuard,

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { User } from '../_models/user';
 import { UserService } from '../_services/index';
+import {Router} from "@angular/router";
 
 @Component({
   moduleId: module.id.toString(),
@@ -10,9 +11,9 @@ import { UserService } from '../_services/index';
 
 export class HomeComponent implements OnInit {
   currentUser: User;
-//  users: User[] = [];
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService,
+              private router: Router) {
     let login = JSON.parse(localStorage.getItem('currentUser')).login;
     this.userService.getByLogin(login).subscribe(
       user => {
@@ -20,14 +21,10 @@ export class HomeComponent implements OnInit {
         this.currentUser= user;
         console.log(this.currentUser.name);
       }
-    );
-    // console.log("Current user " +this.currentUser);
-    // console.log("Current user login " +this.currentUser.login);
-  //   console.log("Current user name "+this.currentUser.name);
-  }
+    );}
 
   ngOnInit() {
-    // this.loadAllUsers();
+
   }
 
 //   deleteUser(id: number) {
@@ -37,4 +34,10 @@ export class HomeComponent implements OnInit {
 //   private loadAllUsers() {
 //     this.userService.getAll().subscribe(users => { this.users = users; });
 //   }
+
+  event() {
+    console.log('onSubmit');
+    this.router.navigate(['/event']);
+  }
+
  }

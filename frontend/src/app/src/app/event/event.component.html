@@ -1,45 +1,7 @@
 <div class="col-md-12">
-
-  <form [formGroup]="eventsForm" name="form" role="form" (ngSubmit)="getEvents()" novalidate>
-    <button type="submit" class="btn btn-primary">View</button>
-
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th scope="col">Id</th>
-        <th scope="col">Name</th>
-        <th scope="col">FolderId</th>
-        <th scope="col">CreatorId</th>
-        <th scope="col">startTime</th>
-        <th scope="col">endTime</th>
-        <th scope="col">Priority</th>
-        <th scope="col">Frequency</th>
-        <th scope="col">Description</th>
-        <th scope="col">statusId</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let event of events">
-        <th scope="row">{{event.id}}</th>
-        <td>{{event.name}}</td>
-        <td>{{event.folderId}}</td>
-        <td>{{event.creatorId}}</td>
-        <td>{{event.startTime}}</td>
-        <td>{{event.endTime}}</td>
-        <td>{{event.priority}}</td>
-        <td>{{event.frequency}}</td>
-        <td>{{event.description}}</td>
-        <td>{{event.status}}</td>
-      </tr>
-      </tbody>
-    </table>
-  </form>
-
-
   <div class="col-md-6" style="margin:0 auto">
 
     <h2>Create Event</h2>
-
 
     <br>
     <form [formGroup]="eventForm" name="form" role="form" (ngSubmit)="create(eventForm.value)" novalidate>

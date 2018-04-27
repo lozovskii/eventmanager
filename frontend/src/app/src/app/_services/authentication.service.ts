@@ -2,28 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/add/operator/map'
 import {UserAuthParam} from "../_models/userAuthParam.model";
-
-
+import {UserService} from "./user.service";
 
 @Injectable()
 export class AuthenticationService {
-
-  authenticated = false;
+  navbar = false;
+  variable = null;
   url = '/api/auth';
-  constructor(private http: HttpClient) { }
 
-  // login(username: string, password: string) {
-  //   return this.http.post<any>('/api/authenticate', { username: username, password: password })
-  //     .map(user => {
-  //       // login successful if there's a jwt token in the response
-  //       if (user && user.token) {
-  //         // store user details and jwt token in local storage to keep user logged in between page refreshes
-  //         localStorage.setItem('currentUser', JSON.stringify(user));
-  //       }
-  //
-  //       return user;
-  //     });
-  // }
+  constructor(private http: HttpClient,
+              private userService: UserService) { }
 
   login(userAuthParam : UserAuthParam) {
     return this.http.post<any>(this.url, userAuthParam)
@@ -36,7 +24,6 @@ export class AuthenticationService {
   }
 
   logout() {
-    // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
   }
 
@@ -50,4 +37,14 @@ export class AuthenticationService {
   //     return user;
   //   })
   // }
+
+  checkingLog(){
+    this.variable = JSON.parse(localStorage.getItem('currentUser'));
+    console.log('variable = ' + this.variable);
+    if(this.variable != null) {
+          this.navbar = true;
+    }
+    return this.navbar;
+  }
+
 }

@@ -1,6 +1,8 @@
 <div class="col-md-6 col-md-offset-3">
-  <h1>Hi {{currentUser.name}} {{currentUser.secondName}}!</h1>
 
+  <h1>Hi, {{currentUser.name}} {{currentUser.secondName}}!</h1>
 
-  <p><a [routerLink]="['/login']">Logout</a></p>
+  <p><a [routerLink]="['/event']" class="navbar-brand">Create Event</a></p>
+  <p><a [routerLink]="['/eventlist']" class="navbar-brand">View Events</a></p>
+
 </div>

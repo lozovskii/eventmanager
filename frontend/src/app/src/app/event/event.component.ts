@@ -4,6 +4,7 @@ import {Event} from "../_models/event";
 import {AlertService} from "../_services/alert.service";
 import {Router} from "@angular/router";
 import {EventService} from "../_services/event.service";
+import {UserService} from "../_services/user.service";
 
 @Component({
   selector: 'app-event',
@@ -12,15 +13,14 @@ import {EventService} from "../_services/event.service";
 })
 export class EventComponent implements OnInit {
   event: Event;
-  events: Event[];
   loading = false;
   eventForm: FormGroup;
-  eventsForm: FormGroup;
 
   constructor(private router: Router,
               private eventService: EventService,
               private alertService: AlertService,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private userService : UserService) {
   }
 
   ngOnInit(): void {
@@ -38,7 +38,6 @@ export class EventComponent implements OnInit {
       description: [''],
       status: ['']
     });
-    this.eventsForm = this.formBuilder.group({});
   }
 
   create(eventFromForm: Event) {
@@ -47,12 +46,14 @@ export class EventComponent implements OnInit {
       eventFromForm.endTime = eventFromForm.day + ' ' + eventFromForm.endTime + ':00';
       eventFromForm.frequency = eventFromForm.frequencyValue + '-' + eventFromForm.frequency;
     }
+    let currentId2 = this.userService.getCurrentId();
+    eventFromForm.creatorId = currentId2;
     console.log('event: ' + JSON.stringify(eventFromForm));
     this.loading = true;
     this.eventService.create(eventFromForm)
       .subscribe(
         data => {
-          if(eventFromForm.day = '') {
+          if((eventFromForm.day != null) && (eventFromForm.day != '')) {
             this.alertService.success('Event successfully created!', true);
             this.router.navigate(['/content']);
           }else{
@@ -65,11 +66,5 @@ export class EventComponent implements OnInit {
           this.loading = false;
         });
   }
-
-  getEvents(): void {
-    this.eventService.getAllEvents()
-      .subscribe((events) => this.events = events);
-  }
-
 
 }
