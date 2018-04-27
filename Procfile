@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -jar target/eventmanager-0.0.1-SNAPSHOT.jar --spring.profiles.active=$PROFILE
+web: java -Dserver.port=$PORT $JAVA_OPTS -jar target/eventmanager-0.0.1-SNAPSHOT.jar
