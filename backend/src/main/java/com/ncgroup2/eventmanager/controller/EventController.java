@@ -27,8 +27,15 @@ public class EventController {
 
     @GetMapping
     public List<Event> getEvents(){
-        System.out.println("Controller works!");
         List<Event> events = eventService.getAllEvents();
+        System.out.println(events);
+        return events;
+    }
+
+    @GetMapping("/{custId}")
+        public List<Event> getEventsByCustId(@PathVariable String custId){
+        System.out.println("Controller works!");
+        List<Event> events = eventService.getEventsByCustId(custId);
         System.out.println(events);
         return events;
     }

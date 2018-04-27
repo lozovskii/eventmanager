@@ -15,4 +15,6 @@ public interface EventDao {
     int getIdByField(String fieldName, String fieldValue);
 
     List<Event> getAllEvents();
+
+    List<Event> getEventsByCustId(String custId);
 }

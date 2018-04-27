@@ -11,4 +11,6 @@ public interface EventService {
     void changeVisibility(String visibilityType, Event event);
 
     List<Event> getAllEvents();
+
+    List<Event> getEventsByCustId(String custId);
 }

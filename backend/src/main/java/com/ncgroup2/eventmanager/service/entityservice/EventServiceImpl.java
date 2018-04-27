@@ -29,4 +29,10 @@ public class EventServiceImpl implements EventService {
         List<Event> events = eventDaoImpl.getAllEvents();
         return events;
     }
+
+    @Override
+    public List<Event> getEventsByCustId(String custId) {
+        List<Event> events = eventDaoImpl.getEventsByCustId(custId);
+        return events;
+    }
 }

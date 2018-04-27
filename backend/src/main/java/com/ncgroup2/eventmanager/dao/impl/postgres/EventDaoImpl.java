@@ -34,13 +34,14 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
         String query = "INSERT INTO \"Event\" " +
                 "(id,name,folder_id, creator_id ,start_time,end_time,priority,visibility,frequency_value,description,status)" +
-                "VALUES(uuid_generate_v1(),?,null,null,?,?,?,(SELECT id FROM \"Event_Visibility\" WHERE name = \'PRIVATE\'),?,?," +
+                "VALUES(uuid_generate_v1(),?, null, CAST(? AS uuid),?,?,?,(SELECT id FROM \"Event_Visibility\" WHERE name = \'PRIVATE\'),?,?," +
                 "(SELECT id FROM \"Event_Status\" WHERE name = \'NON - OCCURRED\'));";
 
 //        String query = queryService.getQuery("create.event");
 
         Object[] params = new Object[]{
                 event.getName(),
+                event.getCreatorId(),
                 event.getStartTime(),
                 event.getEndTime(),
                 event.getPriority(),
@@ -51,14 +52,14 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     }
 
     @Override
-    public void deleteEvent(Event event){
-        String query = "DELETE FROM Event WHERE id = CAST (? AS uuid)";
+    public void deleteEvent(Event event) {
+        String query = "DELETE FROM Event WHERE id = CAST (? AS UUID)";
 
         Object[] params = new Object[]{
                 event.getId()
         };
 
-        this.getJdbcTemplate().update(query,params);
+        this.getJdbcTemplate().update(query, params);
     }
 
     @Override
@@ -85,15 +86,29 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
         int returnedId = this.getJdbcTemplate().update(sql, params);
 
-       return returnedId;
+        return returnedId;
     }
 
     @Override
     public List<Event> getAllEvents() {
 
         String sql = "SELECT * FROM \"Event\"";
-        List<Event> events = this.getJdbcTemplate().query(sql,new BeanPropertyRowMapper(Event.class));
+        List<Event> events = this.getJdbcTemplate().query(sql, new BeanPropertyRowMapper(Event.class));
 
+        return events;
+    }
+
+    @Override
+    public List<Event> getEventsByCustId(String custId) {
+
+        String sql = "SELECT  \"Event\".name, start_time, end_time, description, priority, visibility, status, frequency_value " +
+                     "FROM \"Event\" WHERE creator_id = CAST (? AS uuid)" +
+                     "AND start_time IS NOT NULL " +
+                     "AND end_time IS NOT NULL ";
+        Object[] params = new Object[]{
+                custId
+        };
+        List<Event> events = this.getJdbcTemplate().query(sql, params, new BeanPropertyRowMapper(Event.class));
         return events;
     }
 
