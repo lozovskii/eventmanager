@@ -35,6 +35,7 @@ public class TokenGeneratorImpl implements TokenGenerator{
         Date tokenTime = Date.from(tokenTimeAccess);
 
         return Jwts.builder()
+                .claim("id", customer.getId())
                 .claim("login", customer.getLogin())
                 .setExpiration(tokenTime)
                 .signWith(SignatureAlgorithm.HS256, key)
