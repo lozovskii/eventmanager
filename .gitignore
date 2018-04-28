@@ -1,7 +1,9 @@
 /backend/target/
 /frontend/node
 /frontend/node_modules
+/frontend/proxy.conf.json
 /backend/src/main/resources/static
+/backend/src/main/resources/application.properties
 /.idea/
 !.mvn/wrapper/maven-wrapper.jar
 

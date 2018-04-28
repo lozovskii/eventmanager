@@ -47,7 +47,7 @@ import { NotelistComponent } from './notelist/notelist.component';
     FooterComponent,
     EventComponent,
     EventlistComponent,
-    RegistrationConfirmComponent
+    RegistrationConfirmComponent,
     ProfileComponent,
     VnavbarComponent,
     NotelistComponent,
