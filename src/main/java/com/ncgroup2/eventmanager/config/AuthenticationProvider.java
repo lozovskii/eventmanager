@@ -11,8 +11,12 @@ import javax.sql.DataSource;
 @Configuration
 public class AuthenticationProvider {
 
+    private DataSource dataSource;
+
     @Autowired
-    DataSource dataSource;
+    public AuthenticationProvider(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Bean(name = "userDetailsService")
     public UserDetailsService userDetailsService() {
