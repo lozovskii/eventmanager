@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS
 "Chat",
 "Customer_WishList",
 "Event_WishList",
+"Customer_Item_Priority",
 "Item_WishList",
 "Item_Tag",
 "Item",
@@ -11,12 +12,9 @@ DROP TABLE IF EXISTS
 "Customer_Event_Priority",
 "Customer_Event_Status",
 "Event_Status",
-"Event_Frequency",
 "Event_Visibility",
 "Event",
 "Folder",
-"Customer_Role",
-"Role",
 "Relationship",
 "Customer",
 "Relation_Status";
@@ -40,7 +38,7 @@ CREATE TABLE "Customer"
   password 		text NOT NULL,
   isVerified 		boolean,
   token 		text,
-  avatar		bytea,
+  avatar		text,
   registration_date 	TIMESTAMP WITHOUT TIME ZONE
 );
 
@@ -52,26 +50,13 @@ CREATE TABLE "Relationship"
   status		smallserial REFERENCES "Relation_Status" (id) ON DELETE CASCADE
 );
 
-CREATE TABLE "Role"
-(
-  id 			smallserial PRIMARY KEY,
-  name	 		varchar(20) NOT NULL UNIQUE,
-  description 		text
-);
-
-CREATE TABLE "Customer_Role"
-(
-  id 			uuid PRIMARY KEY DEFAULT uuid_generate_v1(),
-  customer_id 		uuid REFERENCES "Customer" (id) ON DELETE CASCADE,
-  role_id 		smallserial  REFERENCES "Role" (id) ON DELETE CASCADE
-);
-
 
 CREATE TABLE "Folder"
 (
   id			uuid PRIMARY KEY DEFAULT uuid_generate_v1(),
   customer_id		uuid REFERENCES "Customer" (id) ON DELETE CASCADE,
-  name			varchar(20) NOT NULL
+  name			varchar(20) NOT NULL,
+  isShared		boolean
 );
 
 CREATE TABLE "Event_Status"
@@ -91,15 +76,14 @@ CREATE TABLE "Event_Visibility"
 CREATE TABLE "Event"
 (
   id 			uuid PRIMARY KEY DEFAULT uuid_generate_v1(),
+  group_id		uuid DEFAULT uuid_generate_v1(),
+  name			varchar(40) NOT NULL,
   folder_id 		uuid REFERENCES "Folder" (id) ON DELETE CASCADE,
   creator_id 		uuid REFERENCES "Customer" (id) ON DELETE CASCADE,
   start_time		TIMESTAMP WITHOUT TIME ZONE,
   end_time		TIMESTAMP WITHOUT TIME ZONE,
   description   varchar(1024),
-  name			varchar(40) NOT NULL,
-  priority		varchar(20),
   visibility		smallserial REFERENCES "Event_Visibility" (id) ON DELETE CASCADE,
-  frequency_value VARCHAR(20),
   status		smallserial REFERENCES "Event_Status" (id) ON DELETE CASCADE
 );
 
@@ -123,7 +107,7 @@ CREATE TABLE "Customer_Event"
   event_id 		uuid REFERENCES "Event" (id) ON DELETE CASCADE,
   customer_id 		uuid REFERENCES "Customer" (id) ON DELETE CASCADE,
   start_date_notification TIMESTAMP WITHOUT TIME ZONE,
-  frequency		varchar(20),
+  frequency_value		smallint,
   priority		smallserial REFERENCES "Customer_Event_Priority" (id) ON DELETE CASCADE,
   status		smallserial REFERENCES "Customer_Event_Status" (id) ON DELETE CASCADE
 );
@@ -132,7 +116,8 @@ CREATE TABLE "Customer_Event"
 CREATE TABLE "Tag"
 (
   id 			uuid PRIMARY KEY DEFAULT uuid_generate_v1(),
-  name			varchar(40) NOT NULL
+  name			varchar(30) NOT NULL,
+  count 		integer
 );
 
 CREATE TABLE "Item"
@@ -140,8 +125,8 @@ CREATE TABLE "Item"
   id			uuid PRIMARY KEY DEFAULT uuid_generate_v1(),
   name			varchar(40) NOT NULL,
   description		varchar(1024),
-  image			bytea,
-  link			varchar(256)
+  image			text,
+  link			varchar(128)
 );
 
 CREATE TABLE "Item_Tag"
@@ -151,24 +136,33 @@ CREATE TABLE "Item_Tag"
   item_id		uuid NOT NULL REFERENCES "Item" (id) ON DELETE CASCADE
 );
 
+CREATE TABLE "Customer_WishList"
+(
+  id			uuid PRIMARY KEY DEFAULT uuid_generate_v1(),
+  customer_id   uuid NOT NULL UNIQUE REFERENCES "Customer" (id) ON DELETE CASCADE
+);
+
+CREATE TABLE "Customer_Item_Priority"
+(
+  id 			smallserial PRIMARY KEY,
+  name			varchar(20) NOT NULL UNIQUE,
+  description		text
+);
+
 CREATE TABLE "Item_WishList"
 (
   id			uuid PRIMARY KEY DEFAULT uuid_generate_v1(),
   item_id		uuid REFERENCES "Item" (id) ON DELETE CASCADE,
-  wishlist_id		uuid,
-  booker_customer_id	uuid
+  booker_customer_id	uuid REFERENCES "Customer_WishList" (customer_id) ON DELETE CASCADE,
+  priority 		smallserial NOT NULL REFERENCES "Customer_Item_Priority" (id) ON DELETE CASCADE
 );
+
 
 CREATE TABLE "Event_WishList"
 (
   id			uuid PRIMARY KEY DEFAULT uuid_generate_v1(),
-  event_id		uuid NOT NULL REFERENCES "Event" (id) ON DELETE CASCADE
-);
-
-CREATE TABLE "Customer_WishList"
-(
-  id			uuid PRIMARY KEY DEFAULT uuid_generate_v1(),
-  customer_id		uuid NOT NULL REFERENCES "Customer" (id) ON DELETE CASCADE
+  event_id		uuid NOT NULL REFERENCES "Event" (id) ON DELETE CASCADE,
+  item_wishlist_id		uuid NOT NULL REFERENCES "Item_WishList" (id) ON DELETE CASCADE
 );
 
 
@@ -187,4 +181,3 @@ CREATE TABLE "Message"
   content		text NOT NULL,
   date			TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
-

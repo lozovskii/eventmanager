@@ -21,6 +21,9 @@ import { EventComponent } from './event/event.component';
 import {EventService} from "./_services/event.service";
 import { EventlistComponent } from './eventlist/eventlist.component';
 import { RegistrationConfirmComponent } from './registration-confirm/registration-confirm.component';
+import { ProfileComponent } from './profile/profile.component';
+import { VnavbarComponent } from './vnavbar/vnavbar.component';
+import { NotelistComponent } from './notelist/notelist.component';
 
 
 @NgModule({
@@ -45,6 +48,9 @@ import { RegistrationConfirmComponent } from './registration-confirm/registratio
     EventComponent,
     EventlistComponent,
     RegistrationConfirmComponent
+    ProfileComponent,
+    VnavbarComponent,
+    NotelistComponent,
   ],
   providers: [
     AuthGuard,

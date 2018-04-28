@@ -1,8 +1,33 @@
-<div class="col-md-6 col-md-offset-3">
+<!--<app-vnavbar></app-vnavbar>-->
+<div class="container-fluid">
 
-  <h1>Hi, {{currentUser.name}} {{currentUser.secondName}}!</h1>
+    <div class="row">
+      <nav class="col-md-3">
+        <div class="sidebar-sticky">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a [routerLink]="['/profile']" class="navbar-brand">My Profile</a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['/event']" class="navbar-brand">Create Event</a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['/eventlist']" class="navbar-brand">View Events</a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['/notelist']" class="navbar-brand">Notes</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
 
-  <p><a [routerLink]="['/event']" class="navbar-brand">Create Event</a></p>
-  <p><a [routerLink]="['/eventlist']" class="navbar-brand">View Events</a></p>
+      <br>
+      <main role="main" class="col-md-9">
+        <h1>Hi, {{currentUser.name}} {{currentUser.secondName}}!</h1>
+      </main>
 
-</div>
+    </div>
+
+
+<!--</div>-->
+<br>

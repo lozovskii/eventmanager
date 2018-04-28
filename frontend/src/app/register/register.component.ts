@@ -10,11 +10,6 @@ import {User} from "../_models/user";
   templateUrl: 'register.component.html'
 })
 
-// @Component({
-//   // selector: 'app-regform',
-//   templateUrl: 'register.component.html',
-// })
-
 export class RegisterComponent implements OnInit{
   user: User;
   // loading = false;
@@ -37,7 +32,6 @@ export class RegisterComponent implements OnInit{
   }
 
   register(userFromForm: User){
-    console.log('onSubmit');
     console.log('user: ' + JSON.stringify(userFromForm));
     // this.loading = true;
     this.registrationService.create(userFromForm)
@@ -47,7 +41,7 @@ export class RegisterComponent implements OnInit{
           this.router.navigate(['/login']);
         },
         error => {
-          this.alertService.error(error);
+          this.alertService.error('Wrong input! Please try again..');
           // this.loading = false;
         });
   }
