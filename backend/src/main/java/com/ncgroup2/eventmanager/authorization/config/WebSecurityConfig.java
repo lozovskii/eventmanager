@@ -32,13 +32,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.authenticationTokenFilter = authenticationTokenFilter;
     }
 
-    @Autowired
-    public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-
-//        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-
-    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -50,11 +43,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .headers().cacheControl();
     }
-
-//    @Bean(name = "passwordEncoder")
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
