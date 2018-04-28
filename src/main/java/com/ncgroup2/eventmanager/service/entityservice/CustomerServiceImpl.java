@@ -32,7 +32,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public boolean isEmailUnique(String email) {
-        return customerDao.getEntitiesByField("email",email) == null;
+        return customerDao.getEntityByField("email",email) == null;
     }
 
     @Override
