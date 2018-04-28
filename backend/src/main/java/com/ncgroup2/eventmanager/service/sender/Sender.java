@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class Sender {
 
-//    @Autowired
-//    private JavaMailSender mailSender;
+    @Autowired
+    private JavaMailSender mailSender;
 
     private String recipientAddress;
 
@@ -23,7 +23,7 @@ public class Sender {
     public void sendEmail(String recipientAddress, SubjectEnum subjectEnum, String token) {
 
         String message = "Confirmation link: \n";
-        String hosting = "https://rocky-dusk-73382.herokuapp.com";
+        String hosting = "https://eventmanager2018.herokuapp.com";
 
         this.recipientAddress = recipientAddress;
 
@@ -74,7 +74,7 @@ public class Sender {
 
         email.setText(text);
 
-//        mailSender.send(email);
+        mailSender.send(email);
 
     }
 }

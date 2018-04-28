@@ -2,6 +2,8 @@ package com.ncgroup2.eventmanager.controller;
 
 import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.service.entityservice.CustomerService;
+import com.ncgroup2.eventmanager.service.sender.Sender;
+import com.ncgroup2.eventmanager.service.sender.SubjectEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -14,57 +16,44 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
 public class RegisterController {
 
+    private final CustomerService customerService;
+    private final PasswordEncoder passwordEncoder;
+    private final Sender mailSender;
+
     @Autowired
-    private CustomerService customerService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private ApplicationEventPublisher eventPublisher;
+    public RegisterController(CustomerService customerService, PasswordEncoder passwordEncoder, Sender mailSender) {
+        this.customerService = customerService;
+        this.passwordEncoder = passwordEncoder;
+        this.mailSender = mailSender;
+    }
 
 
-//    public RegisterController(CustomerService customerService, PasswordEncoder passwordEncoder, ApplicationEventPublisher eventPublisher) {
-//        this.customerService = customerService;
-//        this.passwordEncoder = passwordEncoder;
-//        this.eventPublisher = eventPublisher;
-//    }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> addUser(@RequestBody Customer customer, BindingResult result, Model model, WebRequest request) {
+    public ResponseEntity<String> addUser(@RequestBody Customer customer) {
         if (customerService.isCustomerPresent(customer.getLogin())) {
-            model.addAttribute("customer_exist", true);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid login");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This login is already taken");
         }
 
-        if(!customerService.isEmailUnique(customer.getEmail())) {
-            model.addAttribute("email_exist", true);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid email");
+        if (!customerService.isEmailUnique(customer.getEmail())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This email is already taken");
         }
 
-        if(customer.getPassword().trim().isEmpty()) {
-            model.addAttribute("empty_password",true);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid password");
-        }
-        Customer registered;
+        String token = UUID.randomUUID().toString();
+        customer.setToken(token);
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
-        try {
-//            registered = customerService.register(customer);
-            customerService.register(customer);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email or login is already taken");
-        }
-//        try {
-//        String appUrl = request.getContextPath();
-//        eventPublisher.publishEvent(new OnRegistrationCompleteEvent
-//                (registered, request.getLocale(), appUrl));
-////        } catch (Exception me) {
-////            return "error";
-////        }
+
+        customerService.register(customer);
+
+        mailSender.sendEmail(customer.getEmail(), SubjectEnum.REGISTRATION, token);
+
         return ResponseEntity.status(HttpStatus.OK).body("Registration completed");
     }
 
@@ -89,7 +78,6 @@ public class RegisterController {
 
         return "registration/successful_confirmation";
     }
-
 
 
 }
