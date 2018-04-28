@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -55,26 +53,26 @@ public class RegisterController {
         return ResponseEntity.status(HttpStatus.OK).body("Registration completed");
     }
 
-    @RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)
-    public String confirmRegistration
-            (WebRequest request, Model model, @RequestParam("token") String token) {
-        Customer customer = customerService.getCustomer(token);
+//    @RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)
+    @ResponseStatus
+    @GetMapping(value = "/registrationConfirm")
+    public ResponseEntity confirmRegistration
+            (@RequestParam String token) {
+        Customer customer = customerService.getCustomerByToken(token);
         if (customer == null) {
-            model.addAttribute("message", "Invalid token");
-            return "/registration/badUser";
+            return new ResponseEntity("Your token is invalid", HttpStatus.BAD_REQUEST);
         }
         Instant expireDate = customer.getRegistrationDate().plus(24, ChronoUnit.HOURS);
 
         if (Instant.now().isAfter(expireDate)) {
-            model.addAttribute("message", "This link is no longer valid. Please, register again");
             customerService.deleteCustomer(customer);
-            return "/registration/badUser";
+            return new ResponseEntity("Your token is expired. Please, register again",HttpStatus.BAD_REQUEST);
         }
 
         customerService.confirmCustomer(customer);
 
 
-        return "registration/successful_confirmation";
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 

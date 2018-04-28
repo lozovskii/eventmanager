@@ -59,7 +59,7 @@ public class PasswordResetController {
                 Model model,
                 @RequestParam ("token") String token) {
 
-            Customer customer = customerService.getCustomer(token);
+            Customer customer = customerService.getCustomerByToken(token);
 
             if (customer == null) {
 
@@ -81,7 +81,7 @@ public class PasswordResetController {
             @RequestParam ("token") String token)
     {
 
-        Customer customer = customerService.getCustomer(token);
+        Customer customer = customerService.getCustomerByToken(token);
 
         System.out.println(token);
 

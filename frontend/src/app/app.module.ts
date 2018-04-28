@@ -9,7 +9,7 @@ import { routing }        from './app.routing';
 
 import { AlertComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
-import { AlertService, AuthenticationService, UserService } from './_services/index';
+import {AlertService, AuthenticationService, RegistrationService, UserService} from './_services/index';
 import { HomeComponent } from './home/index';
 import { LoginComponent } from './login/index';
 import { RegisterComponent } from './register/index';
@@ -20,6 +20,7 @@ import { ReCaptchaModule } from 'angular2-recaptcha';
 import { EventComponent } from './event/event.component';
 import {EventService} from "./_services/event.service";
 import { EventlistComponent } from './eventlist/eventlist.component';
+import { RegistrationConfirmComponent } from './registration-confirm/registration-confirm.component';
 
 
 @NgModule({
@@ -43,13 +44,15 @@ import { EventlistComponent } from './eventlist/eventlist.component';
     FooterComponent,
     EventComponent,
     EventlistComponent,
+    RegistrationConfirmComponent
   ],
   providers: [
     AuthGuard,
     AlertService,
     AuthenticationService,
     UserService,
-    EventService
+    EventService,
+    RegistrationService
     // provider used to create fake backend
   ],
   bootstrap: [AppComponent]

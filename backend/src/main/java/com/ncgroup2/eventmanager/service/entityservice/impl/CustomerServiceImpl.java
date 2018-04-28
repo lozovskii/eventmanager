@@ -42,7 +42,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer getCustomer(String token) {
+    public Customer getCustomerByToken(String token) {
         return customerDao.getByField("token", token);
     }
 

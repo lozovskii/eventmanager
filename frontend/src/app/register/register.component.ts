@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {UserService, AlertService} from "../_services/index";
+import {RegistrationService, AlertService} from "../_services/index";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {User} from "../_models/user";
+
 
 @Component({
   moduleId: module.id.toString(),
@@ -20,7 +21,7 @@ export class RegisterComponent implements OnInit{
   registerForm: FormGroup;
 
   constructor(private router: Router,
-              private userService: UserService,
+              private registrationService: RegistrationService,
               private alertService: AlertService,
               private formBuilder: FormBuilder) {
   }
@@ -39,7 +40,7 @@ export class RegisterComponent implements OnInit{
     console.log('onSubmit');
     console.log('user: ' + JSON.stringify(userFromForm));
     // this.loading = true;
-    this.userService.create(userFromForm)
+    this.registrationService.create(userFromForm)
       .subscribe(
         data => {
            this.alertService.success('Registration successful', true);

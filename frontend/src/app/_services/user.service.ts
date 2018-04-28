@@ -29,10 +29,6 @@ export class UserService {
     // .map((response: Response) => response.json());
   }
 
-  create(user: User) {
-    console.log('here: ' + JSON.stringify(user));
-    return this.http.post<User>('/api/register', user);
-  }
 
   update(user: User) {
     return this.http.put('/api/users/' + user.id, user);

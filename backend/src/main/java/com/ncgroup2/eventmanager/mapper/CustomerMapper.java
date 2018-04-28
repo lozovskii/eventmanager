@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
 
 public class CustomerMapper implements RowMapper<Customer> {
 
@@ -20,6 +21,8 @@ public class CustomerMapper implements RowMapper<Customer> {
         customer.setEmail(resultSet.getString("email"));
         customer.setPassword(resultSet.getString("password"));
         customer.setAvatar(resultSet.getString("avatar"));
+        customer.setRegistrationDate(Instant.ofEpochMilli(
+                resultSet.getTimestamp("registration_date").getTime()));
 
         return customer;
     }

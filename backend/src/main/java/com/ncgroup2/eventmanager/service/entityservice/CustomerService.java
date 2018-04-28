@@ -12,7 +12,7 @@ public interface CustomerService {
     void createVerificationToken(Customer customer, String token);
     boolean isEmailUnique(String email);
     void deleteCustomer(Customer customer);
-    Customer getCustomer(String token);
+    Customer getCustomerByToken(String token);
     Customer getCustomerByEmail(String email);
     void confirmCustomer(Customer customer);
     void updatePassword(Customer customer);
