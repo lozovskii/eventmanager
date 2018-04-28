@@ -76,13 +76,16 @@ Licence URI: http://www.os-templates.com/template-terms
             <footer>
                 <ul class="nospace inline pushright">
                     <li>
-                        <button class="btn" onclick="document.getElementById('id01').style.display='block'">Sign In
+                        <button sec:authorize="isAnonymous()" class="btn" onclick="document.getElementById('id01').style.display='block'">Sign In
                         </button>
+                        <a sec:authorize="isAuthenticated()" class="btn" th:href="@{'/profile/'+${#authentication.name}}">Profile
+                        </a>
                     </li>
                     <li>
-                        <button class="btn inverse" onclick="document.getElementById('id02').style.display='block'">Sign
-                            Up
+                        <button sec:authorize="isAnonymous()" class="btn inverse" onclick="document.getElementById('id02').style.display='block'">Sign Up
                         </button>
+                        <a sec:authorize="isAuthenticated()" class="btn inverse" href="/logout">Sign Out
+                        </a>
                     </li>
 
                     <!--<li><a class="btn inverse" href="/register">Sign Up</a></li>-->
