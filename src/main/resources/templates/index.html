@@ -28,8 +28,25 @@ Licence URI: http://www.os-templates.com/template-terms
             <li class="active"><a href="/">Home</a></li>
             <li><a href="#pem_features">Features</a></li>
             <li><a href="#pem_inspiration">Inspiration</a></li>
-            <li><a href="#pem_events">Events</a></li>
-            <li sec:authorize="isAuthenticated()"><a th:href="@{'/profile/'+${#authentication.name}}">Profile</a></li>
+
+            <li sec:authorize="isAnonymous()"><a href="#pem_events">Events</a></li>
+
+            <li sec:authorize="isAuthenticated()">
+                <a class="drop" href="/events">Events</a>
+                <ul>
+                    <li><a href="/">Notes</a></li>
+                    <li><a href="/">Drafts</a></li>
+                </ul>
+            </li>
+
+            <li sec:authorize="isAuthenticated()">
+                <a class="drop" th:href="@{'/profile/'+${#authentication.name}}">Profile</a>
+                <ul>
+                    <li><a href="/profile/friends">Friends</a></li>
+                    <li><a href="/profile/notifications">Notifications</a></li>
+                </ul>
+            </li>
+
             <li sec:authorize="isAuthenticated()"><a href="/logout">Sign Out</a></li>
 
         </ul>
