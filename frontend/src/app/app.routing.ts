@@ -8,6 +8,9 @@ import { AuthGuard } from './_guards/index';
 import {LandingPageComponent} from "./landing-page/landing-page.component";
 import {EventComponent} from "./event/event.component";
 import {EventlistComponent} from "./eventlist/eventlist.component";
+import {ProfileComponent} from "./profile/profile.component";
+import {VnavbarComponent} from "./vnavbar/vnavbar.component";
+import {NotelistComponent} from "./notelist/notelist.component";
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full'},
@@ -16,6 +19,9 @@ const appRoutes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'event', component: EventComponent},
   { path: 'eventlist', component: EventlistComponent},
+  { path: 'profile', component: ProfileComponent},
+  { path: 'vnavbar', component: VnavbarComponent},
+  { path: 'notelist', component: NotelistComponent},
 
   // otherwise redirect to home
  { path: '**', redirectTo: '' }
