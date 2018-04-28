@@ -1,6 +1,6 @@
 /backend/target/
-/frontend/src/app/node
-/frontend/src/app/node_modules
+/frontend/node
+/frontend/node_modules
 /backend/src/main/resources/static
 /.idea/
 !.mvn/wrapper/maven-wrapper.jar
