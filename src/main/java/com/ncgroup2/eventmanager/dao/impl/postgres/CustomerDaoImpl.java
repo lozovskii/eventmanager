@@ -50,14 +50,14 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
         this.getJdbcTemplate().update(sql, params);
 
-        String sqlRole = "INSERT INTO \"Customer_Role\" VALUES (" +
-                "uuid_generate_v1()," +
-                "(SELECT id FROM \"Customer\" WHERE login = ?)," +
-                "(SELECT id FROM \"Role\" WHERE name = 'USER')" +
-                ")";
-
-        Object[] roleParams = new Object[]{customer.getLogin()};
-        this.getJdbcTemplate().update(sqlRole, roleParams);
+//        String sqlRole = "INSERT INTO \"Customer_Role\" VALUES (" +
+//                "uuid_generate_v1()," +
+//                "(SELECT id FROM \"Customer\" WHERE login = ?)," +
+//                "(SELECT id FROM \"Role\" WHERE name = 'USER')" +
+//                ")";
+//
+//        Object[] roleParams = new Object[]{customer.getLogin()};
+//        this.getJdbcTemplate().update(sqlRole, roleParams);
 
     }
 
