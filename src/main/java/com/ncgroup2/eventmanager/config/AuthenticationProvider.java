@@ -1,4 +1,4 @@
-package com.ncgroup2.e?q=errorventmanager.config;
+package com.ncgroup2.eventmanager.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
