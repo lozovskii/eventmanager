@@ -20,6 +20,7 @@ import { ReCaptchaModule } from 'angular2-recaptcha';
 import { EventComponent } from './event/event.component';
 import {EventService} from "./_services/event.service";
 import { EventlistComponent } from './eventlist/eventlist.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { EventlistComponent } from './eventlist/eventlist.component';
     FooterComponent,
     EventComponent,
     EventlistComponent,
+    ProfileComponent,
   ],
   providers: [
     AuthGuard,
