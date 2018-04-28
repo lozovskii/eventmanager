@@ -31,7 +31,7 @@ public class Sender {
 
             case REGISTRATION: {
                 this.subject = "Registration";
-                this.confirmationUrl = "/registrationConfirm";
+                this.confirmationUrl = "/registration-confirm";
 
             } break;
 
