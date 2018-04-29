@@ -12,6 +12,7 @@ import {RegistrationConfirmComponent} from "./registration-confirm/registration-
 import {ProfileComponent} from "./profile/profile.component";
 import {VnavbarComponent} from "./vnavbar/vnavbar.component";
 import {SendLinkComponent} from "./reset-password/send-link/send-link.component";
+import {ResetComponent} from "./reset-password/reset/reset.component";
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full'},
@@ -21,7 +22,8 @@ const appRoutes: Routes = [
   { path: 'event', component: EventComponent},
   { path: 'eventlist', component: EventlistComponent},
   {path: 'registration-confirm', component: RegistrationConfirmComponent},
-  {path: 'send-link', component: SendLinkComponent},
+  {path: 'send-reset-link', component: SendLinkComponent},
+  {path: 'reset-password', component: ResetComponent},
   { path: 'profile', component: ProfileComponent},
   { path: 'vnavbar', component: VnavbarComponent},
 

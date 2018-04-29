@@ -1,5 +1,6 @@
 package com.ncgroup2.eventmanager.controller;
 
+import com.ncgroup2.eventmanager.dto.PasswordResetDTO;
 import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.service.entityservice.CustomerService;
 import com.ncgroup2.eventmanager.service.sender.Sender;
@@ -66,10 +67,9 @@ public class PasswordResetController {
 
     @RequestMapping(value = "/setNewPassword", method = RequestMethod.POST)
     public ResponseEntity setPassword(
-            @RequestParam("password") String password,
-            @RequestParam("token") String token) {
+            @RequestBody PasswordResetDTO passwordDTO) {
 
-        Customer customer = customerService.getCustomerByToken(token);
+        Customer customer = customerService.getCustomerByToken(passwordDTO.getToken());
 
 //        System.out.println(token);
 //
@@ -81,11 +81,13 @@ public class PasswordResetController {
 
         }
 
-        customer.setPassword(passwordEncoder.encode(password));
+        customer.setPassword(passwordEncoder.encode(passwordDTO.getPassword()));
+        customerService.updatePassword(customer);
 
         return new ResponseEntity(HttpStatus.OK);
 
     }
+
 
 }
 
