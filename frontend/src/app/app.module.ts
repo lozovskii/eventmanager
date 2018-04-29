@@ -26,6 +26,7 @@ import { VnavbarComponent } from './vnavbar/vnavbar.component';
 import { NotelistComponent } from './notelist/notelist.component';
 import { SendLinkComponent } from './reset-password/send-link/send-link.component';
 import {ResetPasswordService} from "./_services/reset-password.service";
+import { ResetComponent } from './reset-password/reset/reset.component';
 
 
 
@@ -55,6 +56,7 @@ import {ResetPasswordService} from "./_services/reset-password.service";
     VnavbarComponent,
     NotelistComponent,
     SendLinkComponent,
+    ResetComponent,
   ],
   providers: [
     AuthGuard,

@@ -1,0 +1,13 @@
+<div *ngIf="isTokenValid">
+  <form name="form" (ngSubmit)="resetPassword()" #f="ngForm" novalidate>
+    <div class="form-group"> <!--[ngClass]="{ 'has-error': f.submitted && !username.valid }"-->
+      <label for="password">New password</label>
+      <input id = "password" type="password" class="form-control" name="password" [(ngModel)]="newPassword" #email="ngModel" required />
+      <!--<div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div>-->
+    </div>
+    <div class="form-group">
+      <button class="btn btn-primary">Submit</button>
+
+    </div>
+  </form>
+</div>

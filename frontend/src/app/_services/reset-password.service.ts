@@ -11,4 +11,12 @@ export class ResetPasswordService {
     return this.http.get('/api/reset/sendLink?email='+email);
   }
 
+  checkToken(token) {
+    return this.http.get('/api/reset/resetPassword?token='+token);
+  }
+
+  reset(newPassword, token) {
+    return this.http.post('/api/reset/setNewPassword',{"password": newPassword, "token": token});
+  }
+
 }
