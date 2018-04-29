@@ -27,6 +27,7 @@ import { NotelistComponent } from './notelist/notelist.component';
 import { SendLinkComponent } from './reset-password/send-link/send-link.component';
 import {ResetPasswordService} from "./_services/reset-password.service";
 import { ResetComponent } from './reset-password/reset/reset.component';
+import {NavbarService} from "./_services/navbar.service";
 
 
 
@@ -66,6 +67,7 @@ import { ResetComponent } from './reset-password/reset/reset.component';
     EventService,
     RegistrationService,
     ResetPasswordService,
+    NavbarService,
     // provider used to create fake backend
   ],
   bootstrap: [AppComponent]

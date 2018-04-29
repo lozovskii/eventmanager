@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {AuthenticationService} from "../_services/authentication.service";
 import {AlertService} from "../_services/alert.service";
+import {NavbarService} from "../_services/navbar.service";
 
 
 @Component({
@@ -17,7 +18,8 @@ export class LoginComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private router: Router,
               private authenticationService: AuthenticationService,
-              private alertService: AlertService) {
+              private alertService: AlertService,
+              private navbarService: NavbarService) {
   }
 
   ngOnInit() {
@@ -37,8 +39,10 @@ export class LoginComponent implements OnInit {
       .subscribe(data => {
         console.log('logged in with token ' + localStorage.getItem('currentUser'));
         this.loading=false;
+          this.navbarService.setNavBarState( true );
           return this.router.navigate(['/home'])
         }
+
 //      this.customToastService.setMessage('Welcome on your home page!');
 
       , () => {
