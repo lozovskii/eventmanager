@@ -24,6 +24,9 @@ import { RegistrationConfirmComponent } from './registration-confirm/registratio
 import { ProfileComponent } from './profile/profile.component';
 import { VnavbarComponent } from './vnavbar/vnavbar.component';
 import { NotelistComponent } from './notelist/notelist.component';
+import { SendLinkComponent } from './reset-password/send-link/send-link.component';
+import {ResetPasswordService} from "./_services/reset-password.service";
+
 
 
 @NgModule({
@@ -51,6 +54,7 @@ import { NotelistComponent } from './notelist/notelist.component';
     ProfileComponent,
     VnavbarComponent,
     NotelistComponent,
+    SendLinkComponent,
   ],
   providers: [
     AuthGuard,
@@ -58,7 +62,8 @@ import { NotelistComponent } from './notelist/notelist.component';
     AuthenticationService,
     UserService,
     EventService,
-    RegistrationService
+    RegistrationService,
+    ResetPasswordService,
     // provider used to create fake backend
   ],
   bootstrap: [AppComponent]
