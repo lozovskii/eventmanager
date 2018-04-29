@@ -35,14 +35,12 @@ export class RegisterComponent implements OnInit{
     console.log('user: ' + JSON.stringify(userFromForm));
     // this.loading = true;
     this.registrationService.create(userFromForm)
-      .subscribe(
-        data => {
-           this.alertService.success('Registration successful', true);
-          this.router.navigate(['/login']);
+      .subscribe((data) => {
+         this.alertService.success('Registration successful! Plese, check your email for confirmation link.', true);
+         setTimeout(() => this.router.navigate(["/"]), 5000)
         },
-        error => {
-          this.alertService.error('Wrong input! Please try again..');
-          // this.loading = false;
+        (error) => {
+          this.alertService.error(error.error);
         });
   }
 }

@@ -33,13 +33,13 @@ public class RegisterController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> addUser(@RequestBody Customer customer) {
+    public ResponseEntity addUser(@RequestBody Customer customer) {
         if (customerService.isCustomerPresent(customer.getLogin())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This login is already taken");
+            return new ResponseEntity("This login is already taken", HttpStatus.BAD_REQUEST);
         }
 
         if (!customerService.isEmailUnique(customer.getEmail())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This email is already taken");
+            return new ResponseEntity("This email is already taken", HttpStatus.BAD_REQUEST);
         }
 
         String token = UUID.randomUUID().toString();
@@ -50,7 +50,7 @@ public class RegisterController {
 
         mailSender.sendEmail(customer.getEmail(), SubjectEnum.REGISTRATION, token);
 
-        return ResponseEntity.status(HttpStatus.OK).body("Registration completed");
+        return new ResponseEntity( HttpStatus.OK);
     }
 
 //    @RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)

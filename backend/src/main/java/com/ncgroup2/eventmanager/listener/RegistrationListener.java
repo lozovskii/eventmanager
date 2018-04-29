@@ -20,7 +20,7 @@ public class RegistrationListener{// implements ApplicationListener<OnRegistrati
 //    }
 //
 //    private void confirmRegistration(OnRegistrationCompleteEvent event) {
-//        Customer customer = event.getCustomer();
+//        Customer customer = event.getCustomerByToken();
 //        String token = UUID.randomUUID().toString();
 //        service.createVerificationToken(customer, token);
 //
