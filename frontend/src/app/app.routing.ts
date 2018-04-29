@@ -11,7 +11,6 @@ import {EventlistComponent} from "./eventlist/eventlist.component";
 import {RegistrationConfirmComponent} from "./registration-confirm/registration-confirm.component";
 import {ProfileComponent} from "./profile/profile.component";
 import {VnavbarComponent} from "./vnavbar/vnavbar.component";
-import {NotelistComponent} from "./notelist/notelist.component";
 import {SendLinkComponent} from "./reset-password/send-link/send-link.component";
 
 const appRoutes: Routes = [
@@ -25,7 +24,6 @@ const appRoutes: Routes = [
   {path: 'send-link', component: SendLinkComponent},
   { path: 'profile', component: ProfileComponent},
   { path: 'vnavbar', component: VnavbarComponent},
-  { path: 'notelist', component: NotelistComponent},
 
   // otherwise redirect to home
  { path: '**', redirectTo: '' }
