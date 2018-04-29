@@ -1,4 +1,4 @@
-package com.ncgroup2.eventmanager.service;
+package com.ncgroup2.eventmanager.service.entityservice;
 
 import com.ncgroup2.eventmanager.entity.Event;
 
@@ -13,4 +13,8 @@ public interface EventService {
     List<Event> getAllEvents();
 
     List<Event> getEventsByCustId(String custId);
+
+    void deleteEvent(String custId, Event event);
+
+    void addEventParticipants(String custId);
 }

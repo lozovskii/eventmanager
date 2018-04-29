@@ -1,7 +1,7 @@
 package com.ncgroup2.eventmanager.service.entityservice.impl;
 
 import com.ncgroup2.eventmanager.dao.impl.postgres.EventDaoImpl;
-import com.ncgroup2.eventmanager.service.EventService;
+import com.ncgroup2.eventmanager.service.entityservice.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ncgroup2.eventmanager.entity.Event;
@@ -35,4 +35,14 @@ public class EventServiceImpl implements EventService {
         List<Event> events = eventDaoImpl.getEventsByCustId(custId);
         return events;
     }
+
+    @Override
+    public void deleteEvent(String custId, Event event) {
+        eventDaoImpl.deleteEvent(event);
+    }
+
+    @Override
+    public void addEventParticipants(String custId) {
+    }
+
 }

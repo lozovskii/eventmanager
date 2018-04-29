@@ -10,28 +10,22 @@
       <table class="table table-striped" style = "overflow-x: auto; display: block;">
         <thead>
         <tr>
-          <th scope="col">Name</th>
-          <th scope="col">startTime</th>
-          <th scope="col">endTime</th>
-          <th scope="col">Priority</th>
-          <th scope="col">VisibilityId</th>
-          <th scope="col">Frequency</th>
-          <th scope="col">Description</th>
-          <th scope="col">StatusId</th>
           <th scope="col"></th>
+          <th scope="col">Title</th>
+          <th scope="col">Description</th>
+          <th scope="col">Start time</th>
+          <th scope="col">End time</th>
+          <th scope="col">Visibility</th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let event of events">
+          <td><input id="{{event.id}}" type="checkbox"></td>
           <td>{{event.name}}</td>
+          <td>{{event.description}}</td>
           <td>{{event.startTime}}</td>
           <td>{{event.endTime}}</td>
-          <td>{{event.priority}}</td>
           <td>{{event.visibility}}</td>
-          <td>{{event.frequency}}</td>
-          <td>{{event.description}}</td>
-          <td>{{event.status}}</td>
-          <td>Delete</td>
         </tr>
         </tbody>
       </table>

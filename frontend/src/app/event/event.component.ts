@@ -26,6 +26,7 @@ export class EventComponent implements OnInit {
   ngOnInit(): void {
     this.eventForm = this.formBuilder.group({
       name: [''],
+      groupId: [''],
       folderId: [''],
       creatorId: [''],
       day: [''],

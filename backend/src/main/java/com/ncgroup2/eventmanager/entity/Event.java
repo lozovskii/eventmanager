@@ -5,15 +5,14 @@ import java.time.LocalDateTime;
 
 public class Event extends Entity {
 
+    private String groupId;
     private String folderId;
     private String creatorId;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endTime;
-    private String priority;
     private String visibility;
-    private String frequency;
     private String description;
     private byte status;
 
@@ -68,40 +67,29 @@ public class Event extends Entity {
         this.endTime = endTime;
     }
 
-    public String getPriority() {
-        return priority;
-    }
-
-    public void setPriority(String priority) {
-        this.priority = priority;
-    }
-
-
-
-    public String getFrequency() {
-        return frequency;
-    }
-
-    public void setFrequency(String frequency) {
-        this.frequency = frequency;
-    }
-
     public byte getStatus() { return status; }
 
     public void setStatus(byte status) { this.status = status; }
 
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
     @Override
     public String toString() {
         return "Event{" +
-                ", id='" + id + '\'' +
+                "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                "folderId='" + folderId + '\'' +
+                ", groupId='" + groupId + '\'' +
+                ", folderId='" + folderId + '\'' +
                 ", creatorId='" + creatorId + '\'' +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
-                ", priority='" + priority + '\'' +
-                ", isPublic=" + visibility +
-                ", frequency='" + frequency + '\'' +
+                ", visibility='" + visibility + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 '}';
@@ -111,13 +99,12 @@ public class Event extends Entity {
     public Object[] getParams() {
         return new Object[]{
                 this.getName(),
+                this.getGroupId(),
                 this.getFolderId(),
                 this.getCreatorId(),
                 this.getStartTime(),
                 this.getEndTime(),
-                this.getPriority(),
                 this.getVisibility(),
-                this.getFrequency(),
                 this.getDescription(),
                 this.getStatus()
         };

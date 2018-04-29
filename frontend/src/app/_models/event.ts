@@ -1,6 +1,7 @@
 export class Event {
   id : string;
   name: string;
+  groupId: string;
   folderId: string;
   creatorId: string;
   day: string;

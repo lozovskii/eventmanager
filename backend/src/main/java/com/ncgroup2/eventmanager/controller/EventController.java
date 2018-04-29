@@ -1,7 +1,7 @@
 package com.ncgroup2.eventmanager.controller;
 
 import com.ncgroup2.eventmanager.entity.Event;
-import com.ncgroup2.eventmanager.service.EventService;
+import com.ncgroup2.eventmanager.service.entityservice.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

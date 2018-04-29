@@ -17,4 +17,6 @@ public interface EventDao {
     List<Event> getAllEvents();
 
     List<Event> getEventsByCustId(String custId);
+
+    void addEventParticipants(String eventId, String custId);
 }
