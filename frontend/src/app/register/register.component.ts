@@ -36,7 +36,7 @@ export class RegisterComponent implements OnInit{
     // this.loading = true;
     this.registrationService.create(userFromForm)
       .subscribe((data) => {
-         this.alertService.success('Registration successful! Plese, check your email for confirmation link.', true);
+         this.alertService.success('Registration successful! Please, check your email for confirmation link.', true);
          setTimeout(() => this.router.navigate(["/"]), 5000)
         },
         (error) => {
