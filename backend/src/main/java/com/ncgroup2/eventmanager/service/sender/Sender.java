@@ -9,8 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Sender {
 
-    @Autowired
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
 
     private String recipientAddress;
 
@@ -19,6 +18,11 @@ public class Sender {
     private String confirmationUrl;
 
     private String text;
+
+    @Autowired
+    public Sender(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
 
     public void sendEmail(String recipientAddress, SubjectEnum subjectEnum, String token) {
 
@@ -43,7 +47,7 @@ public class Sender {
 
             case RESET_PASSWORD: {
                 this.subject = "Reset password";
-                this.confirmationUrl = "/resetPassword";
+                this.confirmationUrl = "/reset-password";
 
             } break;
 
@@ -75,7 +79,6 @@ public class Sender {
         email.setText(text);
 
         mailSender.send(email);
-
     }
 }
 
