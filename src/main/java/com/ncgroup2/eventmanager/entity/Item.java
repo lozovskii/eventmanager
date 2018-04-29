@@ -1,18 +1,16 @@
 package com.ncgroup2.eventmanager.entity;
 
-import java.util.Arrays;
-
 public class Item extends Entity {
 
     private String description;
-    private byte[] image;
+    private String image;
     private String link;
 
     public Item() {
     }
 
-    public Item(String name, String description, byte[] image, String link) {
-        super.name = name;
+    public Item(String name,String description, String image, String link) {
+        this.name = name;
         this.description = description;
         this.image = image;
         this.link = link;
@@ -36,11 +34,11 @@ public class Item extends Entity {
         this.description = description;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -52,12 +50,12 @@ public class Item extends Entity {
         this.link = link;
     }
 
+
     @Override
     public String toString() {
         return "Item{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", image=" + Arrays.toString(image) +
+                "description='" + description + '\'' +
+                ", image='" + image + '\'' +
                 ", link='" + link + '\'' +
                 '}';
     }

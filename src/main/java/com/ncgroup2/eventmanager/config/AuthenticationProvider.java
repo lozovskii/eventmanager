@@ -20,14 +20,8 @@ public class AuthenticationProvider {
         JdbcDaoImpl impl = new JdbcDaoImpl();
 
         impl.setDataSource(dataSource);
-        impl.setUsersByUsernameQuery(
-                "SELECT login, password, isverified FROM \"Customer\" WHERE login = ?"
-        );
-        impl.setAuthoritiesByUsernameQuery(
-                "SELECT \"Customer\".login, \"Role\".name FROM \"Customer\" JOIN \"Customer_Role\" " +
-                        "ON \"Customer\".id = \"Customer_Role\".customer_id JOIN \"Role\" " +
-                        "ON \"Customer_Role\".role_id = \"Role\".id WHERE \"Customer\".login = ?"
-        );
+        impl.setUsersByUsernameQuery("SELECT login, password, isverified FROM \"Customer\" WHERE login = ?");
+        impl.setAuthoritiesByUsernameQuery("SELECT login, 'USER' FROM \"Customer\" WHERE login = ?");
 
         return impl;
     }
