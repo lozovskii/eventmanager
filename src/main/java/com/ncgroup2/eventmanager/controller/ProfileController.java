@@ -13,9 +13,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Base64;
 import java.util.List;
 
+import static com.ncgroup2.eventmanager.service.upload.img.ImageFileValidator.isValid;
 import static org.springframework.util.Base64Utils.encodeToString;
 
 @Controller
@@ -115,21 +115,23 @@ public class ProfileController {
 
     @RequestMapping(value = "/edit/upload", method = RequestMethod.POST)
     public String avatarUploadPost(@RequestParam("file") MultipartFile file, @ModelAttribute("customer") Customer customer,
-                               RedirectAttributes attributes) {
+                                   RedirectAttributes attributes) {
         if (file.isEmpty()) {
             attributes.addFlashAttribute("message", "Please select a file");
             return "redirect:/profile/edit/upload/status";
         }
 
-        try {
-            customer.setAvatar(encodeToString(file.getBytes()));
-            customerService.uploadAvatar(customer);
-            attributes.addFlashAttribute("message", "Successfully!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return "redirect:/profile/edit/upload/status";
+        if(isValid(file)) {
+            try {
+                customer.setAvatar(encodeToString(file.getBytes()));
+                customerService.uploadAvatar(customer);
+                attributes.addFlashAttribute("message", "Successfully!");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return "redirect:/profile/edit/upload/status";
+        }else { attributes.addFlashAttribute("message", "Invalid file extension");
+        return "redirect:/profile/edit/upload/status";}
     }
 
     @RequestMapping(value = "/edit/upload/status", method = RequestMethod.GET)
