@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {AlertService} from "../_services/alert.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {EventService} from "../_services/event.service";
 import {UserService} from "../_services/user.service";
+import {Event} from "../_models";
 
 @Component({
   selector: 'app-update-event',
@@ -12,11 +13,16 @@ import {UserService} from "../_services/user.service";
 })
 export class UpdateEventComponent implements OnInit {
   eventForm: FormGroup;
+  event: Event;
+  canEdit: boolean;
+
   constructor(private router: Router,
               private eventService: EventService,
               private alertService: AlertService,
               private formBuilder: FormBuilder,
-              private userService : UserService) { }
+              private userService: UserService,
+              private activatedRoute: ActivatedRoute) {
+  }
 
   ngOnInit(): void {
     this.eventForm = this.formBuilder.group({
@@ -34,6 +40,26 @@ export class UpdateEventComponent implements OnInit {
       description: [''],
       status: ['']
     });
+
+    this.activatedRoute.params.subscribe(params => {
+      let eventId = params['id'];
+      this.eventService.getEventById(eventId)
+        .subscribe((event) => {
+          this.event = event;
+          console.log(this.event);
+
+          this.canEdit = JSON.parse(localStorage.getItem('currentUserObject')).id == this.event.creatorId;
+
+          if(!this.canEdit) {
+            this.alertService.error("You don't have permission to edit this event");
+          }
+        });
+    });
   }
 
+  update(){
+
+  }
 }
+
+

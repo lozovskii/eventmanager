@@ -8,7 +8,7 @@
 
       <h2>Edit Event</h2>
       <br>
-      <form [formGroup]="eventForm" name="form" role="form" (ngSubmit)="create(eventForm.value)" novalidate>
+      <form [formGroup]="eventForm" name="form" role="form" (ngSubmit)="update(eventForm.value)" novalidate [hidden]="!canEdit">
         <div class="form-group">
           <div class="form-group">
             <label>Title</label>
