@@ -28,7 +28,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void createVerificationToken(Customer customer, String token) {
-        customerDao.updateField(customer, "token",  token);
+        customerDao.updateField(customer.getId(), "token",  token);
     }
 
     @Override

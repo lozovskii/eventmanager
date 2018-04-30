@@ -22,8 +22,12 @@ import static org.springframework.util.Base64Utils.encodeToString;
 @RequestMapping("/profile")
 public class ProfileController {
 
+    private CustomerService customerService;
+
     @Autowired
-    CustomerService customerService;
+    public ProfileController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
 
     @RequestMapping(value = "/{login}")
     public String getCustomerByLogin(@PathVariable("login") String login, Principal principal, Model model) {

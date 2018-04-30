@@ -8,12 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.Valid;
 import java.time.Instant;
@@ -22,16 +20,20 @@ import java.util.UUID;
 
 @Controller
 public class RegisterController {
-    @Autowired
-    CustomerService customerService;
-    @Autowired
+
+    private CustomerService customerService;
     private PasswordEncoder passwordEncoder;
-    @Autowired
     private Sender mailSender;
 
+    @Autowired
+    public RegisterController(CustomerService customerService, PasswordEncoder passwordEncoder, Sender mailSender) {
+        this.customerService = customerService;
+        this.passwordEncoder = passwordEncoder;
+        this.mailSender = mailSender;
+    }
+
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String addUser(@Valid @ModelAttribute("customer") Customer customer,
-                          BindingResult result, Model model, WebRequest request) {
+    public String addUser(@Valid @ModelAttribute("customer") Customer customer, Model model) {
 
         if (customerService.isCustomerPresent(customer.getLogin())) {
             model.addAttribute("customer_exist", true);
@@ -62,18 +64,22 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)
-    public String confirmRegistration
-            (WebRequest request, Model model, @RequestParam("token") String token) {
+    public String confirmRegistration(@RequestParam("token") String token, Model model) {
         Customer customer = customerService.getCustomer(token);
+
         if (customer == null) {
             model.addAttribute("message", "Invalid token");
+
             return "redirect:/?q=invalid_token";
         }
+
         Instant expireDate = customer.getRegistrationDate().plus(24, ChronoUnit.HOURS);
 
         if (Instant.now().isAfter(expireDate)) {
             model.addAttribute("message", "This link is no longer valid. Please, register again");
+
             customerService.deleteCustomer(customer);
+
             return "redirect:/?q=date_expired";
         }
 
