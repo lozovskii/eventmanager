@@ -1,6 +1,6 @@
 package com.ncgroup2.eventmanager.controller;
 
-import com.ncgroup2.eventmanager.service.entityservice.CustomerService;
+import com.ncgroup2.eventmanager.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

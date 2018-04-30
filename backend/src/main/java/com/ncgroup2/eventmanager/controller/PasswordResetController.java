@@ -2,7 +2,7 @@ package com.ncgroup2.eventmanager.controller;
 
 import com.ncgroup2.eventmanager.dto.PasswordResetDTO;
 import com.ncgroup2.eventmanager.entity.Customer;
-import com.ncgroup2.eventmanager.service.entityservice.CustomerService;
+import com.ncgroup2.eventmanager.service.CustomerService;
 import com.ncgroup2.eventmanager.service.sender.Sender;
 import com.ncgroup2.eventmanager.service.sender.SubjectEnum;
 import org.springframework.beans.factory.annotation.Autowired;

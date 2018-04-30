@@ -4,7 +4,7 @@ import com.ncgroup2.eventmanager.authorization.model.AuthResponse;
 import com.ncgroup2.eventmanager.authorization.model.UserAuthParam;
 import com.ncgroup2.eventmanager.authorization.service.TokenGenerator;
 import com.ncgroup2.eventmanager.entity.Customer;
-import com.ncgroup2.eventmanager.service.entityservice.CustomerService;
+import com.ncgroup2.eventmanager.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

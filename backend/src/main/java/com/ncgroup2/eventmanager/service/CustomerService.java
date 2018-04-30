@@ -1,4 +1,4 @@
-package com.ncgroup2.eventmanager.service.entityservice;
+package com.ncgroup2.eventmanager.service;
 
 import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.entity.Relationship;

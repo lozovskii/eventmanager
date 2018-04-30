@@ -1,4 +1,4 @@
-package com.ncgroup2.eventmanager.dao.impl.postgres;
+package com.ncgroup2.eventmanager.dao.impl;
 
 import com.ncgroup2.eventmanager.dao.DAO;
 import com.ncgroup2.eventmanager.entity.Entity;

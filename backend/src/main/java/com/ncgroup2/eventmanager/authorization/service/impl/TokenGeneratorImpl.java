@@ -3,7 +3,7 @@ package com.ncgroup2.eventmanager.authorization.service.impl;
 import com.ncgroup2.eventmanager.authorization.model.UserDetailsBox;
 import com.ncgroup2.eventmanager.authorization.service.TokenGenerator;
 import com.ncgroup2.eventmanager.entity.Customer;
-import com.ncgroup2.eventmanager.service.entityservice.CustomerService;
+import com.ncgroup2.eventmanager.service.CustomerService;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
