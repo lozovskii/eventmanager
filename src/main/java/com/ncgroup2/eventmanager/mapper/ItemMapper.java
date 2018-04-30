@@ -16,6 +16,6 @@ public class ItemMapper implements RowMapper<Item> {
         item.setDescription(resultSet.getString("description"));
         item.setImage(resultSet.getString("image"));
         item.setLink(resultSet.getString("link"));
-        return null;
+        return item;
     }
 }
