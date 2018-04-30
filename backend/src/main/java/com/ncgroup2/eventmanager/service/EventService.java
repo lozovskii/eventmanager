@@ -11,4 +11,6 @@ public interface EventService {
     List<Event> getEventsByCustId(String custId);
 
     Event getEventById(String eventId);
+
+    List<Event> getAllPublicAndFriendsEvents(String customerId);
 }

@@ -24,7 +24,7 @@ const appRoutes: Routes = [
   { path: 'create-event', component: CreateEventComponent},
   { path: 'event/:id', component: EventComponent},
   { path: 'update-event/:id', component: UpdateEventComponent},
-  { path: 'eventlist', component: EventlistComponent},
+  { path: 'eventlist/:type', component: EventlistComponent},
   {path: 'registration-confirm', component: RegistrationConfirmComponent},
   {path: 'send-reset-link', component: SendLinkComponent},
   {path: 'reset-password', component: ResetComponent},

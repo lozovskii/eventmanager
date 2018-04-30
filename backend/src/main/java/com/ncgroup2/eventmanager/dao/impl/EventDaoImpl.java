@@ -145,5 +145,52 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         }
     }
 
+    @Override
+    public List<Event> getAllPublicAndFriends(String customerId) {
+        String sql = "SELECT\n" +
+                "  \"Event\".name            AS name,\n" +
+                "  start_time,\n" +
+                "  end_time,\n" +
+                "  \"Event\".description     AS description,\n" +
+                "  \"Event_Visibility\".name AS visibility\n" +
+                "FROM (\"Event\"\n" +
+                "  INNER JOIN \"Event_Visibility\"\n" +
+                "    ON \"Event\".visibility = \"Event_Visibility\".id)\n" +
+                "WHERE \"Event\".visibility = (SELECT id\n" +
+                "                            FROM \"Event_Visibility\"\n" +
+                "                            WHERE name = 'PUBLIC')\n" +
+                "      AND start_time IS NOT NULL\n" +
+                "      AND end_time IS NOT NULL\n" +
+                "\n" +
+                "UNION\n" +
+                "\n" +
+                "SELECT\n" +
+                "  \"Event\".name            AS name,\n" +
+                "  start_time,\n" +
+                "  end_time,\n" +
+                "  \"Event\".description     AS description,\n" +
+                "  \"Event_Visibility\".name AS visibility\n" +
+                "FROM (\"Event\"\n" +
+                "  INNER JOIN \"Event_Visibility\"\n" +
+                "    ON \"Event\".visibility = \"Event_Visibility\".id)\n" +
+                "WHERE \"Event\".visibility = (SELECT id\n" +
+                "                            FROM \"Event_Visibility\"\n" +
+                "                            WHERE name = 'FRIENDS')\n" +
+                "\n" +
+                "       AND (\"isFriends\"(creator_id, cast(? as uuid))\n" +
+                "           OR creator_id = cast(? as uuid))\n" +
+                "\n" +
+                "\n" +
+                "      AND start_time IS NOT NULL\n" +
+                "      AND end_time IS NOT NULL;\n";
+
+        Object[] params = new Object[]{
+                customerId,
+                customerId
+        };
+
+        return this.getJdbcTemplate().query(sql, params, new BeanPropertyRowMapper(Event.class));
+    }
+
 }
 

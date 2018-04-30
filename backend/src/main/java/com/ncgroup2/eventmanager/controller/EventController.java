@@ -23,6 +23,11 @@ public class EventController {
         eventService.createEvent(event);
     }
 
+    @GetMapping(value = "/public_and_friends")
+    public List<Event> getAllPublic(@RequestParam String customerId) {
+        return eventService.getAllPublicAndFriendsEvents(customerId);
+    }
+
     @GetMapping("/{custId}")
         public List<Event> getEventsByCustId(@PathVariable String custId){
         return eventService.getEventsByCustId(custId);

@@ -18,4 +18,6 @@ public interface EventDao {
     List<Event> getEventsByCustId(String custId);
 
     Event getById(String id);
+
+    List<Event> getAllPublicAndFriends(String customerId);
 }

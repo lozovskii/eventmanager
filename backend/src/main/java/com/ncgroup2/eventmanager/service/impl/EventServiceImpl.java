@@ -41,4 +41,9 @@ public class EventServiceImpl implements EventService {
         return eventDaoImpl.getById(eventId);
     }
 
+    @Override
+    public List<Event> getAllPublicAndFriendsEvents(String customerId) {
+        return eventDaoImpl.getAllPublicAndFriends(customerId);
+    }
+
 }
