@@ -6,7 +6,7 @@ import { LoginComponent } from './login/index';
 import { RegisterComponent } from './register/index';
 import { AuthGuard } from './_guards/index';
 import {LandingPageComponent} from "./landing-page/landing-page.component";
-import {EventComponent} from "./event/event.component";
+import {CreateEventComponent} from "./create-event/create-event.component";
 import {EventlistComponent} from "./eventlist/eventlist.component";
 import {RegistrationConfirmComponent} from "./registration-confirm/registration-confirm.component";
 import {ProfileComponent} from "./profile/profile.component";
@@ -19,7 +19,7 @@ const appRoutes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'event', component: EventComponent},
+  { path: 'create-event', component: CreateEventComponent},
   { path: 'eventlist', component: EventlistComponent},
   {path: 'registration-confirm', component: RegistrationConfirmComponent},
   {path: 'send-reset-link', component: SendLinkComponent},

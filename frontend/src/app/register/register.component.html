@@ -1,18 +1,29 @@
 <div class="col-md-12">
   <div class="col-md-6" style="margin:0 auto">
     <h2>Register</h2>
-  <form [formGroup]="registerForm" name="form" role="form" (ngSubmit)="register(registerForm.value)"  novalidate>
+  <form [formGroup]="registerForm" (ngSubmit)="register(registerForm.value)"  >
 
-      <div class="form-group">
+      <div class="form-group" >
         <label for="name">First Name</label>
-        <input formControlName="name"  id="name" type="text" class="form-control" name="name" required />
+        <input formControlName="name"  id="name" type="text" class="form-control" name="name"  required />
         <!--<div *ngIf="!name.valid" class="help-block">First Name is required</div>-->
+        <!--<div *ngIf="name.invalid && (name.dirty || name.touched)"-->
+             <!--class="alert alert-danger">-->
+
+          <!--<div *ngIf="name?.errors?.required">-->
+            <!--Name is required.-->
+          <!--</div>-->
+          <!--<div *ngIf="name?.errors?.minlength">-->
+            <!--Name must be at least 4 characters long.-->
+          <!--</div>-->
+        <!--</div>-->
       </div>
 
       <div class="form-group">
         <label for="secondName">Last Name</label>
         <input formControlName="secondName" id = "secondName" type="text" class="form-control" name="lastName"  required /><!--[(ngModel)]="user.secondName" #secondName="ngModel"-->
         <!--<div *ngIf="regform.submitted && !secondName.valid" class="help-block">Last Name is required</div>-->
+
       </div>
 
       <div class="form-group">

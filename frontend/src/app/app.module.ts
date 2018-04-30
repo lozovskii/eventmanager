@@ -17,7 +17,7 @@ import { LandingPageComponent } from './landing-page/index';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { ReCaptchaModule } from 'angular2-recaptcha';
-import { EventComponent } from './event/event.component';
+import { CreateEventComponent } from './create-event/create-event.component';
 import {EventService} from "./_services/event.service";
 import { EventlistComponent } from './eventlist/eventlist.component';
 import { RegistrationConfirmComponent } from './registration-confirm/registration-confirm.component';
@@ -27,6 +27,7 @@ import { SendLinkComponent } from './reset-password/send-link/send-link.componen
 import {ResetPasswordService} from "./_services/reset-password.service";
 import { ResetComponent } from './reset-password/reset/reset.component';
 import {NavbarService} from "./_services/navbar.service";
+import { EventComponent } from './event/event.component';
 
 
 
@@ -49,13 +50,14 @@ import {NavbarService} from "./_services/navbar.service";
     LandingPageComponent,
     NavbarComponent,
     FooterComponent,
-    EventComponent,
+    CreateEventComponent,
     EventlistComponent,
     RegistrationConfirmComponent,
     ProfileComponent,
     VnavbarComponent,
     SendLinkComponent,
     ResetComponent,
+    EventComponent,
   ],
   providers: [
     AuthGuard,
