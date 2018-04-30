@@ -13,7 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Base64;
 import java.util.List;
 
 import static org.springframework.util.Base64Utils.encodeToString;
@@ -22,8 +21,12 @@ import static org.springframework.util.Base64Utils.encodeToString;
 @RequestMapping("/profile")
 public class ProfileController {
 
+    private CustomerService customerService;
+
     @Autowired
-    CustomerService customerService;
+    public ProfileController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
 
     @RequestMapping(value = "/{login}")
     public String getCustomerByLogin(@PathVariable("login") String login, Principal principal, Model model) {
