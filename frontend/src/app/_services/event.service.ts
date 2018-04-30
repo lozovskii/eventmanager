@@ -19,7 +19,9 @@ export class EventService {
   }
 
   getAllEvents(): Observable<Event[]> {
-    return this.http.get<Event[]>(this.eventsUrl)
+    let customerId = this.userService.getCurrentId();
+    const url = `${this.eventsUrl}/public_and_friends?customerId=${customerId}`;
+    return this.http.get<Event[]>(url);
   }
 
   getEventsByCustId(): Observable<Event[]> {

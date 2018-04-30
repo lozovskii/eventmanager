@@ -48,4 +48,24 @@ public class EventServiceImpl implements EventService {
         eventDao.deleteEvent(eventId);
     }
 
+    @Override
+    public List<Event> getAllPublicAndFriendsEvents(String customerId) {
+        return eventDao.getAllPublicAndFriends(customerId);
+    }
+
+    @Override
+    public boolean isParticipant(String customerId, String eventId) {
+        return eventDao.isParticipant(customerId, eventId);
+    }
+
+    @Override
+    public void removeParticipant(String customerId, String eventId) {
+        eventDao.removeParticipant(customerId, eventId);
+    }
+
+    @Override
+    public void addParticipant(String customerId, String eventId) {
+        eventDao.addParticipant(customerId, eventId);
+    }
+
 }

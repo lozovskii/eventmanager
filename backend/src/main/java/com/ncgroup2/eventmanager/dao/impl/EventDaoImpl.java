@@ -5,12 +5,16 @@ import com.ncgroup2.eventmanager.entity.Event;
 import com.ncgroup2.eventmanager.util.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowCallbackHandler;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
@@ -156,5 +160,87 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         }
     }
 
+    @Override
+    public List<Event> getAllPublicAndFriends(String customerId) {
+        String sql = "SELECT\n" +
+                "  \"Event\".id              AS id,\n"+
+                "  \"Event\".name            AS name,\n" +
+                "  start_time,\n" +
+                "  end_time,\n" +
+                "  \"Event\".description     AS description,\n" +
+                "  \"Event_Visibility\".name AS visibility\n" +
+                "FROM (\"Event\"\n" +
+                "  INNER JOIN \"Event_Visibility\"\n" +
+                "    ON \"Event\".visibility = \"Event_Visibility\".id)\n" +
+                "WHERE \"Event\".visibility = (SELECT id\n" +
+                "                            FROM \"Event_Visibility\"\n" +
+                "                            WHERE name = 'PUBLIC')\n" +
+                "      AND start_time IS NOT NULL\n" +
+                "      AND end_time IS NOT NULL\n" +
+                "\n" +
+                "UNION\n" +
+                "\n" +
+                "SELECT\n" +
+                "  \"Event\".id              AS id,\n"+
+                "  \"Event\".name            AS name,\n" +
+                "  start_time,\n" +
+                "  end_time,\n" +
+                "  \"Event\".description     AS description,\n" +
+                "  \"Event_Visibility\".name AS visibility\n" +
+                "FROM (\"Event\"\n" +
+                "  INNER JOIN \"Event_Visibility\"\n" +
+                "    ON \"Event\".visibility = \"Event_Visibility\".id)\n" +
+                "WHERE \"Event\".visibility = (SELECT id\n" +
+                "                            FROM \"Event_Visibility\"\n" +
+                "                            WHERE name = 'FRIENDS')\n" +
+                "\n" +
+                "       AND (\"isFriends\"(creator_id, cast(? as uuid))\n" +
+                "           OR creator_id = cast(? as uuid))\n" +
+                "\n" +
+                "\n" +
+                "      AND start_time IS NOT NULL\n" +
+                "      AND end_time IS NOT NULL;\n";
+
+        Object[] params = new Object[]{
+                customerId,
+                customerId
+        };
+
+        return this.getJdbcTemplate().query(sql, params, new BeanPropertyRowMapper(Event.class));
+    }
+
+    @Override
+    public boolean isParticipant(String customerId, String eventId) {
+        String sql ="SELECT * FROM \"Customer_Event\" where event_id = cast (? as uuid) and customer_id = cast(? as uuid)";
+        Object[] params = new Object[]{
+                customerId,
+                eventId
+        };
+
+        return !this.getJdbcTemplate().query(sql, params, (resultSet, i) -> resultSet.next()).isEmpty();
+    }
+
+    @Override
+    public void removeParticipant(String customerId, String eventId) {
+        String sql = "DELETE FROM \"Customer_Event\" WHERE customer_id = cast(? as uuid) and event_id = cast(? as uuid)";
+        Object[] params = new Object[] {
+                customerId,
+                eventId
+        };
+
+        this.getJdbcTemplate().update(sql,params);
+    }
+
+    @Override
+    public void addParticipant(String customerId, String eventId) {
+        String sql = "INSERT INTO \"Customer_Event\" (customer_id, event_id, status, priority) VALUES (cast(? as uuid), cast(? as uuid), (SELECT id FROM \"Customer_Event_Status\" WHERE name = 'ACCEPTED')," +
+                "(SELECT id FROM \"Customer_Event_Priority\" WHERE name = 'AVERAGE'))";
+        Object[] params = new Object[]{
+                customerId,
+                eventId
+        };
+
+        this.getJdbcTemplate().update(sql,params);
+    }
 }
 

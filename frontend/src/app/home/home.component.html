@@ -2,21 +2,7 @@
 <div class="container-fluid">
 
     <div class="row">
-      <nav class="col-md-3">
-        <div class="sidebar-sticky">
-          <ul class="nav flex-column">
-            <li class="nav-item">
-              <a [routerLink]="['/profile']" class="navbar-brand">My Profile</a>
-            </li>
-            <li class="nav-item">
-              <a [routerLink]="['/create-event']" class="navbar-brand">Create Event</a>
-            </li>
-            <li class="nav-item">
-              <a [routerLink]="['/eventlist']" class="navbar-brand">View Events</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
+      <app-vnavbar></app-vnavbar>
 
       <br>
       <main role="main" class="col-md-9">
@@ -26,5 +12,5 @@
     </div>
 
 
-<!--</div>-->
+</div>
 <br>

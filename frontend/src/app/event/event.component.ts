@@ -18,6 +18,7 @@ export class EventComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isCreator=false;
     this.activatedRoute.params.subscribe(params => {
       let eventId = params['id'];
       this.eventService.getEventById(eventId)

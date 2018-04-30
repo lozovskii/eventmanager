@@ -35,6 +35,11 @@ public class EventController {
         eventService.deleteEvent(eventId);
     }
 
+    @GetMapping(value = "/public_and_friends")
+    public List<Event> getAllPublic(@RequestParam String customerId) {
+        return eventService.getAllPublicAndFriendsEvents(customerId);
+    }
+
     @GetMapping("/{custId}")
         public ResponseEntity<List<Event>> getEventsByCustId(@PathVariable String custId){
         List<Event> eventsByCustId = eventService.getEventsByCustId(custId);
@@ -45,6 +50,26 @@ public class EventController {
     public ResponseEntity<Event> getEventsById(@RequestParam String eventId){
         Event eventById = eventService.getEventById(eventId);
         return new ResponseEntity<>(eventById, HttpStatus.OK);
+    }
+
+    @GetMapping("/isParticipant")
+    public ResponseEntity isParticipant(@RequestParam String customerId,@RequestParam String eventId) {
+        if(eventService.isParticipant(customerId, eventId)) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/addParticipant")
+    public ResponseEntity addParticipant(@RequestParam String customerId,@RequestParam String eventId) {
+        eventService.addParticipant(customerId, eventId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping("/removeParticipant")
+    public ResponseEntity removeParticipant(@RequestParam String customerId,@RequestParam String eventId) {
+        eventService.removeParticipant(customerId, eventId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
 

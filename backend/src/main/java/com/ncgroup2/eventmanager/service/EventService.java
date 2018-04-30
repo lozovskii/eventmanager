@@ -7,11 +7,19 @@ import java.util.List;
 
 public interface EventService {
 
-    void createEvent(Event event, EventDTO eventDTO);
+    void createEvent(EventDTO eventDTO);
 
     List<Event> getEventsByCustId(String custId);
 
     Event getEventById(String eventId);
 
     void deleteEvent(String eventId);
+
+    List<Event> getAllPublicAndFriendsEvents(String customerId);
+
+    boolean isParticipant(String customerId, String eventId);
+
+    void removeParticipant(String customerId, String eventId);
+
+    void addParticipant(String customerId, String eventId);
 }

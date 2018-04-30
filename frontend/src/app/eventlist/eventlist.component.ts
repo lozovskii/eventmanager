@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 import {EventService} from "../_services/event.service";
 import {Event} from "../_models/event";
 import {UserService} from "../_services/user.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-eventlist',
@@ -12,16 +13,28 @@ import {UserService} from "../_services/user.service";
 
 export class EventlistComponent implements OnInit {
   events: Event[];
-  eventsForm: FormGroup;
   constructor(private eventService: EventService,
-              private formBuilder: FormBuilder) {
+              private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    this.eventsForm = this.formBuilder.group({});
+    this.activatedRoute.params.subscribe(params => {
+      let type = params['type'];
+      switch (type) {
+        case 'all' : {
+          this.getEvents();
+          break;
+        }
+        case 'my' : {
+          this.getEventsByCustId();
+          break;
+        }
+      }
+    });
   }
 
   getEvents(): void {
+
     this.eventService.getAllEvents()
       .subscribe((events) => this.events = events);
   }
