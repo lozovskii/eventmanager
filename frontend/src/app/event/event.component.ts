@@ -63,7 +63,7 @@ export class EventComponent implements OnInit {
           }
         },
         error => {
-          this.alertService.error(error);
+          this.alertService.error('Something wrong! Please try again!');
           this.loading = false;
         });
   }
