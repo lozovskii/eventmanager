@@ -31,12 +31,19 @@ export class RegisterComponent implements OnInit {
   }
 
   createForm() {
-    this.registerForm = new FormGroup({
-      name: new FormControl(this.user.name, [Validators.required, Validators.minLength(3), Validators.maxLength(20)]),
-      secondName: new FormControl(this.user.secondName, [Validators.required, Validators.minLength(3), Validators.maxLength(20)]),
-      login: new FormControl(this.user.login, [Validators.required, Validators.minLength(3), Validators.maxLength(20)]),
-      email: new FormControl(this.user.email, [Validators.required, Validators.email]),
-      password: new FormControl(this.user.password, [Validators.required, Validators.minLength(4), Validators.maxLength(20)])
+    // this.registerForm = new FormGroup({
+    //   name: new FormControl(this.user.name, [Validators.required, Validators.minLength(3), Validators.maxLength(20)]),
+    //   secondName: new FormControl(this.user.secondName, [Validators.required, Validators.minLength(3), Validators.maxLength(20)]),
+    //   login: new FormControl(this.user.login, [Validators.required, Validators.minLength(3), Validators.maxLength(20)]),
+    //   email: new FormControl(this.user.email, [Validators.required, Validators.email]),
+    //   password: new FormControl(this.user.password, [Validators.required, Validators.minLength(4), Validators.maxLength(20)])
+    // });
+    this.registerForm = this.formBuilder.group({
+      name: [''],
+      secondName: [''],
+      login: [''],
+      email: [''],
+      password: ['']
     });
   }
 
