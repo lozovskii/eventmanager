@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {EventService} from "../_services/event.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Event} from "../_models";
 
 @Component({
@@ -11,23 +11,26 @@ import {Event} from "../_models";
 export class EventComponent implements OnInit {
   event: Event;
   isCreator: boolean;
+
   constructor(private eventService: EventService,
-              private activatedRoute: ActivatedRoute) { }
+              private activatedRoute: ActivatedRoute,
+              private router: Router) {
+  }
 
   ngOnInit() {
-
     this.activatedRoute.params.subscribe(params => {
       let eventId = params['id'];
-      console.log(eventId);
       this.eventService.getEventById(eventId)
         .subscribe((event) => {
           this.event = event;
-          console.log(this.event);
-
           this.isCreator = JSON.parse(localStorage.getItem('currentUserObject')).id == this.event.creatorId;
         });
     });
+  }
 
-
+  delete() {
+    this.eventService.deleteEvent(this.event.id).subscribe(() => {
+      this.router.navigate(['/eventlist']);
+    });
   }
 }

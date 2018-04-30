@@ -1,11 +1,17 @@
-<div >
+<div class="row">
+  <div  class="col-md-3">
+    <app-vnavbar></app-vnavbar>
+  </div>
+
+  <main role="main" class="col-md-9">
   <div [hidden]="!isCreator">
     <button class="btn-light" [routerLink]="['/update-event',event.id]">Edit</button>
-    <button class="btn-warning">Delete</button>
+    <button class="btn-warning" (click)="delete()">Delete</button>
   </div>
   <p> Name = {{event.name}}</p>
   <p> Description = {{event.description}}</p>
   <p> Start time = {{event.startTime}}</p>
   <p> End time = {{event.endTime}}</p>
   <p> Privacy = {{event.visibility}}</p>
+  </main>
 </div>

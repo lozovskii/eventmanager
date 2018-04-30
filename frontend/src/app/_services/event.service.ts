@@ -8,7 +8,6 @@ import {UserService} from "./user.service";
 @Injectable()
 export class EventService {
   private eventsUrl = 'api/events';
-  private notesUrl = 'api/notes';
 
   constructor(private http: HttpClient,
               private userService : UserService) {
@@ -29,14 +28,12 @@ export class EventService {
     return this.http.get<Event[]>(url)
   }
 
-  getNotesByCustId(): Observable<Event[]> {
-    let custId = this.userService.getCurrentId();
-    const url = `${this.notesUrl}/${custId}`;
-    return this.http.get<Event[]>(url)
-  }
-
   getEventById(eventId: string) {
     const url = `${this.eventsUrl}?eventId=${eventId}`;
     return this.http.get<Event>(url);
+  }
+
+  deleteEvent(eventId: string) {
+    return this.http.post<number>('/api/events/delete', eventId);
   }
 }

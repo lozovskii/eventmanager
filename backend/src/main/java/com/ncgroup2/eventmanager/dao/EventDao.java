@@ -9,6 +9,8 @@ public interface EventDao {
 
     void deleteEvent(Event event);
 
+    void deleteEvent(String eventId);
+
     void updateField(Event event, String fieldName, Object fieldValue);
 
     int getStatusId(String fieldValue);

@@ -2,18 +2,16 @@ package com.ncgroup2.eventmanager.dao.impl;
 
 import com.ncgroup2.eventmanager.dao.EventDao;
 import com.ncgroup2.eventmanager.entity.Event;
-import com.ncgroup2.eventmanager.mapper.EventMapper;
 import com.ncgroup2.eventmanager.util.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
-import java.sql.ResultSet;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Repository
@@ -39,7 +37,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
         String query_event = "INSERT INTO \"Event\" " +
                 "(id,name,group_id,folder_id,creator_id,start_time,end_time,visibility,description,status) " +
-                "VALUES(?,?, ?, null, CAST(? AS uuid),?,?,?,?,?)";
+                "VALUES(?,?, ?, NULL, CAST(? AS UUID),?,?,?,?,?)";
 
         Object[] eventParams = new Object[]{
                 eventId,
@@ -56,7 +54,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
         String query_customer_event = "INSERT INTO \"Customer_Event\"" +
                 "(id,event_id,customer_id,start_date_notification,frequency_value,priority,status)" +
-                "VALUES(uuid_generate_v1(),?,CAST(? AS uuid),?,1,(SELECT id FROM \"Customer_Event_Priority\" WHERE name = 'LOW')," +
+                "VALUES(uuid_generate_v1(),?,CAST(? AS UUID),?,1,(SELECT id FROM \"Customer_Event_Priority\" WHERE name = 'LOW')," +
                 "(SELECT id FROM \"Customer_Event_Status\" WHERE name = 'ACCEPTED'))";
 
         Object[] customerEventParams = new Object[]{
@@ -75,6 +73,16 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
                 event.getId()
         };
         this.getJdbcTemplate().update(query, params);
+    }
+
+    @Override
+    public void deleteEvent(String eventId) {
+        String sql = "UPDATE \"Event\" SET status = (SELECT id FROM \"Event_Status\" WHERE name = 'DELETED') " +
+                     "WHERE id = CAST (? AS uuid)";
+        Object[] params = new Object[]{
+                eventId
+        };
+        this.getJdbcTemplate().update(sql, params);
     }
 
     @Override
@@ -108,13 +116,15 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
     @Override
     public List<Event> getEventsByCustId(String custId) {
-        String sql = "select \"Event\".id as id, \"Event\".name as name, start_time, end_time, \"Event\".description as description," +
-                     "\"Event_Visibility\".name as visibility " +
-                     "from (\"Event\" INNER JOIN \"Event_Visibility\" " +
-                     "ON \"Event\".visibility = \"Event_Visibility\".id) " +
-                     "WHERE creator_id = CAST(? AS uuid) " +
-                     "AND start_time IS NOT NULL " +
-                     "AND end_time IS NOT NULL";
+        String sql = "SELECT \"Event\".id AS id, \"Event\".name AS name, start_time, end_time, " +
+                "\"Event\".description AS description," +
+                "\"Event_Visibility\".name AS visibility " +
+                "FROM (\"Event\" INNER JOIN \"Event_Visibility\" " +
+                "ON \"Event\".visibility = \"Event_Visibility\".id) " +
+                "WHERE creator_id = CAST(? AS UUID) " +
+                "AND start_time IS NOT NULL " +
+                "AND end_time IS NOT NULL";// +
+//                " AND \"Event_Status\".name <> 'DELETED'";
         Object[] params = new Object[]{
                 custId
         };
@@ -123,11 +133,12 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
     @Override
     public Event getById(String id) {
-        String sql = "select \"Event\".id as id, \"Event\".creator_id as creator_id, \"Event\".name as name, start_time, end_time, \"Event\".description as description," +
-                "\"Event_Visibility\".name as visibility " +
-                "from (\"Event\" INNER JOIN \"Event_Visibility\" " +
+        String sql = "SELECT \"Event\".id AS id, \"Event\".creator_id AS creator_id, \"Event\".name AS name, " +
+                "start_time, end_time, \"Event\".description AS description," +
+                "\"Event_Visibility\".name AS visibility " +
+                "FROM (\"Event\" INNER JOIN \"Event_Visibility\" " +
                 "ON \"Event\".visibility = \"Event_Visibility\".id) " +
-                "WHERE \"Event\".id  = CAST(? AS uuid) " +
+                "WHERE \"Event\".id  = CAST(? AS UUID) " +
                 "AND start_time IS NOT NULL " +
                 "AND end_time IS NOT NULL";
 
@@ -137,8 +148,8 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
 //        EventMapper mapper = new EventMapper();
 
-        List<Event> list =  this.getJdbcTemplate().query(sql, params, new BeanPropertyRowMapper(Event.class));
-        if(!list.isEmpty()) {
+        List<Event> list = this.getJdbcTemplate().query(sql, params, new BeanPropertyRowMapper(Event.class));
+        if (!list.isEmpty()) {
             return list.iterator().next();
         } else {
             return null;

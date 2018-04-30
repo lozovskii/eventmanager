@@ -1,6 +1,7 @@
 package com.ncgroup2.eventmanager.service.impl;
 
-import com.ncgroup2.eventmanager.dao.impl.EventDaoImpl;
+import com.ncgroup2.eventmanager.dao.EventDao;
+import com.ncgroup2.eventmanager.dto.EventDTO;
 import com.ncgroup2.eventmanager.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,33 +13,39 @@ import java.util.List;
 public class EventServiceImpl implements EventService {
 
     @Autowired
-    EventDaoImpl eventDaoImpl;
+    private EventDao eventDao;
 
     @Override
-    public void createEvent(Event event) {
+    public void createEvent(Event event, EventDTO eventDTO) {
+        System.out.println("dto = " + eventDTO.getFrequencyNumber());
         int visibilityId, statusId;
         if((event.getStartTime() != null) && (event.getEndTime() != null)) {
-            statusId = eventDaoImpl.getStatusId("EVENT");
+            statusId = eventDao.getStatusId("EVENT");
         }else{
-            statusId = eventDaoImpl.getStatusId("NOTE");
+            statusId = eventDao.getStatusId("NOTE");
         }
         if (event.getVisibility().equals("")) {
-            visibilityId = eventDaoImpl.getVisibilityId("PRIVATE");
+            visibilityId = eventDao.getVisibilityId("PRIVATE");
         }else{
-            visibilityId = eventDaoImpl.getVisibilityId(event.getVisibility());
+            visibilityId = eventDao.getVisibilityId(event.getVisibility());
         }
-        eventDaoImpl.createEvent(event, visibilityId, statusId);
+        eventDao.createEvent(event, visibilityId, statusId);
     }
 
     @Override
     public List<Event> getEventsByCustId(String custId) {
-        List<Event> events = eventDaoImpl.getEventsByCustId(custId);
+        List<Event> events = eventDao.getEventsByCustId(custId);
         return events;
     }
 
     @Override
     public Event getEventById(String eventId) {
-        return eventDaoImpl.getById(eventId);
+        return eventDao.getById(eventId);
+    }
+
+    @Override
+    public void deleteEvent(String eventId) {
+        eventDao.deleteEvent(eventId);
     }
 
 }
