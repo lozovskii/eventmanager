@@ -1,8 +1,9 @@
-package com.ncgroup2.eventmanager.service.entityservice;
+package com.ncgroup2.eventmanager.service.entityservice.impl;
 
 import com.ncgroup2.eventmanager.dao.CustomerDao;
 import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.entity.Relationship;
+import com.ncgroup2.eventmanager.service.entityservice.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
