@@ -148,6 +148,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     @Override
     public List<Event> getAllPublicAndFriends(String customerId) {
         String sql = "SELECT\n" +
+                "  \"Event\".id              AS id,\n"+
                 "  \"Event\".name            AS name,\n" +
                 "  start_time,\n" +
                 "  end_time,\n" +
@@ -165,6 +166,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
                 "UNION\n" +
                 "\n" +
                 "SELECT\n" +
+                "  \"Event\".id              AS id,\n"+
                 "  \"Event\".name            AS name,\n" +
                 "  start_time,\n" +
                 "  end_time,\n" +
