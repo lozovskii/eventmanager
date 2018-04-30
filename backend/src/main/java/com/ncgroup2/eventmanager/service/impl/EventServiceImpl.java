@@ -16,7 +16,8 @@ public class EventServiceImpl implements EventService {
     private EventDao eventDao;
 
     @Override
-    public void createEvent(Event event, EventDTO eventDTO) {
+    public void createEvent(EventDTO eventDTO) {
+        Event event = eventDTO.getEvent();
         System.out.println("dto = " + eventDTO.getFrequencyNumber());
         int visibilityId, statusId;
         if((event.getStartTime() != null) && (event.getEndTime() != null)) {

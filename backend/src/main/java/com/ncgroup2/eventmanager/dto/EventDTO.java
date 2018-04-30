@@ -1,6 +1,8 @@
 package com.ncgroup2.eventmanager.dto;
 
-import java.awt.*;
+
+import com.ncgroup2.eventmanager.entity.Event;
+
 import java.util.List;
 
 public class EventDTO {
