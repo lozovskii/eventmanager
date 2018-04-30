@@ -2,7 +2,7 @@ package com.ncgroup2.eventmanager.dto;
 
 public class PasswordResetDTO {
     private String password;
-    private  String token;
+    private String token;
 
 
     public String getPassword() {

@@ -13,4 +13,6 @@ export class Event {
   frequency: string;
   description: string;
   status: string;
+  people: string[];
+  vis: any;
 }

@@ -28,6 +28,8 @@ export class EventlistComponent implements OnInit {
 
   getEventsByCustId(): void {
     this.eventService.getEventsByCustId()
-      .subscribe((events) => this.events = events);
+      .subscribe((events) => {
+      this.events = events;
+    });
   }
 }

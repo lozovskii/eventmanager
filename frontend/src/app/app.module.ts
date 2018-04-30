@@ -30,8 +30,6 @@ import {NavbarService} from "./_services/navbar.service";
 import { EventComponent } from './event/event.component';
 import { UpdateEventComponent } from './update-event/update-event.component';
 
-
-
 @NgModule({
   imports: [
     BrowserModule,
@@ -59,7 +57,7 @@ import { UpdateEventComponent } from './update-event/update-event.component';
     SendLinkComponent,
     ResetComponent,
     EventComponent,
-    UpdateEventComponent,
+    UpdateEventComponent
   ],
   providers: [
     AuthGuard,

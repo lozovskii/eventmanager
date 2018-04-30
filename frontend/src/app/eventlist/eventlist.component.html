@@ -16,18 +16,16 @@
           <th scope="col">Start time</th>
           <th scope="col">End time</th>
           <th scope="col">Visibility</th>
-          <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let event of events">
+        <tr *ngFor="let event of events" [routerLink]="['/event',event.id]">
           <td><input id="{{event.id}}" type="checkbox"></td>
           <td>{{event.name}}</td>
           <td>{{event.description}}</td>
           <td>{{event.startTime}}</td>
           <td>{{event.endTime}}</td>
           <td>{{event.visibility}}</td>
-          <td><a class="nav-link" [routerLink]="['/event',event.id]">View </a> </td>
         </tr>
         </tbody>
       </table>
