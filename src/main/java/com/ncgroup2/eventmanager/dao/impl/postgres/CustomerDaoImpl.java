@@ -124,7 +124,18 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
                 "avatar = ? " +
                 " WHERE id = CAST (? AS UUID)";
 
-        Object[] params = customer.getParams();
+        Object[] params = new Object[]{
+            customer.getName(),
+            customer.getSecondName(),
+            customer.getPhone(),
+            customer.getLogin(),
+            customer.getEmail(),
+            customer.getPassword(),
+            customer.isVerified(),
+            customer.getToken(),
+            customer.getAvatar(),
+            customer.getId()
+        };
 
         this.getJdbcTemplate().update(sql, params);
     }

@@ -31,8 +31,6 @@ public class PasswordResetController {
     @RequestMapping(value = "/reset", method = RequestMethod.POST)
     public String resetPassword(@RequestParam("reset_email") String reset_email, Model model) {
 
-        System.out.println(reset_email);
-
         if (customerService.isEmailUnique(reset_email)) {
             model.addAttribute("customer_not_found", true);
 
@@ -48,6 +46,7 @@ public class PasswordResetController {
 
         @RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
         public String displayResetPasswordPage(@RequestParam ("token") String token, Model model) {
+
             Customer customer = customerService.getCustomer(token);
 
             if (customer == null) {
@@ -64,9 +63,6 @@ public class PasswordResetController {
     @RequestMapping(value = "/setNewPassword", method = RequestMethod.POST)
     public String setPassword(@RequestParam ("password") String password, @RequestParam ("token") String token) {
         Customer customer = customerService.getCustomer(token);
-
-        System.out.println(token);
-        System.out.println(customer.getEmail());
 
         customer.setPassword(passwordEncoder.encode(password));
         customerService.updatePassword(customer);
