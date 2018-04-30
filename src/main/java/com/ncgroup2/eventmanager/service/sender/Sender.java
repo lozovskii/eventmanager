@@ -23,8 +23,7 @@ public class Sender {
     public void sendEmail(String recipientAddress, SubjectEnum subjectEnum, String token) {
 
         String message = "Confirmation link: \n";
-//        String hosting = "https://rocky-dusk-73382.herokuapp.com";
-        String hosting = "localhost:8090";
+        String hosting = "https://rocky-dusk-73382.herokuapp.com";
 
         this.recipientAddress = recipientAddress;
 
