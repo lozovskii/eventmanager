@@ -41,4 +41,21 @@ export class EventService {
     const url = `${this.eventsUrl}?eventId=${eventId}`;
     return this.http.get<Event>(url);
   }
+
+  isParticipant(currentUserId: string, eventId: string) {
+    const url = `${this.eventsUrl}/isParticipant?customerId=${currentUserId}&eventId=${eventId}`;
+    return this.http.get(url);
+  }
+
+  addParticipant(eventId){
+    let customerId = this.userService.getCurrentId();
+    const url = `${this.eventsUrl}/addParticipant?customerId=${customerId}&eventId=${eventId}`;
+      return this.http.get(url);
+  }
+
+  removeParticipant(eventId){
+    let customerId = this.userService.getCurrentId();
+    const url = `${this.eventsUrl}/removeParticipant?customerId=${customerId}&eventId=${eventId}`;
+    return this.http.get(url);
+  }
 }

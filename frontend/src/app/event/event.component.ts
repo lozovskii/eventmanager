@@ -11,6 +11,7 @@ import {Event} from "../_models";
 export class EventComponent implements OnInit {
   event: Event;
   isCreator: boolean;
+  isParticipant: boolean;
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute) { }
 
@@ -24,10 +25,20 @@ export class EventComponent implements OnInit {
           this.event = event;
           console.log(this.event);
 
-          this.isCreator = JSON.parse(localStorage.getItem('currentUserObject')).id == this.event.creatorId;
+          let currentUserId = JSON.parse(localStorage.getItem('currentUserObject')).id;
+
+          this.isCreator = currentUserId  == this.event.creatorId;
+
+          this.eventService.isParticipant(currentUserId, this.event.id).subscribe(() => {this.isParticipant = true}, ((error)=> {this.isParticipant=false}));
         });
     });
+  }
 
+  addParticipant() {
+    this.eventService.addParticipant(this.event.id).subscribe(()=>{this.isParticipant=true});
+  }
 
+  removeParticipant() {
+    this.eventService.removeParticipant(this.event.id).subscribe(()=>{this.isParticipant=false});
   }
 }

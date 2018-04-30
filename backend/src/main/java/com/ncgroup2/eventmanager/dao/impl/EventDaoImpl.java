@@ -6,12 +6,15 @@ import com.ncgroup2.eventmanager.mapper.EventMapper;
 import com.ncgroup2.eventmanager.util.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowCallbackHandler;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -194,5 +197,38 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         return this.getJdbcTemplate().query(sql, params, new BeanPropertyRowMapper(Event.class));
     }
 
+    @Override
+    public boolean isParticipant(String customerId, String eventId) {
+        String sql ="SELECT * FROM \"Customer_Event\" where event_id = cast (? as uuid) and customer_id = cast(? as uuid)";
+        Object[] params = new Object[]{
+                customerId,
+                eventId
+        };
+
+        return !this.getJdbcTemplate().query(sql, params, (resultSet, i) -> resultSet.next()).isEmpty();
+    }
+
+    @Override
+    public void removeParticipant(String customerId, String eventId) {
+        String sql = "DELETE FROM \"Customer_Event\" WHERE customer_id = cast(? as uuid) and event_id = cast(? as uuid)";
+        Object[] params = new Object[] {
+                customerId,
+                eventId
+        };
+
+        this.getJdbcTemplate().update(sql,params);
+    }
+
+    @Override
+    public void addParticipant(String customerId, String eventId) {
+        String sql = "INSERT INTO \"Customer_Event\" (customer_id, event_id, status, priority) VALUES (cast(? as uuid), cast(? as uuid), (SELECT id FROM \"Customer_Event_Status\" WHERE name = 'ACCEPTED')," +
+                "(SELECT id FROM \"Customer_Event_Priority\" WHERE name = 'AVERAGE'))";
+        Object[] params = new Object[]{
+                customerId,
+                eventId
+        };
+
+        this.getJdbcTemplate().update(sql,params);
+    }
 }
 

@@ -12,38 +12,53 @@ import java.util.List;
 public class EventServiceImpl implements EventService {
 
     @Autowired
-    EventDaoImpl eventDaoImpl;
+    EventDaoImpl eventDao;
 
     @Override
     public void createEvent(Event event) {
         int visibilityId, statusId;
-        if((event.getStartTime() != null) && (event.getEndTime() != null)) {
-            statusId = eventDaoImpl.getStatusId("EVENT");
-        }else{
-            statusId = eventDaoImpl.getStatusId("NOTE");
+        if ((event.getStartTime() != null) && (event.getEndTime() != null)) {
+            statusId = eventDao.getStatusId("EVENT");
+        } else {
+            statusId = eventDao.getStatusId("NOTE");
         }
         if (event.getVisibility().equals("")) {
-            visibilityId = eventDaoImpl.getVisibilityId("PRIVATE");
-        }else{
-            visibilityId = eventDaoImpl.getVisibilityId(event.getVisibility());
+            visibilityId = eventDao.getVisibilityId("PRIVATE");
+        } else {
+            visibilityId = eventDao.getVisibilityId(event.getVisibility());
         }
-        eventDaoImpl.createEvent(event, visibilityId, statusId);
+        eventDao.createEvent(event, visibilityId, statusId);
     }
 
     @Override
     public List<Event> getEventsByCustId(String custId) {
-        List<Event> events = eventDaoImpl.getEventsByCustId(custId);
+        List<Event> events = eventDao.getEventsByCustId(custId);
         return events;
     }
 
     @Override
     public Event getEventById(String eventId) {
-        return eventDaoImpl.getById(eventId);
+        return eventDao.getById(eventId);
     }
 
     @Override
     public List<Event> getAllPublicAndFriendsEvents(String customerId) {
-        return eventDaoImpl.getAllPublicAndFriends(customerId);
+        return eventDao.getAllPublicAndFriends(customerId);
+    }
+
+    @Override
+    public boolean isParticipant(String customerId, String eventId) {
+        return eventDao.isParticipant(customerId, eventId);
+    }
+
+    @Override
+    public void removeParticipant(String customerId, String eventId) {
+        eventDao.removeParticipant(customerId, eventId);
+    }
+
+    @Override
+    public void addParticipant(String customerId, String eventId) {
+        eventDao.addParticipant(customerId, eventId);
     }
 
 }

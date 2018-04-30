@@ -3,6 +3,8 @@ package com.ncgroup2.eventmanager.controller;
 import com.ncgroup2.eventmanager.entity.Event;
 import com.ncgroup2.eventmanager.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +38,26 @@ public class EventController {
     @GetMapping()
     public Event getEventsById(@RequestParam String eventId){
         return eventService.getEventById(eventId);
+    }
+
+    @GetMapping("/isParticipant")
+    public ResponseEntity isParticipant(@RequestParam String customerId,@RequestParam String eventId) {
+        if(eventService.isParticipant(customerId, eventId)) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/addParticipant")
+    public ResponseEntity addParticipant(@RequestParam String customerId,@RequestParam String eventId) {
+        eventService.addParticipant(customerId, eventId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping("/removeParticipant")
+    public ResponseEntity removeParticipant(@RequestParam String customerId,@RequestParam String eventId) {
+        eventService.removeParticipant(customerId, eventId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
 

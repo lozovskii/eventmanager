@@ -20,4 +20,10 @@ public interface EventDao {
     Event getById(String id);
 
     List<Event> getAllPublicAndFriends(String customerId);
+
+    boolean isParticipant(String customerId, String eventId);
+
+    void removeParticipant(String customerId, String eventId);
+
+    void addParticipant(String customerId, String eventId);
 }

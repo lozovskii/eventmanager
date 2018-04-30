@@ -13,4 +13,10 @@ public interface EventService {
     Event getEventById(String eventId);
 
     List<Event> getAllPublicAndFriendsEvents(String customerId);
+
+    boolean isParticipant(String customerId, String eventId);
+
+    void removeParticipant(String customerId, String eventId);
+
+    void addParticipant(String customerId, String eventId);
 }

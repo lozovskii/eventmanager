@@ -3,6 +3,15 @@
     <button class="btn-light" [routerLink]="['/update-event',event.id]">Edit</button>
     <button class="btn-warning">Delete</button>
   </div>
+
+  <div [hidden]="isCreator">
+    <div [hidden]="!isParticipant">
+      You've joined this event. <button class="btn-outline-danger" (click)="removeParticipant()">Leave</button>
+    </div>
+    <div [hidden]="isParticipant">
+        <button class="btn-outline-success" (click)="addParticipant()">Join event</button>
+    </div>
+  </div>
   <p> Name = {{event.name}}</p>
   <p> Description = {{event.description}}</p>
   <p> Start time = {{event.startTime}}</p>
