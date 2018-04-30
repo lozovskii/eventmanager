@@ -2,6 +2,7 @@ package com.ncgroup2.eventmanager.dao.impl;
 
 import com.ncgroup2.eventmanager.dao.EventDao;
 import com.ncgroup2.eventmanager.entity.Event;
+import com.ncgroup2.eventmanager.mapper.EventMapper;
 import com.ncgroup2.eventmanager.util.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -107,7 +108,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
     @Override
     public List<Event> getEventsByCustId(String custId) {
-        String sql = "select \"Event\".name as name, start_time, end_time, \"Event\".description as description," +
+        String sql = "select \"Event\".id as id, \"Event\".name as name, start_time, end_time, \"Event\".description as description," +
                      "\"Event_Visibility\".name as visibility " +
                      "from (\"Event\" INNER JOIN \"Event_Visibility\" " +
                      "ON \"Event\".visibility = \"Event_Visibility\".id) " +
@@ -118,6 +119,30 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
                 custId
         };
         return this.getJdbcTemplate().query(sql, params, new BeanPropertyRowMapper(Event.class));
+    }
+
+    @Override
+    public Event getById(String id) {
+        String sql = "select \"Event\".id as id, \"Event\".creator_id as creator_id, \"Event\".name as name, start_time, end_time, \"Event\".description as description," +
+                "\"Event_Visibility\".name as visibility " +
+                "from (\"Event\" INNER JOIN \"Event_Visibility\" " +
+                "ON \"Event\".visibility = \"Event_Visibility\".id) " +
+                "WHERE \"Event\".id  = CAST(? AS uuid) " +
+                "AND start_time IS NOT NULL " +
+                "AND end_time IS NOT NULL";
+
+        Object[] params = new Object[]{
+                id
+        };
+
+//        EventMapper mapper = new EventMapper();
+
+        List<Event> list =  this.getJdbcTemplate().query(sql, params, new BeanPropertyRowMapper(Event.class));
+        if(!list.isEmpty()) {
+            return list.iterator().next();
+        } else {
+            return null;
+        }
     }
 
 }

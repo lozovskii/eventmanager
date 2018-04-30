@@ -36,4 +36,9 @@ public class EventServiceImpl implements EventService {
         return events;
     }
 
+    @Override
+    public Event getEventById(String eventId) {
+        return eventDaoImpl.getById(eventId);
+    }
+
 }

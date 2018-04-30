@@ -27,5 +27,10 @@ public class EventController {
         public List<Event> getEventsByCustId(@PathVariable String custId){
         return eventService.getEventsByCustId(custId);
     }
+
+    @GetMapping()
+    public Event getEventsById(@RequestParam String eventId){
+        return eventService.getEventById(eventId);
+    }
 }
 

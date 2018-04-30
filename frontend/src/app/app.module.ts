@@ -28,6 +28,7 @@ import {ResetPasswordService} from "./_services/reset-password.service";
 import { ResetComponent } from './reset-password/reset/reset.component';
 import {NavbarService} from "./_services/navbar.service";
 import { EventComponent } from './event/event.component';
+import { UpdateEventComponent } from './update-event/update-event.component';
 
 
 
@@ -58,6 +59,7 @@ import { EventComponent } from './event/event.component';
     SendLinkComponent,
     ResetComponent,
     EventComponent,
+    UpdateEventComponent,
   ],
   providers: [
     AuthGuard,

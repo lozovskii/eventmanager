@@ -35,4 +35,8 @@ export class EventService {
     return this.http.get<Event[]>(url)
   }
 
+  getEventById(eventId: string) {
+    const url = `${this.eventsUrl}?eventId=${eventId}`;
+    return this.http.get<Event>(url);
+  }
 }

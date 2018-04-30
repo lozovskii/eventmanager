@@ -25,6 +25,7 @@ export class AuthenticationService {
 
   logout() {
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('currentUserObject');
   }
 
   // currentUser(): Observable<User> {

@@ -19,6 +19,7 @@ export class HomeComponent implements OnInit {
       user => {
         console.log(user.name);
         this.currentUser= user;
+        localStorage.setItem('currentUserObject', JSON.stringify(this.currentUser));
         console.log(this.currentUser.name);
       }
     );}

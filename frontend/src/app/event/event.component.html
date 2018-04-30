@@ -1,3 +1,11 @@
-<p>
-  event works!
-</p>
+<div >
+  <div [hidden]="!isCreator">
+    <button class="btn-light" [routerLink]="['/update-event',event.id]">Edit</button>
+    <button class="btn-warning">Delete</button>
+  </div>
+  <p> Name = {{event.name}}</p>
+  <p> Description = {{event.description}}</p>
+  <p> Start time = {{event.startTime}}</p>
+  <p> End time = {{event.endTime}}</p>
+  <p> Privacy = {{event.visibility}}</p>
+</div>

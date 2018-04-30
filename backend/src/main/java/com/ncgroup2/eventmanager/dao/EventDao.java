@@ -16,4 +16,6 @@ public interface EventDao {
     int getVisibilityId(String fieldValue);
 
     List<Event> getEventsByCustId(String custId);
+
+    Event getById(String id);
 }

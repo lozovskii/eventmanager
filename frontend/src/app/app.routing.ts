@@ -13,6 +13,8 @@ import {ProfileComponent} from "./profile/profile.component";
 import {VnavbarComponent} from "./vnavbar/vnavbar.component";
 import {SendLinkComponent} from "./reset-password/send-link/send-link.component";
 import {ResetComponent} from "./reset-password/reset/reset.component";
+import {EventComponent} from "./event/event.component";
+import {UpdateEventComponent} from "./update-event/update-event.component";
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full'},
@@ -20,6 +22,8 @@ const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'create-event', component: CreateEventComponent},
+  { path: 'event/:id', component: EventComponent},
+  { path: 'update-event/:id', component: UpdateEventComponent},
   { path: 'eventlist', component: EventlistComponent},
   {path: 'registration-confirm', component: RegistrationConfirmComponent},
   {path: 'send-reset-link', component: SendLinkComponent},

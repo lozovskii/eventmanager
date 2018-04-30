@@ -16,6 +16,7 @@
           <th scope="col">Start time</th>
           <th scope="col">End time</th>
           <th scope="col">Visibility</th>
+          <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -26,6 +27,7 @@
           <td>{{event.startTime}}</td>
           <td>{{event.endTime}}</td>
           <td>{{event.visibility}}</td>
+          <td><a class="nav-link" [routerLink]="['/event',event.id]">View </a> </td>
         </tr>
         </tbody>
       </table>
