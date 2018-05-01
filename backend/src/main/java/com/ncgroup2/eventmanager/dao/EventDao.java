@@ -4,10 +4,12 @@ import com.ncgroup2.eventmanager.dto.EventCountdownDTO;
 import com.ncgroup2.eventmanager.entity.Event;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface EventDao {
 
-    void createEvent(Event event, int visibility, int eventStatus);
+    void createEvent(Event event, int visibility, int eventStatus, String frequency, UUID groupId, UUID eventId,
+                     int priorityId);
 
     void deleteEvent(Event event);
 
@@ -18,6 +20,8 @@ public interface EventDao {
     int getStatusId(String fieldValue);
 
     int getVisibilityId(String fieldValue);
+
+    int getPrioriryId(String fieldValue);
 
     List<Event> getEventsByCustId(String custId);
 
@@ -32,4 +36,10 @@ public interface EventDao {
     void addParticipant(String customerId, String eventId);
 
     List<EventCountdownDTO> getCountdownMessages();
+
+    void saveEventAsADraft(String eventId);
+
+    String getTimeToEventStart(String eventId);
+
+    List<Event> getNotesByCustId(String custId);
 }
