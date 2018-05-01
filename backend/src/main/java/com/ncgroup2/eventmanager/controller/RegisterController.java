@@ -2,7 +2,7 @@ package com.ncgroup2.eventmanager.controller;
 
 import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.service.CustomerService;
-import com.ncgroup2.eventmanager.service.sender.Sender;
+import com.ncgroup2.eventmanager.service.sender.MyMailSender;
 import com.ncgroup2.eventmanager.service.sender.SubjectEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,13 +20,13 @@ public class RegisterController {
 
     private final CustomerService customerService;
     private final PasswordEncoder passwordEncoder;
-    private final Sender mailSender;
+    private final MyMailSender mailMyMailSender;
 
     @Autowired
-    public RegisterController(CustomerService customerService, PasswordEncoder passwordEncoder, Sender mailSender) {
+    public RegisterController(CustomerService customerService, PasswordEncoder passwordEncoder, MyMailSender mailMyMailSender) {
         this.customerService = customerService;
         this.passwordEncoder = passwordEncoder;
-        this.mailSender = mailSender;
+        this.mailMyMailSender = mailMyMailSender;
     }
 
 
@@ -48,7 +48,7 @@ public class RegisterController {
 
         customerService.register(customer);
 
-        mailSender.sendEmail(customer.getEmail(), SubjectEnum.REGISTRATION, token);
+        mailMyMailSender.sendEmail(customer.getEmail(), SubjectEnum.REGISTRATION, token);
 
         return new ResponseEntity( HttpStatus.OK);
     }

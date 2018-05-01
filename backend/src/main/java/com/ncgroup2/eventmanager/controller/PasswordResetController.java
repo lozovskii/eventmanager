@@ -3,7 +3,7 @@ package com.ncgroup2.eventmanager.controller;
 import com.ncgroup2.eventmanager.dto.PasswordResetDTO;
 import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.service.CustomerService;
-import com.ncgroup2.eventmanager.service.sender.Sender;
+import com.ncgroup2.eventmanager.service.sender.MyMailSender;
 import com.ncgroup2.eventmanager.service.sender.SubjectEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,14 +19,14 @@ public class PasswordResetController {
 
     private final CustomerService customerService;
 
-    private final Sender mailSender;
+    private final MyMailSender mailMyMailSender;
 
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public PasswordResetController(CustomerService customerService, Sender mailSender, PasswordEncoder passwordEncoder) {
+    public PasswordResetController(CustomerService customerService, MyMailSender mailMyMailSender, PasswordEncoder passwordEncoder) {
         this.customerService = customerService;
-        this.mailSender = mailSender;
+        this.mailMyMailSender = mailMyMailSender;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -47,7 +47,7 @@ public class PasswordResetController {
 
         customerService.createVerificationToken(customer, token);
 
-        mailSender.sendEmail(customer.getEmail(), SubjectEnum.RESET_PASSWORD, token);
+        mailMyMailSender.sendEmail(customer.getEmail(), SubjectEnum.RESET_PASSWORD, token);
 
         return new ResponseEntity(HttpStatus.OK);
     }

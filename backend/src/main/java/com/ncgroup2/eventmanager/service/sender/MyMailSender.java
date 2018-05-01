@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class Sender {
+public class MyMailSender {
 
     private final JavaMailSender mailSender;
 
@@ -20,7 +20,7 @@ public class Sender {
     private String text;
 
     @Autowired
-    public Sender(JavaMailSender mailSender) {
+    public MyMailSender(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
 
