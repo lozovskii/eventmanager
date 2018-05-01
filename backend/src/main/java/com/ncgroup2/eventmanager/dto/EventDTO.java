@@ -1,26 +1,18 @@
 package com.ncgroup2.eventmanager.dto;
 
-
 import com.ncgroup2.eventmanager.entity.Event;
 
-import java.util.List;
-
 public class EventDTO {
-    private Long frequencyNumber;
-    private String frequencyPeriod;
-    private List<String> people;
+
     private Event event;
-    private String priority;
+    private AdditionalEventModelDTO additionEvent;
 
     public EventDTO() {
     }
 
-    public EventDTO(Event event, Long frequencyNumber, String frequencyPeriod, List<String> people, String priority) {
+    public EventDTO(Event event, AdditionalEventModelDTO additionEvent) {
         this.event = event;
-        this.frequencyNumber = frequencyNumber;
-        this.frequencyPeriod = frequencyPeriod;
-        this.people = people;
-        this.priority = priority;
+        this.additionEvent = additionEvent;
     }
 
     public Event getEvent() {
@@ -31,32 +23,19 @@ public class EventDTO {
         this.event = event;
     }
 
-    public Long getFrequencyNumber() {
-        return frequencyNumber;
+    public AdditionalEventModelDTO getAdditionEvent() {
+        return additionEvent;
     }
 
-    public void setFrequencyNumber(Long frequencyNumber) {
-        this.frequencyNumber = frequencyNumber;
+    public void setAdditionEvent(AdditionalEventModelDTO additionEvent) {
+        this.additionEvent = additionEvent;
     }
 
-    public String getFrequencyPeriod() {
-        return frequencyPeriod;
+    @Override
+    public String toString() {
+        return "EventDTO{" +
+                "event=" + event +
+                ", additionEvent=" + additionEvent +
+                '}';
     }
-
-    public void setFrequencyPeriod(String frequencyPeriod) {
-        this.frequencyPeriod = frequencyPeriod;
-    }
-
-    public List<String> getPeople() {
-        return people;
-    }
-
-    public void setPeople(List<String> people) {
-        this.people = people;
-    }
-
-    public String getPriority() { return priority; }
-
-    public void setPriority(String priority) { this.priority = priority; }
-
 }
