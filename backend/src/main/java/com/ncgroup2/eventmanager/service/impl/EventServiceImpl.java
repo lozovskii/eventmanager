@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -18,27 +19,46 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public void createEvent(EventDTO eventDTO) {
+        int visibilityId, statusId, priorityId;
+        String priority, status, visibility;
+
         Event event = eventDTO.getEvent();
-        System.out.println("dto = " + eventDTO.getFrequencyNumber());
-        int visibilityId, statusId;
+        String frequencyPeriod = eventDTO.getFrequencyPeriod();
+        Long frequencyNumber = eventDTO.getFrequencyNumber();
+
+        if(!eventDTO.getPriority().equals("")){
+            priority = eventDTO.getPriority();
+        }else {
+            priority = "LOW";
+        }
         if((event.getStartTime() != null) && (event.getEndTime() != null)) {
-            statusId = eventDao.getStatusId("EVENT");
-        }else{
-            statusId = eventDao.getStatusId("NOTE");
+            status = "EVENT";
+        }else {
+            status = "NOTE";
         }
         if (event.getVisibility().equals("")) {
-            visibilityId = eventDao.getVisibilityId("PRIVATE");
-        }else{
-            visibilityId = eventDao.getVisibilityId(event.getVisibility());
+            visibility = "PRIVATE";
+        }else {
+            visibility = event.getVisibility();
         }
-        eventDao.createEvent(event, visibilityId, statusId);
+
+        priorityId = eventDao.getPrioriryId(priority);
+        statusId = eventDao.getStatusId(status);
+        visibilityId = eventDao.getVisibilityId(visibility);
+
+        UUID groupId = UUID.randomUUID();
+        UUID eventId = UUID.randomUUID();
+        for (int i = 0; i <=frequencyNumber ; i++){
+            frequencyPeriod = i + " " + frequencyPeriod;
+            if(i == 0){
+                eventId = groupId;
+            }
+            eventDao.createEvent(event, visibilityId, statusId, frequencyPeriod, groupId, eventId, priorityId);
+        }
     }
 
     @Override
-    public List<Event> getEventsByCustId(String custId) {
-        List<Event> events = eventDao.getEventsByCustId(custId);
-        return events;
-    }
+    public List<Event> getEventsByCustId(String custId) { return eventDao.getEventsByCustId(custId); }
 
     @Override
     public Event getEventById(String eventId) {
@@ -72,6 +92,11 @@ public class EventServiceImpl implements EventService {
 
     public List<EventCountdownDTO> getCountdownMessages() {
         return eventDao.getCountdownMessages();
+    }
+
+    @Override
+    public void saveEventAsADraft(String eventId){
+        eventDao.saveEventAsADraft(eventId);
     }
 
 }

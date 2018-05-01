@@ -25,4 +25,6 @@ public interface EventService {
     void addParticipant(String customerId, String eventId);
 
     List<EventCountdownDTO> getCountdownMessages();
+
+    void saveEventAsADraft(String eventId);
 }
