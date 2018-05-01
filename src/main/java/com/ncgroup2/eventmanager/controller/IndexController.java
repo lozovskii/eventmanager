@@ -22,23 +22,6 @@ public class IndexController {
 
         model.addAttribute("customer", new Customer());
 
-        // TEST COMMANDS
-
-//        WishList wishList = wishListService.getWishListByEventId();
-////        WishList wishList = wishListService.getWishListByBookerId();
-//
-//        System.out.println("WishList ID: "+ wishList.getId());
-//
-//        for (ItemWishListDto item : wishList.getItems()) {
-//            System.out.println("\n\tEventWishlistID: "+item.getEvent_wishlist_id());
-//            System.out.println("\tItemWishlistID: "+item.getItem_wishlist_id());
-//            System.out.println("\tBookerID: "+item.getBooker_customer_id());
-//            System.out.println("\tItemID: "+item.getItem().getId());
-//            System.out.println("\tItemName: "+item.getItem().getName());
-//            System.out.println("\tItemDescription: "+item.getItem().getDescription());
-//            System.out.println("\tItemLink: "+item.getItem().getLink());
-//        }
-
         return "index";
     }
 
