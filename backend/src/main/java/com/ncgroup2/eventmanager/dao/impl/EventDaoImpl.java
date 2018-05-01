@@ -129,7 +129,6 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
     @Override
     public List getEventsByCustId(String custId) {
-        System.out.println(custId);
         String sql = "SELECT \"Event\".name AS name, start_time, end_time, \"Event\".description AS description, " +
                 "\"Event_Visibility\".name AS visibility, \"Event_Status\".name AS status " +
                 "FROM (\"Event\" INNER JOIN \"Event_Visibility\" " +
