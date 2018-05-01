@@ -10,15 +10,17 @@ public class EventDTO {
     private String frequencyPeriod;
     private List<String> people;
     private Event event;
+    private String priority;
 
     public EventDTO() {
     }
 
-    public EventDTO(Event event, Long frequencyNumber, String frequencyPeriod, List<String> people) {
+    public EventDTO(Event event, Long frequencyNumber, String frequencyPeriod, List<String> people, String priority) {
         this.event = event;
         this.frequencyNumber = frequencyNumber;
         this.frequencyPeriod = frequencyPeriod;
         this.people = people;
+        this.priority = priority;
     }
 
     public Event getEvent() {
@@ -52,4 +54,9 @@ public class EventDTO {
     public void setPeople(List<String> people) {
         this.people = people;
     }
+
+    public String getPriority() { return priority; }
+
+    public void setPriority(String priority) { this.priority = priority; }
+
 }
