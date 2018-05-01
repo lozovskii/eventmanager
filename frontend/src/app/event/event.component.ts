@@ -11,6 +11,7 @@ import {Event} from "../_models";
 export class EventComponent implements OnInit {
   event: Event;
   isCreator: boolean;
+  isParticipant: boolean;
 
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute,
@@ -18,14 +19,33 @@ export class EventComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isCreator=false;
+    this.isCreator = false;
     this.activatedRoute.params.subscribe(params => {
       let eventId = params['id'];
       this.eventService.getEventById(eventId)
         .subscribe((event) => {
           this.event = event;
-          this.isCreator = JSON.parse(localStorage.getItem('currentUserObject')).id == this.event.creatorId;
+          let currentUserId = JSON.parse(localStorage.getItem('currentUserObject')).id;
+          this.isCreator = currentUserId == this.event.creatorId;
+          this.isParticipant = this.event.people.includes(currentUserId)
         });
+    });
+  }
+
+  addParticipant() {
+    this.eventService.addParticipant(this.event.id).subscribe(() => {
+      this.isParticipant = true;
+      this.event.people.push(JSON.parse(localStorage.getItem('currentUserObject')).id);
+    });
+  }
+
+  removeParticipant() {
+    this.eventService.removeParticipant(this.event.id).subscribe(() => {
+      this.isParticipant = false;
+      const index = this.event.people.indexOf(JSON.parse(localStorage.getItem('currentUserObject')).id);
+      if (index>-1) {
+        this.event.people.slice(index);
+      }
     });
   }
 

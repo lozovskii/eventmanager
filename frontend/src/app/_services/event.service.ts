@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 
-import { Event } from '../_models/event';
+import {Event} from '../_models/event';
 import {Observable} from 'rxjs/Observable';
 import {UserService} from "./user.service";
 
@@ -10,7 +10,7 @@ export class EventService {
   private eventsUrl = 'api/events';
 
   constructor(private http: HttpClient,
-              private userService : UserService) {
+              private userService: UserService) {
   }
 
   create(event: Event) {
@@ -37,5 +37,17 @@ export class EventService {
 
   deleteEvent(eventId: string) {
     return this.http.post<number>('/api/events/delete', eventId);
+  }
+
+  addParticipant(eventId) {
+    let customerId = this.userService.getCurrentId();
+    const url = `${this.eventsUrl}/addParticipant?customerId=${customerId}&eventId=${eventId}`;
+    return this.http.get(url);
+  }
+
+  removeParticipant(eventId) {
+    let customerId = this.userService.getCurrentId();
+    const url = `${this.eventsUrl}/removeParticipant?customerId=${customerId}&eventId=${eventId}`;
+    return this.http.get(url);
   }
 }
