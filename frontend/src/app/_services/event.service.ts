@@ -51,4 +51,9 @@ export class EventService {
     const url = `${this.eventsUrl}/removeParticipant?customerId=${customerId}&eventId=${eventId}`;
     return this.http.get(url);
   }
+
+  isParticipant(customerId: string, eventId: string) {
+    const url = `${this.eventsUrl}/isParticipant?customerId=${customerId}&eventId=${eventId}`;
+    return this.http.get(url);
+  }
 }

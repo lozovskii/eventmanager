@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {EventService} from "../_services";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Event} from "../_models";
+import {EventDTOModel} from "../_models/dto/eventDTOModel";
 
 @Component({
   selector: 'app-event',
@@ -9,7 +9,7 @@ import {Event} from "../_models";
   styleUrls: ['./event.component.css']
 })
 export class EventComponent implements OnInit {
-  event: Event;
+  eventDTO: EventDTOModel;
   isCreator: boolean;
   isParticipant: boolean;
 
@@ -24,33 +24,36 @@ export class EventComponent implements OnInit {
       let eventId = params['id'];
       this.eventService.getEventById(eventId)
         .subscribe((event) => {
-          this.event = event;
+          this.eventDTO = new EventDTOModel();
+          this.eventDTO.event = event;
+
           let currentUserId = JSON.parse(localStorage.getItem('currentUserObject')).id;
-          this.isCreator = currentUserId == this.event.creatorId;
-          // this.isParticipant = this.event.people.includes(currentUserId)
+          this.isCreator = currentUserId == this.eventDTO.event.creatorId;
+          console.log(this.eventDTO.event.creatorId);
+          this.eventService.isParticipant(currentUserId,this.eventDTO.event.id).subscribe(()=>{this.isParticipant=true}, ()=>{this.isParticipant=false})
         });
     });
   }
 
   addParticipant() {
-    this.eventService.addParticipant(this.event.id).subscribe(() => {
+    this.eventService.addParticipant(this.eventDTO.event.id).subscribe(() => {
       this.isParticipant = true;
-      //this.event.people.push(JSON.parse(localStorage.getItem('currentUserObject')).id);
+      //this.eventDTO.people.push(JSON.parse(localStorage.getItem('currentUserObject')).id);
     });
   }
 
   removeParticipant() {
-    this.eventService.removeParticipant(this.event.id).subscribe(() => {
+    this.eventService.removeParticipant(this.eventDTO.event.id).subscribe(() => {
       this.isParticipant = false;
-      // const index = this.event.people.indexOf(JSON.parse(localStorage.getItem('currentUserObject')).id);
+      // const index = this.eventDTO.people.indexOf(JSON.parse(localStorage.getItem('currentUserObject')).id);
       // if (index>-1) {
-      //   this.event.people.slice(index);
+      //   this.eventDTO.people.slice(index);
       // }
     });
   }
 
   delete() {
-    this.eventService.deleteEvent(this.event.id).subscribe(() => {
+    this.eventService.deleteEvent(this.eventDTO.event.id).subscribe(() => {
       this.router.navigate(['/eventlist']);
     });
   }

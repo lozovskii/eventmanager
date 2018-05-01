@@ -130,7 +130,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     @Override
     public List getEventsByCustId(String custId) {
         System.out.println(custId);
-        String sql = "SELECT \"Event\".name AS name, start_time, end_time, \"Event\".description AS description, " +
+        String sql = "SELECT \"Event\".id as id, \"Event\".name AS name, start_time, end_time, \"Event\".description AS description, " +
                 "\"Event_Visibility\".name AS visibility, \"Event_Status\".name AS status " +
                 "FROM (\"Event\" INNER JOIN \"Event_Visibility\" " +
                 "ON \"Event\".visibility = \"Event_Visibility\".id) " +
@@ -221,10 +221,11 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         String sql = "SELECT * FROM \"Customer_Event\" WHERE event_id = cast (? AS UUID)" +
                 " AND customer_id = cast(? AS UUID)";
         Object[] params = new Object[]{
-                customerId,
-                eventId
+                eventId,
+                customerId
         };
-        return !this.getJdbcTemplate().query(sql, params, (resultSet, i) -> resultSet.next()).isEmpty();
+        List<Boolean> list = this.getJdbcTemplate().query(sql, params, (resultSet, i) -> resultSet.next());
+        return !list.isEmpty();
     }
 
     @Override
