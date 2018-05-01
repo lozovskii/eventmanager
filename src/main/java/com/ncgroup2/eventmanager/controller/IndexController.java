@@ -45,7 +45,7 @@ public class IndexController {
 
 //        WishList wishList1 = wishListService.getByEventId("7691ba6c-4d1c-11e8-8b6a-d79631e9e952");
 //        WishList wishList = wishListService.getByEventId("1f0a7864-4d1d-11e8-8b72-df859189b814");
-//        WishList wishList = wishListService.getBookedItems("1ba970a2-4c97-11e8-893d-bbb831619495");
+        WishList wishList = wishListService.getBookedItems("1ba970a2-4c97-11e8-893d-bbb831619495");
 
 //        WishList wishList = wishListService.getById("7ca297d0-4d1e-11e8-ab13-7b6e01298124");
 
@@ -67,20 +67,20 @@ public class IndexController {
 //
 //        WishList wishList = wishListService.getByEventId("7691ba6c-4d1c-11e8-8b6a-d79631e9e952");
 //
-//        System.out.println("\nWishList ID: "+ wishList.getId());
-//
-//        for (ItemWishListDto item : wishList.getItems()) {
-//            System.out.println("\n\tEventWishlistID: "+item.getEvent_wishlist_id());
-//            System.out.println("\tEventID: "+item.getEvent_id());
-//            System.out.println("\tItemWishlistID: "+item.getItem_wishlist_id());
-//            System.out.println("\tItemPriority: "+item.getPriority());
-//            System.out.println("\tBookerID: "+item.getBooker_customer_id());
-//
-//            System.out.println("\tItemID: "+item.getItem().getId());
-//            System.out.println("\tItemName: "+item.getItem().getName());
-//            System.out.println("\tItemDescription: "+item.getItem().getDescription());
-//            System.out.println("\tItemLink: "+item.getItem().getLink());
-//        }
+        System.out.println("\nWishList ID: "+ wishList.getId());
+
+        for (ItemWishListDto item : wishList.getItems()) {
+            System.out.println("\n\tEventWishlistID: "+item.getEvent_wishlist_id());
+            System.out.println("\tEventID: "+item.getEvent_id());
+            System.out.println("\tItemWishlistID: "+item.getItem_wishlist_id());
+            System.out.println("\tItemPriority: "+item.getPriority());
+            System.out.println("\tBookerID: "+item.getBooker_customer_id());
+
+            System.out.println("\tItemID: "+item.getItem().getId());
+            System.out.println("\tItemName: "+item.getItem().getName());
+            System.out.println("\tItemDescription: "+item.getItem().getDescription());
+            System.out.println("\tItemLink: "+item.getItem().getLink());
+        }
 
         return "index";
     }
