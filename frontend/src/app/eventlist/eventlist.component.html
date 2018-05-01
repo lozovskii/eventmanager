@@ -10,7 +10,6 @@
       <table class="table table-striped" style = "overflow-x: auto; display: block;">
         <thead>
         <tr>
-          <th scope="col"></th>
           <th scope="col">Title</th>
           <th scope="col">Description</th>
           <th scope="col">Start time</th>
@@ -20,7 +19,6 @@
         </thead>
         <tbody>
         <tr *ngFor="let event of events" [routerLink]="['/event',event.id]">
-          <td><input id="{{event.id}}" type="checkbox"></td>
           <td>{{event.name}}</td>
           <td>{{event.description}}</td>
           <td>{{event.startTime}}</td>
