@@ -1,6 +1,8 @@
 package com.ncgroup2.eventmanager.dao;
 
+import com.ncgroup2.eventmanager.dto.EventCountdownDTO;
 import com.ncgroup2.eventmanager.entity.Event;
+
 import java.util.List;
 
 public interface EventDao {
@@ -28,4 +30,6 @@ public interface EventDao {
     void removeParticipant(String customerId, String eventId);
 
     void addParticipant(String customerId, String eventId);
+
+    List<EventCountdownDTO> getCountdownMessages();
 }

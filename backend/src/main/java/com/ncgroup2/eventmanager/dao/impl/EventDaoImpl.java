@@ -1,20 +1,17 @@
 package com.ncgroup2.eventmanager.dao.impl;
 
 import com.ncgroup2.eventmanager.dao.EventDao;
+import com.ncgroup2.eventmanager.dto.EventCountdownDTO;
 import com.ncgroup2.eventmanager.entity.Event;
 import com.ncgroup2.eventmanager.util.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowCallbackHandler;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
@@ -241,6 +238,29 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         };
 
         this.getJdbcTemplate().update(sql,params);
+    }
+
+    @Override
+    public List<EventCountdownDTO> getCountdownMessages() {
+        String sql = "SELECT\n" +
+                "  (SELECT email\n" +
+                "   FROM \"Customer\"\n" +
+                "   WHERE id = ce.customer_id) AS email,\n" +
+                "  event_countdown(event_id) AS messages\n" +
+                "FROM \"Customer_Event\" ce\n" +
+                "WHERE date_trunc('day', start_date_notification) <= date_trunc('day', now()) AND\n" +
+                "      ce.event_id = (SELECT id\n" +
+                "                     FROM \"Event\"\n" +
+                "                     WHERE\n" +
+                "                       start_time > now() AND\n" +
+                "                       ce.event_id = \"Event\".id)\n" +
+                "GROUP BY customer_id";
+        return this.getJdbcTemplate().query(sql, (resultSet, i) -> {
+            EventCountdownDTO countdownDTO = new EventCountdownDTO();
+            countdownDTO.setEmail(resultSet.getString("email"));
+            countdownDTO.setMessages(resultSet.getString("messages"));
+            return countdownDTO;
+        });
     }
 }
 

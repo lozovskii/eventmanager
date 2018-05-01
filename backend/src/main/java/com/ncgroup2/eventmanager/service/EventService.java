@@ -1,5 +1,6 @@
 package com.ncgroup2.eventmanager.service;
 
+import com.ncgroup2.eventmanager.dto.EventCountdownDTO;
 import com.ncgroup2.eventmanager.dto.EventDTO;
 import com.ncgroup2.eventmanager.entity.Event;
 
@@ -22,4 +23,6 @@ public interface EventService {
     void removeParticipant(String customerId, String eventId);
 
     void addParticipant(String customerId, String eventId);
+
+    List<EventCountdownDTO> getCountdownMessages();
 }

@@ -1,11 +1,12 @@
 package com.ncgroup2.eventmanager.service.impl;
 
 import com.ncgroup2.eventmanager.dao.EventDao;
+import com.ncgroup2.eventmanager.dto.EventCountdownDTO;
 import com.ncgroup2.eventmanager.dto.EventDTO;
+import com.ncgroup2.eventmanager.entity.Event;
 import com.ncgroup2.eventmanager.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ncgroup2.eventmanager.entity.Event;
 
 import java.util.List;
 
@@ -67,6 +68,10 @@ public class EventServiceImpl implements EventService {
     @Override
     public void addParticipant(String customerId, String eventId) {
         eventDao.addParticipant(customerId, eventId);
+    }
+
+    public List<EventCountdownDTO> getCountdownMessages() {
+        return eventDao.getCountdownMessages();
     }
 
 }
