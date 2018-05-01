@@ -1,10 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {Event} from "../_models/event";
-import {AlertService} from "../_services/alert.service";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {EventDTOModel} from "../_models/dto/eventDTOModel";
+import {AlertService, EventService, UserService} from "../_services";
 import {Router} from "@angular/router";
-import {EventService} from "../_services/event.service";
-import {UserService} from "../_services/user.service";
 import {VISIBILITY} from "../event-visibility";
 
 @Component({
@@ -13,11 +11,12 @@ import {VISIBILITY} from "../event-visibility";
   styleUrls: ['./create-event.component.css']
 })
 export class CreateEventComponent implements OnInit {
-  event: Event;
-  loading = false;
+  eventDTOForm: FormGroup;
   eventForm: FormGroup;
-  visibility: any[] = VISIBILITY;
-  vis: any;
+  additionEventForm: FormGroup;
+
+  visibilityList: any[] = VISIBILITY;
+  visibility: string;
   selectedPeople: string[] = [];
 
   constructor(private router: Router,
@@ -28,23 +27,30 @@ export class CreateEventComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.eventForm = this.formBuilder.group({
-      name: [''],
-      groupId: [''],
-      folderId: [''],
-      creatorId: [''],
-      day: [''],
-      startTime: [''],
-      endTime: [''],
-      priority: [''],
-      visibility: [''],
-      frequencyValue: [''],
-      frequency: [''],
-      description: [''],
-      status: [''],
-      people: [''],
-      vis: ['']
+    this.eventDTOForm = this.formBuilder.group({
+      event: this.initEventForm(),
+      additionEvent: this.initAdditionEventForm()
     });
+  }
+
+  initEventForm(): FormGroup {
+    return this.eventForm = this.formBuilder.group({
+      name: new FormControl(''),
+      description: new FormControl(''),
+      day: new FormControl(''),
+      startTime: new FormControl(''),
+      endTime: new FormControl(''),
+      visibility: new FormControl('')
+    })
+  }
+
+  initAdditionEventForm(): FormGroup {
+    return this.additionEventForm = this.formBuilder.group({
+      frequencyNumber: new FormControl(''),
+      frequencyPeriod: new FormControl(''),
+      priority: new FormControl(''),
+      people: new FormControl('')
+    })
   }
 
   addUserToEvent(manLogin: string) {
@@ -60,40 +66,26 @@ export class CreateEventComponent implements OnInit {
     }
   }
 
-  create(eventFromForm: Event) {
-    if ((eventFromForm.day != null) && (eventFromForm.day != '')) {
-      eventFromForm.startTime = eventFromForm.day + ' ' + eventFromForm.startTime + ':00';
-      eventFromForm.endTime = eventFromForm.day + ' ' + eventFromForm.endTime + ':00';
-      eventFromForm.frequency = eventFromForm.frequencyValue + '-' + eventFromForm.frequency;
-    }
-    let currentId2 = this.userService.getCurrentId();
-    eventFromForm.vis = this.vis.name;
-    eventFromForm.people = this.selectedPeople;
-    console.log(eventFromForm.vis);
-    eventFromForm.creatorId = currentId2;
-    console.log('event: ' + JSON.stringify(eventFromForm));
-    this.loading = true;
-    this.eventService.create(eventFromForm)
-      .subscribe(
-        data => {
-          if ((eventFromForm.day != null) && (eventFromForm.day != '')) {
-            if (eventFromForm.visibility == 'PUBLIC') {
-              this.alertService.success('Public event successfully created! You can invite people to your event.', true);
-              this.router.navigate(['/add-event-participants']);
-            } else {
-              this.alertService.success('Event successfully created!', true);
-              this.router.navigate(['/content']);
-            }
-            // }
+  createEventForm(eventDTO: EventDTOModel) {
+    eventDTO.additionEvent.people = this.selectedPeople;
+    console.log(JSON.stringify(eventDTO));
+    this.eventService.create(eventDTO).subscribe(
+      data => {
+        if ((eventDTO.event.day != null) && (eventDTO.event.day != '')) {
+          if (eventDTO.event.visibility == 'PUBLIC') {
+            this.alertService.success('Public event successfully created! You can invite people to your event.', true);
+            this.router.navigate(['/add-event-participants']);
           } else {
-            this.alertService.success('Note successfully created!', true);
+            this.alertService.success('Event successfully created!', true);
             this.router.navigate(['/content']);
           }
-        },
-        error => {
-          this.alertService.error('Something wrong! Please try again!');
-          this.loading = false;
-        });
+        } else {
+          this.alertService.success('Note successfully created!', true);
+          this.router.navigate(['/content']);
+        }
+      },
+      error => {
+        this.alertService.error('Something wrong! Please try again!');
+      });
   }
-
 }

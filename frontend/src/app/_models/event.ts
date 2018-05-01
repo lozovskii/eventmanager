@@ -1,5 +1,5 @@
 export class Event {
-  id : string;
+  id: string;
   name: string;
   groupId: string;
   folderId: string;
@@ -9,10 +9,6 @@ export class Event {
   endTime: string;
   priority: string;
   visibility: string;
-  frequencyValue: number;
-  frequency: string;
   description: string;
   status: string;
-  people: string[];
-  vis: any;
 }

@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {Event} from '../_models/event';
 import {Observable} from 'rxjs/Observable';
 import {UserService} from "./user.service";
+import {EventDTOModel} from "../_models/dto/eventDTOModel";
 
 @Injectable()
 export class EventService {
@@ -13,7 +14,7 @@ export class EventService {
               private userService: UserService) {
   }
 
-  create(event: Event) {
+  create(event: EventDTOModel) {
     console.log('here: ' + JSON.stringify(event));
     return this.http.post<Event>('/api/events', event);
   }

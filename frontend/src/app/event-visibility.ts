@@ -1,5 +1,5 @@
-export const VISIBILITY: any[] = [
-  {name: 'PUBLIC'},
-  {name: 'FRIENDS'},
-  {name: 'PRIVATE'}
+export const VISIBILITY: string[] = [
+  'PUBLIC',
+  'FRIENDS',
+  'PRIVATE'
 ];

@@ -27,7 +27,7 @@ export class EventComponent implements OnInit {
           this.event = event;
           let currentUserId = JSON.parse(localStorage.getItem('currentUserObject')).id;
           this.isCreator = currentUserId == this.event.creatorId;
-          this.isParticipant = this.event.people.includes(currentUserId)
+          // this.isParticipant = this.event.people.includes(currentUserId)
         });
     });
   }
@@ -35,17 +35,17 @@ export class EventComponent implements OnInit {
   addParticipant() {
     this.eventService.addParticipant(this.event.id).subscribe(() => {
       this.isParticipant = true;
-      this.event.people.push(JSON.parse(localStorage.getItem('currentUserObject')).id);
+      // this.event.people.push(JSON.parse(localStorage.getItem('currentUserObject')).id);
     });
   }
 
   removeParticipant() {
     this.eventService.removeParticipant(this.event.id).subscribe(() => {
       this.isParticipant = false;
-      const index = this.event.people.indexOf(JSON.parse(localStorage.getItem('currentUserObject')).id);
-      if (index>-1) {
-        this.event.people.slice(index);
-      }
+      // const index = this.event.people.indexOf(JSON.parse(localStorage.getItem('currentUserObject')).id);
+      // if (index>-1) {
+      //   this.event.people.slice(index);
+      // }
     });
   }
 
