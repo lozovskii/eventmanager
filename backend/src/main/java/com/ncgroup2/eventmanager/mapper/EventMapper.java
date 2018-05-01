@@ -19,7 +19,7 @@ public class EventMapper implements RowMapper<Event> {
         event.setEndTime(LocalDateTime.parse(resultSet.getString("endTime")));
         event.setName(resultSet.getString("name"));
         event.setVisibility(resultSet.getString("visibility"));
-        event.setStatus(resultSet.getByte("status"));
+        event.setStatus(resultSet.getString("status"));
         event.setDescription(resultSet.getString("description"));
         return event;
     }

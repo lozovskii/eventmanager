@@ -23,7 +23,7 @@ public interface EventDao {
 
     int getPrioriryId(String fieldValue);
 
-    List<Event> getEventsByCustId(String custId);
+    List getEventsByCustId(String custId);
 
     Event getById(String id);
 

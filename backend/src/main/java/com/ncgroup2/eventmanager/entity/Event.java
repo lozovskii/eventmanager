@@ -14,7 +14,7 @@ public class Event extends Entity {
     private LocalDateTime endTime;
     private String visibility;
     private String description;
-    private byte status;
+    private String status;
 
     public Event() {
     }
@@ -67,9 +67,9 @@ public class Event extends Entity {
         this.endTime = endTime;
     }
 
-    public byte getStatus() { return status; }
+    public String getStatus() { return status; }
 
-    public void setStatus(byte status) { this.status = status; }
+    public void setStatus(String status) { this.status = status; }
 
     public String getGroupId() {
         return groupId;
