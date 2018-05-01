@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface EventDao {
 
-    void createEvent(Event event, int visibility, int eventStatus, String frequency, UUID groupId, UUID eventId,
+    void createEvent(Event event, int visibility, int eventStatus, String frequency, UUID groupId,
                      int priorityId);
 
     void deleteEvent(Event event);

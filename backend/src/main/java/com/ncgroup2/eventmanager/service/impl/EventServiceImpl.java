@@ -23,11 +23,11 @@ public class EventServiceImpl implements EventService {
         String priority, status, visibility;
 
         Event event = eventDTO.getEvent();
-        String frequencyPeriod = eventDTO.getFrequencyPeriod();
-        Long frequencyNumber = eventDTO.getFrequencyNumber();
+        String frequencyPeriod = eventDTO.getAdditionEvent().getFrequencyPeriod();
+        Long frequencyNumber = eventDTO.getAdditionEvent().getFrequencyNumber();
 
-        if(!eventDTO.getPriority().equals("")){
-            priority = eventDTO.getPriority();
+        if(!eventDTO.getAdditionEvent().getPriority().equals("")){
+            priority = eventDTO.getAdditionEvent().getPriority();
         }else {
             priority = "LOW";
         }
@@ -47,13 +47,11 @@ public class EventServiceImpl implements EventService {
         visibilityId = eventDao.getVisibilityId(visibility);
 
         UUID groupId = UUID.randomUUID();
-        UUID eventId = UUID.randomUUID();
-        for (int i = 0; i <=frequencyNumber ; i++){
-            frequencyPeriod = i + " " + frequencyPeriod;
-            if(i == 0){
-                eventId = groupId;
-            }
-            eventDao.createEvent(event, visibilityId, statusId, frequencyPeriod, groupId, eventId, priorityId);
+        for (int i = 0; i <=10 ; i++){
+            String startFrequencyPeriod = frequencyPeriod;
+            frequencyPeriod = i*frequencyNumber + " " + frequencyPeriod;
+            eventDao.createEvent(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId);
+            frequencyPeriod = startFrequencyPeriod;
         }
     }
 

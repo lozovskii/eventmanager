@@ -31,20 +31,25 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     }
 
     @Override
-    public void createEvent(Event event, int visibility, int eventStatus, String frequency, UUID groupId, UUID eventId,
+    public void createEvent(Event event, int visibility, int eventStatus, String frequency, UUID groupId,
                             int priorityId) {
 
+        UUID eventId = UUID.randomUUID();
+        System.out.println("frequency = " + frequency);
         String query_event = "INSERT INTO \"Event\" " +
                 "(id,name,group_id,folder_id,creator_id,start_time,end_time,visibility,description,status) " +
-                "VALUES(?,?, ?, NULL, CAST(? AS UUID),?,?,?,?,?)";
+                "VALUES(?,?, ?, NULL, CAST(? AS UUID),(? + ?::interval)," +
+                "(? + ?::interval),?,?,?)";
 
         Object[] eventParams = new Object[]{
                 eventId,
                 event.getName(),
                 groupId,
-                event.getCreatorId() + frequency,
-                event.getStartTime() + frequency,
+                event.getCreatorId(),
+                event.getStartTime(),
+                frequency,
                 event.getEndTime(),
+                frequency,
                 visibility,
                 event.getDescription(),
                 eventStatus
