@@ -11,13 +11,28 @@ public class WishListServiceImpl {
     @Autowired
     private WishListDaoImpl wishListDao;
 
-    public WishList getWishListByEventId(){
+    public WishList getById(String wishlist_id){
 
-        return wishListDao.getEntityByField("ew.event_id", "edc215f0-4afb-11e8-a311-b3e80f6788de");
-
+        return wishListDao.getById(wishlist_id);
     }
 
-    public WishList getWishListByBookerId(){
-        return wishListDao.getEntityByField("iw.booker_customer_id", "9bcbdf60-4afb-11e8-88dc-7b08ea7947a1");
+    public WishList getByEventId(String event_id){
+
+        return wishListDao.getEntityByField("event_id", event_id);
+    }
+
+    public WishList getBookedItems(String booker_customer_id){
+
+        return wishListDao.getEntityByField("booker_customer_id", booker_customer_id);
+    }
+
+    public void createNewWishlist(WishList wishList){
+
+        wishListDao.create(wishList);
+    }
+
+    public void updateByField(Object item_wishlist_id, String fieldName, Object fieldValue){
+
+        wishListDao.updateField(item_wishlist_id, fieldName, fieldValue);
     }
 }

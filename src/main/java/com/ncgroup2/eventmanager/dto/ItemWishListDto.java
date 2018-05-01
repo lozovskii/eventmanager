@@ -14,6 +14,8 @@ public class ItemWishListDto {
 
     String event_wishlist_id;
 
+    String event_id;
+
     String booker_customer_id;
 
     String priority;

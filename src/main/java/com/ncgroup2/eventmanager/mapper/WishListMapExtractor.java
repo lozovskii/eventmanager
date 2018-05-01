@@ -12,6 +12,22 @@ import java.util.Map;
 
 public class WishListMapExtractor implements ResultSetExtractor<Map<String, List<ItemWishListDto>>> {
 
+    private String wishListId;
+
+    public WishListMapExtractor() {
+
+        this.wishListId = "event_id";
+
+    }
+
+    public WishListMapExtractor(String wishListIdType) {
+
+        if (wishListIdType == "ew.id") this.wishListId = "event_wishlist_id";
+        else
+            this.wishListId = wishListIdType;
+
+    }
+
     @Override
     public Map<String, List<ItemWishListDto>> extractData(ResultSet rs) throws SQLException {
 
@@ -19,11 +35,13 @@ public class WishListMapExtractor implements ResultSetExtractor<Map<String, List
 
         while (rs.next()) {
 
-            String wishListId = rs.getString("event_id");
+            String wishListId = rs.getString(this.wishListId);
 
             ItemWishListDto item = new ItemWishListDto();
 
             item.setEvent_wishlist_id(rs.getString("event_wishlist_id"));
+
+            item.setEvent_id(rs.getString("event_id"));
 
             item.setItem_wishlist_id(rs.getString("item_wishlist_id"));
 
@@ -33,7 +51,7 @@ public class WishListMapExtractor implements ResultSetExtractor<Map<String, List
 
             ItemMapper itemMapper = new ItemMapper();
 
-            item.setItem(itemMapper.mapRow(rs,1));
+            item.setItem(itemMapper.mapRow(rs, 1));
 
             List<ItemWishListDto> items = wishListsMap.get(wishListId);
 
