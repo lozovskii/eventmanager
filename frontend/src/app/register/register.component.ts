@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {AlertService, RegistrationService} from "../_services/index";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, Validators} from "@angular/forms";
 import {User} from "../_models/user";
 
 
@@ -13,15 +13,20 @@ import {User} from "../_models/user";
 export class RegisterComponent implements OnInit {
   user: User;
   // loading = false;
-  registerForm: FormGroup;
+  registerForm = this.formBuilder.group({
+    name : ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+    secondName : ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+    login : ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]],
+    email : ['', [Validators.email]],
+    password : ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]]
+  });
+
+  isValidFormSubmitted = null;
 
   constructor(private router: Router,
               private registrationService: RegistrationService,
               private alertService: AlertService,
               private formBuilder: FormBuilder) {
-//    this.registerForm = formBuilder.group({
-//      title: formBuilder.control('initial value', Validators.required)
-//    });
   }
 
 
@@ -38,16 +43,26 @@ export class RegisterComponent implements OnInit {
     //   email: new FormControl(this.user.email, [Validators.required, Validators.email]),
     //   password: new FormControl(this.user.password, [Validators.required, Validators.minLength(4), Validators.maxLength(20)])
     // });
-    this.registerForm = this.formBuilder.group({
-      name: [''],
-      secondName: [''],
-      login: [''],
-      email: [''],
-      password: ['']
-    });
+
+
+
+    // this.registerForm = this.formBuilder.group({
+    //   name: [''],
+    //   secondName: [''],
+    //   login: [''],
+    //   email: [''],
+    //   password: ['']
+    // });
   }
 
   register(userFromForm: User) {
+
+    this.isValidFormSubmitted = false;
+
+    if (this.registerForm.invalid) {
+      return;
+    }
+    this.isValidFormSubmitted = true;
     console.log('user: ' + JSON.stringify(userFromForm));
     // this.loading = true;
     this.registrationService.create(userFromForm)
@@ -62,5 +77,21 @@ export class RegisterComponent implements OnInit {
 
   get name() {
     return this.registerForm.get('name');
+  }
+
+  get secondName() {
+    return this.registerForm.get('secondName');
+  }
+
+  get login() {
+    return this.registerForm.get('login');
+  }
+
+  get email() {
+    return this.registerForm.get('email');
+  }
+
+  get password() {
+    return this.registerForm.get('password');
   }
 }
