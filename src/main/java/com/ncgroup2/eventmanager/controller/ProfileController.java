@@ -35,7 +35,7 @@ public class ProfileController {
         model.addAttribute("customer", customer);
         model.addAttribute("name", principal.getName());
 
-        return "/profile/profile";
+        return "profile/profile" ;
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
@@ -44,7 +44,7 @@ public class ProfileController {
                 .getByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("customer", customer);
 
-        return "/profile/edit";
+        return "profile/edit";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
@@ -59,7 +59,7 @@ public class ProfileController {
         List<Customer> customers = customerService.search(search);
         model.addAttribute("customers", customers);
 
-        return "/profile/search";
+        return "profile/search";
     }
 
     @RequestMapping(value = "/friends", method = RequestMethod.GET)
@@ -68,7 +68,7 @@ public class ProfileController {
                 SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("customers", customers);
 
-        return "/profile/friends";
+        return "profile/friends";
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
@@ -105,7 +105,7 @@ public class ProfileController {
                 SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("relationships", relationships);
 
-        return "/profile/notifications";
+        return "profile/notifications";
     }
 
     @RequestMapping(value = "/edit/upload", method = RequestMethod.GET)
@@ -114,7 +114,7 @@ public class ProfileController {
                 .getByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("customer", customer);
 
-        return "/profile/upload";
+        return "profile/upload";
     }
 
     @RequestMapping(value = "/edit/upload", method = RequestMethod.POST)
@@ -141,6 +141,6 @@ public class ProfileController {
     @RequestMapping(value = "/edit/upload/status", method = RequestMethod.GET)
     public String uploadStatus(Principal principal, Model model) {
         model.addAttribute("name", principal.getName());
-        return "/profile/status";
+        return "profile/status";
     }
 }
