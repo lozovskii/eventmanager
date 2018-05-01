@@ -92,4 +92,9 @@ export class CreateEventComponent implements OnInit {
         this.alertService.error('Something wrong! Please try again!');
       });
   }
+
+  saveAsADraft(eventDTO: EventDTOModel){
+    eventDTO.event.status = 'DRAFT';
+    this.eventService.create(eventDTO);
+  }
 }
