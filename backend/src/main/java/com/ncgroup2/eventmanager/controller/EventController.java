@@ -21,14 +21,10 @@ public class EventController {
         this.eventService = eventService;
     }
 
-//    @PostMapping
-//    public void create(@RequestParam("event") Event event,
-//                       @RequestParam("startDate") Long frequencyNumber,
-//                       String frequencyPeriod,
-//                       List<String> people){
-//        EventDTO eventDto = new EventDTO();
-//        eventService.createEvent(event, eventDto);
-//    }
+    @PostMapping
+    public void create(@RequestBody EventDTO eventDTO){
+        eventService.createEvent(eventDTO);
+    }
 
     @PostMapping("/delete")
     public void deleteEvent(@RequestBody String eventId){

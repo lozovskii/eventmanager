@@ -67,6 +67,10 @@ export class CreateEventComponent implements OnInit {
   }
 
   createEventForm(eventDTO: EventDTOModel) {
+    if ((eventDTO.event.day != null) && (eventDTO.event.day != '')) {
+      eventDTO.event.startTime = eventDTO.event.day + ' ' + eventDTO.event.startTime + ':00';
+      eventDTO.event.endTime = eventDTO.event.day + ' ' + eventDTO.event.endTime + ':00';
+    }
     eventDTO.additionEvent.people = this.selectedPeople;
     console.log(JSON.stringify(eventDTO));
     this.eventService.create(eventDTO).subscribe(
