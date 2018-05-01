@@ -22,6 +22,7 @@ export class RegisterComponent implements OnInit {
   });
 
   isValidFormSubmitted = null;
+  loading = false;
 
   constructor(private router: Router,
               private registrationService: RegistrationService,
@@ -63,15 +64,18 @@ export class RegisterComponent implements OnInit {
       return;
     }
     this.isValidFormSubmitted = true;
+    this.loading = true;
     console.log('user: ' + JSON.stringify(userFromForm));
     // this.loading = true;
     this.registrationService.create(userFromForm)
       .subscribe((data) => {
           this.alertService.success('Registration successful! Please, check your email for confirmation link.', true);
-          setTimeout(() => this.router.navigate(["/"]), 5000)
+          setTimeout(() => this.router.navigate(["/"]), 5000);
+          this.loading = false;
         },
         (error) => {
           this.alertService.error(error.error);
+          this.loading = false;
         });
   }
 
