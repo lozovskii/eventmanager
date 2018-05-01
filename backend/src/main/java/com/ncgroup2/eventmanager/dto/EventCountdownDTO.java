@@ -2,7 +2,7 @@ package com.ncgroup2.eventmanager.dto;
 
 public class EventCountdownDTO {
     private String email;
-    private String messages;
+    private String message;
 
     public String getEmail() {
         return email;
@@ -12,11 +12,11 @@ public class EventCountdownDTO {
         this.email = email;
     }
 
-    public String getMessages() {
-        return messages;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMessages(String messages) {
-        this.messages = messages;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

@@ -246,19 +246,18 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
                 "  (SELECT email\n" +
                 "   FROM \"Customer\"\n" +
                 "   WHERE id = ce.customer_id) AS email,\n" +
-                "  event_countdown(event_id) AS messages\n" +
+                "  event_countdown_message(event_id) AS message\n" +
                 "FROM \"Customer_Event\" ce\n" +
                 "WHERE date_trunc('day', start_date_notification) <= date_trunc('day', now()) AND\n" +
                 "      ce.event_id = (SELECT id\n" +
                 "                     FROM \"Event\"\n" +
                 "                     WHERE\n" +
                 "                       start_time > now() AND\n" +
-                "                       ce.event_id = \"Event\".id)\n" +
-                "GROUP BY customer_id";
+                "                       ce.event_id = \"Event\".id)";
         return this.getJdbcTemplate().query(sql, (resultSet, i) -> {
             EventCountdownDTO countdownDTO = new EventCountdownDTO();
             countdownDTO.setEmail(resultSet.getString("email"));
-            countdownDTO.setMessages(resultSet.getString("messages"));
+            countdownDTO.setMessage(resultSet.getString("message"));
             return countdownDTO;
         });
     }
