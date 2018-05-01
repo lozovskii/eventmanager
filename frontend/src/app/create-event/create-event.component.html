@@ -91,6 +91,10 @@
         <button class="btn btn-primary">Create</button>
         <a [routerLink]="['/content']" class="btn btn-link">Cancel</a>
       </div>
+      <div class="form-group">
+        <button class="btn btn-primary" (click)="saveAsADraft(eventDTOForm.value)">Save as a Draft</button>
+        <a [routerLink]="['/content']" class="btn btn-link">Cancel</a>
+      </div>
     </form>
   </main>
 

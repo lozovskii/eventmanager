@@ -31,10 +31,14 @@ public class EventServiceImpl implements EventService {
         }else {
             priority = "LOW";
         }
-        if((event.getStartTime() != null) && (event.getEndTime() != null)) {
-            status = "EVENT";
-        }else {
-            status = "NOTE";
+        if(!eventDTO.getEvent().getStatus().equals("")){
+            status = eventDTO.getEvent().getStatus();
+        }else{
+            if((event.getStartTime() != null) && (event.getEndTime() != null)) {
+                status = "EVENT";
+            }else {
+                status = "NOTE";
+            }
         }
         if (event.getVisibility().equals("")) {
             visibility = "PRIVATE";

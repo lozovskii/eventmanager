@@ -139,7 +139,8 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
                 "WHERE creator_id = CAST(? AS UUID) " +
                 "AND start_time IS NOT NULL " +
                 "AND end_time IS NOT NULL " +
-                "AND \"Event_Status\".name <> 'DELETED'";
+                "AND \"Event_Status\".name <> 'DELETED' " +
+                "AND \"Event_Status\".name <> 'DRAFT'";
         Object[] params = new Object[]{
                 custId
         };
