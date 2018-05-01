@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {EventService} from "../_services/event.service";
+import {EventService} from "../_services";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Event} from "../_models";
 
@@ -35,7 +35,7 @@ export class EventComponent implements OnInit {
   addParticipant() {
     this.eventService.addParticipant(this.event.id).subscribe(() => {
       this.isParticipant = true;
-      // this.event.people.push(JSON.parse(localStorage.getItem('currentUserObject')).id);
+      //this.event.people.push(JSON.parse(localStorage.getItem('currentUserObject')).id);
     });
   }
 

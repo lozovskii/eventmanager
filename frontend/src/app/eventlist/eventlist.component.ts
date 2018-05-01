@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {EventService} from "../_services/event.service";
-import {Event} from "../_models/event";
-import {UserService} from "../_services/user.service";
+import {Component, OnInit} from '@angular/core';
+import {EventService} from "../_services";
+import {Event} from "../_models";
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
@@ -13,6 +11,7 @@ import {ActivatedRoute} from "@angular/router";
 
 export class EventlistComponent implements OnInit {
   events: Event[];
+
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute) {
   }
@@ -42,7 +41,7 @@ export class EventlistComponent implements OnInit {
   getEventsByCustId(): void {
     this.eventService.getEventsByCustId()
       .subscribe((events) => {
-      this.events = events;
-    });
+        this.events = events;
+      });
   }
 }
