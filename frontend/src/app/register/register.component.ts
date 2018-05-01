@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {AlertService, RegistrationService} from "../_services/index";
+import {AlertService, RegistrationService} from "../_services";
 import {FormBuilder, Validators} from "@angular/forms";
-import {User} from "../_models/user";
+import {User} from "../_models";
 
 
 @Component({
@@ -30,30 +30,7 @@ export class RegisterComponent implements OnInit {
               private formBuilder: FormBuilder) {
   }
 
-
-
   ngOnInit(): void {
-    this.createForm();
-  }
-
-  createForm() {
-    // this.registerForm = new FormGroup({
-    //   name: new FormControl(this.user.name, [Validators.required, Validators.minLength(3), Validators.maxLength(20)]),
-    //   secondName: new FormControl(this.user.secondName, [Validators.required, Validators.minLength(3), Validators.maxLength(20)]),
-    //   login: new FormControl(this.user.login, [Validators.required, Validators.minLength(3), Validators.maxLength(20)]),
-    //   email: new FormControl(this.user.email, [Validators.required, Validators.email]),
-    //   password: new FormControl(this.user.password, [Validators.required, Validators.minLength(4), Validators.maxLength(20)])
-    // });
-
-
-
-    // this.registerForm = this.formBuilder.group({
-    //   name: [''],
-    //   secondName: [''],
-    //   login: [''],
-    //   email: [''],
-    //   password: ['']
-    // });
   }
 
   register(userFromForm: User) {
@@ -68,7 +45,7 @@ export class RegisterComponent implements OnInit {
     console.log('user: ' + JSON.stringify(userFromForm));
     // this.loading = true;
     this.registrationService.create(userFromForm)
-      .subscribe((data) => {
+      .subscribe(() => {
           this.alertService.success('Registration successful! Please, check your email for confirmation link.', true);
           setTimeout(() => this.router.navigate(["/"]), 5000);
           this.loading = false;
