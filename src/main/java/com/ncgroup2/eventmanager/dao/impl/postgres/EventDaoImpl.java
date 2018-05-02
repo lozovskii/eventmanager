@@ -3,11 +3,16 @@ package com.ncgroup2.eventmanager.dao.impl.postgres;
 import com.ncgroup2.eventmanager.dao.EventDao;
 import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.entity.Event;
+import com.ncgroup2.eventmanager.entity.Relationship;
+import com.ncgroup2.eventmanager.mapper.CustomerMapper;
+import com.ncgroup2.eventmanager.mapper.EventMapper;
+import com.ncgroup2.eventmanager.mapper.RelationshipMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
+import java.util.List;
 
 public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
@@ -66,5 +71,15 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         this.getJdbcTemplate().update(sql, params);
 
     }
+
+
+    @Override
+
+    public List<Event> events(String login) {
+
+        String sql = "SELECT * FROM Event WHERE creator_id = 'd7638c26-4d85-11e8-bb3c-28d244397e45'";
+        return this.getJdbcTemplate().query(sql, new EventMapper());
+    }
+
 
 }
