@@ -15,6 +15,7 @@ import {SendLinkComponent} from "./reset-password/send-link/send-link.component"
 import {ResetComponent} from "./reset-password/reset/reset.component";
 import {EventComponent} from "./event/event.component";
 import {UpdateEventComponent} from "./update-event/update-event.component";
+import {FolderListComponent} from "./folder-list/folder-list.component";
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full'},
@@ -30,6 +31,7 @@ const appRoutes: Routes = [
   {path: 'reset-password', component: ResetComponent},
   { path: 'profile', component: ProfileComponent},
   { path: 'vnavbar', component: VnavbarComponent},
+  { path: 'folder-list', component: FolderListComponent},
 
   // otherwise redirect to home
  { path: '**', redirectTo: '' }

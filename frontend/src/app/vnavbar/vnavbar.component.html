@@ -5,13 +5,19 @@
         <a [routerLink]="['/profile']" class="navbar-brand">My Profile</a>
       </li>
       <li class="nav-item">
+        <a [routerLink]="['/folder-list']" class="navbar-brand">Folders</a>
+      </li>
+      <li class="nav-item">
+        <a [routerLink]="['/eventlist','my']" class="navbar-brand">My Events</a>
+      </li>
+      <li class="nav-item">
         <a [routerLink]="['/create-event']" class="navbar-brand">Create Event</a>
       </li>
       <li class="nav-item">
-        <a [routerLink]="['/eventlist','my']" class="navbar-brand">View Events</a>
+        <a [routerLink]="['/eventlist','all']" class="navbar-brand">Find Event</a>
       </li>
       <li class="nav-item">
-        <a [routerLink]="['/eventlist','all']" class="navbar-brand">See All Events</a>
+        <a [routerLink]="['/eventlist','drafts']" class="navbar-brand">Drafts</a>
       </li>
     </ul>
   </div>

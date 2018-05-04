@@ -29,6 +29,7 @@ import { ResetComponent } from './reset-password/reset/reset.component';
 import {NavbarService} from "./_services/navbar.service";
 import { EventComponent } from './event/event.component';
 import { UpdateEventComponent } from './update-event/update-event.component';
+import { FolderListComponent } from './folder-list/folder-list.component';
 
 @NgModule({
   imports: [
@@ -57,7 +58,8 @@ import { UpdateEventComponent } from './update-event/update-event.component';
     SendLinkComponent,
     ResetComponent,
     EventComponent,
-    UpdateEventComponent
+    UpdateEventComponent,
+    FolderListComponent
   ],
   providers: [
     AuthGuard,
