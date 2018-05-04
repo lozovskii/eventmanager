@@ -33,6 +33,8 @@ public class WishListMapExtractor implements ResultSetExtractor<Map<String, List
 
         Map<String, List<ItemWishListDto>> wishListsMap = new HashMap<>();
 
+        int rowNum = 0;
+
         while (rs.next()) {
 
             String wishListId = rs.getString(this.wishListId);
@@ -47,11 +49,11 @@ public class WishListMapExtractor implements ResultSetExtractor<Map<String, List
 
             item.setBooker_customer_id(rs.getString("booker_customer_id"));
 
-            item.setPriority(rs.getString("priority"));
+            item.setPriority(rs.getInt("priority"));
 
             ItemMapper itemMapper = new ItemMapper();
 
-            item.setItem(itemMapper.mapRow(rs, 1));
+            item.setItem(itemMapper.mapRow(rs, rowNum++));
 
             List<ItemWishListDto> items = wishListsMap.get(wishListId);
 
