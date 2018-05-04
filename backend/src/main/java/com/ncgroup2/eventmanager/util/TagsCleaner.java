@@ -1,6 +1,6 @@
-package com.ncgroup2.eventmanager.service.daemon;
+package com.ncgroup2.eventmanager.util;
 
-import com.ncgroup2.eventmanager.dao.impl.postgres.ItemDaoImpl;
+import com.ncgroup2.eventmanager.dao.impl.ItemDaoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

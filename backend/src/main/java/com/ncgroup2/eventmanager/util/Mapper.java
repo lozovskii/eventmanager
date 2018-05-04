@@ -1,4 +1,4 @@
-package com.ncgroup2.eventmanager.service.tool;
+package com.ncgroup2.eventmanager.util;
 
 import com.ncgroup2.eventmanager.dto.ItemTagDto;
 import com.ncgroup2.eventmanager.dto.ItemWishListDto;
