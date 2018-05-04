@@ -26,5 +26,9 @@ public interface EventService {
 
     List<EventCountdownDTO> getCountdownMessages();
 
-    void saveEventAsADraft(String eventId);
+    List<Event> getDraftsByCustId(String custId);
+
+    List<Event> getNotesByCustId(String custId);
+
+//    void saveEventAsADraft(String eventId);
 }

@@ -87,22 +87,27 @@ export class CreateEventComponent implements OnInit {
     if ((eventDTO.event.day != null) && (eventDTO.event.day != '')) {
       eventDTO.event.startTime = eventDTO.event.day + ' ' + eventDTO.event.startTime + ':00';
       eventDTO.event.endTime = eventDTO.event.day + ' ' + eventDTO.event.endTime + ':00';
+    }else{
+      eventDTO.event.startTime = null;
+      eventDTO.event.endTime = null;
     }
     eventDTO.additionEvent.people = this.selectedPeople;
+    let customerId = this.userService.getCurrentId();
+    eventDTO.event.creatorId = customerId;
     console.log(JSON.stringify(eventDTO));
     this.eventService.create(eventDTO).subscribe(
       data => {
         if ((eventDTO.event.day != null) && (eventDTO.event.day != '')) {
           if (eventDTO.event.visibility == 'PUBLIC') {
             this.alertService.success('Public event successfully created! You can invite people to your event.', true);
-            this.router.navigate(['/add-event-participants']);
+            this.router.navigate(['/home']);
           } else {
             this.alertService.success('Event successfully created!', true);
-            this.router.navigate(['/content']);
+            this.router.navigate(['/home']);
           }
         } else {
           this.alertService.success('Note successfully created!', true);
-          this.router.navigate(['/content']);
+          this.router.navigate(['/folder-list']);
         }
       },
       error => {
@@ -111,8 +116,24 @@ export class CreateEventComponent implements OnInit {
   }
 
   saveAsADraft(eventDTO: EventDTOModel){
+    if ((eventDTO.event.day != null) && (eventDTO.event.day != '')) {
+      eventDTO.event.startTime = eventDTO.event.day + ' ' + eventDTO.event.startTime + ':00';
+      eventDTO.event.endTime = eventDTO.event.day + ' ' + eventDTO.event.endTime + ':00';
+    }else{
+      eventDTO.event.startTime = null;
+      eventDTO.event.endTime = null;
+    }
     eventDTO.event.status = 'DRAFT';
-    this.eventService.create(eventDTO);
+    eventDTO.additionEvent.people = this.selectedPeople;
+    let customerId = this.userService.getCurrentId();
+    eventDTO.event.creatorId = customerId;
+    this.eventService.create(eventDTO).subscribe(data => {
+            this.alertService.success('Draft successfully saved!', true);
+            this.router.navigate(['/home']);
+      },
+      error => {
+        this.alertService.error('Not saved! We working.. please try again');
+      });
   }
 
   get name() {

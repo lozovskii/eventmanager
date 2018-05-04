@@ -37,9 +37,11 @@ public interface EventDao {
 
     List<EventCountdownDTO> getCountdownMessages();
 
-    void saveEventAsADraft(String eventId);
+//    void saveEventAsADraft(String eventId);
 
     String getTimeToEventStart(String eventId);
 
     List<Event> getNotesByCustId(String custId);
+
+    List<Event> getDraftsByCustId(String custId);
 }

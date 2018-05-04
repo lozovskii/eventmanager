@@ -17,13 +17,13 @@
                class="alert alert-danger">
 
             <div *ngIf="name?.errors?.required">
-              First name is required.
+              Title is required.
             </div>
             <div *ngIf="name?.errors?.minlength">
-              First name must be at least 3 characters long.
+              Title must be at least 3 characters long.
             </div>
             <div *ngIf="name?.errors?.maxlength">
-              First name must be less than 20 characters long.
+              Title must be less than 20 characters long.
             </div>
           </div>
         </div>
@@ -48,8 +48,7 @@
         <div class="form-group">
           <label>Visibility</label>
           <select formControlName="visibility" [(ngModel)]="visibility" type="text" class="form-control"
-                  name="visibility"
-                  required>
+                  name="visibility">
             <option *ngFor="let vision of visibilityList" [ngValue]="vision">
               {{vision}}
             </option>
@@ -75,14 +74,14 @@
           <tr *ngFor="let login of selectedPeople">
             <td>{{login}}</td>
             <td>
-              <button type="button" (click)="deleteUserFromEvent(login)">delete</button>
+              <button type="button" (click)="deleteUserFromEvent(login)">remove</button>
             </td>
           </tr>
           </tbody>
         </table>
         <div class="form-group">
           <label>Priority</label>
-          <select formControlName="priority" type="text" class="form-control" required>
+          <select formControlName="priority" type="text" class="form-control">
             <option value="LOW">Low</option>
             <option value="AVERAGE">Average</option>
             <option value="HIGH">High</option>
@@ -90,8 +89,8 @@
         </div>
         <div class="form-group">
           <label>Frequency: </label>
-          <input formControlName="frequencyNumber" type="number" class="form-control" required/>
-          <select formControlName="frequencyPeriod" type="text" class="form-control" required>
+          <input formControlName="frequencyNumber" type="number" class="form-control"/>
+          <select formControlName="frequencyPeriod" type="text" class="form-control">
             <option value="day">day</option>
             <option value="week">week</option>
             <option value="month">month</option>
@@ -110,10 +109,7 @@
 
       <div class="form-group">
         <button class="btn btn-primary">Create</button>
-        <a [routerLink]="['/content']" class="btn btn-link">Cancel</a>
-      </div>
-      <div class="form-group">
-        <button class="btn btn-primary" (click)="saveAsADraft(eventDTOForm.value)">Save as a Draft</button>
+        <button class="btn btn-primary" (click)="saveAsADraft(eventDTOForm.value)">Draft</button>
         <a [routerLink]="['/content']" class="btn btn-link">Cancel</a>
       </div>
     </form>

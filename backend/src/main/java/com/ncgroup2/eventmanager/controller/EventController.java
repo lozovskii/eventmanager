@@ -36,10 +36,22 @@ public class EventController {
         return eventService.getAllPublicAndFriendsEvents(customerId);
     }
 
-    @GetMapping("/{custId}")
+    @GetMapping("/my{custId}")
         public ResponseEntity<List<Event>> getEventsByCustId(@PathVariable String custId){
         List<Event> eventsByCustId = eventService.getEventsByCustId(custId);
         return new ResponseEntity<>(eventsByCustId, HttpStatus.OK);
+    }
+
+    @GetMapping("/drafts{custId}")
+    public ResponseEntity<List<Event>> getDraftsByCustId(@PathVariable String custId){
+        List<Event> draftsByCustId = eventService.getDraftsByCustId(custId);
+        return new ResponseEntity<>(draftsByCustId, HttpStatus.OK);
+    }
+
+    @GetMapping("/notes{custId}")
+    public ResponseEntity<List<Event>> getNotesByCustId(@PathVariable String custId){
+        List<Event> notesByCustId = eventService.getNotesByCustId(custId);
+        return new ResponseEntity<>(notesByCustId, HttpStatus.OK);
     }
 
     @GetMapping()

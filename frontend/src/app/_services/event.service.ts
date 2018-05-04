@@ -27,7 +27,19 @@ export class EventService {
 
   getEventsByCustId(): Observable<Event[]> {
     let custId = this.userService.getCurrentId();
-    const url = `${this.eventsUrl}/${custId}`;
+    const url = `${this.eventsUrl}/my${custId}`;
+    return this.http.get<Event[]>(url)
+  }
+
+  getDraftsByCustId():Observable<Event[]> {
+    let custId = this.userService.getCurrentId();
+    const url = `${this.eventsUrl}/drafts${custId}`;
+    return this.http.get<Event[]>(url)
+  }
+
+  getNotesByCustId():Observable<Event[]> {
+    let custId = this.userService.getCurrentId();
+    const url = `${this.eventsUrl}/notes${custId}`;
     return this.http.get<Event[]>(url)
   }
 

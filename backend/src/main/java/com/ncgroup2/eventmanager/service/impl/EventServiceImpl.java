@@ -20,30 +20,35 @@ public class EventServiceImpl implements EventService {
     @Override
     public void createEvent(EventDTO eventDTO) {
         int visibilityId, statusId, priorityId;
-        String priority, status, visibility;
+        String priority, status, visibility, frequencyPeriod;
+        Long frequencyNumber;
 
         Event event = eventDTO.getEvent();
-        String frequencyPeriod = eventDTO.getAdditionEvent().getFrequencyPeriod();
-        Long frequencyNumber = eventDTO.getAdditionEvent().getFrequencyNumber();
-
+        if(eventDTO.getAdditionEvent().getFrequencyNumber() !=null){
+            frequencyPeriod = eventDTO.getAdditionEvent().getFrequencyPeriod();
+            frequencyNumber = eventDTO.getAdditionEvent().getFrequencyNumber();
+        }else{
+            frequencyPeriod = "day";
+            frequencyNumber = new Long(0);
+        }
         if(!eventDTO.getAdditionEvent().getPriority().equals("")){
             priority = eventDTO.getAdditionEvent().getPriority();
         }else {
             priority = "LOW";
         }
-        if(!eventDTO.getEvent().getStatus().equals("")){
+        if(eventDTO.getEvent().getStatus() !=null){
             status = eventDTO.getEvent().getStatus();
         }else{
-            if((event.getStartTime() != null) && (event.getEndTime() != null)) {
+            if((eventDTO.getEvent().getStartTime() != null) && (eventDTO.getEvent().getEndTime() != null)) {
                 status = "EVENT";
             }else {
                 status = "NOTE";
             }
         }
-        if (event.getVisibility().equals("")) {
+        if(eventDTO.getEvent().getVisibility() == null) {
             visibility = "PRIVATE";
         }else {
-            visibility = event.getVisibility();
+            visibility = eventDTO.getEvent().getVisibility();
         }
 
         priorityId = eventDao.getPrioriryId(priority);
@@ -51,16 +56,24 @@ public class EventServiceImpl implements EventService {
         visibilityId = eventDao.getVisibilityId(visibility);
 
         UUID groupId = UUID.randomUUID();
-        for (int i = 0; i <=10 ; i++){
-            String startFrequencyPeriod = frequencyPeriod;
-            frequencyPeriod = i*frequencyNumber + " " + frequencyPeriod;
+        if(status.equals("EVENT")) {
+            for (int i = 0; i <= 10; i++) {
+                String startFrequencyPeriod = frequencyPeriod;
+                frequencyPeriod = i * frequencyNumber + " " + frequencyPeriod;
+                eventDao.createEvent(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId);
+                frequencyPeriod = startFrequencyPeriod;
+            }
+        }else{
+            frequencyPeriod = frequencyNumber + " " + frequencyPeriod;
             eventDao.createEvent(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId);
-            frequencyPeriod = startFrequencyPeriod;
         }
     }
 
+
     @Override
-    public List<Event> getEventsByCustId(String custId) { return eventDao.getEventsByCustId(custId); }
+    public List<Event> getEventsByCustId(String custId) {
+        return eventDao.getEventsByCustId(custId);
+    }
 
     @Override
     public Event getEventById(String eventId) {
@@ -97,8 +110,13 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void saveEventAsADraft(String eventId){
-        eventDao.saveEventAsADraft(eventId);
+    public List<Event> getDraftsByCustId(String custId){
+        return eventDao.getDraftsByCustId(custId);
+    }
+
+    @Override
+    public List<Event> getNotesByCustId(String custId){
+        return eventDao.getNotesByCustId(custId);
     }
 
 }
