@@ -8,14 +8,6 @@ import java.util.List;
 @Data
 public class WishList extends Entity{
 
-//    // Key = Item_WishList.id
-//    // Value = Item.id
-//    LinkedHashMap<String, String> items;
-//
-//    // Key = Item_WishList.booker_customer_id
-//    // Value = Event_WishList.id
-//    LinkedHashMap<String, String> bookers;
-
     List<ItemWishListDto> items;
 
     @Override
