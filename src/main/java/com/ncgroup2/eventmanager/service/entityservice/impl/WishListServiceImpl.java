@@ -26,7 +26,7 @@ public class WishListServiceImpl {
         return wishListDao.getEntityByField("booker_customer_id", booker_customer_id);
     }
 
-    public void createNewWishlist(WishList wishList){
+    public void createWishlist(WishList wishList){
 
         wishListDao.create(wishList);
     }
