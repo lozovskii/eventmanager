@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {EventDTOModel} from "../_models/dto/eventDTOModel";
 import {AlertService, EventService, UserService} from "../_services";
 import {Router} from "@angular/router";
@@ -11,9 +11,15 @@ import {VISIBILITY} from "../event-visibility";
   styleUrls: ['./create-event.component.css']
 })
 export class CreateEventComponent implements OnInit {
-  eventDTOForm: FormGroup;
-  eventForm: FormGroup;
-  additionEventForm: FormGroup;
+
+  eventForm: FormGroup = this.initEventForm();
+  additionEventForm: FormGroup = this.initAdditionEventForm();
+
+  eventDTOForm: FormGroup = this.formBuilder.group({
+    event: this.eventForm,
+    additionEvent: this.additionEventForm
+  });
+  isValidFormSubmitted = null;
 
   visibilityList: any[] = VISIBILITY;
   visibility: string;
@@ -27,15 +33,18 @@ export class CreateEventComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.eventDTOForm = this.formBuilder.group({
-      event: this.initEventForm(),
-      additionEvent: this.initAdditionEventForm()
-    });
+    // this.eventDTOForm = this.formBuilder.group({
+    //   event: this.eventForm,
+    //   additionEvent: this.additionEventForm
+    // });
+    console.log(this.eventForm);
+    console.log(this.additionEventForm);
+    console.log(this.eventDTOForm);
   }
 
   initEventForm(): FormGroup {
-    return this.eventForm = this.formBuilder.group({
-      name: new FormControl(''),
+    return this.formBuilder.group({
+      name : ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
       description: new FormControl(''),
       day: new FormControl(''),
       startTime: new FormControl(''),
@@ -45,8 +54,8 @@ export class CreateEventComponent implements OnInit {
   }
 
   initAdditionEventForm(): FormGroup {
-    return this.additionEventForm = this.formBuilder.group({
-      frequencyNumber: new FormControl(''),
+    return this.formBuilder.group({
+      frequencyNumber: ['', [Validators.min(0)]],
       frequencyPeriod: new FormControl(''),
       priority: new FormControl(''),
       people: new FormControl('')
@@ -67,6 +76,14 @@ export class CreateEventComponent implements OnInit {
   }
 
   createEventForm(eventDTO: EventDTOModel) {
+
+    this.isValidFormSubmitted = false;
+
+    if (this.eventForm.invalid || this.additionEventForm.invalid) {
+      return;
+    }
+    this.isValidFormSubmitted = true;
+
     if ((eventDTO.event.day != null) && (eventDTO.event.day != '')) {
       eventDTO.event.startTime = eventDTO.event.day + ' ' + eventDTO.event.startTime + ':00';
       eventDTO.event.endTime = eventDTO.event.day + ' ' + eventDTO.event.endTime + ':00';
@@ -96,5 +113,13 @@ export class CreateEventComponent implements OnInit {
   saveAsADraft(eventDTO: EventDTOModel){
     eventDTO.event.status = 'DRAFT';
     this.eventService.create(eventDTO);
+  }
+
+  get name() {
+    return this.eventForm.get('name');
+  }
+
+  get frequencyNumber() {
+    return this.additionEventForm.get('frequencyNumber');
   }
 }
