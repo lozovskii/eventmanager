@@ -1,7 +1,10 @@
 package com.ncgroup2.eventmanager.entity;
 
+import lombok.Data;
+
 import java.util.UUID;
 
+@Data
 public abstract class Entity {
 
     protected String id;
@@ -13,22 +16,6 @@ public abstract class Entity {
         UUID uuid = UUID.randomUUID();
 
         this.id = uuid.toString();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     abstract public Object[] getParams();
