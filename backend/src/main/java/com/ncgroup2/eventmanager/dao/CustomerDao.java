@@ -6,21 +6,21 @@ import com.ncgroup2.eventmanager.entity.Relationship;
 import java.util.Collection;
 import java.util.List;
 
-public interface CustomerDao extends DAO<Customer,Object> {
+public interface CustomerDao {
 
-//    void create(Customer customer);
+    void addCustomer(Customer customer);
 
-//    void delete(Customer customer);
+    void deleteCustomer(Customer customer);
 
-//    Customer getEntityByField(String fieldName, String fieldValue);
+    Customer getByField(String fieldName, String fieldValue);
 
-//    Collection<Customer> getEntitiesByField(String fieldName, String fieldValue);
+    Collection<Customer> getCustomers(String fieldName, String fieldValue);
 
-//    Collection<Customer> getEntitiesByField();
+    Collection<Customer> getCustomers();
 
-//    void update(Customer customer);
+    void updateCustomer(Customer customer);
 
-//    void updateField(Customer customer, String fieldName, Object fieldValue);
+    void updateField(Customer customer, String fieldName, Object fieldValue);
 
     // PROFILE METHODS
     Customer getByLogin(String login);
