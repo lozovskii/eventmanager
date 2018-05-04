@@ -4,6 +4,8 @@ import com.ncgroup2.eventmanager.entity.Item;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Setter
 @Getter
 public class ItemWishListDto {
@@ -18,6 +20,12 @@ public class ItemWishListDto {
 
     String booker_customer_id;
 
-    String priority;
+    int priority;
 
+    public ItemWishListDto() {
+
+        UUID uuid = UUID.randomUUID();
+
+        this.item_wishlist_id = uuid.toString();
+    }
 }
