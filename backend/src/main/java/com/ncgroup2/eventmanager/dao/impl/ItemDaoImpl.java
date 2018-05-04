@@ -1,4 +1,4 @@
-package com.ncgroup2.eventmanager.dao.impl.postgres;
+package com.ncgroup2.eventmanager.dao.impl;
 
 import com.ncgroup2.eventmanager.dao.DAO;
 import com.ncgroup2.eventmanager.dto.ItemTagDto;
@@ -6,7 +6,7 @@ import com.ncgroup2.eventmanager.entity.Entity;
 import com.ncgroup2.eventmanager.entity.Item;
 import com.ncgroup2.eventmanager.entity.Tag;
 import com.ncgroup2.eventmanager.mapper.ItemMapExtractor;
-import com.ncgroup2.eventmanager.service.tool.Mapper;
+import com.ncgroup2.eventmanager.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;

@@ -1,6 +1,6 @@
-package com.ncgroup2.eventmanager.service.entityservice.impl;
+package com.ncgroup2.eventmanager.service.impl;
 
-import com.ncgroup2.eventmanager.dao.impl.postgres.WishListDaoImpl;
+import com.ncgroup2.eventmanager.dao.impl.WishListDaoImpl;
 import com.ncgroup2.eventmanager.entity.WishList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

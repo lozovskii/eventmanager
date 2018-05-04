@@ -30,7 +30,7 @@ public class FolderDaoImpl extends JdbcDaoSupport  implements DAO {
 
 
     @Override
-    public Collection<Folder> getAllEntities() {
+    public Collection<Folder> getAll() {
 
         FolderMapper mapper = new FolderMapper();
 
@@ -78,7 +78,7 @@ public class FolderDaoImpl extends JdbcDaoSupport  implements DAO {
     }
 
     @Override
-    public Folder getEntityById(Object id) {
+    public Folder getById(Object id) {
 
         String sql = BASE_SQL + "WHERE id = CAST (" + id + " AS uuid) ";
 
@@ -96,7 +96,7 @@ public class FolderDaoImpl extends JdbcDaoSupport  implements DAO {
     }
 
     @Override
-    public void updateEntity(Entity entity) {
+    public void update(Entity entity) {
 
         String sql = "UPDATE \"Folder\" SET " +
                 "name = ?, " +
@@ -109,7 +109,7 @@ public class FolderDaoImpl extends JdbcDaoSupport  implements DAO {
     }
 
     @Override
-    public void updateEntityField(Object id, String fieldName, Object fieldValue) {
+    public void updateField(Object id, String fieldName, Object fieldValue) {
 
         String folderId = String.valueOf(id);
 
@@ -125,7 +125,7 @@ public class FolderDaoImpl extends JdbcDaoSupport  implements DAO {
 
 
     @Override
-    public void deleteEntity(Object id) {
+    public void delete(Object id) {
 
         String folderId = String.valueOf(id);
 
@@ -137,7 +137,7 @@ public class FolderDaoImpl extends JdbcDaoSupport  implements DAO {
     }
 
     @Override
-    public void createEntity(Entity entity) {
+    public void create(Entity entity) {
 
         String sql = "INSERT INTO \"Folder\" " +
                 "(id, customer_id, name)" +

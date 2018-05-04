@@ -1,65 +1,40 @@
 package com.ncgroup2.eventmanager.entity;
 
-import java.util.Arrays;
+import com.ncgroup2.eventmanager.dto.ItemTagDto;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.time.LocalDate;
+import java.util.List;
+
+@Getter
+@Setter
 public class Item extends Entity {
 
     private String description;
-    private byte[] image;
+    private String image;
     private String link;
-
-    public Item() {
-    }
-
-    public Item(String name, String description, byte[] image, String link) {
-        super.name = name;
-        this.description = description;
-        this.image = image;
-        this.link = link;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
-    }
+    private LocalDate dueDate;
+    private List<ItemTagDto> tags;
 
     @Override
     public String toString() {
-        return "Item{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", image=" + Arrays.toString(image) +
-                ", link='" + link + '\'' +
-                '}';
+        return super.toString() +
+                "\nItem{" +
+                "description='" + description + '\'' +
+                ", image='" + image + '\'' +
+                ", link='" + link;
     }
 
     @Override
     public Object[] getParams() {
         return new Object[]{
-                this.getName(),
-                this.getDescription(),
-                this.getImage(),
-                this.getLink()
+                this.name,
+                this.description,
+                this.image,
+                this.link,
+                this.dueDate,
+                this.getId()
         };
     }
-
 }

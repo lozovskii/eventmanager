@@ -1,6 +1,6 @@
-package com.ncgroup2.eventmanager.service.entityservice.impl;
+package com.ncgroup2.eventmanager.service.impl;
 
-import com.ncgroup2.eventmanager.dao.impl.postgres.ItemDaoImpl;
+import com.ncgroup2.eventmanager.dao.impl.ItemDaoImpl;
 import com.ncgroup2.eventmanager.dto.ItemTagDto;
 import com.ncgroup2.eventmanager.entity.Item;
 import org.springframework.beans.factory.annotation.Autowired;
