@@ -294,4 +294,22 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
         return isExist;
     }
+
+    @Override
+    public boolean isCustomerExist(String login) {
+        Long countOfCustomers = Long.valueOf(0);
+        String sql = "SELECT count(login)" +
+                "FROM \"Customer\" " +
+                "WHERE \"Customer\".login = ?";
+        Object[] params = new Object[]{
+                login
+        };
+        try {
+            countOfCustomers = this.getJdbcTemplate().queryForObject(sql, params, Long.class);
+        }catch(NullPointerException e){
+            return false;
+        }
+        return countOfCustomers > 0 ? true : false;
+    }
+
 }
