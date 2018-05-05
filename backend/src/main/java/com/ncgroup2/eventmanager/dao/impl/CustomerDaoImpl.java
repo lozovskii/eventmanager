@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
@@ -289,4 +290,23 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
         return isExist;
     }
+
+    @Override
+    public boolean isCustomerExist(String login) {
+        Long countOfCustomers = Long.valueOf(0);
+        String sql = "SELECT count(login)" +
+                "FROM \"Customer\" " +
+                "WHERE \"Customer\".login = ?";
+        Object[] params = new Object[]{
+                login
+        };
+        try {
+            countOfCustomers = this.getJdbcTemplate().queryForObject(sql, params, Long.class);
+        }catch(NullPointerException e){
+            return false;
+        }
+        return countOfCustomers > 0 ? true : false;
+    }
+
+
 }

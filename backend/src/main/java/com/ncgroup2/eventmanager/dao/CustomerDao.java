@@ -34,4 +34,6 @@ public interface CustomerDao {
     void rejectFriend(String token);
     void uploadAvatar(Customer customer);
     void deleteUnverifiedCustomers();
+
+    boolean isCustomerExist(String login);
 }
