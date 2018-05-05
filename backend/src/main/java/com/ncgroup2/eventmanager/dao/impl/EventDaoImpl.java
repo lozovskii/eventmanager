@@ -35,7 +35,6 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
                             int priorityId) {
 
         UUID eventId = UUID.randomUUID();
-        System.out.println("frequency = " + frequency);
         String query_event;
         Object[] eventParams;
         if((event.getStartTime() == null) && (event.getEndTime() == null)){

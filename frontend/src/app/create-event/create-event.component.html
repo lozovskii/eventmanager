@@ -55,17 +55,18 @@
           </select>
         </div>
         <div *ngIf="(visibility == 'PUBLIC')" class="form-group">
+          <label>Invite people</label>
           <div class="row">
-            <label>Invite people</label>
-            <input class="form-control col-md-11" #manLogin id="people" type="text"
+            <div class="col-md-1"></div>
+            <input class="form-control col-md-9" #manLogin id="people" type="text"
                    name="people"/>
-            <button class="col-md-1" type="button" (click)="addUserToEvent(manLogin.value)">+</button>
+            <button class="col-md-2" type="button" class="btn btn-primary" (click)="addUserToEvent(manLogin.value)">+</button>
           </div>
         </div>
       </form>
 
       <form [formGroup]="additionEventForm">
-        <table class="table table-striped" style="overflow-x: auto; display: block;">
+        <table *ngIf="(visibility == 'PUBLIC')" class="table table-striped" style="overflow-x: auto; display: block;">
           <thead>
           <tr>
           </tr>
@@ -74,7 +75,7 @@
           <tr *ngFor="let login of selectedPeople">
             <td>{{login}}</td>
             <td>
-              <button type="button" (click)="deleteUserFromEvent(login)">remove</button>
+              <button type="button" class="btn btn-primary" (click)="deleteUserFromEvent(login)">remove</button>
             </td>
           </tr>
           </tbody>
