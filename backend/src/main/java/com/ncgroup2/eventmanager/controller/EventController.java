@@ -54,6 +54,13 @@ public class EventController {
         return new ResponseEntity<>(notesByCustId, HttpStatus.OK);
     }
 
+    @GetMapping("/invites{custId}")
+    public ResponseEntity<List<Event>> getInvitesByCustId(@PathVariable String custId){
+        List<Event> invitesByCustId = eventService.getInvitesByCustId(custId);
+        return new ResponseEntity<>(invitesByCustId, HttpStatus.OK);
+    }
+
+
     @GetMapping()
     public ResponseEntity<Event> getEventsById(@RequestParam String eventId){
         Event eventById = eventService.getEventById(eventId);

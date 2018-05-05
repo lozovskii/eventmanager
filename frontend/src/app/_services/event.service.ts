@@ -43,6 +43,12 @@ export class EventService {
     return this.http.get<Event[]>(url)
   }
 
+  getInvitesByCustId():Observable<Event[]> {
+    let custId = this.userService.getCurrentId();
+    const url = `${this.eventsUrl}/invites${custId}`;
+    return this.http.get<Event[]>(url)
+  }
+
   getEventById(eventId: string) {
     const url = `${this.eventsUrl}?eventId=${eventId}`;
     return this.http.get<Event>(url);

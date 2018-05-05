@@ -9,7 +9,7 @@ import java.util.UUID;
 public interface EventDao {
 
     void createEvent(Event event, int visibility, int eventStatus, String frequency, UUID groupId,
-                     int priorityId);
+                     int priorityId, UUID eventId);
 
     void deleteEvent(Event event);
 
@@ -35,13 +35,15 @@ public interface EventDao {
 
     void addParticipant(String customerId, String eventId);
 
-    List<EventCountdownDTO> getCountdownMessages();
+    void createEventInvitation(String login, UUID eventId);
 
-//    void saveEventAsADraft(String eventId);
+    List<EventCountdownDTO> getCountdownMessages();
 
     String getTimeToEventStart(String eventId);
 
     List<Event> getNotesByCustId(String custId);
+
+    List<Event> getInvitesByCustId(String custId);
 
     List<Event> getDraftsByCustId(String custId);
 }

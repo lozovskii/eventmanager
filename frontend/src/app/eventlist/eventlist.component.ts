@@ -38,6 +38,10 @@ export class EventlistComponent implements OnInit {
           this.getNotesByCustId();
           break;
         }
+        case 'invites' : {
+          this.getInvitesByCustId();
+          break;
+        }
       }
     });
   }
@@ -78,6 +82,16 @@ export class EventlistComponent implements OnInit {
         this.events = events;
         if(events.toString() == ''){
           this.alertService.info('You have no notes yet.',true);
+        }
+      });
+  }
+
+  getInvitesByCustId(): void {
+    this.eventService.getInvitesByCustId()
+      .subscribe((events) => {
+        this.events = events;
+        if(events.toString() == ''){
+          this.alertService.info('You have no invites yet.',true);
         }
       });
   }

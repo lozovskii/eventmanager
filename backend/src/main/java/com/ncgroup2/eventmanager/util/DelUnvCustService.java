@@ -12,8 +12,7 @@ public class DelUnvCustService {
 
     @Scheduled(fixedDelay = 3600000)
     public void DeleteUnverifiedCustomers() {
-
         customerDaoImpl.deleteUnverifiedCustomers();
-        System.out.println("Unverified customers (more then 24 hours)successfully deleted!");
+        System.out.println("Unverified customers (more then 24 hours) successfully deleted!");
     }
 }

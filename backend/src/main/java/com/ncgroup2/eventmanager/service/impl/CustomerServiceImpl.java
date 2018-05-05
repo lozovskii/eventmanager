@@ -1,54 +1,58 @@
 package com.ncgroup2.eventmanager.service.impl;
 
 import com.ncgroup2.eventmanager.dao.CustomerDao;
+import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.entity.Relationship;
+import com.ncgroup2.eventmanager.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.ncgroup2.eventmanager.entity.Customer;
-import com.ncgroup2.eventmanager.service.CustomerService;
 
 import java.util.List;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
+    private final CustomerDao customerDao;
+
     @Autowired
-    CustomerDao customerDao;
+    public CustomerServiceImpl(CustomerDao customerDao) {
+        this.customerDao = customerDao;
+    }
 
     @Override
     public void register(Customer customer) {
-        customerDao.addCustomer(customer);
+        customerDao.create(customer);
     }
 
     @Override
     public boolean isCustomerPresent(String login) {
-        return customerDao.getByField("login",login) != null;
+        return customerDao.getEntityByField("login", login) != null;
     }
 
     @Override
     public void createVerificationToken(Customer customer, String token) {
-        customerDao.updateField(customer, "token",  token);
+        customerDao.updateField(customer, "token", token);
     }
 
     @Override
     public boolean isEmailUnique(String email) {
-        return customerDao.getByField("email",email) == null;
+        return customerDao.getEntityByField("email", email) == null;
     }
 
     @Override
     public void deleteCustomer(Customer customer) {
-        customerDao.deleteCustomer(customer);
+        customerDao.delete(customer.getId());
     }
 
     @Override
     public Customer getCustomerByToken(String token) {
-        return customerDao.getByField("token", token);
+        return customerDao.getEntityByField("token", token);
     }
 
     @Override
     public Customer getCustomerByEmail(String email) {
-        return customerDao.getByField("email", email);
+        return customerDao.getEntityByField("email", email);
     }
 
     @Override
@@ -57,7 +61,7 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setVerified(true);
         customer.setToken("");
 
-        customerDao.updateCustomer(customer);
+        customerDao.update(customer);
     }
 
     @Override
@@ -65,12 +69,12 @@ public class CustomerServiceImpl implements CustomerService {
     public void updatePassword(Customer customer) {
         customer.setToken("");
 
-        customerDao.updateCustomer(customer);
+        customerDao.update(customer);
     }
 
     @Override
     public Customer getByLogin(String login) {
-        return customerDao.getByLogin(login);
+        return customerDao.getEntityByField("login", login);
     }
 
     @Override
@@ -120,11 +124,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer getById(String id) {
-        return customerDao.getByField("id",id);
+        return customerDao.getById(id);
     }
 
     @Override
     public Customer findByLogin(String login) {
-        return customerDao.getByField("login",login);
+        return customerDao.getEntityByField("login", login);
     }
 }
