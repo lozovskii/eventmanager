@@ -3,7 +3,6 @@ package com.ncgroup2.eventmanager.mapper;
 import com.ncgroup2.eventmanager.dto.ItemTagDto;
 import com.ncgroup2.eventmanager.entity.Item;
 import com.ncgroup2.eventmanager.entity.Tag;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
@@ -13,7 +12,6 @@ import java.util.*;
 
 public class ItemMapExtractor implements ResultSetExtractor<Map<Item, List<ItemTagDto>>> {
 
-    @Nullable
     @Override
     public Map<Item, List<ItemTagDto>> extractData(ResultSet rs) throws SQLException, DataAccessException {
 
