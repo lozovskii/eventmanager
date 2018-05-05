@@ -33,10 +33,6 @@ export class CreateEventComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.eventDTOForm = this.formBuilder.group({
-    //   event: this.eventForm,
-    //   additionEvent: this.additionEventForm
-    // });
     console.log(this.eventForm);
     console.log(this.additionEventForm);
     console.log(this.eventDTOForm);

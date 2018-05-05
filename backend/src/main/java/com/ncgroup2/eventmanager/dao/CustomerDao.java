@@ -43,4 +43,6 @@ public interface CustomerDao extends DAO<Customer, Object> {
     void uploadAvatar(Customer customer);
 
     void deleteUnverifiedCustomers();
+
+    boolean isCustomerExist(String login);
 }

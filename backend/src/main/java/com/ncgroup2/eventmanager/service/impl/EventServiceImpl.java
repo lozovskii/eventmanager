@@ -1,5 +1,6 @@
 package com.ncgroup2.eventmanager.service.impl;
 
+import com.ncgroup2.eventmanager.dao.CustomerDao;
 import com.ncgroup2.eventmanager.dao.EventDao;
 import com.ncgroup2.eventmanager.dto.EventCountdownDTO;
 import com.ncgroup2.eventmanager.dto.EventDTO;
@@ -8,14 +9,18 @@ import com.ncgroup2.eventmanager.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.IntStream;
 
 @Service
 public class EventServiceImpl implements EventService {
 
     @Autowired
     private EventDao eventDao;
+    @Autowired
+    private CustomerDao customerDao;
 
     @Override
     public void createEvent(EventDTO eventDTO) {
@@ -56,19 +61,44 @@ public class EventServiceImpl implements EventService {
         visibilityId = eventDao.getVisibilityId(visibility);
 
         UUID groupId = UUID.randomUUID();
+        UUID eventId = UUID.randomUUID();
         if(status.equals("EVENT")) {
             for (int i = 0; i <= 10; i++) {
                 String startFrequencyPeriod = frequencyPeriod;
                 frequencyPeriod = i * frequencyNumber + " " + frequencyPeriod;
-                eventDao.createEvent(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId);
+                eventId = UUID.randomUUID();
+                eventDao.createEvent(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
                 frequencyPeriod = startFrequencyPeriod;
             }
         }else{
             frequencyPeriod = frequencyNumber + " " + frequencyPeriod;
-            eventDao.createEvent(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId);
+            eventDao.createEvent(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
         }
+
+        List loginList = isCustomersExist(eventDTO.getAdditionEvent().getPeople());
+        createEventInvitations(loginList,eventId);
     }
 
+    @Override
+    public List isCustomersExist(List<String> login) {
+        List<String> verifiedCustomers = new ArrayList<>();
+        IntStream.range(0, login.size()).forEach(i -> {
+            boolean custStatus = customerDao.isCustomerExist(login.get(i));
+            if (custStatus) {
+                verifiedCustomers.add(login.get(i));
+            }
+        });
+        return verifiedCustomers;
+    }
+
+    @Override
+    public void createEventInvitations(List<String> login, UUID eventId) {
+        IntStream.range(0, login.size()).forEach(i -> eventDao.createEventInvitation(login.get(i), eventId));
+    }
+
+    @Override
+    public void chackDefaultValues(EventDTO eventDTO) {
+    }
 
     @Override
     public List<Event> getEventsByCustId(String custId) {
@@ -117,6 +147,11 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<Event> getNotesByCustId(String custId){
         return eventDao.getNotesByCustId(custId);
+    }
+
+    @Override
+    public List<Event> getInvitesByCustId(String custId){
+        return eventDao.getInvitesByCustId(custId);
     }
 
 }

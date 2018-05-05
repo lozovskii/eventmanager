@@ -32,9 +32,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
     @Override
     public void createEvent(Event event, int visibility, int eventStatus, String frequency, UUID groupId,
-                            int priorityId) {
-
-        UUID eventId = UUID.randomUUID();
+                            int priorityId, UUID eventId) {
         String query_event;
         Object[] eventParams;
         if((event.getStartTime() == null) && (event.getEndTime() == null)){
@@ -276,6 +274,21 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     }
 
     @Override
+    public void createEventInvitation(String login, UUID eventId) {
+        System.out.println("login = " + login);
+        System.out.println("eventId = " + eventId);
+        String sql = "INSERT INTO \"Customer_Event\"(id, customer_id, event_id, status, priority)" +
+                " VALUES (uuid_generate_v1(),(SELECT id FROM \"Customer\" WHERE login = ?), cast(? AS UUID), " +
+                "(SELECT id FROM \"Customer_Event_Status\" WHERE name = 'SEND')," +
+                "(SELECT id FROM \"Customer_Event_Priority\" WHERE name = 'LOW'))";
+        Object[] params = new Object[]{
+                login,
+                eventId
+        };
+        this.getJdbcTemplate().update(sql, params);
+    }
+
+    @Override
     public List<EventCountdownDTO> getCountdownMessages() {
         String sql = "SELECT\n" +
                 "  (SELECT email\n" +
@@ -299,7 +312,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
     @Override
     public String getTimeToEventStart(String eventId) {
-        String sql = "SELECT (start_time - localtimestamp) FROM \"Event\" WHERE id = ?";
+        String sql = "SELECT (start_time - localtimestamp) FROM \"Event\" WHERE id = CAST(? AS UUID)";
         Object[] params = new Object[]{
                 eventId
         };
@@ -322,6 +335,22 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     }
 
     @Override
+    public List<Event> getInvitesByCustId(String custId) {
+        String sql = "SELECT \"Event\".id AS id,\"Event\".name AS name,\"Event\".description AS description, " +
+                "\"Event_Status\".name as status " +
+                "FROM (\"Event\" INNER JOIN \"Event_Status\" ON status = \"Event_Status\".id) " +
+                "INNER JOIN \"Customer_Event\" ON \"Event\".id = \"Customer_Event\".event_id " +
+                "WHERE \"Event_Status\".name = 'EVENT'" +
+                "AND \"Customer_Event\".status = (SELECT id FROM \"Customer_Event_Status\" WHERE name = 'SEND')" +
+                "AND \"Customer_Event\".customer_id = CAST(? AS UUID)";
+        Object[] params = new Object[]{
+                custId
+        };
+        return this.getJdbcTemplate().query(sql, params, new BeanPropertyRowMapper(Event.class));
+    }
+
+
+    @Override
     public List<Event> getDraftsByCustId(String custId) {
         String sql = "SELECT \"Event\".id AS id,\"Event\".name AS name,\"Event\".description AS description, " +
                 "\"Event_Status\".name as status " +
@@ -334,6 +363,8 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         };
         return this.getJdbcTemplate().query(sql, params, new BeanPropertyRowMapper(Event.class));
     }
+
+
 
 }
 
