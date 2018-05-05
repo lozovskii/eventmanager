@@ -150,15 +150,6 @@ public class ItemDaoImpl extends JdbcDaoSupport implements DAO {
         }
     }
 
-    public void deleteUnusedTags(){
-
-        String tagsDeleteSql =
-                "DELETE FROM \"Tag\" " +
-                        "WHERE count < 1";
-
-        this.getJdbcTemplate().update(tagsDeleteSql);
-    }
-
     @Override
     public void create(Entity entity) {
 
