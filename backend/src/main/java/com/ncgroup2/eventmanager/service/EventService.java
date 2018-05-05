@@ -5,10 +5,17 @@ import com.ncgroup2.eventmanager.dto.EventDTO;
 import com.ncgroup2.eventmanager.entity.Event;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface EventService {
 
     void createEvent(EventDTO eventDTO);
+
+    List isCustomersExist(List<String> login);
+
+    void createEventInvitations(List<String> login, UUID eventId);
+
+    void chackDefaultValues(EventDTO eventDTO);
 
     List<Event> getEventsByCustId(String custId);
 
@@ -30,5 +37,5 @@ public interface EventService {
 
     List<Event> getNotesByCustId(String custId);
 
-//    void saveEventAsADraft(String eventId);
+    List<Event> getInvitesByCustId(String custId);
 }
