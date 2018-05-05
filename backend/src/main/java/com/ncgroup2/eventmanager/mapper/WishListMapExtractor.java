@@ -22,7 +22,7 @@ public class WishListMapExtractor implements ResultSetExtractor<Map<String, List
 
     public WishListMapExtractor(String wishListIdType) {
 
-        if (wishListIdType == "ew.id") this.wishListId = "event_wishlist_id";
+        if (wishListIdType.equals("ew.id")) this.wishListId = "event_wishlist_id";
         else
             this.wishListId = wishListIdType;
 
