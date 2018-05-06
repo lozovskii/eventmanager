@@ -6,7 +6,7 @@
   <main role="main" class="col-md-9">
     <form [formGroup]="profileForm" (ngSubmit)="createEventForm(currentUser)">
 
-      <div class="col-md-4" style="margin:left auto">
+      <div class="col-md-4">
         <div class="form-group">
           <label>First Name</label>
           <input formControlName="name" type="text" class="form-control" [(ngModel)]="currentUser.name" required/>
@@ -25,7 +25,6 @@
             <!--<a [routerLink]="['/content']" class="btn btn-link">Cancel</a>-->
           </div>
         </form>
-
         <div>
           <a [routerLink]="['/upload-img']" class="navbar-brand">Upload Avatar</a>
         </div>
