@@ -29,7 +29,7 @@ export class EventComponent implements OnInit {
           this.eventDTO = new EventDTOModel();
           this.eventDTO.event = event;
 
-          let currentUserId = JSON.parse(localStorage.getItem('currentUserObject')).id;
+          let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
           this.isCreator = currentUserId == this.eventDTO.event.creatorId;
           console.log(this.eventDTO.event.creatorId);
           this.eventService.isParticipant(currentUserId,this.eventDTO.event.id).subscribe(()=>{this.isParticipant=true}, ()=>{this.isParticipant=false})
@@ -40,14 +40,14 @@ export class EventComponent implements OnInit {
   addParticipant() {
     this.eventService.addParticipant(this.eventDTO.event.id).subscribe(() => {
       this.isParticipant = true;
-      //this.eventDTO.people.push(JSON.parse(localStorage.getItem('currentUserObject')).id);
+      //this.eventDTO.people.push(JSON.parse(sessionStorage.getItem('currentUser')).id);
     });
   }
 
   removeParticipant() {
     this.eventService.removeParticipant(this.eventDTO.event.id).subscribe(() => {
       this.isParticipant = false;
-      // const index = this.eventDTO.people.indexOf(JSON.parse(localStorage.getItem('currentUserObject')).id);
+      // const index = this.eventDTO.people.indexOf(JSON.parse(sessionStorage.getItem('currentUser')).id);
       // if (index>-1) {
       //   this.eventDTO.people.slice(index);
       // }
