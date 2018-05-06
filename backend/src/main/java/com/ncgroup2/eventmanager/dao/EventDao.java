@@ -8,14 +8,15 @@ import java.util.UUID;
 
 public interface EventDao {
 
+    void createEventWithoutTime(Event event, int visibility, int eventStatus, String frequency, UUID groupId,
+                                int priorityId, UUID eventId);
+
     void createEvent(Event event, int visibility, int eventStatus, String frequency, UUID groupId,
                      int priorityId, UUID eventId);
 
     void deleteEvent(Event event);
 
-    void deleteEvent(String eventId);
-
-    void updateField(Event event, String fieldName, Object fieldValue);
+    void deleteEventById(String eventId);
 
     int getStatusId(String fieldValue);
 
