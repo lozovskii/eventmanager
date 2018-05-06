@@ -16,6 +16,7 @@ import {ResetComponent} from "./reset-password/reset/reset.component";
 import {EventComponent} from "./event/event.component";
 import {UpdateEventComponent} from "./update-event/update-event.component";
 import {FolderListComponent} from "./folder-list/folder-list.component";
+import {WishListComponent} from "./wishlist/wishlist.component";
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full'},
@@ -32,6 +33,7 @@ const appRoutes: Routes = [
   { path: 'profile', component: ProfileComponent},
   { path: 'vnavbar', component: VnavbarComponent},
   { path: 'folder-list', component: FolderListComponent},
+  { path: 'show-wishlist/:id', component: WishListComponent},
 
   // otherwise redirect to home
  { path: '**', redirectTo: '' }
