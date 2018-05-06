@@ -20,7 +20,7 @@ public class WishListController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<WishList> getWishList1(@PathVariable("id") String id) {
+    public ResponseEntity<WishList> getWishList(@PathVariable("id") String id) {
 
         if (id.isEmpty()) {
 
@@ -38,9 +38,16 @@ public class WishListController {
         }
     }
 
-//    @GetMapping(value = "/show-wishlist/{id}")
-//    public WishList getWishList(@RequestParam String eventId) {
-//        return wishListService.getByEventId(eventId);
-//    }
+    @GetMapping(value = "/booked{customerId}")
+    public ResponseEntity<WishList> getBookedItems(@RequestParam String customerId) {
+
+            WishList bookedItems = wishListService.getBookedItems(customerId);
+
+            if (bookedItems == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            return new ResponseEntity<>(bookedItems, HttpStatus.OK);
+        }
 
 }
