@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 @Service
-@PropertySource("classpath:queries.properties")
+@PropertySource("classpath:event.properties")
 public class QueryService {
 
     @Resource

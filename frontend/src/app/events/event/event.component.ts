@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {EventService} from "../_services";
+import {EventService} from "../../_services";
 import {ActivatedRoute, Router} from "@angular/router";
-import {EventDTOModel} from "../_models/dto/eventDTOModel";
-import {AlertService} from "../_services/alert.service";
+import {EventDTOModel} from "../../_models/dto/eventDTOModel";
+import {AlertService} from "../../_services/alert.service";
 
 @Component({
   selector: 'app-event',
@@ -57,7 +57,7 @@ export class EventComponent implements OnInit {
   delete() {
     this.eventService.deleteEvent(this.eventDTO.event.id).subscribe(() => {
       this.alertService.info('Event successfully deleted!',true);
-      this.router.navigate(['/home']);
+      this.router.navigate(['../home']);
     });
   }
 }

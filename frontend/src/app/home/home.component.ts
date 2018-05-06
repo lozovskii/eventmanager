@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
 
   event() {
     console.log('onSubmit');
-    this.router.navigate(['/event']);
+    this.router.navigate(['events/event']);
   }
 
 }

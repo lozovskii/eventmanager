@@ -31,7 +31,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     }
 
     @Override
-    public void createEventWithoutTime(Event event, int visibility, int eventStatus, String frequency, UUID groupId,
+    public void createEventWithoutTime(Event event, int visibility, int eventStatus, UUID groupId,
                                        int priorityId, UUID eventId) {
 
         String query = queryService.getQuery("event.createWithoutTime");

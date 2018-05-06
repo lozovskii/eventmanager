@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {User} from "../_models/user";
 import {HttpClient} from "@angular/common/http";
-import {AuthenticationService} from "./authentication.service";
 
 @Injectable()
 export class RegistrationService {
@@ -10,11 +9,11 @@ export class RegistrationService {
 
   create(user: User) {
     console.log('here: ' + JSON.stringify(user));
-    return this.http.post<User>('/api/register', user, {headers: AuthenticationService.getAuthHeader()});
+    return this.http.post<User>('/api/register', user );
   }
 
   verifyEmail(token)  {
-      return this.http.get('/api/registrationConfirm?token='+token, {headers: AuthenticationService.getAuthHeader()});
+      return this.http.get('/api/registrationConfirm?token='+token);
   }
 
 }
