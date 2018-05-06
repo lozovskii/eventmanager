@@ -30,10 +30,9 @@ public class EventServiceImpl implements EventService {
     @Override
     public void createEvent(EventDTO eventDTO) {
         Event event = eventDTO.getEvent();
-
-        Object[] frequency = checkDefaultCustEventFrequency(eventDTO);
-        Long frequencyNumber = (Long)frequency[0];
-        String frequencyPeriod = (String)frequency[1];
+        Object[] frequancy = checkDefaultCustEventFrequency(eventDTO);
+        Long frequencyNumber = (Long)frequancy[0];
+        String frequencyPeriod = (String)frequancy[1];
 
         String priority = checkDefaultCustEventPriority(eventDTO);
         String status = checkDefaultEventStatus(eventDTO);
@@ -47,16 +46,24 @@ public class EventServiceImpl implements EventService {
         UUID eventId = UUID.randomUUID();
 
         if(status.equals(EVENT_STATUS_EVENT)) {
-            for(int i = 0; i <= 10; i++) {
-                String startFrequencyPeriod = frequencyPeriod;
-                frequencyPeriod = i * frequencyNumber + " " + frequencyPeriod;
-                eventId = UUID.randomUUID();
+            if((frequencyNumber != null) && (frequencyPeriod != null)){
+                for (int i = 0; i <= 10; i++) {
+                    String startFrequencyPeriod = frequencyPeriod;
+                    frequencyPeriod = i * frequencyNumber + " " + frequencyPeriod;
+                    eventId = UUID.randomUUID();
+                    createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
+                    frequencyPeriod = startFrequencyPeriod;
+                }
+            }else{
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId,eventId);
-                frequencyPeriod = startFrequencyPeriod;
             }
         }else{
-            frequencyPeriod = frequencyNumber + " " + frequencyPeriod;
-            createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId,eventId);
+            if((frequencyNumber != null) && (frequencyPeriod != null)) {
+                frequencyPeriod = frequencyNumber + " " + frequencyPeriod;
+                createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
+            }else{
+                createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId,eventId);
+            }
         }
         List loginList = isCustomersExist(eventDTO.getAdditionEvent().getPeople());
         createEventInvitations(loginList,eventId);
@@ -134,15 +141,12 @@ public class EventServiceImpl implements EventService {
 
 
     private Object[] checkDefaultCustEventFrequency(EventDTO eventDTO) {
-        String frequencyPeriod;
-        Long frequencyNumber;
+        Long frequencyNumber = eventDTO.getAdditionEvent().getFrequencyNumber();
+        String frequencyPeriod = eventDTO.getAdditionEvent().getFrequencyPeriod();
         Object[] list = new Object[2];
-        if(eventDTO.getAdditionEvent().getFrequencyNumber() !=null){
+        if((frequencyNumber!=null)&&(!frequencyPeriod.equals(""))){
             frequencyPeriod = eventDTO.getAdditionEvent().getFrequencyPeriod();
             frequencyNumber = eventDTO.getAdditionEvent().getFrequencyNumber();
-        }else{
-            frequencyPeriod = CUSTOMER_EVENT_FREQUENCY_PERIOD_DAY;
-            frequencyNumber = new Long(0);
         }
         list[0] = frequencyNumber;
         list[1] = frequencyPeriod;
@@ -186,10 +190,15 @@ public class EventServiceImpl implements EventService {
     private void createEventByTime(Event event, int visibilityId, int statusId, String frequencyPeriod,
                                    UUID groupId, int priorityId, UUID eventId) {
         if((event.getStartTime() == null) && (event.getEndTime() == null)) {
-            eventDao.createEventWithoutTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId,
-                    eventId);
+            eventDao.createEventWithoutTime(event, visibilityId, statusId, groupId, priorityId,
+                        eventId);
         }else{
-            eventDao.createEvent(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
+            if((frequencyPeriod == null) || (frequencyPeriod.equals(""))){
+                eventDao.createEventWithoutTime(event, visibilityId, statusId, groupId, priorityId,
+                        eventId);
+            }else {
+                eventDao.createEvent(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
+            }
         }
     }
 

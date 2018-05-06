@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface EventDao {
 
-    void createEventWithoutTime(Event event, int visibility, int eventStatus, String frequency, UUID groupId,
+    void createEventWithoutTime(Event event, int visibility, int eventStatus, UUID groupId,
                                 int priorityId, UUID eventId);
 
     void createEvent(Event event, int visibility, int eventStatus, String frequency, UUID groupId,
