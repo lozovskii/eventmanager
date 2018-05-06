@@ -29,7 +29,8 @@
         </div>
         <div class="form-group">
           <label>Description</label>
-          <textarea formControlName="description" rows="5" cols="45" class="form-control"></textarea>
+          <!--<textarea formControlName="description" rows="5" cols="45" class="form-control"></textarea>-->
+          <editor [formControlName]='["description"]' apiKey="h4g5a6vds8edp6kti3ahmikjin0r9usoqh99fs5l8xymelf5"  [init]="{plugins: 'link'}"></editor>
         </div>
         <br>
         <div class="form-group">
