@@ -15,13 +15,11 @@ public interface EventService {
 
     void createEventInvitations(List<String> login, UUID eventId);
 
-    void chackDefaultValues(EventDTO eventDTO);
-
     List<Event> getEventsByCustId(String custId);
 
     Event getEventById(String eventId);
 
-    void deleteEvent(String eventId);
+    void deleteEventById(String eventId);
 
     List<Event> getAllPublicAndFriendsEvents(String customerId);
 

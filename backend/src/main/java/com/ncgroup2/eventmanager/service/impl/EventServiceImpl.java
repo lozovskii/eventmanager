@@ -16,6 +16,11 @@ import java.util.stream.IntStream;
 
 @Service
 public class EventServiceImpl implements EventService {
+    private final String CUSTOMER_EVENT_PRIORITY_LOW = "LOW";
+    private final String EVENT_STATUS_EVENT = "EVENT";
+    private final String EVENT_STATUS_NOTE = "NOTE";
+    private final String EVENT_VISIBILITY_PRIVATE = "PRIVATE";
+    private final String CUSTOMER_EVENT_FREQUENCY_PERIOD_DAY = "day";
 
     @Autowired
     private EventDao eventDao;
@@ -24,57 +29,35 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public void createEvent(EventDTO eventDTO) {
-        int visibilityId, statusId, priorityId;
-        String priority, status, visibility, frequencyPeriod;
-        Long frequencyNumber;
-
         Event event = eventDTO.getEvent();
-        if(eventDTO.getAdditionEvent().getFrequencyNumber() !=null){
-            frequencyPeriod = eventDTO.getAdditionEvent().getFrequencyPeriod();
-            frequencyNumber = eventDTO.getAdditionEvent().getFrequencyNumber();
-        }else{
-            frequencyPeriod = "day";
-            frequencyNumber = new Long(0);
-        }
-        if(!eventDTO.getAdditionEvent().getPriority().equals("")){
-            priority = eventDTO.getAdditionEvent().getPriority();
-        }else {
-            priority = "LOW";
-        }
-        if(eventDTO.getEvent().getStatus() !=null){
-            status = eventDTO.getEvent().getStatus();
-        }else{
-            if((eventDTO.getEvent().getStartTime() != null) && (eventDTO.getEvent().getEndTime() != null)) {
-                status = "EVENT";
-            }else {
-                status = "NOTE";
-            }
-        }
-        if(eventDTO.getEvent().getVisibility() == null) {
-            visibility = "PRIVATE";
-        }else {
-            visibility = eventDTO.getEvent().getVisibility();
-        }
 
-        priorityId = eventDao.getPrioriryId(priority);
-        statusId = eventDao.getStatusId(status);
-        visibilityId = eventDao.getVisibilityId(visibility);
+        Object[] frequency = checkDefaultCustEventFrequency(eventDTO);
+        Long frequencyNumber = (Long)frequency[0];
+        String frequencyPeriod = (String)frequency[1];
+
+        String priority = checkDefaultCustEventPriority(eventDTO);
+        String status = checkDefaultEventStatus(eventDTO);
+        String visibility = checkDefaultCustEventVisibility(eventDTO);
+
+        int priorityId = eventDao.getPrioriryId(priority);
+        int statusId = eventDao.getStatusId(status);
+        int visibilityId = eventDao.getVisibilityId(visibility);
 
         UUID groupId = UUID.randomUUID();
         UUID eventId = UUID.randomUUID();
-        if(status.equals("EVENT")) {
-            for (int i = 0; i <= 10; i++) {
+
+        if(status.equals(EVENT_STATUS_EVENT)) {
+            for(int i = 0; i <= 10; i++) {
                 String startFrequencyPeriod = frequencyPeriod;
                 frequencyPeriod = i * frequencyNumber + " " + frequencyPeriod;
                 eventId = UUID.randomUUID();
-                eventDao.createEvent(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
+                createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId,eventId);
                 frequencyPeriod = startFrequencyPeriod;
             }
         }else{
             frequencyPeriod = frequencyNumber + " " + frequencyPeriod;
-            eventDao.createEvent(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
+            createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId,eventId);
         }
-
         List loginList = isCustomersExist(eventDTO.getAdditionEvent().getPeople());
         createEventInvitations(loginList,eventId);
     }
@@ -97,10 +80,6 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void chackDefaultValues(EventDTO eventDTO) {
-    }
-
-    @Override
     public List<Event> getEventsByCustId(String custId) {
         return eventDao.getEventsByCustId(custId);
     }
@@ -110,9 +89,8 @@ public class EventServiceImpl implements EventService {
         return eventDao.getById(eventId);
     }
 
-    @Override
-    public void deleteEvent(String eventId) {
-        eventDao.deleteEvent(eventId);
+    public void deleteEventById(String eventId) {
+        eventDao.deleteEventById(eventId);
     }
 
     @Override
@@ -152,6 +130,67 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<Event> getInvitesByCustId(String custId){
         return eventDao.getInvitesByCustId(custId);
+    }
+
+
+    private Object[] checkDefaultCustEventFrequency(EventDTO eventDTO) {
+        String frequencyPeriod;
+        Long frequencyNumber;
+        Object[] list = new Object[2];
+        if(eventDTO.getAdditionEvent().getFrequencyNumber() !=null){
+            frequencyPeriod = eventDTO.getAdditionEvent().getFrequencyPeriod();
+            frequencyNumber = eventDTO.getAdditionEvent().getFrequencyNumber();
+        }else{
+            frequencyPeriod = CUSTOMER_EVENT_FREQUENCY_PERIOD_DAY;
+            frequencyNumber = new Long(0);
+        }
+        list[0] = frequencyNumber;
+        list[1] = frequencyPeriod;
+        return list;
+    }
+
+    private String checkDefaultCustEventPriority(EventDTO eventDTO) {
+        String priority;
+        if(!eventDTO.getAdditionEvent().getPriority().equals("")){
+            priority = eventDTO.getAdditionEvent().getPriority();
+        }else {
+            priority = CUSTOMER_EVENT_PRIORITY_LOW;
+        }
+        return priority;
+    }
+
+    private String checkDefaultEventStatus(EventDTO eventDTO) {
+        String status;
+        if(eventDTO.getEvent().getStatus() !=null){
+            status = eventDTO.getEvent().getStatus();
+        }else{
+            if((eventDTO.getEvent().getStartTime() != null) && (eventDTO.getEvent().getEndTime() != null)) {
+                status = EVENT_STATUS_EVENT;
+            }else {
+                status = EVENT_STATUS_NOTE;
+            }
+        }
+        return status;
+    }
+
+    private String checkDefaultCustEventVisibility(EventDTO eventDTO) {
+        String visibility;
+        if(eventDTO.getEvent().getVisibility() == null) {
+            visibility = EVENT_VISIBILITY_PRIVATE;
+        }else {
+            visibility = eventDTO.getEvent().getVisibility();
+        }
+        return visibility;
+    }
+
+    private void createEventByTime(Event event, int visibilityId, int statusId, String frequencyPeriod,
+                                   UUID groupId, int priorityId, UUID eventId) {
+        if((event.getStartTime() == null) && (event.getEndTime() == null)) {
+            eventDao.createEventWithoutTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId,
+                    eventId);
+        }else{
+            eventDao.createEvent(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
+        }
     }
 
 }
