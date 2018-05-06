@@ -31,139 +31,146 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     }
 
     @Override
-    public void createEvent(Event event, int visibility, int eventStatus, String frequency, UUID groupId,
-                            int priorityId, UUID eventId) {
-        String query_event;
-        Object[] eventParams;
-        if((event.getStartTime() == null) && (event.getEndTime() == null)){
-            query_event = "INSERT INTO \"Event\" " +
-                    "(id,name,group_id,folder_id,creator_id,start_time,end_time,visibility,description,status) " +
-                    "VALUES(?,?, ?, NULL, CAST(? AS UUID),?," +
-                    "?,?,?,?)";
-            eventParams = new Object[]{
-                    eventId,
-                    event.getName(),
-                    groupId,
-                    event.getCreatorId(),
-                    event.getStartTime(),
-                    event.getEndTime(),
-                    visibility,
-                    event.getDescription(),
-                    eventStatus
-            };
-        }else {
-            query_event = "INSERT INTO \"Event\" " +
-                    "(id,name,group_id,folder_id,creator_id,start_time,end_time,visibility,description,status) " +
-                    "VALUES(?,?, ?, NULL, CAST(? AS UUID),(? + ?::INTERVAL)," +
-                    "(? + ?::INTERVAL),?,?,?)";
-            eventParams = new Object[]{
-                    eventId,
-                    event.getName(),
-                    groupId,
-                    event.getCreatorId(),
-                    event.getStartTime(),
-                    frequency,
-                    event.getEndTime(),
-                    frequency,
-                    visibility,
-                    event.getDescription(),
-                    eventStatus
-            };
-        }
+    public void createEventWithoutTime(Event event, int visibility, int eventStatus, String frequency, UUID groupId,
+                                       int priorityId, UUID eventId) {
 
-        this.getJdbcTemplate().update(query_event, eventParams);
-        String query_customer_event = "INSERT INTO \"Customer_Event\"" +
-                "(id,event_id,customer_id,start_date_notification,frequency_value,priority,status)" +
-                "VALUES(uuid_generate_v1(),?,CAST(? AS UUID),?,1,?," +
-                "(SELECT id FROM \"Customer_Event_Status\" WHERE name = 'ACCEPTED'))";
-
-        Object[] customerEventParams = new Object[]{
+        String query = queryService.getQuery("event.createWithoutTime");
+        Object[] eventParams = new Object[]{
                 eventId,
+                event.getName(),
+                groupId,
                 event.getCreatorId(),
                 event.getStartTime(),
-                priorityId
+                event.getEndTime(),
+                visibility,
+                event.getDescription(),
+                eventStatus
         };
-        this.getJdbcTemplate().update(query_customer_event, customerEventParams);
+        this.getJdbcTemplate().update(query, eventParams);
+        createCustomerEvent(event, eventId, priorityId);
+    }
+
+    @Override
+    public void createEvent(Event event, int visibility, int eventStatus, String frequency, UUID groupId,
+                            int priorityId, UUID eventId) {
+
+        String query = queryService.getQuery("event.create");
+        Object[] eventParams = new Object[]{
+                eventId,
+                event.getName(),
+                groupId,
+                event.getCreatorId(),
+                event.getStartTime(),
+                frequency,
+                event.getEndTime(),
+                frequency,
+                visibility,
+                event.getDescription(),
+                eventStatus
+        };
+        this.getJdbcTemplate().update(query, eventParams);
+        createCustomerEvent(event, eventId, priorityId);
     }
 
     @Override
     public void deleteEvent(Event event) {
-        String query = "DELETE FROM \"Event\" WHERE id = CAST (? AS UUID)";
+        String query = queryService.getQuery("event.delete");
         Object[] params = new Object[]{
                 event.getId()
         };
         this.getJdbcTemplate().update(query, params);
     }
 
-    @Override
-    public void deleteEvent(String eventId) {
-        String sql = "UPDATE \"Event\" SET status = (SELECT id FROM \"Event_Status\" WHERE name = 'DELETED') " +
-                "WHERE id = CAST (? AS UUID)";
+    public void deleteEventById(String eventId) {
+        String query = queryService.getQuery("event.deleteById");
         Object[] params = new Object[]{
                 eventId
         };
-        this.getJdbcTemplate().update(sql, params);
-    }
-
-    @Override
-    public void updateField(Event event, String fieldName, Object fieldValue) {
-        String sql = "UPDATE \"Event\" SET " + fieldName + " = ? WHERE id = CAST (? AS uuid)";
-        Object[] params = new Object[]{
-                fieldValue,
-                event.getId()
-        };
-        this.getJdbcTemplate().update(sql, params);
-
+        this.getJdbcTemplate().update(query, params);
     }
 
     @Override
     public int getStatusId(String fieldValue) {
-        String sql = "SELECT id FROM \"Event_Status\" WHERE name = ?";
+        String query = queryService.getQuery("event.getStatusId");
         Object[] params = new Object[]{
                 fieldValue
         };
-        return this.getJdbcTemplate().queryForObject(sql, params, int.class);
+        return this.getJdbcTemplate().queryForObject(query, params, int.class);
     }
 
     @Override
     public int getVisibilityId(String fieldValue) {
-        String sql = "SELECT id FROM \"Event_Visibility\" WHERE name = ?";
+        String query = queryService.getQuery("event.getVisibilityId");
         Object[] params = new Object[]{
                 fieldValue
         };
-        return this.getJdbcTemplate().queryForObject(sql, params, int.class);
+        return this.getJdbcTemplate().queryForObject(query, params, int.class);
     }
 
     @Override
     public int getPrioriryId(String fieldValue) {
-        String sql = "SELECT id FROM \"Customer_Event_Priority\" WHERE name = ?";
+        String query = queryService.getQuery("event.getProirityId");
         Object[] params = new Object[]{
                 fieldValue
         };
-        return this.getJdbcTemplate().queryForObject(sql, params, int.class);
+        return this.getJdbcTemplate().queryForObject(query, params, int.class);
     }
 
     @Override
     public List getEventsByCustId(String custId) {
-        System.out.println(custId);
-        String sql = "SELECT \"Event\".id as id, \"Event\".name AS name, start_time, end_time, \"Event\".description AS description, " +
-                "\"Event_Visibility\".name AS visibility, \"Event_Status\".name AS status " +
-                "FROM (\"Event\" INNER JOIN \"Event_Visibility\" " +
-                "ON \"Event\".visibility = \"Event_Visibility\".id) " +
-                "INNER JOIN \"Event_Status\" " +
-                "ON \"Event\".status = \"Event_Status\".id " +
-                "WHERE creator_id = CAST(? AS UUID) " +
-                "AND start_time IS NOT NULL " +
-                "AND end_time IS NOT NULL " +
-                "AND \"Event_Status\".name != 'DELETED' " +
-                "AND \"Event_Status\".name != 'DRAFT'" +
-                "AND (\"Event\".start_time - LOCALTIMESTAMP <= '1 month')" +
-                "ORDER BY start_time";
-
+        String query = queryService.getQuery("event.getEventsByCustId");
         Object[] params = new Object[]{
                 custId
         };
-        return this.getJdbcTemplate().query(sql, params, new BeanPropertyRowMapper(Event.class));
+        return this.getJdbcTemplate().query(query, params, new BeanPropertyRowMapper(Event.class));
+    }
+
+    @Override
+    public List<Event> getNotesByCustId(String custId) {
+        String query = queryService.getQuery("note.getByCustId");
+        Object[] params = new Object[]{
+                custId
+        };
+        return this.getJdbcTemplate().query(query, params, new BeanPropertyRowMapper(Event.class));
+    }
+
+    @Override
+    public List<Event> getInvitesByCustId(String custId) {
+        String query = queryService.getQuery("event.getInvitesByCustId");
+        Object[] params = new Object[]{
+                custId
+        };
+        return this.getJdbcTemplate().query(query, params, new BeanPropertyRowMapper(Event.class));
+    }
+
+    @Override
+    public List<Event> getDraftsByCustId(String custId) {
+        String query = queryService.getQuery("drafts.getByCustId");
+        Object[] params = new Object[]{
+                custId
+        };
+        return this.getJdbcTemplate().query(query, params, new BeanPropertyRowMapper(Event.class));
+    }
+
+    @Override
+    public void createEventInvitation(String login, UUID eventId) {
+        String query = queryService.getQuery("event.createInvitation");
+        Object[] params = new Object[]{
+                login,
+                eventId
+        };
+        this.getJdbcTemplate().update(query, params);
+    }
+
+    @Override
+    public String getTimeToEventStart(String eventId) {
+        String query = queryService.getQuery("event.getTimeToStart");
+        Object[] params = new Object[]{
+                eventId
+        };
+        List<String> list = (List<String>) this.getJdbcTemplate().query(query, params,
+                new BeanPropertyRowMapper(Event.class));
+        return list.get(0);
     }
 
     @Override
@@ -274,21 +281,6 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     }
 
     @Override
-    public void createEventInvitation(String login, UUID eventId) {
-        System.out.println("login = " + login);
-        System.out.println("eventId = " + eventId);
-        String sql = "INSERT INTO \"Customer_Event\"(id, customer_id, event_id, status, priority)" +
-                " VALUES (uuid_generate_v1(),(SELECT id FROM \"Customer\" WHERE login = ?), cast(? AS UUID), " +
-                "(SELECT id FROM \"Customer_Event_Status\" WHERE name = 'SEND')," +
-                "(SELECT id FROM \"Customer_Event_Priority\" WHERE name = 'LOW'))";
-        Object[] params = new Object[]{
-                login,
-                eventId
-        };
-        this.getJdbcTemplate().update(sql, params);
-    }
-
-    @Override
     public List<EventCountdownDTO> getCountdownMessages() {
         String sql = "SELECT\n" +
                 "  (SELECT email\n" +
@@ -310,61 +302,16 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         });
     }
 
-    @Override
-    public String getTimeToEventStart(String eventId) {
-        String sql = "SELECT (start_time - localtimestamp) FROM \"Event\" WHERE id = CAST(? AS UUID)";
-        Object[] params = new Object[]{
-                eventId
+    private void createCustomerEvent(Event event, UUID eventId, int priorityId) {
+        String query_customer_event = queryService.getQuery("customer_event.create");
+        Object[] customerEventParams = new Object[]{
+                eventId,
+                event.getCreatorId(),
+                event.getStartTime(),
+                priorityId
         };
-        List<String> query = (List<String>) this.getJdbcTemplate().query(sql, params,
-                new BeanPropertyRowMapper(Event.class));
-        return query.get(0);
+        this.getJdbcTemplate().update(query_customer_event, customerEventParams);
     }
-
-    @Override
-    public List<Event> getNotesByCustId(String custId) {
-        String sql = "SELECT \"Event\".id AS id,\"Event\".name AS name,\"Event\".description AS description, " +
-                "\"Event_Status\".name as status " +
-                "FROM \"Event\" INNER JOIN \"Event_Status\" ON status = \"Event_Status\".id " +
-                "WHERE \"Event_Status\".name = 'NOTE'" +
-                "AND \"Event\".creator_id = CAST(? AS UUID)";
-        Object[] params = new Object[]{
-                custId
-        };
-        return this.getJdbcTemplate().query(sql, params, new BeanPropertyRowMapper(Event.class));
-    }
-
-    @Override
-    public List<Event> getInvitesByCustId(String custId) {
-        String sql = "SELECT \"Event\".id AS id,\"Event\".name AS name,\"Event\".description AS description, " +
-                "\"Event_Status\".name as status " +
-                "FROM (\"Event\" INNER JOIN \"Event_Status\" ON status = \"Event_Status\".id) " +
-                "INNER JOIN \"Customer_Event\" ON \"Event\".id = \"Customer_Event\".event_id " +
-                "WHERE \"Event_Status\".name = 'EVENT'" +
-                "AND \"Customer_Event\".status = (SELECT id FROM \"Customer_Event_Status\" WHERE name = 'SEND')" +
-                "AND \"Customer_Event\".customer_id = CAST(? AS UUID)";
-        Object[] params = new Object[]{
-                custId
-        };
-        return this.getJdbcTemplate().query(sql, params, new BeanPropertyRowMapper(Event.class));
-    }
-
-
-    @Override
-    public List<Event> getDraftsByCustId(String custId) {
-        String sql = "SELECT \"Event\".id AS id,\"Event\".name AS name,\"Event\".description AS description, " +
-                "\"Event_Status\".name as status " +
-                "FROM \"Event\" INNER JOIN \"Event_Status\" ON status = \"Event_Status\".id " +
-                "WHERE \"Event_Status\".name = 'DRAFT'" +
-                "AND \"Event\".creator_id = CAST(? AS UUID)";
-
-        Object[] params = new Object[]{
-                custId
-        };
-        return this.getJdbcTemplate().query(sql, params, new BeanPropertyRowMapper(Event.class));
-    }
-
-
 
 }
 

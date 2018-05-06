@@ -14,6 +14,6 @@ public class QueryService {
     private Environment env;
 
     public String getQuery(String name) {
-        return this.env.getRequiredProperty(name);
+        return env.getRequiredProperty(name);
     }
 }
