@@ -32,6 +32,7 @@ import { UpdateEventComponent } from './update-event/update-event.component';
 import { FolderListComponent } from './folder-list/folder-list.component';
 import { WishListComponent} from './wishlist/wishlist.component';
 import {WishListService} from "./_services/wishlist.service";
+import {BookedItemsComponent} from "./bookeditems/bookeditems.component";
 
 @NgModule({
   imports: [
@@ -62,7 +63,8 @@ import {WishListService} from "./_services/wishlist.service";
     EventComponent,
     UpdateEventComponent,
     FolderListComponent,
-    WishListComponent
+    WishListComponent,
+    BookedItemsComponent
   ],
   providers: [
     AuthGuard,

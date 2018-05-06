@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-md-3">
+    <app-vnavbar></app-vnavbar>
+  </div>
+
+  <main role="main" class="col-md-9">
+
+    <table class="table table-striped" style = "overflow-x: auto; display: block;">
+      <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Description</th>
+        <th scope="col">Link</th>
+        <th scope="col">Due date</th>
+        <th scope="col">Booker</th>
+        <th scope="col">Priority</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let itemDto of wishlist.items">
+        <td>{{itemDto.item.name}}</td>
+        <td>{{itemDto.item.description}}</td>
+        <td>{{itemDto.item.link}}</td>
+        <td>{{itemDto.item.dueDate}}</td>
+        <td>{{itemDto.booker_customer_id}}</td>
+        <td>
+          <div class="circle green" *ngIf = "itemDto.priority == 2"></div>
+          <div class="circle gray" *ngIf = "itemDto.priority == 3"></div>
+          <div class="circle red" *ngIf = "itemDto.priority == 1"></div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+  </main>
+</div>
