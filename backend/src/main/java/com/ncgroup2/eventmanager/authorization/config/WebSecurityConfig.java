@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/api/reset/**","/api/auth","/api/register", "/api/registrationConfirm");
+        web.ignoring().antMatchers("/","/api/reset/**","/api/auth","/api/register", "/api/registrationConfirm");
     }
 
     @Override
@@ -45,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
 
-                .authorizeRequests().antMatchers("/api/reset/**","/api/auth","/api/register", "/api/registrationConfirm").permitAll().and()
+                .authorizeRequests().antMatchers("/","/api/reset/**","/api/auth","/api/register", "/api/registrationConfirm").permitAll().and()
 
                 .authorizeRequests().anyRequest().authenticated().and()
 
