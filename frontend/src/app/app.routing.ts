@@ -17,6 +17,8 @@ import {EventComponent} from "./events/event/event.component";
 import {UpdateEventComponent} from "./events/update-event/update-event.component";
 import {FolderListComponent} from "./folder-list/folder-list.component";
 import {WishListComponent} from "./wishlist/wishlist.component";
+import {EditProfileComponent} from "./edit-profile/edit-profile.component";
+import {UploadImgComponent} from "./upload-img/upload-img.component";
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full'},
@@ -34,6 +36,8 @@ const appRoutes: Routes = [
   { path: 'vnavbar', component: VnavbarComponent},
   { path: 'folder-list', component: FolderListComponent},
   { path: 'wishlist/:id', component: WishListComponent},
+  { path: 'edit-profile', component: EditProfileComponent},
+  { path: 'upload-img', component: UploadImgComponent},
 
   // otherwise redirect to home
  { path: '**', redirectTo: '' }

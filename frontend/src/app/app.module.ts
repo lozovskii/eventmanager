@@ -33,6 +33,9 @@ import {UpdateEventComponent} from './events/update-event/update-event.component
 import {FolderListComponent} from './folder-list/folder-list.component';
 import {WishListComponent} from './wishlist/wishlist.component';
 import {WishListService} from "./_services/wishlist.service";
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import {ProfileService} from "./_services/profile.service";
+import { UploadImgComponent } from './upload-img/upload-img.component';
 
 @NgModule({
   imports: [
@@ -64,7 +67,9 @@ import {WishListService} from "./_services/wishlist.service";
     EventComponent,
     UpdateEventComponent,
     FolderListComponent,
-    WishListComponent
+    WishListComponent,
+    EditProfileComponent,
+    UploadImgComponent,
   ],
   providers: [
     AuthGuard,
@@ -75,8 +80,8 @@ import {WishListService} from "./_services/wishlist.service";
     RegistrationService,
     ResetPasswordService,
     NavbarService,
-    WishListService
-    // provider used to create fake backend
+    WishListService,
+    ProfileService
   ],
   bootstrap: [AppComponent]
 })
