@@ -18,4 +18,10 @@ export class WishListService {
     const url = `${this.wishListUrl}/${eventId}`;
     return this.http.get<WishList>(url,{headers: AuthenticationService.getAuthHeader()});
   }
+
+  getBookedItems(): Observable<WishList> {
+    let customerId = this.userService.getCurrentId();
+    const url = `${this.wishListUrl}/booked?customerId=${customerId}`;
+    return this.http.get<WishList>(url,{headers: AuthenticationService.getAuthHeader()});
+  }
 }

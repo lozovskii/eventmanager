@@ -19,10 +19,8 @@
       </div>
     </div>
 
-    <div *ngIf="isParticipant">
-      <div *ngIf="isCreator">
+    <div *ngIf="isParticipant || isCreator">
         <button class="btn-light" [routerLink]="['/wishlist',eventDTO.event.id]">Wish list</button>
-      </div>
     </div>
 
     <p> Name = {{eventDTO.event.name}}</p>

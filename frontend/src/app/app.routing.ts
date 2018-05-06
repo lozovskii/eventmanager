@@ -19,6 +19,7 @@ import {FolderListComponent} from "./folder-list/folder-list.component";
 import {WishListComponent} from "./wishlist/wishlist.component";
 import {EditProfileComponent} from "./edit-profile/edit-profile.component";
 import {UploadImgComponent} from "./upload-img/upload-img.component";
+import {BookedItemsComponent} from "./bookeditems/bookeditems.component";
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full'},
@@ -38,6 +39,7 @@ const appRoutes: Routes = [
   { path: 'wishlist/:id', component: WishListComponent},
   { path: 'edit-profile', component: EditProfileComponent},
   { path: 'upload-img', component: UploadImgComponent},
+  { path: 'bookeditems', component: BookedItemsComponent},
 
   // otherwise redirect to home
  { path: '**', redirectTo: '' }

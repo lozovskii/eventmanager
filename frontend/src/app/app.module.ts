@@ -33,6 +33,7 @@ import {UpdateEventComponent} from './events/update-event/update-event.component
 import {FolderListComponent} from './folder-list/folder-list.component';
 import {WishListComponent} from './wishlist/wishlist.component';
 import {WishListService} from "./_services/wishlist.service";
+import {BookedItemsComponent} from "./bookeditems/bookeditems.component";
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import {ProfileService} from "./_services/profile.service";
 import { UploadImgComponent } from './upload-img/upload-img.component';
@@ -70,6 +71,8 @@ import { UploadImgComponent } from './upload-img/upload-img.component';
     WishListComponent,
     EditProfileComponent,
     UploadImgComponent,
+    WishListComponent,
+    BookedItemsComponent
   ],
   providers: [
     AuthGuard,
