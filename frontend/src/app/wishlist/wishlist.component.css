@@ -1,17 +1,16 @@
-.circle{
-  width:20px;
+.select-style {
+  width: 20px;
   height: 20px;
   border-radius: 50px;
+  overflow: hidden;
 }
 
-.red{
-  background:red;
-}
-
-.green{
-  background: green;
-}
-
-.gray{
-  background: gray;
+.select-style select {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  width: 20px;
+  height: 20px;
+  border-radius: 50px;
 }
