@@ -33,7 +33,7 @@ const appRoutes: Routes = [
   { path: 'profile', component: ProfileComponent},
   { path: 'vnavbar', component: VnavbarComponent},
   { path: 'folder-list', component: FolderListComponent},
-  { path: 'show-wishlist/:id', component: WishListComponent},
+  { path: 'wishlist/:id', component: WishListComponent},
 
   // otherwise redirect to home
  { path: '**', redirectTo: '' }

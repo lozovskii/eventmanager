@@ -1,12 +1,11 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {User} from '../_models/user';
 import {Observable} from "rxjs/Observable";
-import {JwtHelper} from "angular2-jwt";
+import {AuthenticationService} from "./authentication.service";
 
 @Injectable()
 export class UserService {
-  private JwtHelper: JwtHelper = new JwtHelper();
 
   constructor(private http: HttpClient) {
   }
@@ -16,36 +15,23 @@ export class UserService {
   }
 
   getByLogin(login: string): Observable<any> {
-    let headers = new HttpHeaders({'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token});
-    let params = new HttpParams();
-    params.set('login', JSON.parse(localStorage.getItem('currentUser')).login);
-
-    console.log('login parameter ' + params.get('login'));
-    return this.http.get('/api/users/?login=' + JSON.parse(localStorage.getItem('currentUser')).login, {
-      headers: headers,
-      params: params
-    })
-
-    // .map((response: Response) => response.json());
+    return this.http.get('/api/users/?login='+login, {headers: AuthenticationService.getAuthHeader()})
   }
 
-
   update(user: User) {
-    return this.http.put('/api/users/' + user.id, user);
+    return this.http.put('/api/users/' + user.id, {headers: AuthenticationService.getAuthHeader()});
   }
 
   delete(id: number) {
-    return this.http.delete('/api/users/' + id);
+    return this.http.delete('/api/users/' + id, {headers: AuthenticationService.getAuthHeader()});
   }
 
   getCurrentLogin() {
-    let login = this.JwtHelper.decodeToken(localStorage.getItem('currentUser')).login;
-    return login;
+    return JSON.parse(sessionStorage.getItem('currentUser')).login;
   }
 
   getCurrentId() {
-    let id = this.JwtHelper.decodeToken(localStorage.getItem('currentUser')).id;
-    return id;
+    return JSON.parse(sessionStorage.getItem('currentUser')).id;
   }
 
 }

@@ -11,8 +11,6 @@ import {WishListService} from "../_services/wishlist.service";
 })
 export class WishListComponent implements OnInit {
   wishlist: WishList;
-  isCreator: boolean;
-  isParticipant: boolean;
 
   constructor(private wishListService: WishListService,
               private activatedRoute: ActivatedRoute,

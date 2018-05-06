@@ -19,7 +19,7 @@ public class WishListController {
         this.wishListService = wishListService;
     }
 
-    @GetMapping(value = "/show-wishlist{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<WishList> getWishList1(@PathVariable("id") String id) {
 
         if (id.isEmpty()) {

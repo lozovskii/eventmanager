@@ -19,12 +19,11 @@
       </div>
     </div>
 
-    <div>
-
-      <button class="btn-light" [routerLink]="['/show-wishlist',eventDTO.event.id]">Wish list</button>
-
+    <div [hidden]="!isParticipant">
+      <div [hidden]="!isCreator">
+        <button class="btn-light" [routerLink]="['/wishlist',eventDTO.event.id]">Wish list</button>
+      </div>
     </div>
-
 
     <p> Name = {{eventDTO.event.name}}</p>
     <p> Description = {{eventDTO.event.description}}</p>

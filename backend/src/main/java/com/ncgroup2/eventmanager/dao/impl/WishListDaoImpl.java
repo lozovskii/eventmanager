@@ -71,10 +71,9 @@ public class WishListDaoImpl extends JdbcDaoSupport implements DAO {
     @Override
     public WishList getEntityByField(String fieldName, Object fieldValue) {
 
-        return Objects.requireNonNull(
-                getEntitiesByField(fieldName, fieldValue)
-                .iterator().next(),
-                "Wish list not found");
+        return  getEntitiesByField(fieldName, fieldValue) != null ?
+                getEntitiesByField(fieldName, fieldValue).iterator().next() :
+                null;
     }
 
     @Override

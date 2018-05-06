@@ -1,8 +1,7 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import 'rxjs/add/operator/map'
 import {UserAuthParam} from "../_models/userAuthParam.model";
-import {UserService} from "./user.service";
 
 @Injectable()
 export class AuthenticationService {
@@ -10,42 +9,33 @@ export class AuthenticationService {
   variable = null;
   url = '/api/auth';
 
-  constructor(private http: HttpClient,
-              private userService: UserService) { }
+  constructor(private http: HttpClient) { }
 
   login(userAuthParam : UserAuthParam) {
     return this.http.post<any>(this.url, userAuthParam)
       .map(userParam => {
         if(userParam && userParam.token) {
-          localStorage.setItem('currentUser', JSON.stringify( {login :userAuthParam.login, token: userParam.token}));
+          sessionStorage.setItem('currentToken', JSON.stringify( {login :userAuthParam.login, token: userParam.token}));
         }
         return userParam;
       });
   }
 
   logout() {
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('currentUserObject');
+    sessionStorage.clear();
   }
 
-  // currentUser(): Observable<User> {
-  //   let token = localStorage.getItem("currentUser");
-  //   let userLogin = +this.JwtHelper.decodeToken(token).login;
-  //   console.log('login: ' + userLogin);
-  //
-  //   return this.userService.getUser(userLogin).map((user: User) => {//map
-  //     console.log('user1: ' + JSON.stringify(user));
-  //     return user;
-  //   })
-  // }
-
   checkingLog(){
-    this.variable = JSON.parse(localStorage.getItem('currentUser'));
+    this.variable = JSON.parse(sessionStorage.getItem('currentToken'));
     console.log('variable = ' + this.variable);
     if(this.variable != null) {
           this.navbar = true;
     }
     return this.navbar;
+  }
+
+  static getAuthHeader() {
+    return new HttpHeaders({'Authorization': 'Bearer ' + JSON.parse(sessionStorage.getItem('currentToken')).token});
   }
 
 }

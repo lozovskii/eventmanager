@@ -4,7 +4,6 @@ import {HttpClient} from '@angular/common/http';
 import {WishList} from '../_models/wishlist';
 import {Observable} from 'rxjs/Observable';
 import {UserService} from "./user.service";
-import {Item} from "../_models/item";
 
 @Injectable()
 export class WishListService {
@@ -15,12 +14,7 @@ export class WishListService {
   }
 
   getByEventId(eventId: string): Observable<WishList> {
-    const url = `${this.wishListUrl}/show-wishlist${eventId}`;
+    const url = `${this.wishListUrl}/${eventId}`;
     return this.http.get<WishList>(url);
-  }
-
-  isParticipant(customerId: string, eventId: string) {
-    const url = `${this.wishListUrl}/isParticipant?customerId=${customerId}&eventId=${eventId}`;
-    return this.http.get(url);
   }
 }

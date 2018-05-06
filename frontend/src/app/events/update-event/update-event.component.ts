@@ -48,7 +48,7 @@ export class UpdateEventComponent implements OnInit {
           this.event = event;
           console.log(this.event);
 
-          this.canEdit = JSON.parse(localStorage.getItem('currentUserObject')).id == this.event.creatorId;
+          this.canEdit = JSON.parse(sessionStorage.getItem('currentUser')).id == this.event.creatorId;
 
           if(!this.canEdit) {
             this.alertService.error("You don't have permission to edit this event");
