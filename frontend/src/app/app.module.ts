@@ -30,6 +30,8 @@ import {NavbarService} from "./_services/navbar.service";
 import { EventComponent } from './event/event.component';
 import { UpdateEventComponent } from './update-event/update-event.component';
 import { FolderListComponent } from './folder-list/folder-list.component';
+import { WishListComponent} from './wishlist/wishlist.component';
+import {WishListService} from "./_services/wishlist.service";
 
 @NgModule({
   imports: [
@@ -59,7 +61,8 @@ import { FolderListComponent } from './folder-list/folder-list.component';
     ResetComponent,
     EventComponent,
     UpdateEventComponent,
-    FolderListComponent
+    FolderListComponent,
+    WishListComponent
   ],
   providers: [
     AuthGuard,
@@ -70,6 +73,7 @@ import { FolderListComponent } from './folder-list/folder-list.component';
     RegistrationService,
     ResetPasswordService,
     NavbarService,
+    WishListService
     // provider used to create fake backend
   ],
   bootstrap: [AppComponent]
