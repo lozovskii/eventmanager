@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {EventService} from "../_services";
+import {EventService} from "../../_services";
 import {ActivatedRoute, Router} from "@angular/router";
-import {EventDTOModel} from "../_models/dto/eventDTOModel";
-import {AlertService} from "../_services/alert.service";
+import {EventDTOModel} from "../../_models/dto/eventDTOModel";
+import {AlertService} from "../../_services/alert.service";
 
 @Component({
   selector: 'app-event',

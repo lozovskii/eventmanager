@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {EventService} from "../_services";
-import {Event} from "../_models";
+import {EventService} from "../../_services";
+import {Event} from "../../_models";
 import {ActivatedRoute} from "@angular/router";
-import {AlertService} from "../_services/alert.service";
+import {AlertService} from "../../_services/alert.service";
 
 @Component({
   selector: 'app-eventlist',
