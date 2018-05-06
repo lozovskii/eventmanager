@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from "../_services/authentication.service";
 import {AlertService} from "../_services/alert.service";
 import {NavbarService} from "../_services/navbar.service";
@@ -37,13 +37,11 @@ export class LoginComponent implements OnInit {
     };
     this.authenticationService.login(userAuthParam)
       .subscribe(data => {
-        console.log('logged in with token ' + localStorage.getItem('currentUser'));
+        console.log('logged in with token ' + sessionStorage.getItem('currentToken'));
         this.loading=false;
           this.navbarService.setNavBarState( true );
           return this.router.navigate(['/home'])
         }
-
-//      this.customToastService.setMessage('Welcome on your home page!');
 
       , () => {
         alert('Invalid credentials');
@@ -51,14 +49,5 @@ export class LoginComponent implements OnInit {
           return this.router.navigate(['/login']);
         });
   }
-
-  // .subscribe(
-  //   data => {
-  //     this.router.navigate([this.returnUrl]);
-  //   },
-  //   error => {
-  //     this.alertService.error(error);
-  //     this.loading = false;
-  //   });
 
 }

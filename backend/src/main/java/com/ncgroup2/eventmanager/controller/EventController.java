@@ -28,7 +28,7 @@ public class EventController {
 
     @PostMapping("/delete")
     public void deleteEvent(@RequestBody String eventId){
-        eventService.deleteEvent(eventId);
+        eventService.deleteEventById(eventId);
     }
 
     @GetMapping(value = "/public_and_friends")
