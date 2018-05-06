@@ -1,7 +1,7 @@
-import {Item} from "./item";
+import {ItemDto} from "./dto/itemDto";
 
 export class WishList{
   id: string;
   name: string;
-  item: Item;
+  items: ItemDto[];
 }
