@@ -57,7 +57,7 @@ export class EventComponent implements OnInit {
   delete() {
     this.eventService.deleteEvent(this.eventDTO.event.id).subscribe(() => {
       this.alertService.info('Event successfully deleted!',true);
-      this.router.navigate(['/home']);
+      this.router.navigate(['../home']);
     });
   }
 }

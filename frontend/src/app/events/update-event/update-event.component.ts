@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {AlertService} from "../_services/alert.service";
+import {AlertService} from "../../_services/alert.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {EventService} from "../_services/event.service";
-import {UserService} from "../_services/user.service";
-import {Event} from "../_models";
+import {EventService} from "../../_services/event.service";
+import {UserService} from "../../_services/user.service";
+import {Event} from "../../_models";
 
 @Component({
   selector: 'app-update-event',
