@@ -1,5 +1,6 @@
 package com.ncgroup2.eventmanager.controller;
 
+import com.ncgroup2.eventmanager.dto.ItemWishListDto;
 import com.ncgroup2.eventmanager.entity.WishList;
 import com.ncgroup2.eventmanager.service.WishListService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,5 +50,11 @@ public class WishListController {
 
             return new ResponseEntity<>(bookedItems, HttpStatus.OK);
         }
+
+    @PostMapping(value = "/update")
+    public void update(@RequestBody WishList wishList) {
+
+        wishListService.update(wishList);
+    }
 
 }
