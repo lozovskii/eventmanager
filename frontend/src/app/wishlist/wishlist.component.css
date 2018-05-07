@@ -1,3 +1,15 @@
+.red{
+  background:red;
+}
+
+.green{
+  background: green;
+}
+
+.gray{
+  background: gray;
+}
+
 .select-style {
   width: 20px;
   height: 20px;
@@ -6,11 +18,9 @@
 }
 
 .select-style select {
-  position: absolute;
   opacity: 0;
   cursor: pointer;
-  border: 1px solid #ccc;
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   border-radius: 50px;
 }

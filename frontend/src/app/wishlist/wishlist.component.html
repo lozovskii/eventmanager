@@ -5,52 +5,173 @@
 
   <main role="main" class="col-md-9">
 
-    <table class="table table-striped" style="overflow-x: auto; display: block;">
-      <thead>
-      <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Description</th>
-        <th scope="col">Link</th>
-        <th scope="col">Due date</th>
-        <th scope="col">Booker</th>
-        <th scope="col">Priority</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let itemDto of wishlist.items">
-        <td>{{itemDto.item.name}}</td>
-        <td>{{itemDto.item.description}}</td>
-        <td>{{itemDto.item.link}}</td>
-        <td>{{itemDto.item.dueDate}}</td>
-        <td>{{itemDto.booker_customer_id}}</td>
-        <td align="center">
 
-          <form name="priorityForm">
+    <div class="row">
+      <div class="col-4">
+        <div class="list-group" id="list-tab" role="tablist">
+          <a *ngFor="let itemDto of wishlist.items; let i = index;"
+             class="list-group-item list-group-item-action"
+             [ngClass]="{'active' : i == 0}"
+             id="list-home-list"
+             data-toggle="list" href="#list{{i}}" role="tab"
+             aria-controls="home">
 
-            <div [style.background-color]="
-            itemDto.priority === 1 ? 'red':
-            itemDto.priority === 2 ? 'green':
-            'gray'" class="select-style">
+            <li class=" d-flex flex-row-reverse justify-content-between align-items-center">
 
-              <select>
-                <option value="1" (click)="itemDto.priority = 1">High</option>
-                <option value="2" (click)="itemDto.priority = 2">Avg</option>
-                <option value="3" (click)="itemDto.priority = 3">Low</option>
-              </select>
+              <div class="select-style"
+                   [style.background-color]="
+                    itemDto.priority === 1 ? 'red':
+                    itemDto.priority === 2 ? 'green':'gray'">
 
-              <!--<select ngSwitch={{itemDto.priority}}>-->
-                <!--<option value="1" *ngSwitchCase="1">High</option>-->
-                <!--<option value="2" *ngSwitchCase="2">Avg</option>-->
-                <!--<option value="3" *ngSwitchCase="3">Low</option>-->
-              <!--</select>-->
+
+                <select *ngIf="isBooker(itemDto.booker_customer_id)"
+                        (change)="hasChanges = true">
+
+                  <option value="1" (click)="itemDto.priority = 1">High</option>
+                  <option value="2" (click)="itemDto.priority = 2">Avg</option>
+                  <option value="3" (click)="itemDto.priority = 3">Low</option>
+                </select>
+
+              </div>
+
+              {{itemDto.item.name}}
+
+            </li>
+          </a>
+
+        </div>
+      </div>
+
+      <div class="col-8 card">
+        <div class="tab-content" id="nav-tabContent">
+          <div *ngFor="let itemDto of wishlist.items; let i = index;"
+               class="tab-pane fade show"
+               id="list{{i}}"
+               role="tabpanel"
+               aria-labelledby="list-home-list">
+
+            <div class="card-body">
+
+              <img class="card-img-top"
+                   *ngIf="!itemDto.item.image"
+                   src="https://renderman.pixar.com/assets/camaleon_cms/image-not-found-4a963b95bf081c3ea02923dceaeb3f8085e1a654fc54840aac61a57a60903fef.png"
+                   alt="Card image">
+
+              <img class="card-img-top"
+                   *ngIf="itemDto.item.image"
+                   src="itemDto.item.image" alt="Card image">
+
+              <h5 class="card-title"> {{itemDto.item.name}}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">{{itemDto.item.dueDate}}</h6>
+              <p class="card-text">{{itemDto.item.description}}<br>
+                Some quick example text to build on the card title
+                and make up the bulk of the card's content.</p>
+
+              <a *ngIf="itemDto.item.link"
+                 href="{{itemDto.item.link}}"
+                 class="card-link">link</a>
             </div>
 
-          </form>
+            <div class="card-footer">
+              <small class="text-muted">
+                <a href="#" class="card-link"
+                   *ngIf="!itemDto.booker_customer_id"
+                   (click)="bookItem(itemDto)">book it</a>
+              </small>
 
-        </td>
-      </tr>
-      </tbody>
-    </table>
+              <small class="text-muted">Booker: {{itemDto.booker_customer_id}}</small>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <button type="button" class="btn btn-secondary" [disabled]="!hasChanges" (click)="update()">
+      Save changes
+    </button>
+
+    <!--<table class="table table-striped" style="overflow-x: auto; display: block;">-->
+    <!--<thead>-->
+    <!--<tr>-->
+    <!--<th scope="col">Name</th>-->
+    <!--<th scope="col">Description</th>-->
+    <!--<th scope="col">Link</th>-->
+    <!--<th scope="col">Due date</th>-->
+    <!--<th scope="col">Booker</th>-->
+    <!--<th scope="col">Priority</th>-->
+    <!--</tr>-->
+    <!--</thead>-->
+    <!--<tbody>-->
+    <!--<tr *ngFor="let itemDto of wishlist.items">-->
+
+    <!--<td>-->
+    <!--{{itemDto.item.name}}-->
+    <!--</td>-->
+
+    <!--<td>{{itemDto.item.description}}</td>-->
+    <!--<td>{{itemDto.item.link}}</td>-->
+    <!--<td>{{itemDto.item.dueDate}}</td>-->
+    <!--<td>-->
+
+    <!--<a *ngIf="!itemDto.booker_customer_id"-->
+    <!--style="cursor: pointer; color:#666699;"-->
+    <!--(click)="bookItem(itemDto)"> book it</a>-->
+
+    <!--{{itemDto.booker_customer_id}}-->
+    <!--</td>-->
+
+    <!--<td align="center">-->
+
+    <!--<form name="priorityForm">-->
+
+    <!--<div class="select-style"-->
+    <!--[style.background-color]="-->
+    <!--itemDto.priority === 1 ? 'red':-->
+    <!--itemDto.priority === 2 ? 'green':'gray'">-->
+
+
+    <!--<select *ngIf="isBooker(itemDto.booker_customer_id)"-->
+    <!--(change)="hasChanges = true">-->
+
+    <!--<option value="1" (click)="itemDto.priority = 1">High</option>-->
+    <!--<option value="2" (click)="itemDto.priority = 2">Avg</option>-->
+    <!--<option value="3" (click)="itemDto.priority = 3">Low</option>-->
+    <!--</select>-->
+
+    <!--</div>-->
+
+    <!--</form>-->
+
+    <!--</td>-->
+    <!--</tr>-->
+
+    <!--</tbody>-->
+    <!--</table>-->
+
+
+    <!--<div class="accordion" id="accordionExample">-->
+    <!--<div class="card" *ngFor="let itemDto of wishlist.items; let i = index;">-->
+    <!--<div class="card-header" id="heading{{i}}">-->
+    <!--<h5 class="mb-0">-->
+    <!--<button class="btn btn-link" type="button"-->
+    <!--data-toggle="collapse" data-target="#collapse"-->
+    <!--aria-expanded="true" aria-controls="collapse">-->
+    <!--{{itemDto.item.name}}-->
+    <!--</button>-->
+    <!--</h5>-->
+    <!--</div>-->
+
+    <!--<div id="collapse{{i}}" class="collapse show" aria-labelledby="heading"-->
+    <!--data-parent="#accordionExample">-->
+
+    <!--<div class="card-body">-->
+    <!--{{itemDto.item.description}}-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
 
   </main>
 </div>
