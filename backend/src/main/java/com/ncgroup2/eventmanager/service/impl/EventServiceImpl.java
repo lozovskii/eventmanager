@@ -4,11 +4,13 @@ import com.ncgroup2.eventmanager.dao.CustomerDao;
 import com.ncgroup2.eventmanager.dao.EventDao;
 import com.ncgroup2.eventmanager.dto.EventCountdownDTO;
 import com.ncgroup2.eventmanager.dto.EventDTO;
+import com.ncgroup2.eventmanager.dto.InviteNotificationDTO;
 import com.ncgroup2.eventmanager.entity.Event;
 import com.ncgroup2.eventmanager.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -116,8 +118,8 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void addParticipant(String customerId, String eventId) {
-        eventDao.addParticipant(customerId, eventId);
+    public void addParticipant(String customerId, String eventId, Instant startDateNotification, int priority) {
+        eventDao.addParticipant(customerId, eventId, startDateNotification, priority);
     }
 
     public List<EventCountdownDTO> getCountdownMessages() {
@@ -137,6 +139,11 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<Event> getInvitesByCustId(String custId){
         return eventDao.getInvitesByCustId(custId);
+    }
+
+    @Override
+    public List<InviteNotificationDTO> getInviteNotifications(String customerId) {
+        return eventDao.getInviteNotifications(customerId);
     }
 
 

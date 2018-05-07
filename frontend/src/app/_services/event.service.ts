@@ -32,19 +32,19 @@ export class EventService {
     return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
   }
 
-  getDraftsByCustId():Observable<Event[]> {
+  getDraftsByCustId(): Observable<Event[]> {
     let custId = this.userService.getCurrentId();
     const url = `${this.eventsUrl}/drafts${custId}`;
     return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
   }
 
-  getNotesByCustId():Observable<Event[]> {
+  getNotesByCustId(): Observable<Event[]> {
     let custId = this.userService.getCurrentId();
     const url = `${this.eventsUrl}/notes${custId}`;
     return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
   }
 
-  getInvitesByCustId():Observable<Event[]> {
+  getInvitesByCustId(): Observable<Event[]> {
     let custId = this.userService.getCurrentId();
     const url = `${this.eventsUrl}/invites${custId}`;
     return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
@@ -75,4 +75,5 @@ export class EventService {
     const url = `${this.eventsUrl}/isParticipant?customerId=${customerId}&eventId=${eventId}`;
     return this.http.get(url, {headers: AuthenticationService.getAuthHeader()});
   }
+
 }

@@ -1,10 +1,10 @@
 ///<reference path="landing-page/landing-page.component.ts"/>
-import { Routes, RouterModule } from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 
-import { HomeComponent } from './home/index';
-import { LoginComponent } from './login/index';
-import { RegisterComponent } from './register/index';
-import { AuthGuard } from './_guards/index';
+import {HomeComponent} from './home/index';
+import {LoginComponent} from './login/index';
+import {RegisterComponent} from './register/index';
+import {AuthGuard} from './_guards/index';
 import {LandingPageComponent} from "./landing-page/landing-page.component";
 import {CreateEventComponent} from "./events/create-event/create-event.component";
 import {EventlistComponent} from "./events/eventlist/eventlist.component";
@@ -20,6 +20,7 @@ import {WishListComponent} from "./wishlist/wishlist.component";
 import {EditProfileComponent} from "./edit-profile/edit-profile.component";
 import {UploadImgComponent} from "./upload-img/upload-img.component";
 import {BookedItemsComponent} from "./bookeditems/bookeditems.component";
+import {NotificationContainerComponent} from "./notifications/notification-container/notification-container.component";
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full'},
@@ -40,6 +41,7 @@ const appRoutes: Routes = [
   { path: 'edit-profile', component: EditProfileComponent},
   { path: 'upload-img', component: UploadImgComponent},
   { path: 'bookeditems', component: BookedItemsComponent},
+  {path: 'notifications', component: NotificationContainerComponent},
 
   // otherwise redirect to home
  { path: '**', redirectTo: '' }
