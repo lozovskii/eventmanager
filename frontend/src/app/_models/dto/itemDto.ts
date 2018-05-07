@@ -12,5 +12,14 @@ export class ItemDto{
 
   booker_customer_id: string;
 
-  priority: number;
+  private _priority: number;
+
+
+  get priority(): number {
+    return this._priority;
+  }
+
+  set priority(value: number) {
+    this._priority = value;
+  }
 }
