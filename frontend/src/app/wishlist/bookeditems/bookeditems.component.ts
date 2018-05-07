@@ -30,4 +30,12 @@ export class BookedItemsComponent implements OnInit {
         }
       });
   }
+
+  update() : void{
+    this.wishListService.update(this.wishlist).subscribe(data => {
+
+      this.alertService.success('Wishlist successfully updated!',
+        true);
+    });
+  }
 }
