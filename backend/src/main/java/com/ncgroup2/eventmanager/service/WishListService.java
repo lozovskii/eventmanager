@@ -14,4 +14,6 @@ public interface WishListService {
 
     void updateByField(Object item_wishlist_id, String fieldName, Object fieldValue);
 
+    void update(WishList wishList);
+
 }

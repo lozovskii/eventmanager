@@ -36,4 +36,9 @@ public class WishListServiceImpl implements WishListService{
 
         wishListDao.updateField(item_wishlist_id, fieldName, fieldValue);
     }
+
+    public void update(WishList wishList){
+
+        wishListDao.update(wishList);
+    }
 }
