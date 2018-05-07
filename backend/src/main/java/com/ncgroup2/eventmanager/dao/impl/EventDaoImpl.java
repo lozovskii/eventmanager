@@ -299,7 +299,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
     private void insertParticipant(String customerId, String eventId, Instant startDateNotifications, int priority) {
         String sql = "INSERT INTO \"Customer_Event\" (customer_id, event_id, start_date_notification, priority, status)\n" +
-                "    VALUES (?, ?, ?, ?, (select id\n" +
+                "    VALUES (cast(? as uuid), cast(? as uuid), ?, ?, (select id\n" +
                 "                                                                           from \"Customer_Event_Status\"\n" +
                 "                                                                           where name = 'ACCEPTED'))";
         Object[] params = new Object[]{
