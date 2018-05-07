@@ -1,9 +1,38 @@
 <div class="row">
-  <div class="col-md-3">
+  <div  class="col-md-3">
     <app-vnavbar></app-vnavbar>
   </div>
+
   <main role="main" class="col-md-9">
+    <!--<form action="/profile/search" method="post">-->
+    <!--<label>-->
+    <!--<h6>Search users: </h6>-->
+    <!--<input type="text" />-->
+    <!--</label>-->
+    <!--<input type="submit" value="Search" />-->
+    <!--</form>-->
+    <h2>{{currentUser.name}} {{currentUser.secondName}}</h2>
+    <img src={{currentUser.avatar}} height="300" width="250" />
+    <br>
+    <br>
+    <p> Username: {{currentUser.login}}</p>
+    <p> E-mail: {{currentUser.email}}</p>
+    <p> Phone: {{currentUser.phone}}</p>
+
+    <div>
+      <div>
+
+      </div>
+      <div>
+        <a [routerLink]="['/edit-profile']" class="navbar-brand">Edit</a>
+        <a [routerLink]="['/friends-view']" class="navbar-brand">Friends</a>
+        <a [routerLink]="['/profile']" class="navbar-brand">Notifications</a>
+        <!---->
+        <!--<a style="color: blue" th:href="@{/profile/edit}">Edit</a>-->
+        <!--<a style="color: blue" th:href="@{/profile/friends}">Friends</a>-->
+        <!--<a style="color: blue" th:href="@{/profile/notifications}">Notifications</a>-->
+      </div>
+    </div>
   </main>
 
 </div>
-

@@ -34,6 +34,14 @@ import {FolderListComponent} from './folder-list/folder-list.component';
 import {WishListComponent} from './wishlist/wishlist.component';
 import {WishListService} from "./_services/wishlist.service";
 import {BookedItemsComponent} from "./wishlist/bookeditems/bookeditems.component";
+import {EditProfileComponent} from './edit-profile/edit-profile.component';
+import {ProfileService} from "./_services/profile.service";
+import {UploadImgComponent} from './upload-img/upload-img.component';
+import {NotificationsHostDirective} from './notifications/notifications-host.directive';
+import {InviteNotificationComponent} from './notifications/invite-notification/invite-notification.component';
+import {NotificationContainerComponent} from './notifications/notification-container/notification-container.component';
+import {NotificationService} from "./_services/notification.service";
+import {FriendRequestNotificationComponent} from './notifications/friend-request-notification/friend-request-notification.component';
 
 @NgModule({
   imports: [
@@ -66,7 +74,14 @@ import {BookedItemsComponent} from "./wishlist/bookeditems/bookeditems.component
     UpdateEventComponent,
     FolderListComponent,
     WishListComponent,
-    BookedItemsComponent
+    EditProfileComponent,
+    UploadImgComponent,
+    WishListComponent,
+    BookedItemsComponent,
+    NotificationsHostDirective,
+    InviteNotificationComponent,
+    NotificationContainerComponent,
+    FriendRequestNotificationComponent
   ],
   providers: [
     AuthGuard,
@@ -77,7 +92,9 @@ import {BookedItemsComponent} from "./wishlist/bookeditems/bookeditems.component
     RegistrationService,
     ResetPasswordService,
     NavbarService,
-    WishListService
+    WishListService,
+    ProfileService,
+    NotificationService
     // provider used to create fake backend
   ],
   bootstrap: [AppComponent]
