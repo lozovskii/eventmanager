@@ -1,15 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {WishList} from "../_models/wishlist";
-import {AlertService} from "../_services/alert.service";
-import {WishListService} from "../_services/wishlist.service";
+import {WishList} from "../../_models/wishlist";
+import {AlertService} from "../../_services/alert.service";
+import {WishListService} from "../../_services/wishlist.service";
 
 @Component({
   selector: 'app-bookeditems',
   templateUrl: './bookeditems.component.html',
-  styleUrls: ['./bookeditems.component.css']
+  styleUrls: ['../wishlist.component.css']
 })
 export class BookedItemsComponent implements OnInit {
   wishlist: WishList;
+  hasChanges: boolean = false;
 
   constructor(private wishListService: WishListService,
               private alertService : AlertService) {
