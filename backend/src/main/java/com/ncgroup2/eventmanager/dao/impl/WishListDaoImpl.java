@@ -89,7 +89,7 @@ public class WishListDaoImpl extends JdbcDaoSupport implements DAO {
                         "FROM \"Item\" i " +
                         "INNER JOIN \"Item_WishList\" iw ON (iw.item_id = i.id)\t " +
                         "INNER JOIN \"Event_WishList\" ew ON (ew.item_wishlist_id = iw.id) " +
-                        "WHERE " + fieldName + " = CAST ('" + fieldValue + "' AS UUID)";
+                        "WHERE " + fieldName + " = '" + fieldValue + "' ::UUID";
 
         Map<String, List<ItemWishListDto>> wishListMap =
                 this.getJdbcTemplate().query(sql, new WishListMapExtractor(fieldName));
@@ -105,8 +105,8 @@ public class WishListDaoImpl extends JdbcDaoSupport implements DAO {
 
         String updateItem_WishListSql =
                 "UPDATE \"Item_WishList\" " +
-                        "SET booker_customer_id=?, priority=? " +
-                        "WHERE id=?; ";
+                        "SET booker_customer_id=?::UUID, priority=? " +
+                        "WHERE id=?::UUID; ";
 
         List<ItemWishListDto> items = wishList.getItems();
 
@@ -133,7 +133,7 @@ public class WishListDaoImpl extends JdbcDaoSupport implements DAO {
         String updateItem_WishListSql =
                 "UPDATE \"Item_WishList\" " +
                         "SET " + fieldName + " = " + fieldValue +
-                        " WHERE id = CAST ('" + item_wishlist_id + "' AS UUID);";
+                        " WHERE id = '" + item_wishlist_id + "' ::UUID;";
 
         this.getJdbcTemplate().update(updateItem_WishListSql);
 
@@ -150,7 +150,7 @@ public class WishListDaoImpl extends JdbcDaoSupport implements DAO {
         String deleteSql =
                 "DELETE " +
                         "FROM \"Event_WishList\" ew " +
-                        "WHERE ew.id = CAST ('" + id + "' AS UUID);";
+                        "WHERE ew.id = '" + id + "' ::UUID;";
 
         this.getJdbcTemplate().update(deleteSql);
 
