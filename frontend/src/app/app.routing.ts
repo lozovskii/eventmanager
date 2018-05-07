@@ -17,7 +17,7 @@ import {EventComponent} from "./events/event/event.component";
 import {UpdateEventComponent} from "./events/update-event/update-event.component";
 import {FolderListComponent} from "./folder-list/folder-list.component";
 import {WishListComponent} from "./wishlist/wishlist.component";
-import {BookedItemsComponent} from "./bookeditems/bookeditems.component";
+import {BookedItemsComponent} from "./wishlist/bookeditems/bookeditems.component";
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full'},
