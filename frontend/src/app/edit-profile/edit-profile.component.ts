@@ -59,16 +59,15 @@ export class EditProfileComponent implements OnInit {
     return  this.token = JSON.parse(sessionStorage.getItem('currentUser')).token
   }
 
-  updateUser(user: User): void {
-    this.tok();
-    this.profileService.update(user)
-      .subscribe(() => {
-          this.alertService.success('User updated!', true);
-          setTimeout(() => this.router.navigate(["/profile"]), 5000);
-        },
-        (error) => {
-          this.alertService.error(error.message);
-        })
-  }
-
+  // updateUser(user: User): void {
+  //   this.tok();
+  //   this.profileService.update(user)
+  //     .subscribe(() => {
+  //         this.alertService.success('User updated!', true);
+  //         setTimeout(() => this.router.navigate(["/profile"]), 5000);
+  //       },
+  //       (error) => {
+  //         this.alertService.error(error.message);
+  //       })
+  // }
 }

@@ -214,14 +214,13 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
     @Override
     public List<Customer> getFriends(String login) {
         Object[] params = new Object[]{login, 3, login, 3};
-
         return this.getJdbcTemplate().query(getFriends, params, new CustomerMapper());
     }
 
     @Override
     public void delete(String login) {
-        Object[] params1 = new Object[]{"akybenko", login};
-        Object[] params2 = new Object[]{login, "akybenko"};
+        Object[] params1 = new Object[]{SecurityContextHolder.getContext().getAuthentication().getName(), login};
+        Object[] params2 = new Object[]{login, SecurityContextHolder.getContext().getAuthentication().getName()};
 
         this.getJdbcTemplate().update(deleteFriend, params1);
         this.getJdbcTemplate().update(deleteFriend, params2);

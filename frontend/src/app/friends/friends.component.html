@@ -1,0 +1,29 @@
+<div class="row">
+  <div  class="col-md-3">
+    <app-vnavbar></app-vnavbar>
+  </div>
+
+  <main role="main" class="col-md-9">
+    <table class="table table-striped" style = "overflow-x: auto; display: block;">
+      <thead>
+      <tr>
+        <th scope="col">First Name</th>
+        <th scope="col">Second name</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Login</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let friend of friends">
+        <td>{{friend.name}}</td>
+        <td>{{friend.secondName}}</td>
+        <td>{{friend.phone}}</td>
+        <td>{{friend.login}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </main>
+
+</div>
+
+

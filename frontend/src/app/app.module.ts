@@ -42,6 +42,8 @@ import {InviteNotificationComponent} from './notifications/invite-notification/i
 import {NotificationContainerComponent} from './notifications/notification-container/notification-container.component';
 import {NotificationService} from "./_services/notification.service";
 import {FriendRequestNotificationComponent} from './notifications/friend-request-notification/friend-request-notification.component';
+import {FriendsComponent} from "./friends/friends.component";
+import {FriendsService} from "./_services/friends.service";
 
 @NgModule({
   imports: [
@@ -81,7 +83,8 @@ import {FriendRequestNotificationComponent} from './notifications/friend-request
     NotificationsHostDirective,
     InviteNotificationComponent,
     NotificationContainerComponent,
-    FriendRequestNotificationComponent
+    FriendRequestNotificationComponent,
+    FriendsComponent
   ],
   providers: [
     AuthGuard,
@@ -94,7 +97,8 @@ import {FriendRequestNotificationComponent} from './notifications/friend-request
     NavbarService,
     WishListService,
     ProfileService,
-    NotificationService
+    NotificationService,
+    FriendsService
     // provider used to create fake backend
   ],
   bootstrap: [AppComponent]

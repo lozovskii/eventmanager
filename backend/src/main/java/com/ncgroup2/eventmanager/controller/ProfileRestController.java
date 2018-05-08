@@ -96,29 +96,6 @@ public class ProfileRestController {
         return "/profile/status";
     }
 
-
-    @GetMapping(value = "edit", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Customer> editGet(@RequestParam String login) {
-        if (!login.equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
-            Customer customer = customerService.getByLogin(login);
-
-            return new ResponseEntity<>(customer, HttpStatus.OK);
-        }
-    }
-
-    @PostMapping(value = "edit", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Customer> editPost(@RequestBody Customer customer) {
-        if (customer == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
-            customerService.edit(customer);
-
-            return new ResponseEntity<>(customer, HttpStatus.OK);
-        }
-    }
-
     @GetMapping(value = "search", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<Customer>> search(@RequestParam String search) {
         List<Customer> customers = customerService.search(search);
@@ -128,13 +105,8 @@ public class ProfileRestController {
 
     @GetMapping(value = "friends", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<Customer>> friends(@RequestParam String login) {
-        if (!login.equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
-            List<Customer> friends = customerService.getFriends(login);
-
-            return new ResponseEntity<>(friends, HttpStatus.OK);
-        }
+        List<Customer> friends = customerService.getFriends(login);
+        return new ResponseEntity<>(friends, HttpStatus.OK);
     }
 
     @GetMapping(value = "delete", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

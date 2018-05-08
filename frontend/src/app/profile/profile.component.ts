@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from "../_services";
 import {User} from "../_models";
-import {Router} from "@angular/router";
+import {ProfileService} from "../_services/profile.service";
+import {AlertService} from "../_services/alert.service";
 
 @Component({
   selector: 'app-profile',
@@ -11,8 +12,8 @@ import {Router} from "@angular/router";
 export class ProfileComponent implements OnInit {
   currentUser: User;
 
-  constructor(private userService: UserService,
-              private router: Router) {
+  constructor(private profileService: ProfileService,
+              private userService: UserService) {
     let login = JSON.parse(localStorage.getItem('currentUser')).login;
     this.userService.getByLogin(login).subscribe(
       user => {
@@ -26,5 +27,4 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
   }
-
 }
