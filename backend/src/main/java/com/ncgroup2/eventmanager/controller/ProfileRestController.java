@@ -8,8 +8,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -37,6 +43,27 @@ public class ProfileRestController {
             return new ResponseEntity<>(customer, HttpStatus.OK);
         }
     }
+
+//    @PostMapping(value = "update", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    public ResponseEntity update(@RequestBody Customer customer) {
+//
+//        //If you use POST, it's work
+//
+//        return new ResponseEntity(HttpStatus.OK);
+//
+//    }
+
+    @RequestMapping(value = "update", method = RequestMethod.PUT)
+    @ResponseStatus( HttpStatus.OK )
+    public void accept(@RequestBody Customer customer) {
+
+        customerService.edit(customer);
+
+    }
+
+
+
+
 
     @GetMapping(value = "edit", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Customer> editGet(@RequestParam String login) {

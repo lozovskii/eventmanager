@@ -2,12 +2,12 @@ import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {User} from "../_models";
 import {Observable} from "rxjs/Observable";
-
-
-const url = '/api/profile';
+import {AuthenticationService} from "./authentication.service";
 
 @Injectable()
 export class ProfileService {
+
+  private url = '/api/profile';
 
   constructor(private http: HttpClient) {
   }
@@ -30,7 +30,10 @@ export class ProfileService {
   // }
 
   update(customer: User) {
-    return this.http.put(`${url}/${customer.id}`, customer);
+    // work with Post
+    // return this.http.post(`${this.url}/update`, customer,{headers: AuthenticationService.getAuthHeader()});
+
+    return this.http.put(`${this.url}/update`, customer,{headers: AuthenticationService.getAuthHeader()});
   }
 
 }

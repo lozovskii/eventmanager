@@ -25,7 +25,7 @@ export class EditProfileComponent implements OnInit {
               private alertService: AlertService,
               private router: Router,
   ) {
-    let login = JSON.parse(localStorage.getItem('currentUser')).login;
+    let login = JSON.parse(sessionStorage.getItem('currentUser')).login;
     this.userService.getByLogin(login).subscribe(
       user => {
         console.log(user.name);
@@ -56,11 +56,10 @@ export class EditProfileComponent implements OnInit {
   }
 
   tok(): string {
-    return  this.token = JSON.parse(localStorage.getItem('currentUser')).token
+    return  this.token = JSON.parse(sessionStorage.getItem('currentUser')).token
   }
 
   updateUser(user: User): void {
-    console.log(user)
     this.tok();
     this.profileService.update(user)
       .subscribe(() => {
@@ -68,7 +67,7 @@ export class EditProfileComponent implements OnInit {
           setTimeout(() => this.router.navigate(["/profile"]), 5000);
         },
         (error) => {
-          this.alertService.error(error.error);
+          this.alertService.error(error.message);
         })
   }
 
