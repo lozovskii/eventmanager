@@ -25,13 +25,13 @@ export class EventComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       let eventId = params['id'];
       this.eventService.getEventById(eventId)
-        .subscribe((event) => {
-          this.eventDTO = new EventDTOModel();
-          this.eventDTO.event = event;
+        .subscribe((eventDTO) => {
+          //this.eventDTO = new EventDTOModel();
+          this.eventDTO = eventDTO;
 
           let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
           this.isCreator = currentUserId == this.eventDTO.event.creatorId;
-          console.log(this.eventDTO.event.creatorId);
+          console.log('eventId = ' + this.eventDTO.event.id);
           this.eventService.isParticipant(currentUserId,this.eventDTO.event.id).subscribe(()=>{this.isParticipant=true}, ()=>{this.isParticipant=false})
         });
     });
