@@ -3,6 +3,7 @@ import {HttpClient, HttpEventType} from "@angular/common/http";
 import {UserService} from "../_services";
 import {User} from "../_models";
 import {Router} from "@angular/router";
+import {AuthenticationService} from "../_services/authentication.service";
 
 @Component({
   selector: 'app-upload-img',
@@ -54,7 +55,8 @@ export class UploadImgComponent implements OnInit {
     fd.append('image', this.selectedFile, this.selectedFile.name);
     this.http.post('/profile/edit/upload', fd, {
       reportProgress: true,
-      observe: 'events'
+      observe: 'events',
+      headers: AuthenticationService.getAuthHeader()
     })
       .subscribe(event => {
         if (event.type === HttpEventType.UploadProgress) {
