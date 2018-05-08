@@ -5,8 +5,9 @@ import {HttpClient} from "@angular/common/http";
 import {UserService} from "./user.service";
 import {AuthenticationService} from "./authentication.service";
 import {InviteNotification} from "../_models/dto/invite-notification";
-import {Observable} from 'rxjs/Observable';
+import { Observable,  of} from 'rxjs';
 import 'rxjs/add/observable/of';
+
 import {FriendRequestNotificationComponent} from "../notifications/friend-request-notification/friend-request-notification.component";
 
 @Injectable()
