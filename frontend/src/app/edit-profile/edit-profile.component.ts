@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {User} from "../_models";
 
+
 @Component({
   selector: 'app-edit-profile',
   templateUrl: './edit-profile.component.html',
@@ -17,7 +18,6 @@ export class EditProfileComponent implements OnInit {
   lastName = ''
   phone = ''
   login = ''
-  token = ''
 
 
   constructor(private profileService: ProfileService,
@@ -37,7 +37,6 @@ export class EditProfileComponent implements OnInit {
         this.lastName = this.currentUser.secondName;
         this.phone = this.currentUser.phone;
         this.login = this.currentUser.login;
-        this.token = this.tok();
         console.log(this.currentUser.id);
       }
     );
@@ -50,21 +49,15 @@ export class EditProfileComponent implements OnInit {
       lastName: new FormControl(),
       phone: new FormControl(),
       login: new FormControl(),
-      token: new FormControl(),
     });
 
   }
 
-  tok(): string {
-    return  this.token = JSON.parse(sessionStorage.getItem('currentUser')).token
-  }
-
   updateUser(user: User): void {
-    this.tok();
     this.profileService.update(user)
       .subscribe(() => {
           this.alertService.success('User updated!', true);
-          setTimeout(() => this.router.navigate(["/profile"]), 5000);
+          setTimeout(() => this.router.navigate(["/profile"]), 500);
         },
         (error) => {
           this.alertService.error(error.message);

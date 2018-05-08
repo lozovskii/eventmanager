@@ -56,20 +56,24 @@ public class ProfileRestController {
     @RequestMapping(value = "update", method = RequestMethod.PUT)
     @ResponseStatus( HttpStatus.OK )
     public void accept(@RequestBody Customer customer) {
-
+        System.out.println("Controler" + customer.toString());
         customerService.edit(customer);
 
     }
 
 
-    @GetMapping(value = "edit/upload", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public String avatarUploadGet(Model model) {
-        Customer customer = customerService
-                .getByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
-        model.addAttribute("customer", customer);
-
-        return "/profile/upload";
-    }
+//    @RequestMapping(value = "edit/upload", method = RequestMethod.PUT)
+//    @ResponseStatus( HttpStatus.OK )
+//    public ResponseEntity avatarUpload(MultipartFile file) {
+//        if (file.isEmpty()) {
+//                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+//            }
+//
+//            customer.setAvatar(encodeToString(file.getBytes()));
+//            customerService.uploadAvatar(customer);
+//
+//        return ResponseEntity(HttpStatus.OK);
+//    }
 
     @PostMapping(value = "edit/upload", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public String avatarUploadPost(@RequestParam("file") MultipartFile file, @ModelAttribute("customer") Customer customer,

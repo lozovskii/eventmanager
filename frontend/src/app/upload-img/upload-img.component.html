@@ -1,30 +1,48 @@
-<div>
-  <label>Select an image</label>
+<!--<div>-->
+  <!--<label>Select an image</label>-->
 
-  <h6>You can download files with the extension: png, jpg, jpeg.</h6>
+  <!--<h6>You can download files with the extension: png, jpg, jpeg.</h6>-->
 
-  <form>
-    <input
-      style="display: none"
-      type="file"
-      (change)="onFileSelected($event)"
-      #fileInput>
-    <button type="button" (click)="fileInput.click()" >Pick File</button>
-    <button type="button" (click)="onUpload()">Upload</button>
-    <br/><br/>
-  </form>
-  <!--<app-status-upload></app-status-upload>-->
-  <br>
-  <!--<a [routerLink]="['/edit-profile']" class="navbar-brand">Upload Avatar</a>-->
-  <!---->
-  <!--<a style="color: blue" th:href="@{/profile/edit}">Edit</a>-->
-  <!--<a style="color: blue" th:href="@{/profile/friends}">Friends</a>-->
-  <!--<a style="color: blue" th:href="@{/profile/notifications}">Notifications</a>-->
-  <!--<button class="btn btn-primary" (click)="addCar()" >Add car</button>-->
-  <!--<p>{{addCarStatus}}</p>-->
-  <!--<input type="text" class="form-control" (keyup.enter) = "onKeyUp($event)" >-->
-  <!--<p>{{inputText}}</p>-->
+  <!--<form>-->
+    <!--<input-->
+      <!--style="display: none"-->
+      <!--type="file"-->
+      <!--(change)="onFileSelected($event)"-->
+      <!--#fileInput>-->
+    <!--<button type="button" (click)="fileInput.click()" >Pick File</button>-->
+    <!--<button type="button" (click)="onUpload()">Upload</button>-->
+    <!--<br/><br/>-->
+  <!--</form>-->
+  <!--&lt;!&ndash;<app-status-upload></app-status-upload>&ndash;&gt;-->
+  <!--<br>-->
+  <!--&lt;!&ndash;<a [routerLink]="['/edit-profile']" class="navbar-brand">Upload Avatar</a>&ndash;&gt;-->
+  <!--&lt;!&ndash;&ndash;&gt;-->
+  <!--&lt;!&ndash;<a style="color: blue" th:href="@{/profile/edit}">Edit</a>&ndash;&gt;-->
+  <!--&lt;!&ndash;<a style="color: blue" th:href="@{/profile/friends}">Friends</a>&ndash;&gt;-->
+  <!--&lt;!&ndash;<a style="color: blue" th:href="@{/profile/notifications}">Notifications</a>&ndash;&gt;-->
+  <!--&lt;!&ndash;<button class="btn btn-primary" (click)="addCar()" >Add car</button>&ndash;&gt;-->
+  <!--&lt;!&ndash;<p>{{addCarStatus}}</p>&ndash;&gt;-->
+  <!--&lt;!&ndash;<input type="text" class="form-control" (keyup.enter) = "onKeyUp($event)" >&ndash;&gt;-->
+  <!--&lt;!&ndash;<p>{{inputText}}</p>&ndash;&gt;-->
 
-  <!--<input type="text" class="form-control" [(ngModel)]="">-->
-  <!--<p>{{inputText2}}</p>-->
+  <!--&lt;!&ndash;<input type="text" class="form-control" [(ngModel)]="">&ndash;&gt;-->
+  <!--&lt;!&ndash;<p>{{inputText2}}</p>&ndash;&gt;-->
+<!--</div>-->
+
+
+<h1>Select avatar </h1>
+
+<div class="form-group">
+  <label>Image</label>
+  <input type="file" class="form-control" accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+            text/plain, application/pdf, image/*" (change)="changeListener($event)">
 </div>
+
+<img *ngIf="base64Image" [src]="domSanitizer.bypassSecurityTrustUrl(base64Image)" height="300" width="250" />
+
+<form method="post">
+  <div class="form-group">
+    <button class="btn btn-primary" (click)="updateUser(currentUser)" >Save</button>
+    <!--<a [routerLink]="['/content']" class="btn btn-link">Cancel</a>-->
+  </div>
+</form>

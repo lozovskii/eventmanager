@@ -30,6 +30,7 @@ export class ProfileService {
   // }
 
   update(customer: User) {
+    console.log('Service updata' +JSON.stringify(customer))
     // work with Post
     // return this.http.post(`${this.url}/update`, customer,{headers: AuthenticationService.getAuthHeader()});
 
