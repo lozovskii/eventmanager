@@ -62,7 +62,39 @@ public class ProfileRestController {
     }
 
 
+    @GetMapping(value = "edit/upload", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public String avatarUploadGet(Model model) {
+        Customer customer = customerService
+                .getByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("customer", customer);
 
+        return "/profile/upload";
+    }
+
+    @PostMapping(value = "edit/upload", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public String avatarUploadPost(@RequestParam("file") MultipartFile file, @ModelAttribute("customer") Customer customer,
+                                   RedirectAttributes attributes) {
+        if (file.isEmpty()) {
+            attributes.addFlashAttribute("message", "Please select a file");
+            return "redirect:/profile/edit/upload/status";
+        }
+
+        try {
+            customer.setAvatar(Base64Utils.encodeToString(file.getBytes()));
+            customerService.uploadAvatar(customer);
+            attributes.addFlashAttribute("message", "Successfully!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "redirect:/profile/edit/upload/status";
+    }
+
+    @GetMapping(value = "edit/upload/status", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public String uploadStatus(Principal principal, Model model) {
+        model.addAttribute("name", principal.getName());
+        return "/profile/status";
+    }
 
 
     @GetMapping(value = "edit", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
