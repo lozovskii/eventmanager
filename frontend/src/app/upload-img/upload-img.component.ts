@@ -67,8 +67,6 @@ export class UploadImgComponent implements OnInit {
       });
   }
 
-  return
-
   // upload(event2){
   //   this.file = event2.target.file
   // }
