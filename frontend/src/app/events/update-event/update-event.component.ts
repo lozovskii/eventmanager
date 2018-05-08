@@ -14,9 +14,6 @@ export class UpdateEventComponent implements OnInit {
   eventDTO: EventDTOModel;
   canEdit: boolean;
   currentEventId: string;
-  // additionEventForm: FormGroup = this.initAdditionEventForm();
-
-  // eventForm: FormGroup = this.initEventForm();
   eventForm: FormGroup = this.initEventForm();
   additionEventForm: FormGroup = this.initAdditionEventForm();
 

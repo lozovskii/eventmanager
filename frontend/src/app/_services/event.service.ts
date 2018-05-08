@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
 import {Event} from '../_models/event';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {UserService} from "./user.service";
 import {EventDTOModel} from "../_models/dto/eventDTOModel";
 import {AuthenticationService} from "./authentication.service";

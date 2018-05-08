@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {User} from "../_models";
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs";
 import {AuthenticationService} from "./authentication.service";
 
 @Injectable()
@@ -30,6 +30,7 @@ export class ProfileService {
   // }
 
   update(customer: User) {
+    console.log('Service updata' +JSON.stringify(customer))
     // work with Post
     // return this.http.post(`${this.url}/update`, customer,{headers: AuthenticationService.getAuthHeader()});
 

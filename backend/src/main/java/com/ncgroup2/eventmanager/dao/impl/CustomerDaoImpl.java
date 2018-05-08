@@ -175,7 +175,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
     @Override
     public void edit(Customer customer) {
-        Object[] params = new Object[]{customer.getName(), customer.getSecondName(), customer.getPhone(),
+        Object[] params = new Object[]{customer.getName(), customer.getSecondName(), customer.getPhone(), customer.getAvatar(),
                 SecurityContextHolder.getContext().getAuthentication().getName()};
 
         this.getJdbcTemplate().update(editCustomer, params);
