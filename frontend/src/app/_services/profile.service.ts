@@ -37,12 +37,14 @@ export class ProfileService {
   }
 
 
-  // update(customer: User): Observable<User> {
-  //   return this.http.put('/profile/edit', customer);
-  // }
+  search(request): Observable<User[]> {
+    console.log('Profile service: '+ request);
+    return this.http.get<User[]>(
+      `${this.url}/search?request=${request}`,
+      {headers: AuthenticationService.getAuthHeader()});
+  }
 
   update(customer: User) {
-    console.log('Service updata' +JSON.stringify(customer))
     // work with Post
     // return this.http.post(`${this.url}/update`, customer,{headers: AuthenticationService.getAuthHeader()});
 

@@ -1,4 +1,4 @@
-export const ALLOWED_FORMATS: string[] = [
+export const ALLOWED_IMG_FORMATS: string[] = [
   'png',
   'jpeg',
   'jpg'
