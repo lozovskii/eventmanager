@@ -14,11 +14,11 @@ public interface ItemService {
 
     void createItem(Item item);
 
-    void createItems(List<Item> items);
+    void createItems(Collection<Item> items);
 
     void updateItemByField(String itemId, String fieldName, String fieldValue);
 
-    void removeTags(List<ItemTagDto> trash);
+    void removeTags(Collection<ItemTagDto> trash);
 
-    void addTags(List<ItemTagDto> tags, String itemId);
+    void addTags(Collection<ItemTagDto> tags, String itemId);
 }

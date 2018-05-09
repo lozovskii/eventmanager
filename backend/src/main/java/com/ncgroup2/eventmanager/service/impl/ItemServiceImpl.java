@@ -31,9 +31,9 @@ public class ItemServiceImpl implements ItemService {
         itemDao.create(item);
     }
 
-    public void createItems(List<Item> items){
+    public void createItems(Collection<Item> items){
 
-        itemDao.createItems(items);
+        itemDao.createItems((List<Item>) items);
     }
 
     public void updateItemByField(String itemId, String fieldName, String fieldValue){
@@ -41,14 +41,14 @@ public class ItemServiceImpl implements ItemService {
         itemDao.updateField(itemId, fieldName, fieldValue);
     }
 
-    public void removeTags(List<ItemTagDto> trash){
+    public void removeTags(Collection<ItemTagDto> trash){
 
-        itemDao.deleteTags(trash);
+        itemDao.deleteTags((List<ItemTagDto>)trash);
     }
 
-    public void addTags(List<ItemTagDto> tags, String itemId){
+    public void addTags(Collection<ItemTagDto> tags, String itemId){
 
-        itemDao.addTags(tags, itemId);
+        itemDao.addTags((List<ItemTagDto>)tags, itemId);
     }
 
 }

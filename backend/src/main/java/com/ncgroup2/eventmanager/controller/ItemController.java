@@ -1,14 +1,12 @@
 package com.ncgroup2.eventmanager.controller;
 
+import com.ncgroup2.eventmanager.dto.ItemWishListDto;
 import com.ncgroup2.eventmanager.entity.Item;
 import com.ncgroup2.eventmanager.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
@@ -21,6 +19,18 @@ public class ItemController {
     @Autowired
     public ItemController(ItemService itemService){
         this.itemService = itemService;
+    }
+
+    @PostMapping(value = "/batch-create")
+    public void createItems(@RequestBody Collection<Item> item) {
+
+        itemService.createItems(item);
+    }
+
+    @PostMapping(value = "/create")
+    public void createItem(@RequestBody Item item) {
+
+        itemService.createItem(item);
     }
 
     @GetMapping(value = "/created")

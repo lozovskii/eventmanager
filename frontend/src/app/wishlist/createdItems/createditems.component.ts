@@ -11,7 +11,6 @@ import { Location } from '@angular/common';
 })
 export class CreatedItemsComponent implements OnInit {
   items : Item[];
-  hasChanges: boolean = false;
 
   constructor(private wishListService: WishListService,
               private alertService : AlertService,

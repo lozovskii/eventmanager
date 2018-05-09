@@ -22,12 +22,13 @@
         <td>{{item.name}}</td>
         <td>{{item.description}}</td>
         <td>
-          <img src="{{item.image}}">
+          <!--<img src="{{item.image}}">-->
+          <a href="{{item.image}}">image link</a>
         </td>
         <td>
           <a *ngIf="item.link" href="{{item.link}}"> link </a>
         </td>
-        <td>{{item.dueDate}}</td>
+        <td *ngIf="item.dueDate">{{item.dueDate}}</td>
       </tr>
       </tbody>
     </table>
