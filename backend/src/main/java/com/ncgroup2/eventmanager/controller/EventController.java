@@ -1,7 +1,6 @@
 package com.ncgroup2.eventmanager.controller;
 
 import com.ncgroup2.eventmanager.dto.EventDTO;
-import com.ncgroup2.eventmanager.dto.InviteNotificationDTO;
 import com.ncgroup2.eventmanager.entity.Event;
 import com.ncgroup2.eventmanager.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -33,13 +31,19 @@ public class EventController {
         eventService.deleteEventById(eventId);
     }
 
+    @PutMapping("/update")
+    public void updateEvent(@RequestBody EventDTO eventDTO){
+        System.out.println("controller works!");
+        eventService.updateEvent(eventDTO);
+    }
+
     @GetMapping(value = "/public_and_friends")
     public List<Event> getAllPublic(@RequestParam String customerId) {
         return eventService.getAllPublicAndFriendsEvents(customerId);
     }
 
     @GetMapping("/my{custId}")
-        public ResponseEntity<List<Event>> getEventsByCustId(@PathVariable String custId){
+    public ResponseEntity<List<Event>> getEventsByCustId(@PathVariable String custId){
         List<Event> eventsByCustId = eventService.getEventsByCustId(custId);
         return new ResponseEntity<>(eventsByCustId, HttpStatus.OK);
     }
@@ -62,10 +66,9 @@ public class EventController {
         return new ResponseEntity<>(invitesByCustId, HttpStatus.OK);
     }
 
-
-    @GetMapping()
-    public ResponseEntity<Event> getEventsById(@RequestParam String eventId){
-        Event eventById = eventService.getEventById(eventId);
+    @GetMapping("")
+    public ResponseEntity<EventDTO> getEventsById(@RequestParam String eventId){
+        EventDTO eventById = eventService.getEventById(eventId);
         return new ResponseEntity<>(eventById, HttpStatus.OK);
     }
 
@@ -79,7 +82,7 @@ public class EventController {
 
     @GetMapping("/addParticipant")
     public ResponseEntity addParticipant(@RequestParam String customerId,@RequestParam String eventId) {
-        eventService.addParticipant(customerId, eventId, Instant.now(), 2);
+        eventService.addParticipant(customerId, eventId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -88,12 +91,4 @@ public class EventController {
         eventService.removeParticipant(customerId, eventId);
         return new ResponseEntity(HttpStatus.OK);
     }
-
-    @GetMapping("/getInviteNotifications")
-    public ResponseEntity<List<InviteNotificationDTO>> getInviteNotifications(@RequestParam String customerId) {
-        List<InviteNotificationDTO> notifications = eventService.getInviteNotifications(customerId);
-        notifications.forEach(System.out::println);
-        return new ResponseEntity<>(notifications, HttpStatus.OK);
-    }
 }
-
