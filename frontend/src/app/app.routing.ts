@@ -17,7 +17,7 @@ import {EventComponent} from "./events/event/event.component";
 import {UpdateEventComponent} from "./events/update-event/update-event.component";
 import {FolderListComponent} from "./folder-list/folder-list.component";
 import {WishListComponent} from "./wishlist/wishlist.component";
-import {EditProfileComponent} from "./edit-profile/edit-profile.component";
+import {EditProfileComponent} from "./profile/edit-profile/edit-profile.component";
 import {UploadImgComponent} from "./upload-img/upload-img.component";
 import {NotificationContainerComponent} from "./notifications/notification-container/notification-container.component";
 import {BookedItemsComponent} from "./wishlist/bookeditems/bookeditems.component";

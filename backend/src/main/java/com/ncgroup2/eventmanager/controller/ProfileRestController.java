@@ -8,14 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.ui.Model;
-import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.io.IOException;
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -55,10 +48,8 @@ public class ProfileRestController {
 
     @RequestMapping(value = "update", method = RequestMethod.PUT)
     @ResponseStatus( HttpStatus.OK )
-    public void accept(@RequestBody Customer customer) {
-        System.out.println("Controler" + customer.toString());
+    public void edit(@RequestBody Customer customer) {
         customerService.edit(customer);
-
     }
 
 
@@ -74,61 +65,63 @@ public class ProfileRestController {
 //
 //        return ResponseEntity(HttpStatus.OK);
 //    }
+//
+//    @PostMapping(value = "edit/upload", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    public String avatarUploadPost(@RequestParam("file") MultipartFile file, @ModelAttribute("customer") Customer customer,
+//                                   RedirectAttributes attributes) {
+//        if (file.isEmpty()) {
+//            attributes.addFlashAttribute("message", "Please select a file");
+//            return "redirect:/profile/edit/upload/status";
+//        }
+//
+//        try {
+//            customer.setAvatar(Base64Utils.encodeToString(file.getBytes()));
+//            customerService.uploadAvatar(customer);
+//            attributes.addFlashAttribute("message", "Successfully!");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return "redirect:/profile/edit/upload/status";
+//    }
+//
+//    @GetMapping(value = "edit/upload/status", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    public String uploadStatus(Principal principal, Model model) {
+//        model.addAttribute("name", principal.getName());
+//        return "/profile/status";
+//    }
 
-    @PostMapping(value = "edit/upload", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public String avatarUploadPost(@RequestParam("file") MultipartFile file, @ModelAttribute("customer") Customer customer,
-                                   RedirectAttributes attributes) {
-        if (file.isEmpty()) {
-            attributes.addFlashAttribute("message", "Please select a file");
-            return "redirect:/profile/edit/upload/status";
-        }
 
-        try {
-            customer.setAvatar(Base64Utils.encodeToString(file.getBytes()));
-            customerService.uploadAvatar(customer);
-            attributes.addFlashAttribute("message", "Successfully!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//    @GetMapping(value = "edit", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    public ResponseEntity<Customer> editGet(@RequestParam String login) {
+//        if (!login.equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        } else {
+//            Customer customer = customerService.getByLogin(login);
+//
+//            return new ResponseEntity<>(customer, HttpStatus.OK);
+//        }
+//    }
 
-        return "redirect:/profile/edit/upload/status";
-    }
-
-    @GetMapping(value = "edit/upload/status", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public String uploadStatus(Principal principal, Model model) {
-        model.addAttribute("name", principal.getName());
-        return "/profile/status";
-    }
-
-
-    @GetMapping(value = "edit", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Customer> editGet(@RequestParam String login) {
-        if (!login.equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
-            Customer customer = customerService.getByLogin(login);
-
-            return new ResponseEntity<>(customer, HttpStatus.OK);
-        }
-    }
-
-    @PostMapping(value = "edit", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Customer> editPost(@RequestBody Customer customer) {
-        if (customer == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
-            customerService.edit(customer);
-
-            return new ResponseEntity<>(customer, HttpStatus.OK);
-        }
-    }
+//    @PostMapping(value = "edit", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    public ResponseEntity<Customer> editPost(@RequestBody Customer customer) {
+//        if (customer == null) {
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        } else {
+//            customerService.edit(customer);
+//
+//            return new ResponseEntity<>(customer, HttpStatus.OK);
+//        }
+//    }
 
     @GetMapping(value = "search", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List<Customer>> search(@RequestParam String search) {
-        List<Customer> customers = customerService.search(search);
+    public ResponseEntity<List<Customer>> search(@RequestParam String request) {
+        System.out.println("Controler: " + request);
+        List<Customer> customers = customerService.search(request);
 
         return new ResponseEntity<>(customers, HttpStatus.OK);
     }
+
 
     @GetMapping(value = "friends", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<Customer>> friends(@RequestParam String login) {
@@ -187,7 +180,7 @@ public class ProfileRestController {
 
     @GetMapping(value = "notifications", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<Relationship>> getNotifications(@RequestParam String login) {
-        if (!login.equals("aliashchuk")) {
+        if (!login.equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
             List<Relationship> notifications = customerService.getNotifications(login);

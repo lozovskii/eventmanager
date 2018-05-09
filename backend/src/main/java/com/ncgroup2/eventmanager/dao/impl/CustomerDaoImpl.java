@@ -188,7 +188,11 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
             String[] subStr = search.toLowerCase().split(" ");
 
-            if (subStr.length == 2) {
+            if (subStr.length == 1) {
+                String query = "SELECT * FROM \"Customer\" WHERE LOWER(login) LIKE '" + subStr[0] + "%' " +
+                        "AND login != '" + SecurityContextHolder.getContext().getAuthentication().getName() + "'";
+                return this.getJdbcTemplate().query(query, new CustomerMapper());
+            } else if (subStr.length == 2) {
                 String query1 = "SELECT * FROM \"Customer\" WHERE LOWER(name) LIKE '"
                         + subStr[0] + "%' AND LOWER(second_name) LIKE '" + subStr[1] + "%' AND login != '" +
                         SecurityContextHolder.getContext().getAuthentication().getName() + "'";
@@ -220,8 +224,8 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
     @Override
     public void delete(String login) {
-        Object[] params1 = new Object[]{"akybenko", login};
-        Object[] params2 = new Object[]{login, "akybenko"};
+        Object[] params1 = new Object[]{SecurityContextHolder.getContext().getAuthentication().getName(), login};
+        Object[] params2 = new Object[]{login, SecurityContextHolder.getContext().getAuthentication().getName()};
 
         this.getJdbcTemplate().update(deleteFriend, params1);
         this.getJdbcTemplate().update(deleteFriend, params2);

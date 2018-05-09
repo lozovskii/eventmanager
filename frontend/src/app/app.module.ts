@@ -34,7 +34,7 @@ import {FolderListComponent} from './folder-list/folder-list.component';
 import {WishListComponent} from './wishlist/wishlist.component';
 import {WishListService} from "./_services/wishlist.service";
 import {BookedItemsComponent} from "./wishlist/bookeditems/bookeditems.component";
-import {EditProfileComponent} from './edit-profile/edit-profile.component';
+import {EditProfileComponent} from './profile/edit-profile/edit-profile.component';
 import {ProfileService} from "./_services/profile.service";
 import {UploadImgComponent} from './upload-img/upload-img.component';
 import {NotificationsHostDirective} from './notifications/notifications-host.directive';
@@ -45,7 +45,6 @@ import {FriendRequestNotificationComponent} from './notifications/friend-request
 import {CreateItemComponent} from "./wishlist/create-item/create-item.component";
 import {CreatedItemsComponent} from "./wishlist/createdItems/createditems.component";
 import {FriendComponent} from "./profile/friend/friend.component";
-import { SortingItemsPipe } from './wishlist/sorting-items/sorting-items.pipe';
 
 @NgModule({
   imports: [
@@ -90,6 +89,7 @@ import { SortingItemsPipe } from './wishlist/sorting-items/sorting-items.pipe';
     CreatedItemsComponent,
     FriendRequestNotificationComponent,
     FriendComponent,
+    SearchUserComponent,
     SortingItemsPipe
   ],
   providers: [
