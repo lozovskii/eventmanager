@@ -5,7 +5,7 @@ import {HttpClient} from "@angular/common/http";
 import {UserService} from "./user.service";
 import {AuthenticationService} from "./authentication.service";
 import {InviteNotification} from "../_models/dto/invite-notification";
-import { Observable,  of} from 'rxjs';
+import {Observable} from 'rxjs';
 import 'rxjs/add/observable/of';
 
 import {FriendRequestNotificationComponent} from "../notifications/friend-request-notification/friend-request-notification.component";
@@ -22,6 +22,7 @@ export class NotificationService {
     let customerId = this.userService.getCurrentId();
     let url = `/api/events/getInviteNotifications?customerId=${customerId}`;
     return this.http.get<InviteNotification[]>(url, {headers: AuthenticationService.getAuthHeader()}).map((notif) => {
+      console.log(notif);
       let items: NotificationItem[] = [];
       for (let i of notif) {
         items.push(new NotificationItem(InviteNotificationComponent, i));
