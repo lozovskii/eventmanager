@@ -224,8 +224,8 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
     @Override
     public void delete(String login) {
-        Object[] params1 = new Object[]{"akybenko", login};
-        Object[] params2 = new Object[]{login, "akybenko"};
+        Object[] params1 = new Object[]{SecurityContextHolder.getContext().getAuthentication().getName(), login};
+        Object[] params2 = new Object[]{login, SecurityContextHolder.getContext().getAuthentication().getName()};
 
         this.getJdbcTemplate().update(deleteFriend, params1);
         this.getJdbcTemplate().update(deleteFriend, params2);

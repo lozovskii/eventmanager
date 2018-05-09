@@ -50,4 +50,16 @@ export class ProfileService {
 
     return this.http.put(`${this.url}/update`, customer,{headers: AuthenticationService.getAuthHeader()});
   }
+
+  acceptFriend(token) {
+    return this.http.get(
+      `${this.url}/accept?token=${token}`,
+      {headers: AuthenticationService.getAuthHeader()});
+  }
+
+  rejectFriend(token) {
+    return this.http.get(
+      `${this.url}/reject?token=${token}`,
+      {headers: AuthenticationService.getAuthHeader()});
+  }
 }

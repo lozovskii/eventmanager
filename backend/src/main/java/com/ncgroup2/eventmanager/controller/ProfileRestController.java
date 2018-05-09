@@ -8,14 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.ui.Model;
-import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.io.IOException;
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -187,7 +180,7 @@ public class ProfileRestController {
 
     @GetMapping(value = "notifications", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<Relationship>> getNotifications(@RequestParam String login) {
-        if (!login.equals("aliashchuk")) {
+        if (!login.equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
             List<Relationship> notifications = customerService.getNotifications(login);
