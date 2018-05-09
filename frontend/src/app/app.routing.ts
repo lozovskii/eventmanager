@@ -1,10 +1,10 @@
 ///<reference path="landing-page/landing-page.component.ts"/>
-import { Routes, RouterModule } from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 
-import { HomeComponent } from './home/index';
-import { LoginComponent } from './login/index';
-import { RegisterComponent } from './register/index';
-import { AuthGuard } from './_guards/index';
+import {HomeComponent} from './home/index';
+import {LoginComponent} from './login/index';
+import {RegisterComponent} from './register/index';
+import {AuthGuard} from './_guards/index';
 import {LandingPageComponent} from "./landing-page/landing-page.component";
 import {CreateEventComponent} from "./events/create-event/create-event.component";
 import {EventlistComponent} from "./events/eventlist/eventlist.component";
@@ -30,24 +30,24 @@ const appRoutes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'create-event', component: CreateEventComponent},
-  { path: 'event/:id', component: EventComponent},
-  { path: 'update-event/:id', component: UpdateEventComponent},
-  { path: 'eventlist/:type', component: EventlistComponent},
+  { path: 'create-event', component: CreateEventComponent, canActivate: [AuthGuard]},
+  { path: 'event/:id', component: EventComponent, canActivate: [AuthGuard]},
+  { path: 'update-event/:id', component: UpdateEventComponent, canActivate: [AuthGuard]},
+  { path: 'eventlist/:type', component: EventlistComponent, canActivate: [AuthGuard]},
   { path: 'registration-confirm', component: RegistrationConfirmComponent},
   { path: 'send-reset-link', component: SendLinkComponent},
   { path: 'reset-password', component: ResetComponent},
-  { path: 'profile', component: ProfileComponent},
-  { path: 'vnavbar', component: VnavbarComponent},
-  { path: 'folder-list', component: FolderListComponent},
-  { path: 'wishlist/:id', component: WishListComponent},
-  { path: 'edit-profile', component: EditProfileComponent},
-  { path: 'upload-img', component: UploadImgComponent},
-  { path: 'notifications', component: NotificationContainerComponent},
-  { path: 'profile/friends', component: FriendComponent},
-  { path: 'booked-items', component: BookedItemsComponent},
-  { path: 'add-item', component: CreateItemComponent},
-  { path: 'created-items', component: CreatedItemsComponent},
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
+  { path: 'vnavbar', component: VnavbarComponent, canActivate: [AuthGuard]},
+  { path: 'folder-list', component: FolderListComponent, canActivate: [AuthGuard]},
+  { path: 'wishlist/:id', component: WishListComponent, canActivate: [AuthGuard]},
+  { path: 'edit-profile', component: EditProfileComponent, canActivate: [AuthGuard]},
+  { path: 'upload-img', component: UploadImgComponent, canActivate: [AuthGuard]},
+  { path: 'notifications', component: NotificationContainerComponent, canActivate: [AuthGuard]},
+  { path: 'profile/friends', component: FriendComponent, canActivate: [AuthGuard]},
+  { path: 'booked-items', component: BookedItemsComponent, canActivate: [AuthGuard]},
+  { path: 'add-item', component: CreateItemComponent, canActivate: [AuthGuard]},
+  { path: 'created-items', component: CreatedItemsComponent, canActivate: [AuthGuard]},
 
   // otherwise redirect to home
  { path: '**', redirectTo: '' }
