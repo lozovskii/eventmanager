@@ -6,11 +6,16 @@
   <main role="main" class="col-md-6">
     <h2>Create Item</h2>
     <br>
-    <form [formGroup]="itemForm" (ngSubmit)="createItem(itemForm.value)">
+    <form [formGroup]="mainForm" (ngSubmit)="createItem(itemForm.value)">
 
+      <form [formGroup]="itemForm">
       <div class="form-group">
         <label for="name">Name</label>
         <input formControlName="name" id="name" type="text" class="form-control" name="name" required/>
+        <small class="text-muted">
+          Must be 3-20 characters long.
+        </small>
+
         <div *ngIf="name.invalid && (name.dirty || name.touched)"
              class="alert alert-danger">
 
@@ -28,14 +33,17 @@
 
       <div class="form-group">
         <label>Description</label>
-        <!--<input formControlName="description" id="description" type="text" class="form-control" name="description" />-->
         <editor [formControlName]='["description"]'
-                apiKey="h4g5a6vds8edp6kti3ahmikjin0r9usoqh99fs5l8xymelf5" [init]="{plugins: 'link'}"></editor>
+                apiKey="h4g5a6vds8edp6kti3ahmikjin0r9usoqh99fs5l8xymelf5" [init]="{plugins: 'link'}">
+        </editor>
+        <small id="passwordHelpInline" class="text-muted">
+          Must be less than 1024 characters long.
+        </small>
         <div *ngIf="description.invalid && (description.dirty || description.touched)"
              class="alert alert-danger">
-              <div *ngIf="description?.errors?.maxlength">
-          Description must be less than 1024 characters long.
-        </div>
+          <div *ngIf="description?.errors?.maxlength">
+            Description must be less than 1024 characters long.
+          </div>
 
         </div>
       </div>
@@ -43,6 +51,10 @@
       <div class="form-group">
         <label for="link">Link</label>
         <input formControlName="link" id="link" type="text" class="form-control" name="link"/>
+        <small class="text-muted">
+          Must be 4-128 characters long.
+        </small>
+
         <div *ngIf="link.invalid && (link.dirty || link.touched)"
              class="alert alert-danger">
 
@@ -58,21 +70,75 @@
       <div class="form-group">
         <label for="dueDate">Due date</label>
         <input formControlName="dueDate" id="dueDate" type="date" class="form-control" name="dueDate" required/>
-
       </div>
+
+      </form>
+
+      <form [formGroup]="additionalForm">
+
+        <div class="form-group">
+          <label>Priority</label>
+          <select formControlName="priority" type="text" class="form-control">
+            <option value="3">Low</option>
+            <option value="2">Average</option>
+            <option value="1">High</option>
+          </select>
+        </div>
+
+        <button class="btn btn-outline-secondary" type="button"
+                data-toggle="collapse" data-target="#collapseExample"
+                aria-expanded="false" aria-controls="collapseExample">
+          Add image
+        </button>
+
+        <div class="collapse" id="collapseExample">
+          <h4>Upload from computer</h4>
+          <div class="card">
+            <input formControlName="image" type="file" class="form-control"
+                   accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+            text/plain, application/pdf, image/*" (change)="changeListener($event)">
+
+            <small class="text-muted">
+              Image must have an extension: png, jpg, jpeg
+            </small>
+            <small class="text-muted">
+              Max size image is 1 MB
+            </small>
+
+            <button class="btn" (click)="onUpload()">Upload!</button>
+          </div>
+
+          <h4>Upload by link</h4>
+          <div class="card">
+            <input type="url" formControlName="imageUrl" class="form-control">
+            <small class="text-muted">
+              Must be 4-128 characters long.
+            </small>
+
+            <div *ngIf="link.invalid && (link.dirty || link.touched)"
+                 class="alert alert-danger">
+
+              <div *ngIf="link?.errors?.minlength">
+                Link must be at least 4 characters long.
+              </div>
+              <div *ngIf="link?.errors?.maxlength">
+                Link must be less than 128 characters long.
+              </div>
+          </div>
+
+          </div>
+        </div>
+      </form>
+
+      <br>
 
       <div class="form-group">
-        <label for="priority">Priority</label>
-        <input formControlName="priority" id="priority" type="text" class="form-control" name="priority"/>
-
+        <button type="submit" [disabled]="itemForm.invalid"
+                class="btn btn-primary btn-lg">Create item
+        </button>
+        <button [routerLink]="['/home']" class="btn btn-link">Cancel</button>
       </div>
 
-
-      <div class="form-group">
-        <button type="submit" class="btn btn-primary">Add item</button>
-
-        <a [routerLink]="['/']" class="btn btn-link">Cancel</a>
-      </div>
     </form>
   </main>
 
