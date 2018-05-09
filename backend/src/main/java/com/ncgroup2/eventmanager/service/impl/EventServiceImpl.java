@@ -2,20 +2,16 @@ package com.ncgroup2.eventmanager.service.impl;
 
 import com.ncgroup2.eventmanager.dao.CustomerDao;
 import com.ncgroup2.eventmanager.dao.EventDao;
-import com.ncgroup2.eventmanager.dto.AdditionalEventModelDTO;
-import com.ncgroup2.eventmanager.dto.EventCountdownDTO;
-import com.ncgroup2.eventmanager.dto.EventDTO;
-import com.ncgroup2.eventmanager.dto.InviteNotificationDTO;
+import com.ncgroup2.eventmanager.dto.*;
 import com.ncgroup2.eventmanager.entity.Event;
 import com.ncgroup2.eventmanager.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -68,25 +64,20 @@ public class EventServiceImpl implements EventService {
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
             }
         }
-        List loginList = isCustomersExist(eventDTO.getAdditionEvent().getPeople());
+        List loginList = getExistingCustomers(eventDTO.getAdditionEvent().getPeople());
         createEventInvitations(loginList, eventId);
     }
 
-    @Override
-    public List isCustomersExist(List<String> login) {
-        List<String> verifiedCustomers = new ArrayList<>();
-        IntStream.range(0, login.size()).forEach(i -> {
-            boolean custStatus = customerDao.isCustomerExist(login.get(i));
-            if (custStatus) {
-                verifiedCustomers.add(login.get(i));
-            }
-        });
-        return verifiedCustomers;
+
+    private List<String> getExistingCustomers(List<String> logins) {
+        return logins.stream()
+                .filter(login -> customerDao.isCustomerExist(login))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public void createEventInvitations(List<String> login, UUID eventId) {
-        IntStream.range(0, login.size()).forEach(i -> eventDao.createEventInvitation(login.get(i), eventId));
+    public void createEventInvitations(List<String> logins, UUID eventId) {
+        logins.forEach(login -> eventDao.createEventInvitation(login, eventId));
     }
 
     @Override
@@ -110,10 +101,16 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void updateEvent(EventDTO eventDTO) {
+    public void updateEvent(UpdateEventDTO eventDTO) {
         Event event = eventDTO.getEvent();
-        String priority = eventDTO.getAdditionEvent().getPriority();
+        String priority = eventDTO.getPriority();
         eventDao.updateEvent(event, priority);
+
+        getExistingCustomers(eventDTO.getNewPeople()).
+                forEach(login -> eventDao.createEventInvitation(login,UUID.fromString(event.getId())));
+
+        eventDTO.getRemovedPeople().
+                forEach(login -> eventDao.removeParticipant(login, event.getId()));
     }
 
     @Override

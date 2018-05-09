@@ -2,6 +2,7 @@ package com.ncgroup2.eventmanager.controller;
 
 import com.ncgroup2.eventmanager.dto.EventDTO;
 import com.ncgroup2.eventmanager.dto.InviteNotificationDTO;
+import com.ncgroup2.eventmanager.dto.UpdateEventDTO;
 import com.ncgroup2.eventmanager.entity.Event;
 import com.ncgroup2.eventmanager.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class EventController {
     }
 
     @PutMapping("/update")
-    public void updateEvent(@RequestBody EventDTO eventDTO){
+    public void updateEvent(@RequestBody UpdateEventDTO eventDTO){
         System.out.println("controller works!");
         eventService.updateEvent(eventDTO);
     }
