@@ -64,10 +64,15 @@ export class UpdateEventComponent implements OnInit {
     } else if (eventDTO.event.endTime != null) {
       this.eventDTO.event.endTime = (eventDTO.event.endTime).slice(0, 10) + ' ' + (eventDTO.event.endTime).slice(11, 16);
     }
-    this.eventDTO.event.name = eventDTO.event.name;
-    this.eventDTO.event.description = eventDTO.event.description;
-    this.eventDTO.additionEvent.priority = eventDTO.additionEvent.priority;
-
+    if(eventDTO.event.name !=null) {
+      this.eventDTO.event.name = eventDTO.event.name;
+    }
+    if(eventDTO.event.description !=null) {
+      this.eventDTO.event.description = eventDTO.event.description;
+    }
+    if(eventDTO.additionEvent.priority !=null) {
+      this.eventDTO.additionEvent.priority = eventDTO.additionEvent.priority;
+    }
     console.log("before update > " + JSON.stringify(this.eventDTO));
     this.eventService.updateEvent(this.eventDTO)
       .subscribe(() => {
