@@ -13,7 +13,7 @@ import {Router} from "@angular/router";
 })
 export class UploadImgComponent implements OnInit {
 
-  private base64Image: string;
+  public base64Image: string;
 
   currentUser: User;
 
