@@ -45,6 +45,8 @@ import {FriendRequestNotificationComponent} from './notifications/friend-request
 import {CreateItemComponent} from "./wishlist/create-item/create-item.component";
 import {CreatedItemsComponent} from "./wishlist/createdItems/createditems.component";
 import {FriendComponent} from "./profile/friend/friend.component";
+import {SortingItemsPipe} from "./wishlist/sorting-items/sorting-items.pipe";
+import {SearchUserComponent} from "./profile/search-user/search-user.component";
 
 @NgModule({
   imports: [
