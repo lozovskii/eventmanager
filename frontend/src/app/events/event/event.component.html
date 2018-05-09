@@ -1,0 +1,33 @@
+<div class="row">
+  <div class="col-md-3">
+    <app-vnavbar></app-vnavbar>
+  </div>
+
+  <main role="main" class="col-md-9">
+    <div *ngIf="isCreator">
+      <button class="btn btn-outline-info" [routerLink]="['/update-event',eventDTO.event.id]">Edit</button>
+      <button class="btn btn-outline-danger" (click)="delete()">Delete</button>
+    </div>
+
+    <div *ngIf="!isCreator">
+      <div *ngIf="isParticipant">
+        You've joined this event.
+        <button class="btn btn-outline-danger" (click)="removeParticipant()">Leave</button>
+      </div>
+      <div *ngIf="!isParticipant">
+        <button class="btn btn-outline-success" (click)="addParticipant()">Join event</button>
+      </div>
+    </div>
+
+    <div *ngIf="isParticipant || isCreator">
+        <button class="btn btn-outline-info" [routerLink]="['/wishlist',eventDTO.event.id]">Wish list</button>
+    </div>
+
+    <p> Name = {{eventDTO.event.name}}</p>
+    <p> Description: </p>
+    <div [innerHTML]="eventDTO.event.description"></div>
+    <p> Start time = {{eventDTO.event.startTime}}</p>
+    <p> End time = {{eventDTO.event.endTime}}</p>
+    <p> Privacy = {{eventDTO.event.visibility}}</p>
+  </main>
+</div>

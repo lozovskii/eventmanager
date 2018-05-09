@@ -1,0 +1,12 @@
+<div class="list-group-item">
+  <div>
+    {{data.inviter}} invited you to event <span [routerLink]="['/event',data.eventId]">'{{data.eventName}}'</span>
+  </div>
+  <div class="btn-group-sm">
+
+    <button (click)="acceptInvite()" class="btn btn-outline-success">Accept</button>
+
+    <button (click)="declineInvite()" class="btn btn-outline-danger">Decline</button>
+
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<div>
+  <label>Select an image</label>
+
+  <h6>You can download files with the extension: png, jpg, jpeg.</h6>
+
+  <form>
+    <input
+      style="display: none"
+      type="file"
+      (change)="onFileSelected($event)"
+      #fileInput>
+    <button type="button" (click)="fileInput.click()" >Pick File</button>
+    <button type="button" (click)="onUpload()">Upload</button>
+    <br/><br/>
+  </form>
+  <!--<app-status-upload></app-status-upload>-->
+  <br>
+  <!--<a [routerLink]="['/edit-profile']" class="navbar-brand">Upload Avatar</a>-->
+  <!---->
+  <!--<a style="color: blue" th:href="@{/profile/edit}">Edit</a>-->
+  <!--<a style="color: blue" th:href="@{/profile/friends}">Friends</a>-->
+  <!--<a style="color: blue" th:href="@{/profile/notifications}">Notifications</a>-->
+  <!--<button class="btn btn-primary" (click)="addCar()" >Add car</button>-->
+  <!--<p>{{addCarStatus}}</p>-->
+  <!--<input type="text" class="form-control" (keyup.enter) = "onKeyUp($event)" >-->
+  <!--<p>{{inputText}}</p>-->
+
+  <!--<input type="text" class="form-control" [(ngModel)]="">-->
+  <!--<p>{{inputText2}}</p>-->
+</div>

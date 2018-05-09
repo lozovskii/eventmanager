@@ -1,0 +1,98 @@
+<div class="col-md-12">
+  <div class="col-md-6" style="margin:0 auto">
+    <h2>Register</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="register(registerForm.value)">
+
+      <div class="form-group">
+        <label for="name">First Name</label>
+        <input formControlName="name" id="name" type="text" class="form-control" name="name" required/>
+        <div *ngIf="name.invalid && (name.dirty || name.touched)"
+             class="alert alert-danger">
+
+          <div *ngIf="name?.errors?.required">
+            First name is required.
+          </div>
+          <div *ngIf="name?.errors?.minlength">
+            First name must be at least 3 characters long.
+          </div>
+          <div *ngIf="name?.errors?.maxlength">
+            First name must be less than 20 characters long.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="secondName">Last Name</label>
+        <input formControlName="secondName" id="secondName" type="text" class="form-control" name="lastName" required/>
+        <div *ngIf="secondName.invalid && (secondName.dirty || secondName.touched)"
+             class="alert alert-danger">
+
+          <div *ngIf="secondName?.errors?.required">
+            Second name is required.
+          </div>
+          <div *ngIf="secondName?.errors?.minlength">
+            Second name must be at least 3 characters long.
+          </div>
+          <div *ngIf="secondName?.errors?.maxlength">
+            Second name must be less than 20 characters long.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="login">Username</label>
+        <input formControlName="login" id="login" type="text" class="form-control" name="username" required/>
+        <div *ngIf="login.invalid && (login.dirty || login.touched)"
+             class="alert alert-danger">
+
+          <div *ngIf="login?.errors?.required">
+            Login is required.
+          </div>
+          <div *ngIf="login?.errors?.minlength">
+            Login must be at least 4 characters long.
+          </div>
+          <div *ngIf="login?.errors?.maxlength">
+            Login must be less than 20 characters long.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input formControlName="email" id="email" type="text" class="form-control" name="email" required/>
+        <div *ngIf="email.invalid && (email.dirty || email.touched)"
+             class="alert alert-danger">
+
+          <div *ngIf="email?.errors?.email">
+            You typed wrong email.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input formControlName="password" id="password" type="password" class="form-control" name="password" required/>
+        <div *ngIf="password.invalid && (password.dirty || password.touched)"
+             class="alert alert-danger">
+
+          <div *ngIf="password?.errors?.required">
+            Password is required.
+          </div>
+          <div *ngIf="password?.errors?.minlength">
+            Password must be at least 4 characters long.
+          </div>
+          <div *ngIf="password?.errors?.maxlength">
+            Password must be less than 20 characters long.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button [disabled]="loading" type="submit" class="btn btn-primary">Register</button>
+        <img *ngIf="loading"
+             src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+        <a [routerLink]="['/login']" class="btn btn-link">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>

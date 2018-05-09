@@ -1,0 +1,7 @@
+.jumbotron {
+  background: url(back.jpg) no-repeat center top fixed;
+}
+#title {
+  color: #890000;
+  font-weight: 600;
+}
