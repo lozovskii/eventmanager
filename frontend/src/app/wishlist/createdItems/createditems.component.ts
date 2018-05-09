@@ -10,7 +10,10 @@ import { Location } from '@angular/common';
   styleUrls: ['../wishlist.component.css']
 })
 export class CreatedItemsComponent implements OnInit {
+
   items : Item[];
+  path: string[] = ['name'];
+  order: number = 1; // 1 asc, -1 desc;
 
   constructor(private wishListService: WishListService,
               private alertService : AlertService,
@@ -32,5 +35,11 @@ export class CreatedItemsComponent implements OnInit {
 
         this.alertService.info('Items not found',true);
       });
+  }
+
+  sortItems(prop: string) {
+    this.path = prop.split('.');
+    this.order = this.order * (-1); // change order
+    return false; // do not reload
   }
 }

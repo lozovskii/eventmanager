@@ -15,6 +15,8 @@ import { Location } from '@angular/common';
 export class WishListComponent implements OnInit {
   wishlist: WishList;
   hasChanges: boolean = false;
+  path: string[] = ['name'];
+  order: number = 1; // 1 asc, -1 desc;
 
   constructor(private wishListService: WishListService,
               private userService: UserService,
@@ -51,6 +53,12 @@ export class WishListComponent implements OnInit {
     item.booker_customer_login = this.userService.getCurrentLogin();
 
     this.hasChanges = true;
+  }
+
+  sortItems(prop: string) {
+    this.path = prop.split('.');
+    this.order = this.order * (-1); // change order
+    return false; // do not reload
   }
 
   // setPriority(item : ItemDto, priority : any) : void{
