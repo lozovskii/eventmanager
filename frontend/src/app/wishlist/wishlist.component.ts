@@ -24,6 +24,8 @@ export class WishListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.wishlist = new WishList();
+
     this.activatedRoute.params.subscribe(params => {
       let eventId = params['id'];
       this.getWishListByEventId(eventId);
@@ -59,17 +61,13 @@ export class WishListComponent implements OnInit {
   update(): void {
     this.wishListService.update(this.wishlist).subscribe(data => {
 
-      this.alertService.success('Wishlist successfully updated!',
-        true);
+      this.alertService.success('Wish list successfully updated!');
+    }, error2 => {
+      this.alertService.error('Something wrong');
     });
   }
 
   isBooker(bookerLogin: string): boolean {
     return bookerLogin ? this.wishListService.isBooker(bookerLogin) : false;
   }
-
-  //TODO: getBookerByLogin. In the itemDto add field login. In DaoImpl + return login
-  // getBookerName() : string{
-  //   return ;
-  // }
 }

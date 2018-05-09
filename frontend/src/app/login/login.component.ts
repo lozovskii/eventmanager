@@ -23,10 +23,10 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    // reset login status
     this.authenticationService.logout();
-    // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
+    console.log(this.returnUrl);
   }
 
   login() {
@@ -37,15 +37,15 @@ export class LoginComponent implements OnInit {
     };
     this.authenticationService.login(userAuthParam)
       .subscribe(data => {
-        console.log('logged in with token ' + sessionStorage.getItem('currentToken'));
-        this.loading=false;
-          this.navbarService.setNavBarState( true );
-          return this.router.navigate(['/home'])
+          console.log('logged in with token ' + sessionStorage.getItem('currentToken'));
+          this.loading = false;
+          this.navbarService.setNavBarState(true);
+          return this.router.navigate([this.returnUrl]);
         }
 
-      , () => {
-        alert('Invalid credentials');
-          this.loading=false;
+        , () => {
+          alert('Invalid credentials');
+          this.loading = false;
           return this.router.navigate(['/login']);
         });
   }

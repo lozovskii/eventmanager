@@ -3,6 +3,7 @@ package com.ncgroup2.eventmanager.service;
 import com.ncgroup2.eventmanager.dto.EventCountdownDTO;
 import com.ncgroup2.eventmanager.dto.EventDTO;
 import com.ncgroup2.eventmanager.dto.InviteNotificationDTO;
+import com.ncgroup2.eventmanager.dto.UpdateEventDTO;
 import com.ncgroup2.eventmanager.entity.Event;
 
 import java.time.Instant;
@@ -13,7 +14,7 @@ public interface EventService {
 
     void createEvent(EventDTO eventDTO);
 
-    List isCustomersExist(List<String> login);
+//    List getExistingCustomers(List<String> login);
 
     void createEventInvitations(List<String> login, UUID eventId);
 
@@ -23,7 +24,7 @@ public interface EventService {
 
     void deleteEventById(String eventId);
 
-    void updateEvent(EventDTO eventDTO);
+    void updateEvent(UpdateEventDTO eventDTO);
 
     List<Event> getAllPublicAndFriendsEvents(String customerId);
 

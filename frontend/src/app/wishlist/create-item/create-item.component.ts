@@ -16,70 +16,64 @@ import {Item} from "../../_models/item";
 })
 export class CreateItemComponent implements OnInit {
 
-  isValidFormSubmitted = null;
-
   itemForm = this.formBuilder.group({
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
     description: ['', [Validators.maxLength(1024)]],
     link: ['', [Validators.minLength(4), Validators.maxLength(128)]],
-    dueDate: [''],
-    priority: ['']
+    dueDate: ['']
   });
 
-  wishList: WishList;
+  additionalForm = this.formBuilder.group({
+    priority: [''],
+    image: [''],
+    imageUrl: ['']
+  });
+
+  mainForm: FormGroup = this.formBuilder.group({
+    item: this.itemForm,
+    additionalProperties: this.additionalForm
+  });
+
+
   itemDto: ItemDto;
-  items: Item[];
   item: Item;
 
   constructor(private router: Router,
               private wishListService: WishListService,
               private alertService: AlertService,
               private formBuilder: FormBuilder,
-              private eventService: EventService) {
+              private userService: UserService) {
   }
 
   ngOnInit(): void {
     this.itemDto = new ItemDto();
   }
 
-  createItem(itemForm: ItemDto) {
+  createItem(item: Item) {
 
-     this.itemDto = itemForm;
+    this.item = item;
 
-    console.log('test: ' + JSON.stringify(itemForm));
+    this.item.image = this.additionalForm.get('imageUrl').value;
 
-    console.log(this.itemDto.priority);
+    this.item.creator_customer_login = this.userService.getCurrentLogin();
 
-    console.log(this.itemDto.item.name);
+    console.log(JSON.stringify(this.item));
 
-    // this.items.push(itemForm);
-
-  }
-
-  save(itemDto: ItemDto) {
-
-    this.isValidFormSubmitted = false;
-
-    if (this.itemForm.invalid) {
-      return;
-    }
-    this.isValidFormSubmitted = true;
-
-    this.itemDto.event_id = '';
-
-    console.log('user: ' + JSON.stringify(itemDto));
-    // this.loading = true;
-
-    this.wishListService.create(this.wishList)
+    this.wishListService.createItem(item)
       .subscribe(() => {
-          this.alertService.success('Wish List created.', true);
-          setTimeout(() => this.router.navigate(["/"]), 5000);
-        },
-        (error) => {
-          this.alertService.error(error.error);
-        });
+        this.alertService.success('Item created.');
+      },
+      (error) => {
+        this.alertService.error("Something wrong");
+      });
+
   }
 
+  onUpload() {
+    // this.http is the injected HttpClient
+    // this.https.post('my-backend.com/file-upload', this.selectedFile)
+    //   .subscribe(...);
+  }
 
   get name() {
     return this.itemForm.get('name');
@@ -91,14 +85,6 @@ export class CreateItemComponent implements OnInit {
 
   get link() {
     return this.itemForm.get('link');
-  }
-
-  get dueDate() {
-    return this.itemForm.get('dueDate');
-  }
-
-  get status() {
-    return this.itemForm.get('status');
   }
 
 }
