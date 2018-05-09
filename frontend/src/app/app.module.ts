@@ -97,6 +97,10 @@ import {FriendRequestNotificationComponent} from './notifications/friend-request
     NotificationService
     // provider used to create fake backend
   ],
+  entryComponents: [
+    InviteNotificationComponent,
+    FriendRequestNotificationComponent
+  ],
   bootstrap: [AppComponent]
 })
 

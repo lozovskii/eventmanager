@@ -2,8 +2,10 @@ package com.ncgroup2.eventmanager.dao;
 
 import com.ncgroup2.eventmanager.dto.AdditionalEventModelDTO;
 import com.ncgroup2.eventmanager.dto.EventCountdownDTO;
+import com.ncgroup2.eventmanager.dto.InviteNotificationDTO;
 import com.ncgroup2.eventmanager.entity.Event;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,11 +37,13 @@ public interface EventDao {
 
     List<Event> getAllPublicAndFriends(String customerId);
 
+    List<InviteNotificationDTO> getInviteNotifications(String customerId);
+
     boolean isParticipant(String customerId, String eventId);
 
     void removeParticipant(String customerId, String eventId);
 
-    void addParticipant(String customerId, String eventId);
+    void addParticipant(String customerId, String eventId, Instant startDateNotifications, int priority);
 
     void createEventInvitation(String login, UUID eventId);
 
