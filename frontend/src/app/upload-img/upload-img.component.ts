@@ -5,7 +5,9 @@ import {User} from "../_models";
 import {AlertService, UserService} from "../_services";
 import {ProfileService} from "../_services/profile.service";
 import {Router} from "@angular/router";
-import {el} from "@angular/platform-browser/testing/src/browser_util";
+import {MAX_IMG_SIZE} from "../app.config";
+import {ALLOWED_FORMATS} from "../app.config";
+
 
 @Component({
   selector: 'app-upload-img',
@@ -14,12 +16,14 @@ import {el} from "@angular/platform-browser/testing/src/browser_util";
 })
 export class UploadImgComponent implements OnInit {
 
-  maxImageSize = 1000000;
-
+  // maxImageSize = 1000000;
+  allowedFormats: string[] =  ALLOWED_FORMATS;
+  maxImageSize = MAX_IMG_SIZE;
   base64Image: string;
-
   currentUser: User;
   loading = true;
+
+
 
   constructor(private domSanitizer: DomSanitizer,
               private profileService: ProfileService,
@@ -45,21 +49,29 @@ export class UploadImgComponent implements OnInit {
     this.readThis($event.target);
   }
 
+
   getFileExtension(filename) {
     return filename.split('.').pop();
   }
 
+
   validFormat(format: string) {
-    return format == 'png'
-      || format == 'jpg'
-      || format == 'jpeg'
+    let isValid = false;
+    for (let allowedFormat of this.allowedFormats) {
+      if (allowedFormat == format) {
+        isValid = true;
+      }
+    }
+    return isValid;
   }
+
 
   validSize(file) {
     if(file.size<= this.maxImageSize) {
       return true;
     }else return false;
   }
+
 
   validImg(file: File){
     let format = this.getFileExtension(file.name);
@@ -68,6 +80,7 @@ export class UploadImgComponent implements OnInit {
       this.loading = false;
     } else this.loading = true;
   }
+
 
   readThis(inputValue: any): void {
     var file: File = inputValue.files[0];
