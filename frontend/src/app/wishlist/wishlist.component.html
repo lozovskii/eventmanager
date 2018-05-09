@@ -24,7 +24,7 @@
                     itemDto.priority === 2 ? 'green':'gray'">
 
 
-                <select *ngIf="isBooker(itemDto.booker_customer_id)"
+                <select *ngIf="isBooker(itemDto.booker_customer_login)"
                         (change)="hasChanges = true">
 
                   <option value="1" (click)="itemDto.priority = 1">High</option>
@@ -74,12 +74,14 @@
 
             <div class="card-footer">
               <small class="text-muted">
-                <a href="#" class="card-link"
-                   *ngIf="!itemDto.booker_customer_id"
-                   (click)="bookItem(itemDto)">book it</a>
+                <button href="#" class="btn card-link"
+                   *ngIf="!itemDto.booker_customer_login"
+                   (click)="bookItem(itemDto)">book it</button>
               </small>
 
-              <small class="text-muted">Booker: {{itemDto.booker_customer_id}}</small>
+              <small *ngIf="itemDto.booker_customer_login"
+                     class="text-muted">
+                Booker: {{itemDto.booker_customer_login}}</small>
 
             </div>
           </div>
@@ -115,11 +117,11 @@
     <!--<td>{{itemDto.item.dueDate}}</td>-->
     <!--<td>-->
 
-    <!--<a *ngIf="!itemDto.booker_customer_id"-->
+    <!--<a *ngIf="!itemDto.booker_customer_login"-->
     <!--style="cursor: pointer; color:#666699;"-->
     <!--(click)="bookItem(itemDto)"> book it</a>-->
 
-    <!--{{itemDto.booker_customer_id}}-->
+    <!--{{itemDto.booker_customer_login}}-->
     <!--</td>-->
 
     <!--<td align="center">-->
@@ -132,7 +134,7 @@
     <!--itemDto.priority === 2 ? 'green':'gray'">-->
 
 
-    <!--<select *ngIf="isBooker(itemDto.booker_customer_id)"-->
+    <!--<select *ngIf="isBooker(itemDto.booker_customer_login)"-->
     <!--(change)="hasChanges = true">-->
 
     <!--<option value="1" (click)="itemDto.priority = 1">High</option>-->

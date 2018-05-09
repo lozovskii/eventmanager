@@ -10,7 +10,7 @@ export class ItemDto{
 
   event_id: string;
 
-  booker_customer_id: string;
+  booker_customer_login: string;
 
   private _priority: number;
 

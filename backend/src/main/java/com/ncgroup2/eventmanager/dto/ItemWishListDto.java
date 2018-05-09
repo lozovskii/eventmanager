@@ -18,7 +18,7 @@ public class ItemWishListDto {
 
     String event_id;
 
-    String booker_customer_id;
+    String booker_customer_login;
 
     int priority;
 

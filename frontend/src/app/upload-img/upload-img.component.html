@@ -30,10 +30,18 @@
 <!--</div>-->
 
 
+<div class="row">
+  <div  class="col-md-3">
+    <app-vnavbar></app-vnavbar>
+  </div>
+
+  <main role="main" class="col-md-9">
+
 <h1>Select avatar </h1>
 
 <div class="form-group">
-  <label>Image</label>
+  <h6>Image must have an extension: png, jpg, jpeg</h6>
+  <h6>Max size image is 1 MB</h6>
   <input type="file" class="form-control" accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
             text/plain, application/pdf, image/*" (change)="changeListener($event)">
 </div>
@@ -42,7 +50,9 @@
 
 <form method="post">
   <div class="form-group">
-    <button class="btn btn-primary" (click)="updateUser(currentUser)" >Save</button>
-    <!--<a [routerLink]="['/content']" class="btn btn-link">Cancel</a>-->
+    <button type="submit" [disabled]="loading" class="btn btn-primary" (click)="updateUser(currentUser)" >Save</button>
   </div>
 </form>
+  </main>
+
+</div>

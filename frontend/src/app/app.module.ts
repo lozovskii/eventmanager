@@ -42,6 +42,9 @@ import {InviteNotificationComponent} from './notifications/invite-notification/i
 import {NotificationContainerComponent} from './notifications/notification-container/notification-container.component';
 import {NotificationService} from "./_services/notification.service";
 import {FriendRequestNotificationComponent} from './notifications/friend-request-notification/friend-request-notification.component';
+import {CreateItemComponent} from "./wishlist/create-item/create-item.component";
+import {CreatedItemsComponent} from "./wishlist/createdItems/createditems.component";
+import {FriendComponent} from "./profile/friend/friend.component";
 
 @NgModule({
   imports: [
@@ -81,7 +84,11 @@ import {FriendRequestNotificationComponent} from './notifications/friend-request
     NotificationsHostDirective,
     InviteNotificationComponent,
     NotificationContainerComponent,
-    FriendRequestNotificationComponent
+    FriendRequestNotificationComponent,
+    CreateItemComponent,
+    CreatedItemsComponent,
+    FriendRequestNotificationComponent,
+    FriendComponent
   ],
   providers: [
     AuthGuard,

@@ -5,6 +5,7 @@ import {AlertService} from "../_services/alert.service";
 import {WishListService} from "../_services/wishlist.service";
 import {UserService} from "../_services/user.service";
 import {ItemDto} from "../_models/dto/itemDto";
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-wishlist',
@@ -18,8 +19,8 @@ export class WishListComponent implements OnInit {
   constructor(private wishListService: WishListService,
               private userService: UserService,
               private activatedRoute: ActivatedRoute,
-              private router: Router,
-              private alertService : AlertService) {
+              private alertService: AlertService,
+              private location: Location) {
   }
 
   ngOnInit() {
@@ -29,20 +30,23 @@ export class WishListComponent implements OnInit {
     });
   }
 
-  getWishListByEventId(eventId : string): void {
+  getWishListByEventId(eventId: string): void {
     this.wishListService.getByEventId(eventId)
       .subscribe((wishList) => {
-        this.wishlist = wishList;
+          this.wishlist = wishList;
 
-        if(this.wishlist == null){
-          this.alertService.info('Wish list not found',true);
+        }, (error) => {
+
+        this.location.back();
+
+        this.alertService.info('Wish list not found',true);
         }
-      });
+      );
   }
 
-  bookItem(item : ItemDto) : void {
+  bookItem(item: ItemDto): void {
 
-    item.booker_customer_id = this.userService.getCurrentId()
+    item.booker_customer_login = this.userService.getCurrentLogin();
 
     this.hasChanges = true;
   }
@@ -52,7 +56,7 @@ export class WishListComponent implements OnInit {
   //   this.hasChanges = true;
   // }
 
-  update() : void{
+  update(): void {
     this.wishListService.update(this.wishlist).subscribe(data => {
 
       this.alertService.success('Wishlist successfully updated!',
@@ -60,8 +64,8 @@ export class WishListComponent implements OnInit {
     });
   }
 
-  isBooker(bookerId : string): boolean{
-    return bookerId ? this.wishListService.isBooker(bookerId) : false;
+  isBooker(bookerLogin: string): boolean {
+    return bookerLogin ? this.wishListService.isBooker(bookerLogin) : false;
   }
 
   //TODO: getBookerByLogin. In the itemDto add field login. In DaoImpl + return login

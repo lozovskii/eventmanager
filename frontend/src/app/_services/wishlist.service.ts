@@ -5,6 +5,7 @@ import {WishList} from '../_models/wishlist';
 import {Observable} from 'rxjs';
 import {UserService} from "./user.service";
 import {AuthenticationService} from "./authentication.service";
+import {Item} from "../_models/item";
 
 @Injectable()
 export class WishListService {
@@ -14,8 +15,8 @@ export class WishListService {
               private userService: UserService) {
   }
 
-  isBooker(bookerId : string): boolean{
-    return bookerId == this.userService.getCurrentId();
+  isBooker(bookerLogin : string): boolean{
+    return bookerLogin == this.userService.getCurrentLogin();
   }
 
   getByEventId(eventId: string): Observable<WishList> {
@@ -24,13 +25,24 @@ export class WishListService {
   }
 
   getBookedItems(): Observable<WishList> {
-    let customerId = this.userService.getCurrentId();
-    const url = `${this.wishListUrl}/booked?customerId=${customerId}`;
+    let bookerLogin = this.userService.getCurrentLogin();
+    const url = `${this.wishListUrl}/booked?customerLogin=${bookerLogin}`;
     return this.http.get<WishList>(url,{headers: AuthenticationService.getAuthHeader()});
+  }
+
+  getCreatedItems(): Observable<Item[]> {
+    let currentLogin = this.userService.getCurrentLogin();
+    const url = `api/items/created?customerLogin=${currentLogin}`;
+    return this.http.get<Item[]>(url,{headers: AuthenticationService.getAuthHeader()});
   }
 
   update(wishList: WishList){
     const url = `${this.wishListUrl}/update`;
+    return this.http.post<WishList>(url, wishList, {headers: AuthenticationService.getAuthHeader()});
+  }
+
+  create(wishList: WishList){
+    const url = `${this.wishListUrl}/create`;
     return this.http.post<WishList>(url, wishList, {headers: AuthenticationService.getAuthHeader()});
   }
 }
