@@ -6,6 +6,7 @@ import com.ncgroup2.eventmanager.entity.Entity;
 import com.ncgroup2.eventmanager.entity.Item;
 import com.ncgroup2.eventmanager.entity.Tag;
 import com.ncgroup2.eventmanager.mapper.ItemMapExtractor;
+import com.ncgroup2.eventmanager.mapper.ItemMapper;
 import com.ncgroup2.eventmanager.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -97,7 +98,7 @@ public class ItemDaoImpl extends JdbcDaoSupport implements DAO {
 
         String itemUpdateSql =
                 "UPDATE \"Item\"" +
-                        "SET name = ?, description = ?, image = ?, link = ?, due_date = ?" +
+                        "SET creator_customer_login = ?, name = ?, description = ?, image = ?, link = ?, due_date = ?" +
                         "WHERE id = '" + item.getId() + "'::UUID";
 
         this.getJdbcTemplate().update(itemUpdateSql, item.getParams());
@@ -157,8 +158,8 @@ public class ItemDaoImpl extends JdbcDaoSupport implements DAO {
 
         String itemInsertSql =
                 "INSERT INTO \"Item\"" +
-                        "(name, description, image, link, due_date, id)" +
-                        "VALUES (?,?,?,?,?,?::UUID) ;";
+                        "(creator_customer_login, name, description, image, link, due_date, id)" +
+                        "VALUES (?,?,?,?,?,?,?::UUID) ;";
 
         this.getJdbcTemplate().update(itemInsertSql, item.getParams());
 
@@ -177,20 +178,21 @@ public class ItemDaoImpl extends JdbcDaoSupport implements DAO {
 
             String itemsInsertSql =
                     "INSERT INTO \"Item\"" +
-                            "(name, description, image, link, due_date, id)" +
-                            "VALUES (?,?,?,?,?,?::UUID) " +
+                            "(creator_customer_login,name, description, image, link, due_date, id)" +
+                            "VALUES (?,?,?,?,?,?,?::UUID) " +
                             "ON CONFLICT DO NOTHING;";
 
             this.getJdbcTemplate().batchUpdate(
                     itemsInsertSql, items, items.size(),
 
                     (ps, item) -> {
-                        ps.setString(1, item.getName());
-                        ps.setString(2, item.getDescription());
-                        ps.setString(3, item.getImage());
-                        ps.setString(4, item.getLink());
-                        ps.setDate(5,   Date.valueOf(item.getDueDate()));
-                        ps.setString(6, item.getId());
+                        ps.setString(1, item.getCreator_customer_login());
+                        ps.setString(2, item.getName());
+                        ps.setString(3, item.getDescription());
+                        ps.setString(4, item.getImage());
+                        ps.setString(5, item.getLink());
+                        ps.setDate(6,   Date.valueOf(item.getDueDate()));
+                        ps.setString(7, item.getId());
                     });
 
             for (Item item : items) {
@@ -238,5 +240,16 @@ public class ItemDaoImpl extends JdbcDaoSupport implements DAO {
                     itemTagInsertSql, tags, tags.size(),
                     (ps, tag) -> ps.setString(1, tag.getTag().getName()));
         }
+    }
+
+    public Collection<Item> getCreatedItems(String creator_customer_login){
+
+        String sql =
+                "SELECT i.*" +
+                        "FROM \"Item\" i" +
+                        " WHERE i.creator_customer_login = '" + creator_customer_login + "'";
+
+        return this.getJdbcTemplate().query(sql, new ItemMapper());
+
     }
 }

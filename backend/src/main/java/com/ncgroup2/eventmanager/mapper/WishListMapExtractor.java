@@ -47,7 +47,7 @@ public class WishListMapExtractor implements ResultSetExtractor<Map<String, List
 
             item.setItem_wishlist_id(rs.getString("item_wishlist_id"));
 
-            item.setBooker_customer_id(rs.getString("booker_customer_id"));
+            item.setBooker_customer_login(rs.getString("booker_customer_login"));
 
             item.setPriority(rs.getInt("priority"));
 
@@ -75,40 +75,4 @@ public class WishListMapExtractor implements ResultSetExtractor<Map<String, List
         return wishListsMap;
 
     }
-
-
-    //    @Override
-//    public Map<String, HashMap<String, String>> extractData(ResultSet rs) throws SQLException {
-//
-//        Map<String, HashMap<String, String>> wishListsMap = new HashMap<>();
-//
-//        while (rs.next()) {
-//
-//            String wishListId = rs.getString("event_id");
-//
-//            String item_wishlist_id = rs.getString("item_wishlist_id");
-//
-//            String itemId = rs.getString("item_id");
-//
-//            HashMap<String, String> items = wishListsMap.get(wishListId);
-//
-//            if (items == null) {
-//
-//                HashMap<String, String> newItems = new HashMap<>();
-//
-//                newItems.put(item_wishlist_id, itemId);
-//
-//                wishListsMap.put(wishListId, newItems);
-//
-//            } else {
-//
-//                items.put(item_wishlist_id, itemId);
-//
-//            }
-//
-//        }
-//
-//        return wishListsMap;
-//
-//    }
 }

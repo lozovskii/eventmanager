@@ -11,6 +11,7 @@ import java.util.List;
 @Setter
 public class Item extends Entity {
 
+    private String creator_customer_login;
     private String description;
     private String image;
     private String link;
@@ -21,7 +22,8 @@ public class Item extends Entity {
     public String toString() {
         return super.toString() +
                 "\nItem{" +
-                "description='" + description + '\'' +
+                "creator_customer_login=" + creator_customer_login +
+                " description='" + description + '\'' +
                 ", image='" + image + '\'' +
                 ", link='" + link;
     }
@@ -29,6 +31,7 @@ public class Item extends Entity {
     @Override
     public Object[] getParams() {
         return new Object[]{
+                this.creator_customer_login,
                 this.name,
                 this.description,
                 this.image,

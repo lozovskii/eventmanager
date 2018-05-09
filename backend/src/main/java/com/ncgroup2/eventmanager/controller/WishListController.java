@@ -1,11 +1,9 @@
 package com.ncgroup2.eventmanager.controller;
 
-import com.ncgroup2.eventmanager.dto.ItemWishListDto;
 import com.ncgroup2.eventmanager.entity.WishList;
 import com.ncgroup2.eventmanager.service.WishListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,10 +37,10 @@ public class WishListController {
         }
     }
 
-    @GetMapping(value = "/booked{customerId}")
-    public ResponseEntity<WishList> getBookedItems(@RequestParam String customerId) {
+    @GetMapping(value = "/booked")
+    public ResponseEntity<WishList> getBookedItems(@RequestParam String customerLogin) {
 
-            WishList bookedItems = wishListService.getBookedItems(customerId);
+            WishList bookedItems = wishListService.getBookedItems(customerLogin);
 
             if (bookedItems == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -56,5 +54,7 @@ public class WishListController {
 
         wishListService.update(wishList);
     }
+
+
 
 }

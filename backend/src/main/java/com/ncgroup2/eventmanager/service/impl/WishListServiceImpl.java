@@ -22,9 +22,9 @@ public class WishListServiceImpl implements WishListService{
         return wishListDao.getEntityByField("event_id", event_id);
     }
 
-    public WishList getBookedItems(String booker_customer_id){
+    public WishList getBookedItems(String booker_customer_login){
 
-        return wishListDao.getEntityByField("booker_customer_id", booker_customer_id);
+        return wishListDao.getEntityByField("booker_customer_login", booker_customer_login);
     }
 
     public void createWishlist(WishList wishList){
