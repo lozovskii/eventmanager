@@ -46,7 +46,7 @@ const appRoutes: Routes = [
   { path: 'notifications', component: NotificationContainerComponent, canActivate: [AuthGuard]},
   { path: 'profile/friends', component: FriendComponent, canActivate: [AuthGuard]},
   { path: 'booked-items', component: BookedItemsComponent, canActivate: [AuthGuard]},
-  { path: 'add-item', component: CreateItemComponent, canActivate: [AuthGuard]},
+  { path: 'create-item', component: CreateItemComponent, canActivate: [AuthGuard]},
   { path: 'created-items', component: CreatedItemsComponent, canActivate: [AuthGuard]},
 
   // otherwise redirect to home
