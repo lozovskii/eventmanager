@@ -21,6 +21,7 @@ import {EditProfileComponent} from "./edit-profile/edit-profile.component";
 import {UploadImgComponent} from "./upload-img/upload-img.component";
 import {NotificationContainerComponent} from "./notifications/notification-container/notification-container.component";
 import {BookedItemsComponent} from "./wishlist/bookeditems/bookeditems.component";
+import {FriendComponent} from "./profile/friend/friend.component";
 import {CreateItemComponent} from "./wishlist/create-item/create-item.component";
 import {CreatedItemsComponent} from "./wishlist/createdItems/createditems.component";
 
@@ -33,19 +34,20 @@ const appRoutes: Routes = [
   { path: 'event/:id', component: EventComponent},
   { path: 'update-event/:id', component: UpdateEventComponent},
   { path: 'eventlist/:type', component: EventlistComponent},
-  {path: 'registration-confirm', component: RegistrationConfirmComponent},
-  {path: 'send-reset-link', component: SendLinkComponent},
-  {path: 'reset-password', component: ResetComponent},
+  { path: 'registration-confirm', component: RegistrationConfirmComponent},
+  { path: 'send-reset-link', component: SendLinkComponent},
+  { path: 'reset-password', component: ResetComponent},
   { path: 'profile', component: ProfileComponent},
   { path: 'vnavbar', component: VnavbarComponent},
   { path: 'folder-list', component: FolderListComponent},
   { path: 'wishlist/:id', component: WishListComponent},
   { path: 'edit-profile', component: EditProfileComponent},
   { path: 'upload-img', component: UploadImgComponent},
+  { path: 'notifications', component: NotificationContainerComponent},
+  { path: 'profile/friends', component: FriendComponent},
   { path: 'booked-items', component: BookedItemsComponent},
-  {path: 'notifications', component: NotificationContainerComponent},
-  {path: 'add-item', component: CreateItemComponent},
-  {path: 'created-items', component: CreatedItemsComponent},
+  { path: 'add-item', component: CreateItemComponent},
+  { path: 'created-items', component: CreatedItemsComponent},
 
   // otherwise redirect to home
  { path: '**', redirectTo: '' }

@@ -1,6 +1,7 @@
 package com.ncgroup2.eventmanager.controller;
 
 import com.ncgroup2.eventmanager.dto.EventDTO;
+import com.ncgroup2.eventmanager.dto.InviteNotificationDTO;
 import com.ncgroup2.eventmanager.entity.Event;
 import com.ncgroup2.eventmanager.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -82,7 +84,7 @@ public class EventController {
 
     @GetMapping("/addParticipant")
     public ResponseEntity addParticipant(@RequestParam String customerId,@RequestParam String eventId) {
-        eventService.addParticipant(customerId, eventId);
+        eventService.addParticipant(customerId, eventId, Instant.now(), 2);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -90,5 +92,12 @@ public class EventController {
     public ResponseEntity removeParticipant(@RequestParam String customerId,@RequestParam String eventId) {
         eventService.removeParticipant(customerId, eventId);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping("/getInviteNotifications")
+    public ResponseEntity<List<InviteNotificationDTO>> getInviteNotifications(@RequestParam String customerId) {
+        List<InviteNotificationDTO> notifications = eventService.getInviteNotifications(customerId);
+        notifications.forEach(System.out::println);
+        return new ResponseEntity<>(notifications, HttpStatus.OK);
     }
 }

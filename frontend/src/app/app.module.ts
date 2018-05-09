@@ -44,6 +44,7 @@ import {NotificationService} from "./_services/notification.service";
 import {FriendRequestNotificationComponent} from './notifications/friend-request-notification/friend-request-notification.component';
 import {CreateItemComponent} from "./wishlist/create-item/create-item.component";
 import {CreatedItemsComponent} from "./wishlist/createdItems/createditems.component";
+import {FriendComponent} from "./profile/friend/friend.component";
 
 @NgModule({
   imports: [
@@ -86,6 +87,8 @@ import {CreatedItemsComponent} from "./wishlist/createdItems/createditems.compon
     FriendRequestNotificationComponent,
     CreateItemComponent,
     CreatedItemsComponent
+    FriendRequestNotificationComponent,
+    FriendComponent
   ],
   providers: [
     AuthGuard,
@@ -100,6 +103,10 @@ import {CreatedItemsComponent} from "./wishlist/createdItems/createditems.compon
     ProfileService,
     NotificationService
     // provider used to create fake backend
+  ],
+  entryComponents: [
+    InviteNotificationComponent,
+    FriendRequestNotificationComponent
   ],
   bootstrap: [AppComponent]
 })

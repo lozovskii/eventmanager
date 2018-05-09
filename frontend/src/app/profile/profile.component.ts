@@ -1,28 +1,28 @@
 import {Component, OnInit} from '@angular/core';
-import {UserService} from "../_services";
 import {User} from "../_models";
+import {ProfileService} from "../_services/profile.service";
+import {UserService} from "../_services";
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
+
 export class ProfileComponent implements OnInit {
+
   currentUser: User;
 
-  constructor(private userService: UserService
-             ) {
-    let login = JSON.parse(localStorage.getItem('currentUser')).login;
-    this.userService.getByLogin(login).subscribe(
-      user => {
-        this.currentUser = user;
-        localStorage.setItem('currentUserObject', JSON.stringify(this.currentUser));
-
-      }
-    );
+  constructor(private profileService: ProfileService,
+              private userService: UserService) {
+    let login = this.userService.getCurrentLogin();
+    this.profileService.getCustomer(login)
+      .subscribe(
+        currentUser => {
+          this.currentUser = currentUser;
+        }
+      )
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }
