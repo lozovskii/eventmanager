@@ -86,7 +86,7 @@ import {FriendComponent} from "./profile/friend/friend.component";
     NotificationContainerComponent,
     FriendRequestNotificationComponent,
     CreateItemComponent,
-    CreatedItemsComponent
+    CreatedItemsComponent,
     FriendRequestNotificationComponent,
     FriendComponent
   ],
