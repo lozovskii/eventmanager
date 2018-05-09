@@ -5,6 +5,7 @@ import {User} from "../_models";
 import {AlertService, UserService} from "../_services";
 import {ProfileService} from "../_services/profile.service";
 import {Router} from "@angular/router";
+import {el} from "@angular/platform-browser/testing/src/browser_util";
 
 @Component({
   selector: 'app-upload-img',
@@ -13,9 +14,12 @@ import {Router} from "@angular/router";
 })
 export class UploadImgComponent implements OnInit {
 
-  public base64Image: string;
+  maxImageSize = 1000000;
+
+  base64Image: string;
 
   currentUser: User;
+  loading = true;
 
   constructor(private domSanitizer: DomSanitizer,
               private profileService: ProfileService,
@@ -41,21 +45,43 @@ export class UploadImgComponent implements OnInit {
     this.readThis($event.target);
   }
 
+  getFileExtension(filename) {
+    return filename.split('.').pop();
+  }
+
+  validFormat(format: string) {
+    return format == 'png'
+      || format == 'jpg'
+      || format == 'jpeg'
+  }
+
+  validSize(file) {
+    if(file.size<= this.maxImageSize) {
+      return true;
+    }else return false;
+  }
+
+  validImg(file: File){
+    let format = this.getFileExtension(file.name);
+    console.log(file.size)
+    if(this.validFormat(format) && this.validSize(file)){
+      this.loading = false;
+    } else this.loading = true;
+  }
+
   readThis(inputValue: any): void {
     var file: File = inputValue.files[0];
     var myReader: FileReader = new FileReader();
-
     myReader.onloadend = (e) => {
       this.base64Image = myReader.result;
-
+      this.validImg(file)
     }
    myReader.readAsDataURL(file);
   }
 
   updateUser(user: User): void {
-    console.log(JSON.stringify(user))
+    // console.log(JSON.stringify(user))
     user.avatar = this.base64Image;
-    console.log('Update user' + user.avatar)
     this.profileService.update(user)
       .subscribe(() => {
           this.alertService.success('User updated!', true);
