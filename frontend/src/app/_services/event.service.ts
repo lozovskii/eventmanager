@@ -6,6 +6,7 @@ import {Observable} from 'rxjs';
 import {UserService} from "./user.service";
 import {EventDTOModel} from "../_models/dto/eventDTOModel";
 import {AuthenticationService} from "./authentication.service";
+import {UpdateEventDTO} from "../_models/dto/UpdateEventDTO";
 
 @Injectable()
 export class EventService {
@@ -59,9 +60,9 @@ export class EventService {
     return this.http.post<number>('/api/events/delete', eventId, {headers: AuthenticationService.getAuthHeader()});
   }
 
-  updateEvent(eventDTO: EventDTOModel) {
-    console.log("updateEvent(eventDTO: EventDTOModel): " + JSON.stringify(eventDTO));
-    return this.http.put<EventDTOModel>('/api/events/update', eventDTO, {headers: AuthenticationService.getAuthHeader()});
+  updateEvent(updateEventDTO: UpdateEventDTO) {
+    console.log("updateEvent(eventDTO: EventDTOModel): " + JSON.stringify(updateEventDTO));
+    return this.http.put<EventDTOModel>('/api/events/update', updateEventDTO, {headers: AuthenticationService.getAuthHeader()});
   }
 
   addParticipant(eventId) {
