@@ -28,23 +28,22 @@ export class HomeComponent implements OnInit {
         }
       );
 
-      this.eventService.getAllEvents().subscribe(
 
-        events => {
-
-          console.log(events);
-          localStorage.setItem('Event', JSON.stringify(events));
-
-          console.log(events);
-          console.log(localStorage.getItem('Event'));
-
-        }
-
-      )
 
     } else {
       this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
     }
+    this.eventService.getEventsByCustId().subscribe(
+
+      events => {
+
+        localStorage.setItem('Event', JSON.stringify(events));
+        console.log(events);
+        console.log(localStorage.getItem('Event'));
+
+      }
+
+    )
   }
 
   ngOnInit() {

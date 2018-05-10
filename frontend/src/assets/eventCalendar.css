@@ -1,99 +1,108 @@
-/*= CORE CSS */
 
-.eventCalendar-hidden {
-	display: none;
+
+.calendar {
+  display: block;
+  width: 200px;
+  margin: 0 auto;
 }
 
-.eventCalendar-wrap {
-	position: relative;
-	overflow: hidden;
+.calendar-navs {
+  background-color: #F0F8FF;
 }
 
-.eventCalendar-arrow {
-	position: absolute;
-	z-index: 5;
-	top: 3px;
+.month-nav {
+  padding: 2px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-.eventCalendar-prev {
-	left: 3px;
+.year-nav {
+  padding: 2px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-family: 'Montserrat';
 }
 
-.eventCalendar-next {
-	right: 3px;
+.day-names {
+  display: flex;
+  flex-direction: row;
+  background: #A52A2A;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+.weeks {
+  display: flex;
+  flex-direction: column;
+}
+.week {
+  display: flex;
+  flex-direction: row;
+}
+.week-date,
+.day-name {
+  text-align: center;
+  padding: 2px;
+  display: block;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.eventCalendar-monthTitle {
-	display: block;
-	text-align: center;
+.week-date {
+  height: 30px;
+  position: relative;
+}
+.date-text {
+  z-index: 10;
+  font-size: 10px;
+  font-family: 'Montserrat', sans-serif;
 }
 
-.eventCalendar-monthWrap {
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 2;
+.week-date::after {
+  content: '';
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  transition: background-color 150ms linear, color 150ms linear;
+  z-index: 1;
 }
 
-.eventCalendar-currentMonth {
-	z-index: 1;
+.enabled {
+  cursor: pointer;
+}
+.enabled:hover {
+  background-color: #008B8B;
+}
+.enabled:after {
+  background-color: #008B8B;
+}
+.selected {
+  color: #7FFF00;
+}
+.selected:after {
+  background-color: #00008B;
+}
+.selected:hover {
+  background-color: #00008B;
+}
+.selected:after {
+  background-color: #00008B;
 }
 
-.eventCalendar-daysList {
-	display: table;
-	width: 100%;
+.disabled {
+  color: #FF1493;
 }
 
-.eventCalendar-showAsWeek {
-	display: block;
+
+.calendar.today {
+  font-weight: bold;
 }
 
-.eventCalendar-daysList li {
-	display: table-cell;
-}
 
-.eventCalendar-dayWithEvents {
-	background: rgba(0, 0, 0, 0.15);
-}
-
-.eventCalendar-current {
-	background: rgba(0, 0, 0, 0.35);
-}
-
-.eventCalendar-showAsWeek li {
-	display: block;
-	float: left;
-	width: 14.28%;
-	height: 20px;
-}
-
-.eventCalendar-daysList a {
-	padding: 0;
-	display: block;
-	text-align: center;
-	font-size: 8px;
-	min-width: 7px;
-}
-
-.eventCalendar-loading {
-	display: block;
-	min-width: 100px;
-	height: 40px;
-	line-height: 40px;
-}
-
-.eventCalendar-list {
-	position: relative;
-	z-index: 1;
-}
-
-.eventCalendar-oldEventList {
-	z-index: 2;
-}
-
-.eventCalendar-subtitle {
-	padding-left: 5px;
-	font-weight: bold;
-	font-size: 120%;
-}
-/* end of core CSS */

@@ -21,8 +21,7 @@
       "styles": [
         "styles.css",
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
-        "../src/assets/eventCalendar.css",
-        "../src/assets/eventCalendar_theme_responsive.css"
+        "../src/assets/eventCalendar.css"
       ],
       "scripts": [
         "../src/assets/jquery.js",

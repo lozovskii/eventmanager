@@ -42,6 +42,7 @@ import {InviteNotificationComponent} from './notifications/invite-notification/i
 import {NotificationContainerComponent} from './notifications/notification-container/notification-container.component';
 import {NotificationService} from "./_services/notification.service";
 import {FriendRequestNotificationComponent} from './notifications/friend-request-notification/friend-request-notification.component';
+import {CalendarComponent} from './home/calendar/calendar.component';
 
 @NgModule({
   imports: [
@@ -81,7 +82,8 @@ import {FriendRequestNotificationComponent} from './notifications/friend-request
     NotificationsHostDirective,
     InviteNotificationComponent,
     NotificationContainerComponent,
-    FriendRequestNotificationComponent
+    FriendRequestNotificationComponent,
+    CalendarComponent
   ],
   providers: [
     AuthGuard,
