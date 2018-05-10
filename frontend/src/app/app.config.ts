@@ -3,5 +3,5 @@ export const ALLOWED_IMG_FORMATS: string[] = [
   'jpeg',
   'jpg'
 ];
-
-export const MAX_IMG_SIZE: number = 1000000;
+ //** 1 MB **
+export const MAX_IMG_SIZE: number = 1048576;
