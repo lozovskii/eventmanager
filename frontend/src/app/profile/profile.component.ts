@@ -65,7 +65,7 @@ export class ProfileComponent implements OnInit {
         users => {
           this.users = users;
           if (users.toString() == '') {
-            this.alertService.info('You have no friends', true);
+            this.alertService.info('This user does not exist', true);
           }
         }
       )
