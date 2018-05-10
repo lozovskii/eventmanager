@@ -1,7 +1,6 @@
 package com.ncgroup2.eventmanager.dao.impl;
 
-import com.ncgroup2.eventmanager.dao.DAO;
-import com.ncgroup2.eventmanager.entity.Entity;
+import com.ncgroup2.eventmanager.dao.WishListDao;
 import com.ncgroup2.eventmanager.entity.Item;
 import com.ncgroup2.eventmanager.entity.WishList;
 import com.ncgroup2.eventmanager.mapper.WishListMapExtractor;
@@ -18,7 +17,7 @@ import java.util.*;
 
 @Repository
 @Transactional
-public class WishListDaoImpl extends JdbcDaoSupport implements DAO {
+public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
 
     @Autowired
     private DataSource dataSource;
@@ -108,9 +107,7 @@ public class WishListDaoImpl extends JdbcDaoSupport implements DAO {
     }
 
     @Override
-    public void update(Entity entity) {
-
-        WishList wishList = (WishList) entity;
+    public void update(WishList wishList) {
 
         String updateItem_WishListSql =
                 "UPDATE \"Item_WishList\" " +
@@ -188,12 +185,10 @@ public class WishListDaoImpl extends JdbcDaoSupport implements DAO {
      * Creates new entry in table "Event_WishList".
      * Expected that object "ItemWishListDto" has all required ties
      *
-     * @param entity Object "WishList"
+     * @param wishList Object "WishList"
      */
     @Override
-    public void create(Entity entity) {
-
-        WishList wishList = (WishList) entity;
+    public void create(WishList wishList) {
 
         List<ItemWishListDto> items = wishList.getItems();
 

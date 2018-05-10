@@ -46,6 +46,11 @@ export class WishListService {
     return this.http.post<WishList>(url, wishList, {headers: AuthenticationService.getAuthHeader()});
   }
 
+  addItems(wishList: WishList){
+    const url = `${this.wishListUrl}/add`;
+    return this.http.post<WishList>(url, wishList, {headers: AuthenticationService.getAuthHeader()});
+  }
+
   createItem(item: Item){
     const url = `api/items/create`;
     return this.http.post<Item>(url, item, {headers: AuthenticationService.getAuthHeader()});
