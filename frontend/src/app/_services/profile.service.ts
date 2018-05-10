@@ -38,7 +38,6 @@ export class ProfileService {
 
 
   search(request): Observable<User[]> {
-    console.log('Profile service: '+ request);
     return this.http.get<User[]>(
       `${this.url}/search?request=${request}`,
       {headers: AuthenticationService.getAuthHeader()});

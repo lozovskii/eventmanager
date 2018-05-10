@@ -62,7 +62,7 @@
   <div  class="col-md-2">
     <app-vnavbar></app-vnavbar>
   </div>
-  <main role="main" class="col-md-4">
+  <main role="main" class="col-md-3">
 
     <form method="post">
       <label>
@@ -96,8 +96,11 @@
       </div>
     </div>
   </main>
-  <div *ngIf="isSearchUser" role="main" class="col-md-6">
+  <div *ngIf="isSearchUser" role="main" class="col-md-7">
+
     <table class="table table-striped" style = "overflow-x: auto; display: block;">
+      <h4>Users:</h4>
+      <button class="btn btn-outline-success" (click)="closeUsers()">Close</button>
       <thead>
       <tr>
         <th scope="col">FirstName</th>

@@ -203,9 +203,11 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
                 return this.getJdbcTemplate().query(result, new CustomerMapper());
             } else {
+
                 return null;
             }
         } else if (search.equals("")) {
+            System.out.println("Equals = ");
             String query = "SELECT * FROM \"Customer\" WHERE login != '" +
                     SecurityContextHolder.getContext().getAuthentication().getName() + "'";
 
