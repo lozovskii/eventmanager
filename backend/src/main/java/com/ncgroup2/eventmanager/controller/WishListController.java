@@ -55,6 +55,10 @@ public class WishListController {
         wishListService.update(wishList);
     }
 
+    @PostMapping(value = "/add")
+    public void addItems(@RequestBody WishList wishList) {
 
+        wishListService.createWishlist(wishList);
+    }
 
 }

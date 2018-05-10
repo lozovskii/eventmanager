@@ -1,8 +1,6 @@
 package com.ncgroup2.eventmanager.dao.impl;
 
-import com.ncgroup2.eventmanager.dao.DAO;
 import com.ncgroup2.eventmanager.dao.WishListDao;
-import com.ncgroup2.eventmanager.entity.Entity;
 import com.ncgroup2.eventmanager.entity.Item;
 import com.ncgroup2.eventmanager.entity.WishList;
 import com.ncgroup2.eventmanager.mapper.WishListMapExtractor;
@@ -187,7 +185,7 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
      * Creates new entry in table "Event_WishList".
      * Expected that object "ItemWishListDto" has all required ties
      *
-     * @param entity Object "WishList"
+     * @param wishList Object "WishList"
      */
     @Override
     public void create(WishList wishList) {
