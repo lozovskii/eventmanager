@@ -3,6 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {User} from '../_models';
 import {UserService} from '../_services';
 import {Router} from "@angular/router";
+import {EventService} from "../_services";
 
 @Component({
   moduleId: module.id.toString(),
@@ -13,7 +14,8 @@ export class HomeComponent implements OnInit {
   currentUser: User;
 
   constructor(private userService: UserService,
-              private router: Router) {
+              private router: Router,
+              private eventService: EventService) {
     if(sessionStorage.getItem('currentUser')==null) {
       let login = JSON.parse(sessionStorage.getItem('currentToken')).login;
       this.userService.getByLogin(login).subscribe(
@@ -22,8 +24,24 @@ export class HomeComponent implements OnInit {
           this.currentUser = user;
           sessionStorage.setItem('currentUser', JSON.stringify(this.currentUser));
           console.log(this.currentUser.name);
+
         }
       );
+
+      this.eventService.getAllEvents().subscribe(
+
+        events => {
+
+          console.log(events);
+          localStorage.setItem('Event', JSON.stringify(events));
+
+          console.log(events);
+          console.log(localStorage.getItem('Event'));
+
+        }
+
+      )
+
     } else {
       this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
     }
@@ -32,6 +50,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
 
   }
+
 
   event() {
     console.log('onSubmit');

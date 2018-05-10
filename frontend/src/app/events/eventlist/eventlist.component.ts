@@ -60,6 +60,7 @@ export class EventlistComponent implements OnInit {
     this.eventService.getEventsByCustId()
       .subscribe((events) => {
         this.events = events;
+        console.log(this.events);
         if(events.toString() == ''){
           this.alertService.info('You have no events yet.',true);
         }
