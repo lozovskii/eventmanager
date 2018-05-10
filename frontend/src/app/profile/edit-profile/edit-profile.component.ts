@@ -24,26 +24,26 @@ export class EditProfileComponent implements OnInit {
               private userService: UserService,
               private alertService: AlertService,
               private router: Router,) {
-    let login = JSON.parse(localStorage.getItem('currentUser')).login;
-    this.userService.getByLogin(login).subscribe(
-      user => {
-        this.currentUser = user;
-        localStorage.setItem('currentUserObject', JSON.stringify(this.currentUser));
-      }
-    );
-    // if(sessionStorage.getItem('currentUser')==null) {
-    //   let login = JSON.parse(sessionStorage.getItem('currentToken')).login;
-    //   this.userService.getByLogin(login).subscribe(
-    //     user => {
-    //       console.log(user.name);
-    //       this.currentUser = user;
-    //       sessionStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-    //       console.log(this.currentUser.name);
-    //     }
-    //   );
-    // } else {
-    //   this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
-    // }
+    // let login = JSON.parse(localStorage.getItem('currentUser')).login;
+    // this.userService.getByLogin(login).subscribe(
+    //   user => {
+    //     this.currentUser = user;
+    //     localStorage.setItem('currentUserObject', JSON.stringify(this.currentUser));
+    //   }
+    // );
+    if(sessionStorage.getItem('currentUser')==null) {
+      let login = JSON.parse(sessionStorage.getItem('currentToken')).login;
+      this.userService.getByLogin(login).subscribe(
+        user => {
+          console.log(user.name);
+          this.currentUser = user;
+          sessionStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+          console.log(this.currentUser.name);
+        }
+      );
+    } else {
+      this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+    }
   }
 
 
