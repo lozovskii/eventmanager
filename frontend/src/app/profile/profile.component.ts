@@ -72,4 +72,10 @@ export class ProfileComponent implements OnInit {
     this.request = event.target.value;
     this.searchUser(this.request);
   }
+
+  addFriend(login: string) {
+    this.profileService.addFriend(login).subscribe(() => {
+      this.alertService.info(`Friendship request sent`);
+    });
+  }
 }
