@@ -28,5 +28,12 @@ export class FriendComponent implements OnInit {
       )
   }
 
+  deleteFriend(login: string, name: string, secondName: string) {
+    this.profileService.deleteFriend(login).subscribe(() => {
+      this.alertService.info(`${name} ${secondName} was removed from your friends list`);
+      location.reload(true);
+    });
+  }
+
   ngOnInit() {}
 }

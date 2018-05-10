@@ -51,6 +51,12 @@ export class ProfileService {
     return this.http.put(`${this.url}/update`, customer,{headers: AuthenticationService.getAuthHeader()});
   }
 
+  addFriend(login) {
+    return this.http.get(
+      `${this.url}/add?login=${login}`,
+      {headers: AuthenticationService.getAuthHeader()});
+  }
+
   acceptFriend(token) {
     return this.http.get(
       `${this.url}/accept?token=${token}`,
@@ -60,6 +66,12 @@ export class ProfileService {
   rejectFriend(token) {
     return this.http.get(
       `${this.url}/reject?token=${token}`,
+      {headers: AuthenticationService.getAuthHeader()});
+  }
+
+  deleteFriend(login) {
+    return this.http.delete(
+      `${this.url}/delete/${login}`,
       {headers: AuthenticationService.getAuthHeader()});
   }
 }
