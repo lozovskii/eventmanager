@@ -24,6 +24,7 @@ import {BookedItemsComponent} from "./wishlist/bookeditems/bookeditems.component
 import {FriendComponent} from "./profile/friend/friend.component";
 import {CreateItemComponent} from "./wishlist/create-item/create-item.component";
 import {CreatedItemsComponent} from "./wishlist/createdItems/createditems.component";
+import {AddItemsComponent} from "./wishlist/add-items/add-items.component";
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full'},
@@ -48,6 +49,7 @@ const appRoutes: Routes = [
   { path: 'booked-items', component: BookedItemsComponent, canActivate: [AuthGuard]},
   { path: 'create-item', component: CreateItemComponent, canActivate: [AuthGuard]},
   { path: 'created-items', component: CreatedItemsComponent, canActivate: [AuthGuard]},
+  { path: 'add-items/:id', component: AddItemsComponent, canActivate: [AuthGuard]},
 
   // otherwise redirect to home
  { path: '**', redirectTo: '' }

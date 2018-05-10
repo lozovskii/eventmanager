@@ -1,6 +1,6 @@
 package com.ncgroup2.eventmanager.service.impl;
 
-import com.ncgroup2.eventmanager.dao.impl.ItemDaoImpl;
+import com.ncgroup2.eventmanager.dao.ItemDao;
 import com.ncgroup2.eventmanager.dto.ItemTagDto;
 import com.ncgroup2.eventmanager.entity.Item;
 import com.ncgroup2.eventmanager.service.ItemService;
@@ -14,7 +14,7 @@ import java.util.List;
 public class ItemServiceImpl implements ItemService {
 
     @Autowired
-    ItemDaoImpl itemDao;
+    private ItemDao itemDao;
 
     public Item getItemById(String itemId){
 

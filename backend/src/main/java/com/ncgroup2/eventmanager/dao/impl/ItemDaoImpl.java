@@ -1,6 +1,7 @@
 package com.ncgroup2.eventmanager.dao.impl;
 
 import com.ncgroup2.eventmanager.dao.DAO;
+import com.ncgroup2.eventmanager.dao.ItemDao;
 import com.ncgroup2.eventmanager.dto.ItemTagDto;
 import com.ncgroup2.eventmanager.entity.Entity;
 import com.ncgroup2.eventmanager.entity.Item;
@@ -20,7 +21,7 @@ import java.util.*;
 
 @Repository
 @Transactional
-public class ItemDaoImpl extends JdbcDaoSupport implements DAO {
+public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
 
     @Autowired
     private DataSource dataSource;
@@ -92,9 +93,7 @@ public class ItemDaoImpl extends JdbcDaoSupport implements DAO {
     }
 
     @Override
-    public void update(Entity entity) {
-
-        Item item = (Item) entity;
+    public void update(Item item) {
 
         String itemUpdateSql =
                 "UPDATE \"Item\"" +
@@ -152,9 +151,7 @@ public class ItemDaoImpl extends JdbcDaoSupport implements DAO {
     }
 
     @Override
-    public void create(Entity entity) {
-
-        Item item = (Item) entity;
+    public void create(Item item) {
 
         String itemInsertSql =
                 "INSERT INTO \"Item\"" +

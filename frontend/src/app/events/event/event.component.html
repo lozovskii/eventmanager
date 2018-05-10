@@ -10,6 +10,9 @@
       <button *ngIf="isParticipant || isCreator"
               class="btn btn-outline-info"
               [routerLink]="['/wishlist',eventDTO.event.id]">Wish list</button>
+      <button *ngIf="isCreator"
+              class="btn btn-outline-info"
+              [routerLink]="['/add-items',eventDTO.event.id]">Add items to Wish list</button>
     </div>
 
     <div class="btn-group" role="group" *ngIf="!isCreator">

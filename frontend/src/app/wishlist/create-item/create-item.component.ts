@@ -11,8 +11,7 @@ import {Item} from "../../_models/item";
 
 @Component({
   selector: 'app-event',
-  templateUrl: './create-item.component.html',
-  styleUrls: ['./create-item.component.css']
+  templateUrl: './create-item.component.html'
 })
 export class CreateItemComponent implements OnInit {
 
