@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthenticationService} from "../_services/authentication.service";
-import {AlertService} from "../_services/alert.service";
+import {AlertService, AuthenticationService} from "../_services";
 import {NavbarService} from "../_services/navbar.service";
 
 
@@ -36,7 +35,7 @@ export class LoginComponent implements OnInit {
       password: this.model.password
     };
     this.authenticationService.login(userAuthParam)
-      .subscribe(data => {
+      .subscribe(() => {
           console.log('logged in with token ' + sessionStorage.getItem('currentToken'));
           this.loading = false;
           this.navbarService.setNavBarState(true);
@@ -44,7 +43,7 @@ export class LoginComponent implements OnInit {
         }
 
         , () => {
-          alert('Invalid credentials');
+          this.alertService.error('Invalid credentials');
           this.loading = false;
           return this.router.navigate(['/login']);
         });
