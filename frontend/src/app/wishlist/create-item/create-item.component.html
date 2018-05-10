@@ -4,7 +4,7 @@
   </div>
 
   <main role="main" class="col-md-6">
-    <h2>Create Item</h2>
+    <h2 class="text-center">Create Item</h2>
     <br>
     <form [formGroup]="mainForm" (ngSubmit)="createItem(itemForm.value)">
 
@@ -91,9 +91,9 @@
           Add image
         </button>
 
-        <div class="collapse" id="collapseExample">
-          <h4>Upload from computer</h4>
-          <div class="card">
+        <div class="collapse card" id="collapseExample">
+          <h5>Upload from computer</h5>
+          <div>
             <!--<input formControlName="image" type="file" class="form-control"-->
                    <!--accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,-->
             <!--text/plain, application/pdf, image/*" (change)="changeListener($event)">-->
@@ -108,8 +108,8 @@
             <button class="btn" (click)="onUpload()">Upload!</button>
           </div>
 
-          <h4>Upload by link</h4>
-          <div class="card">
+          <h5>Upload by link</h5>
+          <div>
             <input type="url" formControlName="imageUrl" class="form-control">
             <small class="text-muted">
               Must be 4-128 characters long.
