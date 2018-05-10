@@ -10,6 +10,7 @@
         <th scope="col">Name</th>
         <th scope="col">Phone</th>
         <th scope="col">Login</th>
+        <th scope="col">Action</th>
       </tr>
       </thead>
       <tbody>
@@ -17,6 +18,9 @@
         <td>{{friend.name}} {{friend.secondName}}</td>
         <td>{{friend.phone}}</td>
         <td>{{friend.login}}</td>
+        <td>
+          <button class="btn btn-outline-danger" (click)="deleteFriend(friend.login, friend.name, friend.secondName)">DELETE</button>
+        </td>
       </tr>
       </tbody>
     </table>

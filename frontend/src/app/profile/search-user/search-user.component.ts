@@ -26,9 +26,6 @@ export class SearchUserComponent implements OnInit {
       .subscribe(
         users => {
           this.users = users;
-          if (users.toString() == '') {
-            this.alertService.info('You have no friends', true);
-          }
         }
       )
   }

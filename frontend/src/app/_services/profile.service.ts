@@ -62,4 +62,10 @@ export class ProfileService {
       `${this.url}/reject?token=${token}`,
       {headers: AuthenticationService.getAuthHeader()});
   }
+
+  deleteFriend(login) {
+    return this.http.delete(
+      `${this.url}/delete/${login}`,
+      {headers: AuthenticationService.getAuthHeader()});
+  }
 }

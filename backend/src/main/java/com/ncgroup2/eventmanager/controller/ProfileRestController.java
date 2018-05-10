@@ -134,12 +134,12 @@ public class ProfileRestController {
         }
     }
 
-    @GetMapping(value = "delete", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public HttpStatus delete(@RequestParam String login) {
+    @DeleteMapping(value = "delete/{login}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public HttpStatus delete(@PathVariable String login) {
         try {
             customerService.delete(login);
 
-            return HttpStatus.OK;
+            return HttpStatus.NO_CONTENT;
         } catch (Throwable e) {
             return HttpStatus.BAD_REQUEST;
         }
