@@ -50,27 +50,33 @@ export class ProfileComponent implements OnInit {
 
 
   ngOnInit() {}
+  closeUsers() {
+    this.isSearchUser = false;
+    this.users = null;
+  }
 
   searchUser(request) {
-    if(this.request !== '') {
-      this.isSearchUser = true
-    }
+    // if(this.request !== '') {
+    //   this.isSearchUser = true
+    // }
     console.log(this.request)
     this.profileService.search(request)
       .subscribe(
         users => {
           this.users = users;
           if (users.toString() == '') {
-            this.alertService.info('You have no friends', true);
+            this.alertService.info('This user does not exist', true);
           }
         }
       )
   }
 
    onKeyUp(event){
+     this.isSearchUser = true;
     console.log(event.target.value)
     this.request = event.target.value;
     this.searchUser(this.request);
+
   }
 
   addFriend(login: string) {
