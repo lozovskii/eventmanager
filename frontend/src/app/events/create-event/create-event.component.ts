@@ -87,7 +87,7 @@ export class CreateEventComponent implements OnInit {
       eventDTO.event.startTime = null;
       eventDTO.event.endTime = null;
     }
-
+    eventDTO.additionEvent.people = this.selectedPeople;
     let customerId = this.userService.getCurrentId();
     eventDTO.event.creatorId = customerId;
     console.log(JSON.stringify(eventDTO));
@@ -95,7 +95,6 @@ export class CreateEventComponent implements OnInit {
       data => {
         if ((eventDTO.event.day != null) && (eventDTO.event.day != '')) {
           if (eventDTO.event.visibility == 'PUBLIC') {
-            eventDTO.additionEvent.people = this.selectedPeople;
             this.alertService.success('Public event successfully created! You can invite people to your event.', true);
             this.router.navigate(['../home']);
           } else {
