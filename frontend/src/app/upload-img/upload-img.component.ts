@@ -37,19 +37,8 @@ export class UploadImgComponent implements OnInit {
     //     localStorage.setItem('currentUserObject', JSON.stringify(this.currentUser));
     //   }
     // );
-    if(sessionStorage.getItem('currentUser')==null) {
-      let login = JSON.parse(sessionStorage.getItem('currentToken')).login;
-      this.userService.getByLogin(login).subscribe(
-        user => {
-          console.log(user.name);
-          this.currentUser = user;
-          sessionStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-          console.log(this.currentUser.name);
-        }
-      );
-    } else {
+
       this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
-    }
   }
 
 
@@ -109,6 +98,7 @@ export class UploadImgComponent implements OnInit {
     this.profileService.update(user)
       .subscribe(() => {
           this.alertService.success('User updated!', true);
+          sessionStorage.setItem('currentUser', JSON.stringify(user));
           setTimeout(() => this.router.navigate(["/profile"]), 500);
         },
         (error) => {

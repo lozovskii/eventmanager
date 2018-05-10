@@ -232,11 +232,15 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
     }
 
     @Override
-    public void addFriend(String login) {
-        if (!checkAddFriend(login)) {
-            Object[] params = new Object[]{SecurityContextHolder.getContext().getAuthentication().getName(), login, 1};
+    public synchronized void addFriend(String login) {
+        try {
+            if (!checkAddFriend(login)) {
+                Object[] params = new Object[]{SecurityContextHolder.getContext().getAuthentication().getName(), login, 1};
 
-            this.getJdbcTemplate().update(addFriend, params);
+                this.getJdbcTemplate().update(addFriend, params);
+            }
+        } catch (Exception e) {
+            System.out.println("Unique columns");
         }
     }
 
