@@ -5,7 +5,7 @@ import {Item} from "../../_models/item";
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-bookeditems',
+  selector: 'app-createditems',
   templateUrl: './createditems.component.html',
   styleUrls: ['../wishlist.component.css']
 })
