@@ -10,6 +10,7 @@
         <th scope="col">Name</th>
         <th scope="col">Phone</th>
         <th scope="col">Login</th>
+        <th scope="col">Avatar</th>
         <th scope="col">Action</th>
       </tr>
       </thead>
@@ -18,6 +19,7 @@
         <td>{{friend.name}} {{friend.secondName}}</td>
         <td>{{friend.phone}}</td>
         <td>{{friend.login}}</td>
+        <img src={{friend.avatar}} height="55" width="50" class="center-img">
         <td>
           <button class="btn btn-outline-danger" (click)="deleteFriend(friend.login, friend.name, friend.secondName)">DELETE</button>
         </td>
