@@ -1,0 +1,108 @@
+
+
+.calendar {
+  display: block;
+  width: 350px;
+  margin: 0 auto;
+}
+
+.calendar.calendar-navs {
+  background-color: #F0F8FF;
+}
+
+.calendar.month-nav {
+  padding: 2px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.calendar.year-nav {
+  padding: 2px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-family: 'Montserrat';
+}
+
+.calendar.month-grid.day-names {
+  display: flex;
+  flex-direction: row;
+  background: #A52A2A;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+.calendar.month-grid.weeks {
+  display: flex;
+  flex-direction: column;
+}
+.calendar.month-grid.week {
+  display: flex;
+  flex-direction: row;
+}
+.calendar.month-grid.week-date,
+.calendar.month-grid.day-name {
+  text-align: center;
+  padding: 2px;
+  display: block;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.calendar.month-grid.week-date {
+  height: 30px;
+  position: relative;
+}
+.calendar.month-grid.week-date.date-text {
+  z-index: 10;
+  font-size: 10px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.calendar.month-grid.week-date::after {
+   content: '';
+   height: 30px;
+   width: 30px;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   border-radius: 50%;
+   transition: background-color 150ms linear, color 150ms linear;
+   z-index: 1;
+ }
+
+.calendar.month-grid.week-date.enabled {
+  cursor: pointer;
+}
+.calendar.month-grid.week-date.enabled:hover {
+  background-color: #008B8B;
+}
+.calendar.month-grid.week-date.enabled:after {
+  background-color: #008B8B;
+}
+.calendar.month-grid.week-date.selected {
+  color: #7FFF00;
+}
+.calendar.month-grid.week-date.selected:after {
+   background-color: #00008B;
+ }
+.calendar.month-grid.week-date.selected:hover {
+  background-color: #00008B;
+}
+.calendar.month-grid.week-date.selected:after {
+  background-color: #00008B;
+}
+
+.calendar.month-grid.disabled {
+   color: #FF1493;
+ }
+
+
+.calendar.today {
+  font-weight: bold;
+}
+
+
