@@ -39,12 +39,10 @@ export class WishListComponent implements OnInit {
       .subscribe((wishList) => {
           this.wishlist = wishList;
 
-        }, (error) => {
-
-        this.location.back();
-
-        this.alertService.info('Wish list not found',true);
         }
+        // , (error) => {
+        // this.alertService.info('Wish list not found',true);
+        // }
       );
   }
 
