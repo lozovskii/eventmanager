@@ -2,19 +2,16 @@ package com.ncgroup2.eventmanager.service.impl;
 
 import com.ncgroup2.eventmanager.dao.CustomerDao;
 import com.ncgroup2.eventmanager.dao.EventDao;
-import com.ncgroup2.eventmanager.dto.EventCountdownDTO;
-import com.ncgroup2.eventmanager.dto.EventDTO;
-import com.ncgroup2.eventmanager.dto.InviteNotificationDTO;
+import com.ncgroup2.eventmanager.dto.*;
 import com.ncgroup2.eventmanager.entity.Event;
 import com.ncgroup2.eventmanager.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -33,8 +30,8 @@ public class EventServiceImpl implements EventService {
     public void createEvent(EventDTO eventDTO) {
         Event event = eventDTO.getEvent();
         Object[] frequancy = checkDefaultCustEventFrequency(eventDTO);
-        Long frequencyNumber = (Long)frequancy[0];
-        String frequencyPeriod = (String)frequancy[1];
+        Long frequencyNumber = (Long) frequancy[0];
+        String frequencyPeriod = (String) frequancy[1];
 
         String priority = checkDefaultCustEventPriority(eventDTO);
         String status = checkDefaultEventStatus(eventDTO);
@@ -47,8 +44,8 @@ public class EventServiceImpl implements EventService {
         UUID groupId = UUID.randomUUID();
         UUID eventId = UUID.randomUUID();
 
-        if(status.equals(EVENT_STATUS_EVENT)) {
-            if((frequencyNumber != null) && (frequencyPeriod != null)){
+        if (status.equals(EVENT_STATUS_EVENT)) {
+            if ((frequencyNumber != null) && (frequencyPeriod != null)) {
                 for (int i = 0; i <= 10; i++) {
                     String startFrequencyPeriod = frequencyPeriod;
                     frequencyPeriod = i * frequencyNumber + " " + frequencyPeriod;
@@ -56,36 +53,31 @@ public class EventServiceImpl implements EventService {
                     createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
                     frequencyPeriod = startFrequencyPeriod;
                 }
-            }else{
-                createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId,eventId);
+            } else {
+                createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
             }
-        }else{
-            if((frequencyNumber != null) && (frequencyPeriod != null)) {
+        } else {
+            if ((frequencyNumber != null) && (frequencyPeriod != null)) {
                 frequencyPeriod = frequencyNumber + " " + frequencyPeriod;
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
-            }else{
-                createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId,eventId);
+            } else {
+                createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
             }
         }
-        List loginList = isCustomersExist(eventDTO.getAdditionEvent().getPeople());
-        createEventInvitations(loginList,eventId);
+        List loginList = getExistingCustomers(eventDTO.getAdditionEvent().getPeople());
+        createEventInvitations(loginList, eventId);
+    }
+
+
+    private List<String> getExistingCustomers(List<String> logins) {
+        return logins.stream()
+                .filter(login -> customerDao.isCustomerExist(login))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List isCustomersExist(List<String> login) {
-        List<String> verifiedCustomers = new ArrayList<>();
-        IntStream.range(0, login.size()).forEach(i -> {
-            boolean custStatus = customerDao.isCustomerExist(login.get(i));
-            if (custStatus) {
-                verifiedCustomers.add(login.get(i));
-            }
-        });
-        return verifiedCustomers;
-    }
-
-    @Override
-    public void createEventInvitations(List<String> login, UUID eventId) {
-        IntStream.range(0, login.size()).forEach(i -> eventDao.createEventInvitation(login.get(i), eventId));
+    public void createEventInvitations(List<String> logins, UUID eventId) {
+        logins.forEach(login -> eventDao.createEventInvitation(login, eventId));
     }
 
     @Override
@@ -94,12 +86,31 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Event getEventById(String eventId) {
-        return eventDao.getById(eventId);
+    public EventDTO getEventById(String eventId) {
+        Event event = eventDao.getEventById(eventId);
+        AdditionalEventModelDTO additionalEventModelDTO = eventDao.getAdditionById(eventId);
+        EventDTO eventDTO = new EventDTO();
+        eventDTO.setEvent(event);
+        eventDTO.setAdditionEvent(additionalEventModelDTO);
+        return eventDTO;
     }
 
+    @Override
     public void deleteEventById(String eventId) {
         eventDao.deleteEventById(eventId);
+    }
+
+    @Override
+    public void updateEvent(UpdateEventDTO eventDTO) {
+        Event event = eventDTO.getEvent();
+        String priority = eventDTO.getPriority();
+        eventDao.updateEvent(event, priority);
+
+        getExistingCustomers(eventDTO.getNewPeople()).
+                forEach(login -> eventDao.createEventInvitation(login,UUID.fromString(event.getId())));
+
+        eventDTO.getRemovedPeople().
+                forEach(login -> eventDao.removeParticipant(login, event.getId()));
     }
 
     @Override
@@ -127,23 +138,18 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> getDraftsByCustId(String custId){
+    public List<Event> getDraftsByCustId(String custId) {
         return eventDao.getDraftsByCustId(custId);
     }
 
     @Override
-    public List<Event> getNotesByCustId(String custId){
+    public List<Event> getNotesByCustId(String custId) {
         return eventDao.getNotesByCustId(custId);
     }
 
     @Override
-    public List<Event> getInvitesByCustId(String custId){
+    public List<Event> getInvitesByCustId(String custId) {
         return eventDao.getInvitesByCustId(custId);
-    }
-
-    @Override
-    public List<InviteNotificationDTO> getInviteNotifications(String customerId) {
-        return eventDao.getInviteNotifications(customerId);
     }
 
 
@@ -151,7 +157,7 @@ public class EventServiceImpl implements EventService {
         Long frequencyNumber = eventDTO.getAdditionEvent().getFrequencyNumber();
         String frequencyPeriod = eventDTO.getAdditionEvent().getFrequencyPeriod();
         Object[] list = new Object[2];
-        if((frequencyNumber!=null)&&(!frequencyPeriod.equals(""))){
+        if ((frequencyNumber != null) && (!frequencyPeriod.equals(""))) {
             frequencyPeriod = eventDTO.getAdditionEvent().getFrequencyPeriod();
             frequencyNumber = eventDTO.getAdditionEvent().getFrequencyNumber();
         }
@@ -162,9 +168,9 @@ public class EventServiceImpl implements EventService {
 
     private String checkDefaultCustEventPriority(EventDTO eventDTO) {
         String priority;
-        if(!eventDTO.getAdditionEvent().getPriority().equals("")){
+        if (!eventDTO.getAdditionEvent().getPriority().equals("")) {
             priority = eventDTO.getAdditionEvent().getPriority();
-        }else {
+        } else {
             priority = CUSTOMER_EVENT_PRIORITY_LOW;
         }
         return priority;
@@ -172,12 +178,12 @@ public class EventServiceImpl implements EventService {
 
     private String checkDefaultEventStatus(EventDTO eventDTO) {
         String status;
-        if(eventDTO.getEvent().getStatus() !=null){
+        if (eventDTO.getEvent().getStatus() != null) {
             status = eventDTO.getEvent().getStatus();
-        }else{
-            if((eventDTO.getEvent().getStartTime() != null) && (eventDTO.getEvent().getEndTime() != null)) {
+        } else {
+            if ((eventDTO.getEvent().getStartTime() != null) && (eventDTO.getEvent().getEndTime() != null)) {
                 status = EVENT_STATUS_EVENT;
-            }else {
+            } else {
                 status = EVENT_STATUS_NOTE;
             }
         }
@@ -186,9 +192,9 @@ public class EventServiceImpl implements EventService {
 
     private String checkDefaultCustEventVisibility(EventDTO eventDTO) {
         String visibility;
-        if(eventDTO.getEvent().getVisibility() == null) {
+        if (eventDTO.getEvent().getVisibility() == null) {
             visibility = EVENT_VISIBILITY_PRIVATE;
-        }else {
+        } else {
             visibility = eventDTO.getEvent().getVisibility();
         }
         return visibility;
@@ -196,17 +202,22 @@ public class EventServiceImpl implements EventService {
 
     private void createEventByTime(Event event, int visibilityId, int statusId, String frequencyPeriod,
                                    UUID groupId, int priorityId, UUID eventId) {
-        if((event.getStartTime() == null) && (event.getEndTime() == null)) {
+        if ((event.getStartTime() == null) && (event.getEndTime() == null)) {
             eventDao.createEventWithoutTime(event, visibilityId, statusId, groupId, priorityId,
-                        eventId);
-        }else{
-            if((frequencyPeriod == null) || (frequencyPeriod.equals(""))){
+                    eventId);
+        } else {
+            if ((frequencyPeriod == null) || (frequencyPeriod.equals(""))) {
                 eventDao.createEventWithoutTime(event, visibilityId, statusId, groupId, priorityId,
                         eventId);
-            }else {
+            } else {
                 eventDao.createEvent(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
             }
         }
+    }
+
+    @Override
+    public List<InviteNotificationDTO> getInviteNotifications(String customerId) {
+        return eventDao.getInviteNotifications(customerId);
     }
 
 }

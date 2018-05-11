@@ -1,6 +1,7 @@
 package com.ncgroup2.eventmanager.dao.impl;
 
 import com.ncgroup2.eventmanager.dao.EventDao;
+import com.ncgroup2.eventmanager.dto.AdditionalEventModelDTO;
 import com.ncgroup2.eventmanager.dto.EventCountdownDTO;
 import com.ncgroup2.eventmanager.dto.InviteNotificationDTO;
 import com.ncgroup2.eventmanager.entity.Event;
@@ -83,6 +84,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         this.getJdbcTemplate().update(query, params);
     }
 
+    @Override
     public void deleteEventById(String eventId) {
         String query = queryService.getQuery("event.deleteById");
         Object[] params = new Object[]{
@@ -90,6 +92,26 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         };
         this.getJdbcTemplate().update(query, params);
     }
+
+    @Override
+    public void updateEvent(Event event, String priority) {
+        String event_query = queryService.getQuery("event.updateById");
+        Object[] event_params = new Object[]{
+                event.getName(),
+                event.getDescription(),
+                event.getStartTime(),
+                event.getEndTime(),
+                event.getId()
+        };
+        this.getJdbcTemplate().update(event_query, event_params);
+        String customer_event_query = queryService.getQuery("customer_event.updatePriorityByEventId");
+        Object[] customer_event_params = new Object[]{
+                priority,
+                event.getId()
+        };
+        this.getJdbcTemplate().update(customer_event_query, customer_event_params);
+    }
+
 
     @Override
     public int getStatusId(String fieldValue) {
@@ -155,22 +177,6 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     }
 
     @Override
-    public List<InviteNotificationDTO> getInviteNotifications(String customerId) {
-        String query = queryService.getQuery("customer_event.getInvites");
-        Object[] params = new Object[]{
-                customerId
-        };
-
-        return this.getJdbcTemplate().query(query, params, (resultSet, i) -> {
-            InviteNotificationDTO notification = new InviteNotificationDTO();
-            notification.setEventId(resultSet.getString("event_id"));
-            notification.setEventName(resultSet.getString("event_name"));
-            notification.setInviter(resultSet.getString("name") + " " + resultSet.getString("second_name"));
-            return notification;
-        });
-    }
-
-    @Override
     public void createEventInvitation(String login, UUID eventId) {
         String query = queryService.getQuery("event.createInvitation");
         Object[] params = new Object[]{
@@ -192,20 +198,27 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     }
 
     @Override
-    public Event getById(String id) {
-        String sql = "SELECT \"Event\".id AS id, \"Event\".creator_id AS creator_id, \"Event\".name AS name, " +
-                "start_time, end_time, \"Event\".description AS description," +
-                "\"Event_Visibility\".name AS visibility " +
-                "FROM (\"Event\" INNER JOIN \"Event_Visibility\" " +
-                "ON \"Event\".visibility = \"Event_Visibility\".id) " +
-                "WHERE \"Event\".id  = CAST(? AS UUID) " +
-                "AND start_time IS NOT NULL " +
-                "AND end_time IS NOT NULL";
-
+    public Event getEventById(String eventId) {
+        String query = queryService.getQuery("event.getEventById");
         Object[] params = new Object[]{
-                id
+                eventId
         };
-        List<Event> list = this.getJdbcTemplate().query(sql, params, new BeanPropertyRowMapper(Event.class));
+        List<Event> list = this.getJdbcTemplate().query(query, params, new BeanPropertyRowMapper(Event.class));
+        if (!list.isEmpty()) {
+            return list.iterator().next();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public AdditionalEventModelDTO getAdditionById(String eventId) {
+        String query = queryService.getQuery("event.getAdditionById");
+        Object[] params = new Object[]{
+                eventId
+        };
+        List<AdditionalEventModelDTO> list = this.getJdbcTemplate().query(query, params,
+                new BeanPropertyRowMapper(AdditionalEventModelDTO.class));
         if (!list.isEmpty()) {
             return list.iterator().next();
         } else {
@@ -263,6 +276,22 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     }
 
     @Override
+    public List<InviteNotificationDTO> getInviteNotifications(String customerId) {
+        String query = queryService.getQuery("customer_event.getInvites");
+        Object[] params = new Object[]{
+                customerId
+        };
+
+        return this.getJdbcTemplate().query(query, params, (resultSet, i) -> {
+            InviteNotificationDTO notification = new InviteNotificationDTO();
+            notification.setEventId(resultSet.getString("event_id"));
+            notification.setEventName(resultSet.getString("event_name"));
+            notification.setInviter(resultSet.getString("name") + " " + resultSet.getString("second_name"));
+            return notification;
+        });
+    }
+
+    @Override
     public boolean isParticipant(String customerId, String eventId) {
         String sql = "SELECT * FROM \"Customer_Event\" WHERE event_id = cast (? AS UUID)" +
                 " AND customer_id = cast(? AS UUID) AND status = (SELECT id FROM \"Customer_Event_Status\" WHERE name ='ACCEPTED')";
@@ -303,12 +332,12 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
                 "                                                                           from \"Customer_Event_Status\"\n" +
                 "                                                                           where name = 'ACCEPTED'))";
         Object[] params = new Object[]{
-            customerId,
+                customerId,
                 eventId,
                 new Timestamp(startDateNotifications.toEpochMilli()),
                 priority
         };
-        this.getJdbcTemplate().update(sql,params);
+        this.getJdbcTemplate().update(sql, params);
     }
 
     private void updateParticipant(String customerId, String eventId, Instant startDateNotifications, int priority) {
@@ -319,14 +348,14 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
                 "                                   FROM \"Customer_Event_Status\"\n" +
                 "                                   WHERE name = 'ACCEPTED')\n" +
                 "    WHERE customer_id = cast(? as uuid) AND event_id = cast(? as uuid)";
-        Object[] params = new Object[] {
+        Object[] params = new Object[]{
                 new Timestamp(startDateNotifications.toEpochMilli()),
                 priority,
                 customerId,
                 eventId
         };
 
-        this.getJdbcTemplate().update(sql,params);
+        this.getJdbcTemplate().update(sql, params);
     }
 
     private boolean isCustomerEventPresent(String customerId, String eventId) {
@@ -374,4 +403,3 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     }
 
 }
-

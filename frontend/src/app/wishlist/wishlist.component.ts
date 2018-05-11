@@ -5,6 +5,7 @@ import {AlertService} from "../_services/alert.service";
 import {WishListService} from "../_services/wishlist.service";
 import {UserService} from "../_services/user.service";
 import {ItemDto} from "../_models/dto/itemDto";
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-wishlist',
@@ -14,37 +15,50 @@ import {ItemDto} from "../_models/dto/itemDto";
 export class WishListComponent implements OnInit {
   wishlist: WishList;
   hasChanges: boolean = false;
+  path: string[] = ['name'];
+  order: number = 1; // 1 asc, -1 desc;
 
   constructor(private wishListService: WishListService,
               private userService: UserService,
               private activatedRoute: ActivatedRoute,
-              private router: Router,
-              private alertService : AlertService) {
+              private alertService: AlertService,
+              private location: Location) {
   }
 
   ngOnInit() {
+    this.wishlist = new WishList();
+
     this.activatedRoute.params.subscribe(params => {
       let eventId = params['id'];
       this.getWishListByEventId(eventId);
     });
   }
 
-  getWishListByEventId(eventId : string): void {
+  getWishListByEventId(eventId: string): void {
     this.wishListService.getByEventId(eventId)
       .subscribe((wishList) => {
-        this.wishlist = wishList;
+          this.wishlist = wishList;
 
-        if(this.wishlist == null){
-          this.alertService.info('Wish list not found',true);
+        }, (error) => {
+
+        this.location.back();
+
+        this.alertService.info('Wish list not found',true);
         }
-      });
+      );
   }
 
-  bookItem(item : ItemDto) : void {
+  bookItem(item: ItemDto): void {
 
-    item.booker_customer_id = this.userService.getCurrentId()
+    item.booker_customer_login = this.userService.getCurrentLogin();
 
     this.hasChanges = true;
+  }
+
+  sortItems(prop: string) {
+    this.path = prop.split('.');
+    this.order = this.order * (-1); // change order
+    return false; // do not reload
   }
 
   // setPriority(item : ItemDto, priority : any) : void{
@@ -52,20 +66,16 @@ export class WishListComponent implements OnInit {
   //   this.hasChanges = true;
   // }
 
-  update() : void{
+  update(): void {
     this.wishListService.update(this.wishlist).subscribe(data => {
 
-      this.alertService.success('Wishlist successfully updated!',
-        true);
+      this.alertService.success('Wish list successfully updated!');
+    }, error2 => {
+      this.alertService.error('Something wrong');
     });
   }
 
-  isBooker(bookerId : string): boolean{
-    return bookerId ? this.wishListService.isBooker(bookerId) : false;
+  isBooker(bookerLogin: string): boolean {
+    return bookerLogin ? this.wishListService.isBooker(bookerLogin) : false;
   }
-
-  //TODO: getBookerByLogin. In the itemDto add field login. In DaoImpl + return login
-  // getBookerName() : string{
-  //   return ;
-  // }
 }

@@ -4,12 +4,18 @@
   </div>
 
   <main role="main" class="col-md-9">
-    <div *ngIf="isCreator">
+    <div class="btn-group" role="group" *ngIf="isCreator">
       <button class="btn btn-outline-info" [routerLink]="['/update-event',eventDTO.event.id]">Edit</button>
       <button class="btn btn-outline-danger" (click)="delete()">Delete</button>
+      <button *ngIf="isParticipant || isCreator"
+              class="btn btn-outline-info"
+              [routerLink]="['/wishlist',eventDTO.event.id]">Wish list</button>
+      <button *ngIf="isCreator"
+              class="btn btn-outline-info"
+              [routerLink]="['/add-items',eventDTO.event.id]">Add items to Wish list</button>
     </div>
 
-    <div *ngIf="!isCreator">
+    <div class="btn-group" role="group" *ngIf="!isCreator">
       <div *ngIf="isParticipant">
         You've joined this event.
         <button class="btn btn-outline-danger" (click)="removeParticipant()">Leave</button>
@@ -17,10 +23,6 @@
       <div *ngIf="!isParticipant">
         <button class="btn btn-outline-success" (click)="addParticipant()">Join event</button>
       </div>
-    </div>
-
-    <div *ngIf="isParticipant || isCreator">
-        <button class="btn btn-outline-info" [routerLink]="['/wishlist',eventDTO.event.id]">Wish list</button>
     </div>
 
     <p> Name = {{eventDTO.event.name}}</p>

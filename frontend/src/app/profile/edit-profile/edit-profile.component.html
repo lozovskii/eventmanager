@@ -1,16 +1,15 @@
 <div class="row">
-  <div  class="col-md-3">
+  <div  class="col-md-2">
     <app-vnavbar></app-vnavbar>
   </div>
 
   <main role="main" class="col-md-9">
-    <!--<form [formGroup]="profileForm" (ngSubmit)="profileForm(currentUser)">-->
-    <form>
+    <form [formGroup]="profileForm" (ngSubmit)="(currentUser)">
 
       <div class="col-md-4">
         <div class="form-group">
           <label>First Name</label>
-          <input formControlName="name" type="text" class="form-control" [(ngModel)]="currentUser.name" required/>
+          <input formControlName="name" type="text" class="form-control"  required minlength="3" maxlength="15" [(ngModel)]="currentUser.name"/>
         </div>
         <div class="form-group">
           <label>Last Name</label>
@@ -20,6 +19,7 @@
           <label>Phone</label>
           <input formControlName="phone" id="phone" type="text" class="form-control" [(ngModel)]="currentUser.phone" required/>
         </div>
+
         <form method="post">
           <div class="form-group">
             <button class="btn btn-primary" (click)="updateUser(currentUser)" >Save</button>

@@ -4,14 +4,28 @@
   </div>
 
   <main role="main" class="col-md-9">
+    <h2 class="text-center">Wish List</h2>
+    <br>
+    <div class="dropdown">
+      <button class="btn btn-outline-info btn-sm  dropdown-toggle" href="#"
+              role="button" id="dropdownMenuLink" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false" type="button"
+              [disabled] = "wishlist.items.length <= 1">
+        Sort by:
+      </button>
 
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" (click)="sortItems('name')">Name</a>
+        <a class="dropdown-item" (click)="sortItems('priority')">Priority</a>
+        <a class="dropdown-item" (click)="sortItems('dueDate')">Due date</a>
+      </div>
+    </div>
 
     <div class="row">
       <div class="col-4">
         <div class="list-group" id="list-tab" role="tablist">
-          <a *ngFor="let itemDto of wishlist.items; let i = index;"
+          <a *ngFor="let itemDto of wishlist.items | sortingItems:path:order; let i = index;"
              class="list-group-item list-group-item-action"
-             [ngClass]="{'active' : i == 0}"
              id="list-home-list"
              data-toggle="list" href="#list{{i}}" role="tab"
              aria-controls="home">
@@ -20,11 +34,11 @@
 
               <div class="select-style"
                    [style.background-color]="
-                    itemDto.priority === 1 ? 'red':
+                    itemDto.priority === 1 ? '#d14242':
                     itemDto.priority === 2 ? 'green':'gray'">
 
 
-                <select *ngIf="isBooker(itemDto.booker_customer_id)"
+                <select *ngIf="isBooker(itemDto.booker_customer_login)"
                         (change)="hasChanges = true">
 
                   <option value="1" (click)="itemDto.priority = 1">High</option>
@@ -63,9 +77,7 @@
 
               <h5 class="card-title"> {{itemDto.item.name}}</h5>
               <h6 class="card-subtitle mb-2 text-muted">{{itemDto.item.dueDate}}</h6>
-              <p class="card-text">{{itemDto.item.description}}<br>
-                Some quick example text to build on the card title
-                and make up the bulk of the card's content.</p>
+              <p class="card-text">{{itemDto.item.description}}</p>
 
               <a *ngIf="itemDto.item.link"
                  href="{{itemDto.item.link}}"
@@ -74,12 +86,16 @@
 
             <div class="card-footer">
               <small class="text-muted">
-                <a href="#" class="card-link"
-                   *ngIf="!itemDto.booker_customer_id"
-                   (click)="bookItem(itemDto)">book it</a>
+                <button href="#" class="btn card-link"
+                        *ngIf="!itemDto.booker_customer_login"
+                        (click)="bookItem(itemDto)">book it
+                </button>
               </small>
 
-              <small class="text-muted">Booker: {{itemDto.booker_customer_id}}</small>
+              <small *ngIf="itemDto.booker_customer_login"
+                     class="text-muted">
+                Booker: {{itemDto.booker_customer_login}}
+              </small>
 
             </div>
           </div>
@@ -115,11 +131,11 @@
     <!--<td>{{itemDto.item.dueDate}}</td>-->
     <!--<td>-->
 
-    <!--<a *ngIf="!itemDto.booker_customer_id"-->
+    <!--<a *ngIf="!itemDto.booker_customer_login"-->
     <!--style="cursor: pointer; color:#666699;"-->
     <!--(click)="bookItem(itemDto)"> book it</a>-->
 
-    <!--{{itemDto.booker_customer_id}}-->
+    <!--{{itemDto.booker_customer_login}}-->
     <!--</td>-->
 
     <!--<td align="center">-->
@@ -132,7 +148,7 @@
     <!--itemDto.priority === 2 ? 'green':'gray'">-->
 
 
-    <!--<select *ngIf="isBooker(itemDto.booker_customer_id)"-->
+    <!--<select *ngIf="isBooker(itemDto.booker_customer_login)"-->
     <!--(change)="hasChanges = true">-->
 
     <!--<option value="1" (click)="itemDto.priority = 1">High</option>-->

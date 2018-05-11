@@ -1,6 +1,6 @@
 package com.ncgroup2.eventmanager.service.impl;
 
-import com.ncgroup2.eventmanager.dao.impl.WishListDaoImpl;
+import com.ncgroup2.eventmanager.dao.WishListDao;
 import com.ncgroup2.eventmanager.entity.WishList;
 import com.ncgroup2.eventmanager.service.WishListService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class WishListServiceImpl implements WishListService{
 
     @Autowired
-    private WishListDaoImpl wishListDao;
+    private WishListDao wishListDao;
 
     public WishList getById(String wishlist_id){
 
@@ -22,9 +22,9 @@ public class WishListServiceImpl implements WishListService{
         return wishListDao.getEntityByField("event_id", event_id);
     }
 
-    public WishList getBookedItems(String booker_customer_id){
+    public WishList getBookedItems(String booker_customer_login){
 
-        return wishListDao.getEntityByField("booker_customer_id", booker_customer_id);
+        return wishListDao.getEntityByField("booker_customer_login", booker_customer_login);
     }
 
     public void createWishlist(WishList wishList){

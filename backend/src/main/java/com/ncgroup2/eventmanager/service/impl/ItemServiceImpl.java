@@ -1,22 +1,29 @@
 package com.ncgroup2.eventmanager.service.impl;
 
-import com.ncgroup2.eventmanager.dao.impl.ItemDaoImpl;
+import com.ncgroup2.eventmanager.dao.ItemDao;
 import com.ncgroup2.eventmanager.dto.ItemTagDto;
 import com.ncgroup2.eventmanager.entity.Item;
+import com.ncgroup2.eventmanager.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
-public class ItemServiceImpl {
+public class ItemServiceImpl implements ItemService {
 
     @Autowired
-    ItemDaoImpl itemDao;
+    private ItemDao itemDao;
 
     public Item getItemById(String itemId){
 
         return itemDao.getById(itemId);
+    }
+
+    public Collection<Item> getCreatedItems(String creatorId){
+
+        return itemDao.getCreatedItems(creatorId);
     }
 
     public void createItem(Item item){
@@ -24,9 +31,9 @@ public class ItemServiceImpl {
         itemDao.create(item);
     }
 
-    public void createItems(List<Item> items){
+    public void createItems(Collection<Item> items){
 
-        itemDao.createItems(items);
+        itemDao.createItems((List<Item>) items);
     }
 
     public void updateItemByField(String itemId, String fieldName, String fieldValue){
@@ -34,14 +41,14 @@ public class ItemServiceImpl {
         itemDao.updateField(itemId, fieldName, fieldValue);
     }
 
-    public void removeTags(List<ItemTagDto> trash){
+    public void removeTags(Collection<ItemTagDto> trash){
 
-        itemDao.deleteTags(trash);
+        itemDao.deleteTags((List<ItemTagDto>)trash);
     }
 
-    public void addTags(List<ItemTagDto> tags, String itemId){
+    public void addTags(Collection<ItemTagDto> tags, String itemId){
 
-        itemDao.addTags(tags, itemId);
+        itemDao.addTags((List<ItemTagDto>)tags, itemId);
     }
 
 }

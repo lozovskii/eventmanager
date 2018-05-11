@@ -124,8 +124,8 @@ export class CreateEventComponent implements OnInit {
     let customerId = this.userService.getCurrentId();
     eventDTO.event.creatorId = customerId;
     this.eventService.create(eventDTO).subscribe(data => {
-            this.alertService.success('Draft successfully saved!', true);
-            this.router.navigate(['../home']);
+        this.alertService.success('Draft successfully saved!', true);
+        this.router.navigate(['../home']);
       },
       error => {
         this.alertService.error('Not saved! We working.. please try again');

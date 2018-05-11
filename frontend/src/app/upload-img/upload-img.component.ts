@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {HttpClient, HttpEventType} from "@angular/common/http";
-import {UserService} from "../_services";
+// Base 64 IMage display issues with unsafe image
+import { DomSanitizer } from '@angular/platform-browser';
 import {User} from "../_models";
+import {AlertService, UserService} from "../_services";
+import {ProfileService} from "../_services/profile.service";
 import {Router} from "@angular/router";
+import {MAX_IMG_SIZE} from "../app.config";
+import {ALLOWED_IMG_FORMATS} from "../app.config";
+
 
 @Component({
   selector: 'app-upload-img',
@@ -10,64 +15,95 @@ import {Router} from "@angular/router";
   styleUrls: ['./upload-img.component.css']
 })
 export class UploadImgComponent implements OnInit {
-  // file: File;
-  selectedFile: File = null;
 
-  addCarStatus = ''
-  inputText = 'Defaut text'
+  allowedFormats: string[] =  ALLOWED_IMG_FORMATS;
+  maxImageSize = MAX_IMG_SIZE;
+  base64Image: string;
   currentUser: User;
+  loading = true;
 
-  constructor(
-    private http: HttpClient,
-    private userService: UserService,
-    private router: Router) {
-    let login = JSON.parse(localStorage.getItem('currentUser')).login;
-    this.userService.getByLogin(login).subscribe(
-      user => {
-        console.log(user.name);
-        this.currentUser = user;
-        localStorage.setItem('currentUserObject', JSON.stringify(this.currentUser));
-        console.log(this.currentUser.name);
-      }
-    );
+
+
+  constructor(private domSanitizer: DomSanitizer,
+              private profileService: ProfileService,
+              private userService: UserService,
+              private alertService: AlertService,
+              private router: Router,
+  ) {
+    // let login = JSON.parse(localStorage.getItem('currentUser')).login;
+    // this.userService.getByLogin(login).subscribe(
+    //   user => {
+    //     this.currentUser = user;
+    //     localStorage.setItem('currentUserObject', JSON.stringify(this.currentUser));
+    //   }
+    // );
+
+      this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
   }
-
 
 
   ngOnInit() {
   }
 
-  // addCar() {
-  //   this.addCarStatus = 'Car is added!'
-  // }
-  //
-  // onKeyUp(event) {
-  //   this.inputText = event.target.value
-  // }
-
-  onFileSelected(event){
-    this.selectedFile = <File>event.target.files[0];
+  changeListener($event): void {
+    this.readThis($event.target);
   }
 
-  onUpload() {
-    const fd = new FormData();
-    fd.append('image', this.selectedFile, this.selectedFile.name);
-    this.http.post('/profile/edit/upload', fd, {
-      reportProgress: true,
-      observe: 'events'
-    })
-      .subscribe(event => {
-        if (event.type === HttpEventType.UploadProgress) {
-          console.log('Upload Progress:' + Math.round(event.loaded / event.total * 100 ) + '%');
-        } else if (event.type === HttpEventType.Response) {
-          console.log(event);
-        }
-      });
+
+  getFileExtension(filename) {
+    return filename.split('.').pop();
   }
 
-  return
 
-  // upload(event2){
-  //   this.file = event2.target.file
-  // }
+  validFormat(format: string) {
+    let isValid = false;
+    for (let allowedFormat of this.allowedFormats) {
+      if (allowedFormat == format) {
+        isValid = true;
+      }
+    }
+    return isValid;
+  }
+
+
+  validSize(file) {
+    if(file.size<= this.maxImageSize) {
+      return true;
+    }else return false;
+  }
+
+
+  validImg(file: File){
+    let format = this.getFileExtension(file.name);
+    console.log(file.size)
+    if(this.validFormat(format) && this.validSize(file)){
+      this.loading = false;
+    } else this.loading = true;
+  }
+
+
+  readThis(inputValue: any): void {
+    var file: File = inputValue.files[0];
+    var myReader: FileReader = new FileReader();
+    myReader.onloadend = (e) => {
+      this.base64Image = myReader.result;
+      this.validImg(file)
+    }
+   myReader.readAsDataURL(file);
+  }
+
+  updateUser(user: User): void {
+    // console.log(JSON.stringify(user))
+    user.avatar = this.base64Image;
+    this.profileService.update(user)
+      .subscribe(() => {
+          this.alertService.success('User updated!', true);
+          sessionStorage.setItem('currentUser', JSON.stringify(user));
+          setTimeout(() => this.router.navigate(["/profile"]), 500);
+        },
+        (error) => {
+          this.alertService.error(error.message);
+        })
+  }
+
 }

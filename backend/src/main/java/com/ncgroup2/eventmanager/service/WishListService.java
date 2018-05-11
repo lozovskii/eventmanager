@@ -8,7 +8,7 @@ public interface WishListService {
 
     WishList getByEventId(String event_id);
 
-    WishList getBookedItems(String booker_customer_id);
+    WishList getBookedItems(String booker_customer_login);
 
     void createWishlist(WishList wishList);
 

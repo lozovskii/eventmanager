@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {AlertService} from "../../_services/alert.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {EventService} from "../../_services/event.service";
-import {UserService} from "../../_services/user.service";
-import {Event} from "../../_models";
+import {EventDTOModel} from "../../_models/dto/eventDTOModel";
+import {UpdateEventDTO} from "../../_models/dto/UpdateEventDTO";
 
 @Component({
   selector: 'app-update-event',
@@ -12,54 +12,112 @@ import {Event} from "../../_models";
   styleUrls: ['./update-event.component.css']
 })
 export class UpdateEventComponent implements OnInit {
-  eventForm: FormGroup;
-  event: Event;
+  eventDTO: EventDTOModel;
+
+  updateEventDTO: UpdateEventDTO = new UpdateEventDTO();
+  people: string[] = [];
+  newPeople: string[]= [];
+  removedPeople: string[] =[];
+
   canEdit: boolean;
+  currentEventId: string;
+  eventForm: FormGroup = this.initEventForm();
+  additionEventForm: FormGroup = this.initAdditionEventForm();
+
+  eventDTOForm: FormGroup = this.formBuilder.group({
+    event: this.eventForm,
+    additionEvent: this.additionEventForm
+  });
 
   constructor(private router: Router,
               private eventService: EventService,
               private alertService: AlertService,
               private formBuilder: FormBuilder,
-              private userService: UserService,
               private activatedRoute: ActivatedRoute) {
   }
 
-  ngOnInit(): void {
-    this.eventForm = this.formBuilder.group({
-      name: [''],
-      groupId: [''],
-      folderId: [''],
-      creatorId: [''],
-      day: [''],
-      startTime: [''],
-      endTime: [''],
-      priority: [''],
-      visibility: [''],
-      frequencyValue: [''],
-      frequency: [''],
-      description: [''],
-      status: ['']
-    });
+  ngOnInit() {
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    this.eventService.getEventById(id).subscribe((eventDTO) => {
+      this.eventDTO = eventDTO;
+      console.log(this.eventDTO);
+      //TODO uncomment when response will contain participants
+      // this.people = eventDTO.additionEvent.people;
 
-    this.activatedRoute.params.subscribe(params => {
-      let eventId = params['id'];
-      this.eventService.getEventById(eventId)
-        .subscribe((event) => {
-          this.event = event;
-          console.log(this.event);
-
-          this.canEdit = JSON.parse(sessionStorage.getItem('currentUser')).id == this.event.creatorId;
-
-          if(!this.canEdit) {
-            this.alertService.error("You don't have permission to edit this event");
-          }
-        });
     });
   }
 
-  update(){
-
+  initEventForm(): FormGroup {
+    return this.formBuilder.group({
+      name: new FormControl(),
+      description: new FormControl(),
+      day: new FormControl(),
+      startTime: new FormControl(),
+      endTime: new FormControl(),
+      visibility: new FormControl(),
+    })
   }
+
+  initAdditionEventForm(): FormGroup {
+    return this.formBuilder.group({
+      frequencyNumber: new FormControl(),
+      frequencyPeriod: new FormControl(),
+      priority: new FormControl(),
+      people: new FormControl()
+    })
+  }
+
+  update(eventDTO: EventDTOModel) {
+    eventDTO.event.id = this.currentEventId;
+    this.updateEventDTO.event = this.eventDTO.event;
+    this.updateEventDTO.priority = this.eventDTO.additionEvent.priority;
+    if (eventDTO.event.startTime != null) {
+      this.updateEventDTO.event.startTime = (eventDTO.event.startTime).slice(0, 10) + ' ' + (eventDTO.event.startTime).slice(11, 16) +':00';
+    } else if (eventDTO.event.endTime != null) {
+      this.updateEventDTO.event.endTime = (eventDTO.event.endTime).slice(0, 10) + ' ' + (eventDTO.event.endTime).slice(11, 16) +':00';
+    }
+    if (eventDTO.event.name != null) {
+      this.updateEventDTO.event.name = eventDTO.event.name;
+    }
+    if (eventDTO.event.description != null) {
+      this.updateEventDTO.event.description = eventDTO.event.description;
+    }
+    if (eventDTO.additionEvent.priority != null) {
+      this.updateEventDTO.priority = eventDTO.additionEvent.priority;
+    }
+
+
+    this.updateEventDTO.newPeople = this.newPeople;
+    this.updateEventDTO.removedPeople = this.removedPeople;
+    console.log("before update > " + JSON.stringify(this.updateEventDTO));
+    this.eventService.updateEvent(this.updateEventDTO)
+      .subscribe(() => {
+        this.alertService.info('Event successfully updated!', true);
+        this.router.navigate(['../home']);
+      });
+  }
+
+  addUserToEvent(login) {
+    if (!this.people.includes(login)) {
+
+      this.newPeople.push(login);
+      this.people.push(login);
+    }
+  }
+
+
+  deleteUserFromEvent(login) {
+    this.removeElementFromArray(this.people, login);
+    this.removeElementFromArray(this.newPeople, login);
+    this.removedPeople.push(login);
+  }
+
+
+  private removeElementFromArray(array: any[], value: any) {
+    let index = this.people.indexOf(value, 0);
+    if (index > -1) {
+      array.splice(index, 1);
+    }
+  }
+
 }
-
-

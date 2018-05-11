@@ -1,0 +1,38 @@
+<div class="row">
+  <div  class="col-md-3">
+    <app-vnavbar></app-vnavbar>
+  </div>
+
+  <main role="main" class="col-md-9">
+    <h2 class="text-center">Created Items</h2>
+    <br>
+    <button class="btn btn-outline-info" [routerLink]="['/create-item']">Create new item</button>
+
+    <table class="table table-striped" style = "overflow-x: auto; display: block;">
+      <thead>
+      <tr>
+        <th scope="col"> <a href (click)="sortItems('name')">Name</a></th>
+        <th scope="col"><a href (click)="sortItems('description')">Description</a></th>
+        <th scope="col">Image</th>
+        <th scope="col">Link</th>
+        <th scope="col"><a href (click)="sortItems('dueDate')">Due date</a></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of items | sortingItems:path:order">
+        <td>{{item.name}}</td>
+        <td><div [innerHTML]="item.description"></div></td>
+        <td>
+          <!--<img src="{{item.image}}">-->
+          <a *ngIf="item.image" href="{{item.image}}">image link</a>
+        </td>
+        <td>
+          <a *ngIf="item.link" href="{{item.link}}"> link </a>
+        </td>
+        <td *ngIf="item.dueDate">{{item.dueDate}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </main>
+
+</div>

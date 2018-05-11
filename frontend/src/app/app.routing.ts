@@ -1,10 +1,10 @@
 ///<reference path="landing-page/landing-page.component.ts"/>
-import { Routes, RouterModule } from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 
-import { HomeComponent } from './home/index';
-import { LoginComponent } from './login/index';
-import { RegisterComponent } from './register/index';
-import { AuthGuard } from './_guards/index';
+import {HomeComponent} from './home/index';
+import {LoginComponent} from './login/index';
+import {RegisterComponent} from './register/index';
+import {AuthGuard} from './_guards/index';
 import {LandingPageComponent} from "./landing-page/landing-page.component";
 import {CreateEventComponent} from "./events/create-event/create-event.component";
 import {EventlistComponent} from "./events/eventlist/eventlist.component";
@@ -17,31 +17,39 @@ import {EventComponent} from "./events/event/event.component";
 import {UpdateEventComponent} from "./events/update-event/update-event.component";
 import {FolderListComponent} from "./folder-list/folder-list.component";
 import {WishListComponent} from "./wishlist/wishlist.component";
-import {EditProfileComponent} from "./edit-profile/edit-profile.component";
+import {EditProfileComponent} from "./profile/edit-profile/edit-profile.component";
 import {UploadImgComponent} from "./upload-img/upload-img.component";
 import {NotificationContainerComponent} from "./notifications/notification-container/notification-container.component";
 import {BookedItemsComponent} from "./wishlist/bookeditems/bookeditems.component";
+import {FriendComponent} from "./profile/friend/friend.component";
+import {CreateItemComponent} from "./wishlist/create-item/create-item.component";
+import {CreatedItemsComponent} from "./wishlist/createdItems/createditems.component";
+import {AddItemsComponent} from "./wishlist/add-items/add-items.component";
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full'},
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'create-event', component: CreateEventComponent},
-  { path: 'event/:id', component: EventComponent},
-  { path: 'update-event/:id', component: UpdateEventComponent},
-  { path: 'eventlist/:type', component: EventlistComponent},
-  {path: 'registration-confirm', component: RegistrationConfirmComponent},
-  {path: 'send-reset-link', component: SendLinkComponent},
-  {path: 'reset-password', component: ResetComponent},
-  { path: 'profile', component: ProfileComponent},
-  { path: 'vnavbar', component: VnavbarComponent},
-  { path: 'folder-list', component: FolderListComponent},
-  { path: 'wishlist/:id', component: WishListComponent},
-  { path: 'edit-profile', component: EditProfileComponent},
-  { path: 'upload-img', component: UploadImgComponent},
-  { path: 'bookeditems', component: BookedItemsComponent},
-  {path: 'notifications', component: NotificationContainerComponent},
+  { path: 'create-event', component: CreateEventComponent, canActivate: [AuthGuard]},
+  { path: 'event/:id', component: EventComponent, canActivate: [AuthGuard]},
+  { path: 'update-event/:id', component: UpdateEventComponent, canActivate: [AuthGuard]},
+  { path: 'eventlist/:type', component: EventlistComponent, canActivate: [AuthGuard]},
+  { path: 'registration-confirm', component: RegistrationConfirmComponent},
+  { path: 'send-reset-link', component: SendLinkComponent},
+  { path: 'reset-password', component: ResetComponent},
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
+  { path: 'vnavbar', component: VnavbarComponent, canActivate: [AuthGuard]},
+  { path: 'folder-list', component: FolderListComponent, canActivate: [AuthGuard]},
+  { path: 'wishlist/:id', component: WishListComponent, canActivate: [AuthGuard]},
+  { path: 'edit-profile', component: EditProfileComponent, canActivate: [AuthGuard]},
+  { path: 'upload-img', component: UploadImgComponent, canActivate: [AuthGuard]},
+  { path: 'notifications', component: NotificationContainerComponent, canActivate: [AuthGuard]},
+  { path: 'profile/friends', component: FriendComponent, canActivate: [AuthGuard]},
+  { path: 'booked-items', component: BookedItemsComponent, canActivate: [AuthGuard]},
+  { path: 'create-item', component: CreateItemComponent, canActivate: [AuthGuard]},
+  { path: 'created-items', component: CreatedItemsComponent, canActivate: [AuthGuard]},
+  { path: 'add-items/:id', component: AddItemsComponent, canActivate: [AuthGuard]},
 
   // otherwise redirect to home
  { path: '**', redirectTo: '' }

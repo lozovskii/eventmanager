@@ -42,6 +42,12 @@ import {InviteNotificationComponent} from './notifications/invite-notification/i
 import {NotificationContainerComponent} from './notifications/notification-container/notification-container.component';
 import {NotificationService} from "./_services/notification.service";
 import {FriendRequestNotificationComponent} from './notifications/friend-request-notification/friend-request-notification.component';
+import {CreateItemComponent} from "./wishlist/create-item/create-item.component";
+import {CreatedItemsComponent} from "./wishlist/createdItems/createditems.component";
+import {FriendComponent} from "./profile/friend/friend.component";
+import {SortingItemsPipe} from "./wishlist/sorting-items/sorting-items.pipe";
+import {SearchUserComponent} from "./profile/search-user/search-user.component";
+import {AddItemsComponent} from "./wishlist/add-items/add-items.component";
 import {CalendarComponent} from './home/calendar/calendar.component';
 
 @NgModule({
@@ -83,6 +89,14 @@ import {CalendarComponent} from './home/calendar/calendar.component';
     InviteNotificationComponent,
     NotificationContainerComponent,
     FriendRequestNotificationComponent,
+    CreateItemComponent,
+    CreatedItemsComponent,
+    FriendRequestNotificationComponent,
+    FriendComponent,
+    SearchUserComponent,
+    SortingItemsPipe,
+    AddItemsComponent
+    FriendRequestNotificationComponent,
     CalendarComponent
   ],
   providers: [
@@ -98,6 +112,10 @@ import {CalendarComponent} from './home/calendar/calendar.component';
     ProfileService,
     NotificationService
     // provider used to create fake backend
+  ],
+  entryComponents: [
+    InviteNotificationComponent,
+    FriendRequestNotificationComponent
   ],
   bootstrap: [AppComponent]
 })

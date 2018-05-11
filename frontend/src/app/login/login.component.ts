@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthenticationService} from "../_services/authentication.service";
-import {AlertService} from "../_services/alert.service";
+import {AlertService, AuthenticationService} from "../_services";
 import {NavbarService} from "../_services/navbar.service";
 
 
@@ -23,10 +22,10 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    // reset login status
     this.authenticationService.logout();
-    // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
+    console.log(this.returnUrl);
   }
 
   login() {
@@ -36,16 +35,16 @@ export class LoginComponent implements OnInit {
       password: this.model.password
     };
     this.authenticationService.login(userAuthParam)
-      .subscribe(data => {
-        console.log('logged in with token ' + sessionStorage.getItem('currentToken'));
-        this.loading=false;
-          this.navbarService.setNavBarState( true );
-          return this.router.navigate(['/home'])
+      .subscribe(() => {
+          console.log('logged in with token ' + sessionStorage.getItem('currentToken'));
+          this.loading = false;
+          this.navbarService.setNavBarState(true);
+          return this.router.navigate([this.returnUrl]);
         }
 
-      , () => {
-        alert('Invalid credentials');
-          this.loading=false;
+        , () => {
+          this.alertService.error('Invalid credentials');
+          this.loading = false;
           return this.router.navigate(['/login']);
         });
   }

@@ -1,5 +1,6 @@
 package com.ncgroup2.eventmanager.dao;
 
+import com.ncgroup2.eventmanager.dto.AdditionalEventModelDTO;
 import com.ncgroup2.eventmanager.dto.EventCountdownDTO;
 import com.ncgroup2.eventmanager.dto.InviteNotificationDTO;
 import com.ncgroup2.eventmanager.entity.Event;
@@ -20,6 +21,8 @@ public interface EventDao {
 
     void deleteEventById(String eventId);
 
+    void updateEvent(Event event, String priority);
+
     int getStatusId(String fieldValue);
 
     int getVisibilityId(String fieldValue);
@@ -28,9 +31,13 @@ public interface EventDao {
 
     List getEventsByCustId(String custId);
 
-    Event getById(String id);
+    Event getEventById(String id);
+
+    AdditionalEventModelDTO getAdditionById(String id);
 
     List<Event> getAllPublicAndFriends(String customerId);
+
+    List<InviteNotificationDTO> getInviteNotifications(String customerId);
 
     boolean isParticipant(String customerId, String eventId);
 
@@ -49,6 +56,4 @@ public interface EventDao {
     List<Event> getInvitesByCustId(String custId);
 
     List<Event> getDraftsByCustId(String custId);
-
-    List<InviteNotificationDTO> getInviteNotifications(String customerId);
 }

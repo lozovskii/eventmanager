@@ -1,3 +1,4 @@
+<script src="eventlist.component.ts"></script>
 <div class="row">
   <div  class="col-md-3">
     <app-vnavbar></app-vnavbar>
@@ -8,7 +9,6 @@
         <thead>
         <tr>
           <th scope="col">Title</th>
-          <th scope="col">Description</th>
           <th scope="col">Start time</th>
           <th scope="col">End time</th>
           <th scope="col">Visibility</th>
@@ -18,7 +18,6 @@
         <tbody>
         <tr *ngFor="let event of events" [routerLink]="['/event',event.id]">
           <td>{{event.name}}</td>
-          <td>{{event.description}}</td>
           <td>{{event.startTime}}</td>
           <td>{{event.endTime}}</td>
           <td>{{event.visibility}}</td>

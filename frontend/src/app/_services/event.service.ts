@@ -2,10 +2,11 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
 import {Event} from '../_models/event';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {UserService} from "./user.service";
 import {EventDTOModel} from "../_models/dto/eventDTOModel";
 import {AuthenticationService} from "./authentication.service";
+import {UpdateEventDTO} from "../_models/dto/UpdateEventDTO";
 
 @Injectable()
 export class EventService {
@@ -32,19 +33,19 @@ export class EventService {
     return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
   }
 
-  getDraftsByCustId(): Observable<Event[]> {
+  getDraftsByCustId():Observable<Event[]> {
     let custId = this.userService.getCurrentId();
     const url = `${this.eventsUrl}/drafts${custId}`;
     return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
   }
 
-  getNotesByCustId(): Observable<Event[]> {
+  getNotesByCustId():Observable<Event[]> {
     let custId = this.userService.getCurrentId();
     const url = `${this.eventsUrl}/notes${custId}`;
     return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
   }
 
-  getInvitesByCustId(): Observable<Event[]> {
+  getInvitesByCustId():Observable<Event[]> {
     let custId = this.userService.getCurrentId();
     const url = `${this.eventsUrl}/invites${custId}`;
     return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
@@ -52,11 +53,16 @@ export class EventService {
 
   getEventById(eventId: string) {
     const url = `${this.eventsUrl}?eventId=${eventId}`;
-    return this.http.get<Event>(url, {headers: AuthenticationService.getAuthHeader()});
+    return this.http.get<EventDTOModel>(url, {headers: AuthenticationService.getAuthHeader()});
   }
 
   deleteEvent(eventId: string) {
     return this.http.post<number>('/api/events/delete', eventId, {headers: AuthenticationService.getAuthHeader()});
+  }
+
+  updateEvent(updateEventDTO: UpdateEventDTO) {
+    console.log("updateEvent(eventDTO: EventDTOModel): " + JSON.stringify(updateEventDTO));
+    return this.http.put<EventDTOModel>('/api/events/update', updateEventDTO, {headers: AuthenticationService.getAuthHeader()});
   }
 
   addParticipant(eventId) {
@@ -75,5 +81,4 @@ export class EventService {
     const url = `${this.eventsUrl}/isParticipant?customerId=${customerId}&eventId=${eventId}`;
     return this.http.get(url, {headers: AuthenticationService.getAuthHeader()});
   }
-
 }
