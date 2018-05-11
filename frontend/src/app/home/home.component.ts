@@ -14,19 +14,7 @@ export class HomeComponent implements OnInit {
 
   constructor(private userService: UserService,
               private router: Router) {
-    if(sessionStorage.getItem('currentUser')==null) {
-      let login = JSON.parse(sessionStorage.getItem('currentToken')).login;
-      this.userService.getByLogin(login).subscribe(
-        user => {
-          console.log(user.name);
-          this.currentUser = user;
-          sessionStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-          console.log(this.currentUser.name);
-        }
-      );
-    } else {
-      this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
-    }
+    this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
   }
 
   ngOnInit() {
