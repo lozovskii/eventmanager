@@ -7,7 +7,7 @@
 }
 
 .calendar-navs {
-  background-color: #F0F8FF;
+  background-color: #e9ecef;
 }
 
 .month-nav {
@@ -28,7 +28,7 @@
 .day-names {
   display: flex;
   flex-direction: row;
-  background: #A52A2A;
+  background: #e9ecef;
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
 }
@@ -43,7 +43,7 @@
 .week-date,
 .day-name {
   text-align: center;
-  padding: 2px;
+  padding: 5px;
   display: block;
   width: 30px;
   display: flex;
@@ -61,7 +61,7 @@
   font-family: 'Montserrat', sans-serif;
 }
 
-.week-date::after {
+.week-date:after {
   content: '';
   height: 30px;
   width: 30px;
@@ -76,12 +76,11 @@
 
 .enabled {
   cursor: pointer;
+  border-radius: 50%;
+  transition: background-color 150ms linear, color 150ms linear;
 }
 .enabled:hover {
-  background-color: #008B8B;
-}
-.enabled:after {
-  background-color: #008B8B;
+  background-color: #aaffaa;
 }
 .selected {
   color: #7FFF00;
@@ -101,7 +100,10 @@
 }
 
 
-.calendar.today {
+.today {
+  background-color: #7FFF00;
+  border-radius: 50%;
+  font-size: 14px;
   font-weight: bold;
 }
 

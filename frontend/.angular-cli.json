@@ -20,13 +20,11 @@
       "prefix": "app",
       "styles": [
         "styles.css",
-        "../node_modules/bootstrap/dist/css/bootstrap.min.css",
-        "../src/assets/eventCalendar.css"
+        "../node_modules/bootstrap/dist/css/bootstrap.min.css"
       ],
       "scripts": [
         "../src/assets/jquery.js",
-        "../src/assets/moment.js",
-        "../src/assets/jquery.eventCalendar.js"
+        "../src/assets/moment.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

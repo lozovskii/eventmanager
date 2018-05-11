@@ -24,12 +24,12 @@ public class EventController {
     }
 
     @PostMapping
-    public void create(@RequestBody EventDTO eventDTO){
+    public void create(@RequestBody EventDTO eventDTO) {
         eventService.createEvent(eventDTO);
     }
 
     @PostMapping("/delete")
-    public void deleteEvent(@RequestBody String eventId){
+    public void deleteEvent(@RequestBody String eventId) {
         eventService.deleteEventById(eventId);
     }
 
@@ -39,52 +39,52 @@ public class EventController {
     }
 
     @GetMapping("/my{custId}")
-        public ResponseEntity<List<Event>> getEventsByCustId(@PathVariable String custId){
+    public ResponseEntity<List<Event>> getEventsByCustId(@PathVariable String custId) {
         List<Event> eventsByCustId = eventService.getEventsByCustId(custId);
         return new ResponseEntity<>(eventsByCustId, HttpStatus.OK);
     }
 
     @GetMapping("/drafts{custId}")
-    public ResponseEntity<List<Event>> getDraftsByCustId(@PathVariable String custId){
+    public ResponseEntity<List<Event>> getDraftsByCustId(@PathVariable String custId) {
         List<Event> draftsByCustId = eventService.getDraftsByCustId(custId);
         return new ResponseEntity<>(draftsByCustId, HttpStatus.OK);
     }
 
     @GetMapping("/notes{custId}")
-    public ResponseEntity<List<Event>> getNotesByCustId(@PathVariable String custId){
+    public ResponseEntity<List<Event>> getNotesByCustId(@PathVariable String custId) {
         List<Event> notesByCustId = eventService.getNotesByCustId(custId);
         return new ResponseEntity<>(notesByCustId, HttpStatus.OK);
     }
 
     @GetMapping("/invites{custId}")
-    public ResponseEntity<List<Event>> getInvitesByCustId(@PathVariable String custId){
+    public ResponseEntity<List<Event>> getInvitesByCustId(@PathVariable String custId) {
         List<Event> invitesByCustId = eventService.getInvitesByCustId(custId);
         return new ResponseEntity<>(invitesByCustId, HttpStatus.OK);
     }
 
 
     @GetMapping()
-    public ResponseEntity<Event> getEventsById(@RequestParam String eventId){
+    public ResponseEntity<Event> getEventsById(@RequestParam String eventId) {
         Event eventById = eventService.getEventById(eventId);
         return new ResponseEntity<>(eventById, HttpStatus.OK);
     }
 
     @GetMapping("/isParticipant")
-    public ResponseEntity isParticipant(@RequestParam String customerId,@RequestParam String eventId) {
-        if(eventService.isParticipant(customerId, eventId)) {
+    public ResponseEntity isParticipant(@RequestParam String customerId, @RequestParam String eventId) {
+        if (eventService.isParticipant(customerId, eventId)) {
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/addParticipant")
-    public ResponseEntity addParticipant(@RequestParam String customerId,@RequestParam String eventId) {
+    public ResponseEntity addParticipant(@RequestParam String customerId, @RequestParam String eventId) {
         eventService.addParticipant(customerId, eventId, Instant.now(), 2);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("/removeParticipant")
-    public ResponseEntity removeParticipant(@RequestParam String customerId,@RequestParam String eventId) {
+    public ResponseEntity removeParticipant(@RequestParam String customerId, @RequestParam String eventId) {
         eventService.removeParticipant(customerId, eventId);
         return new ResponseEntity(HttpStatus.OK);
     }
