@@ -105,8 +105,14 @@ public class EventServiceImpl implements EventService {
     public void updateEventNotif(EventDTO eventDTO) {
         Event event = eventDTO.getEvent();
         LocalDateTime startNotifTime = eventDTO.getAdditionEvent().getStartTimeNotification();
+        LocalDateTime startTime = eventDTO.getEvent().getStartTime();
+        LocalDateTime currentTime = LocalDateTime.now();
         if(startNotifTime!=null){
-            eventDao.updateStartNotifTime(event, startNotifTime);
+            if(startNotifTime.isBefore(startTime)) {
+                if(startNotifTime.isAfter(currentTime)){
+                    eventDao.updateStartNotifTime(event, startNotifTime);
+                }
+            }
         }
     }
 
