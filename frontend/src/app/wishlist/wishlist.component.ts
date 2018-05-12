@@ -30,7 +30,6 @@ export class WishListComponent implements OnInit {
       this.wishListService.currentWishList.subscribe(wishList => this.wishList = wishList);
     else {
       this.getWishListByEventId(this.eventId);
-      this.wishListService.currentWishList.subscribe(wishList => this.wishList = wishList);
     }
     this.trash = [];
   }

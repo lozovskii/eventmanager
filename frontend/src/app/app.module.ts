@@ -95,7 +95,7 @@ import {EditWishListComponent} from "./wishlist/edit-wishlist/edit-wishlist.comp
     FriendComponent,
     SearchUserComponent,
     SortingItemsPipe,
-    EditWishListComponent
+    EditWishListComponent,
     EventNotificationComponent
   ],
   providers: [

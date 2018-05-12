@@ -40,15 +40,15 @@
         <p> Start time = {{eventDTO.event.startTime}}</p>
         <p> End time = {{eventDTO.event.endTime}}</p>
         <p> Privacy = {{eventDTO.event.visibility}}</p>
-      </div>
 
+        <app-event-notification></app-event-notification>
+
+      </div>
 
       <div class="tab-pane fade" id="pills-wishlist" role="tabpanel" aria-labelledby="pills-wishlist-tab">
         <app-wishlist [eventId]="eventDTO.event.id"></app-wishlist>
       </div>
       <div class="tab-pane fade" id="pills-chat" role="tabpanel" aria-labelledby="pills-chat-tab">...</div>
-
-      <app-event-notification></app-event-notification>
     </div>
 
   </main>
