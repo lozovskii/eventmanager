@@ -1,11 +1,14 @@
 package com.ncgroup2.eventmanager.controller;
 
+import com.ncgroup2.eventmanager.dto.ItemWishListDto;
 import com.ncgroup2.eventmanager.entity.WishList;
 import com.ncgroup2.eventmanager.service.WishListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/wishlist")
@@ -59,6 +62,12 @@ public class WishListController {
     public void addItems(@RequestBody WishList wishList) {
 
         wishListService.createWishlist(wishList);
+    }
+
+    @PostMapping(value = "/delete")
+    public void removeItems(@RequestBody List<ItemWishListDto> trash) {
+
+        wishListService.deleteItems(trash);
     }
 
 }

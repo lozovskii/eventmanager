@@ -1,6 +1,9 @@
 package com.ncgroup2.eventmanager.service;
 
+import com.ncgroup2.eventmanager.dto.ItemWishListDto;
 import com.ncgroup2.eventmanager.entity.WishList;
+
+import java.util.List;
 
 public interface WishListService {
 
@@ -15,5 +18,7 @@ public interface WishListService {
     void updateByField(Object item_wishlist_id, String fieldName, Object fieldValue);
 
     void update(WishList wishList);
+
+    void deleteItems(List<ItemWishListDto> trash);
 
 }

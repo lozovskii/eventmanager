@@ -9,5 +9,5 @@ public interface WishListDao extends DAO<WishList, Object> {
 
     void deleteItems(List<ItemWishListDto> trash);
 
-    void addItems(List<ItemWishListDto> itemWishListDtos);
+    void addItems(WishList wishList);
 }

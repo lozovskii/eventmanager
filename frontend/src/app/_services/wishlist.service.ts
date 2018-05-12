@@ -6,10 +6,15 @@ import {Observable} from 'rxjs';
 import {UserService} from "./user.service";
 import {AuthenticationService} from "./authentication.service";
 import {Item} from "../_models/item";
+import {BehaviorSubject} from "rxjs/Rx";
+import {ItemDto} from "../_models/dto/itemDto";
 
 @Injectable()
 export class WishListService {
+
   private wishListUrl = 'api/wishlist';
+  private wishListSource = new BehaviorSubject<WishList>(new WishList());
+  currentWishList = this.wishListSource.asObservable();
 
   constructor(private http: HttpClient,
               private userService: UserService) {
@@ -17,6 +22,10 @@ export class WishListService {
 
   isBooker(bookerLogin : string): boolean{
     return bookerLogin == this.userService.getCurrentLogin();
+  }
+
+  setCurrentWishList(wishList : WishList) : void {
+    this.wishListSource.next(wishList);
   }
 
   getByEventId(eventId: string): Observable<WishList> {
@@ -44,6 +53,11 @@ export class WishListService {
   createWishList(wishList: WishList){
     const url = `${this.wishListUrl}/create`;
     return this.http.post<WishList>(url, wishList, {headers: AuthenticationService.getAuthHeader()});
+  }
+
+  deleteItems(trash: ItemDto[]){
+    const url = `${this.wishListUrl}/delete`;
+    return this.http.post<WishList>(url, trash, {headers: AuthenticationService.getAuthHeader()});
   }
 
   addItems(wishList: WishList){
