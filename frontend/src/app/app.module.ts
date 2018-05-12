@@ -49,7 +49,10 @@ import {SortingItemsPipe} from "./wishlist/sorting-items/sorting-items.pipe";
 import {SearchUserComponent} from "./profile/search-user/search-user.component";
 import { EventNotificationComponent } from './events/event-notification/event-notification.component';
 import {EditWishListComponent} from "./wishlist/edit-wishlist/edit-wishlist.component";
+import {CalendarComponent} from "./home/calendar/calendar.component";
 
+import { CalendarModule } from 'angular-calendar';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   imports: [
     BrowserModule,
@@ -59,7 +62,9 @@ import {EditWishListComponent} from "./wishlist/edit-wishlist/edit-wishlist.comp
     BrowserAnimationsModule,
     ReCaptchaModule,
     ReactiveFormsModule,
-    EditorModule
+    EditorModule,
+    BrowserAnimationsModule, CalendarModule.forRoot(),
+    NgbModalModule.forRoot()
   ],
   declarations: [
     AppComponent,
@@ -96,7 +101,8 @@ import {EditWishListComponent} from "./wishlist/edit-wishlist/edit-wishlist.comp
     SearchUserComponent,
     SortingItemsPipe,
     EditWishListComponent,
-    EventNotificationComponent
+    EventNotificationComponent,
+    CalendarComponent
   ],
   providers: [
     AuthGuard,
