@@ -1,54 +1,31 @@
 package com.ncgroup2.eventmanager.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
+@Data
 public class AdditionalEventModelDTO {
 
     private List<String> people;
     private Long frequencyNumber;
     private String frequencyPeriod;
     private String priority;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime startTimeNotification;
 
     AdditionalEventModelDTO(){
     }
 
-    public AdditionalEventModelDTO(List<String> people, Long frequencyNumber, String frequencyPeriod, String priority) {
+    public AdditionalEventModelDTO(List<String> people, Long frequencyNumber, String frequencyPeriod, String priority,
+                                   LocalDateTime startTimeNotification) {
         this.people = people;
         this.frequencyNumber = frequencyNumber;
         this.frequencyPeriod = frequencyPeriod;
         this.priority = priority;
-    }
-
-    public List<String> getPeople() {
-        return people;
-    }
-
-    public void setPeople(List<String> people) {
-        this.people = people;
-    }
-
-    public Long getFrequencyNumber() {
-        return frequencyNumber;
-    }
-
-    public void setFrequencyNumber(Long frequencyNumber) {
-        this.frequencyNumber = frequencyNumber;
-    }
-
-    public String getFrequencyPeriod() {
-        return frequencyPeriod;
-    }
-
-    public void setFrequencyPeriod(String frequencyPeriod) {
-        this.frequencyPeriod = frequencyPeriod;
-    }
-
-    public String getPriority() {
-        return priority;
-    }
-
-    public void setPriority(String priority) {
-        this.priority = priority;
+        this.startTimeNotification = startTimeNotification;
     }
 
     @Override
@@ -58,6 +35,7 @@ public class AdditionalEventModelDTO {
                 ", frequencyNumber=" + frequencyNumber +
                 ", frequencyPeriod='" + frequencyPeriod + '\'' +
                 ", priority='" + priority + '\'' +
+                ", startTimeNotification=" + startTimeNotification +
                 '}';
     }
 }

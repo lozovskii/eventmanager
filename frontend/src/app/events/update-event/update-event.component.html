@@ -8,8 +8,8 @@
 
       <h2>Edit Event</h2>
       <br>
-      <form [formGroup]="eventDTOForm" (ngSubmit)="update(eventDTOForm.value)">
-        <!--  novalidate [hidden]="!canEdit"-->
+      <form [formGroup]="eventDTOForm" (ngSubmit)="update(eventDTOForm.value)" novalidate>
+        <!--[hidden]="!canEdit"-->
         <form [formGroup]="eventForm">
           <div class="form-group">
             <div class="form-group">
@@ -37,10 +37,9 @@
               <label>End time</label>
               <input
                 value="{{eventDTO.event.endTime | slice : 0 : 4}}-{{eventDTO.event.endTime | slice : 5 : 7}}-{{eventDTO.event.endTime |slice : 8 : 10}}T{{eventDTO.event.endTime | slice : 11 : 16}}"
-                formControlName="endTime"
+                formControlName="startTime"
                 type="datetime-local"
-                class="form-control"
-                name="endTime"/>
+                class="form-control" name="startTime"/>
             </div>
           </div>
           <div *ngIf="(eventDTO.event.visibility == 'PUBLIC')" class="form-group">
@@ -61,7 +60,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let login of people">
+            <tr *ngFor="let login of eventDTO.additionEvent.people">
               <td>{{login}}</td>
               <td>
                 <button type="button" class="btn btn-primary" (click)="deleteUserFromEvent(login)">remove</button>

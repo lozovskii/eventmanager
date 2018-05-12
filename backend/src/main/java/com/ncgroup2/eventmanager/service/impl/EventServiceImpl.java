@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -19,7 +20,6 @@ public class EventServiceImpl implements EventService {
     private final String EVENT_STATUS_EVENT = "EVENT";
     private final String EVENT_STATUS_NOTE = "NOTE";
     private final String EVENT_VISIBILITY_PRIVATE = "PRIVATE";
-    private final String CUSTOMER_EVENT_FREQUENCY_PERIOD_DAY = "day";
 
     @Autowired
     private EventDao eventDao;
@@ -52,9 +52,13 @@ public class EventServiceImpl implements EventService {
                     eventId = UUID.randomUUID();
                     createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
                     frequencyPeriod = startFrequencyPeriod;
+                    List loginList = getExistingCustomers(eventDTO.getAdditionEvent().getPeople());
+                    createEventInvitations(loginList, eventId);
                 }
             } else {
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
+                List loginList = getExistingCustomers(eventDTO.getAdditionEvent().getPeople());
+                createEventInvitations(loginList, eventId);
             }
         } else {
             if ((frequencyNumber != null) && (frequencyPeriod != null)) {
@@ -64,10 +68,7 @@ public class EventServiceImpl implements EventService {
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
             }
         }
-        List loginList = getExistingCustomers(eventDTO.getAdditionEvent().getPeople());
-        createEventInvitations(loginList, eventId);
     }
-
 
     private List<String> getExistingCustomers(List<String> logins) {
         return logins.stream()
@@ -89,6 +90,10 @@ public class EventServiceImpl implements EventService {
     public EventDTO getEventById(String eventId) {
         Event event = eventDao.getEventById(eventId);
         AdditionalEventModelDTO additionalEventModelDTO = eventDao.getAdditionById(eventId);
+        List<String> listParticipants = eventDao.getParticipants(eventId);
+        System.out.println("listParticipants = " + listParticipants);
+        additionalEventModelDTO.setPeople(listParticipants);
+        System.out.println("additionalEventModelDTO = " + additionalEventModelDTO);
         EventDTO eventDTO = new EventDTO();
         eventDTO.setEvent(event);
         eventDTO.setAdditionEvent(additionalEventModelDTO);
@@ -101,15 +106,30 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void updateEvent(UpdateEventDTO eventDTO) {
+    public void updateEventNotif(EventDTO eventDTO) {
         Event event = eventDTO.getEvent();
-        String priority = eventDTO.getPriority();
-        eventDao.updateEvent(event, priority);
+        LocalDateTime startNotifTime = eventDTO.getAdditionEvent().getStartTimeNotification();
+        LocalDateTime startTime = eventDTO.getEvent().getStartTime();
+        LocalDateTime currentTime = LocalDateTime.now();
+        if(startNotifTime!=null){
+            if(startNotifTime.isBefore(startTime)) {
+                if(startNotifTime.isAfter(currentTime)){
+                    eventDao.updateStartNotifTime(event, startNotifTime);
+                }
+            }
+        }
+    }
 
-        getExistingCustomers(eventDTO.getNewPeople()).
+    @Override
+    public void updateEvent(UpdateEventDTO updateEventDTO) {
+        Event event = updateEventDTO.getEvent();
+        String priority = updateEventDTO.getPriority();
+        System.out.println("updateEventDTO = " + updateEventDTO);
+        eventDao.updateEvent(event, priority);
+        getExistingCustomers(updateEventDTO.getNewPeople()).
                 forEach(login -> eventDao.createEventInvitation(login,UUID.fromString(event.getId())));
 
-        eventDTO.getRemovedPeople().
+        updateEventDTO.getRemovedPeople().
                 forEach(login -> eventDao.removeParticipant(login, event.getId()));
     }
 
@@ -151,7 +171,6 @@ public class EventServiceImpl implements EventService {
     public List<Event> getInvitesByCustId(String custId) {
         return eventDao.getInvitesByCustId(custId);
     }
-
 
     private Object[] checkDefaultCustEventFrequency(EventDTO eventDTO) {
         Long frequencyNumber = eventDTO.getAdditionEvent().getFrequencyNumber();

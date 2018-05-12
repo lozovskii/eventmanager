@@ -3,4 +3,5 @@ export class AdditionEventModel {
   frequencyNumber: number;
   frequencyPeriod: string;
   priority: string;
+  startTimeNotification: string;
 }
