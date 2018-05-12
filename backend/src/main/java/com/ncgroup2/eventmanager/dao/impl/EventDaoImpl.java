@@ -16,6 +16,7 @@ import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -398,6 +399,16 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
                 event.getCreatorId(),
                 event.getStartTime(),
                 priorityId
+        };
+        this.getJdbcTemplate().update(query_customer_event, customerEventParams);
+    }
+
+    @Override
+    public void updateStartNotifTime(Event event, LocalDateTime startNotifTime) {
+        String query_customer_event = queryService.getQuery("customer_event.updateNotifTime");
+        Object[] customerEventParams = new Object[]{
+                startNotifTime,
+                event.getId()
         };
         this.getJdbcTemplate().update(query_customer_event, customerEventParams);
     }

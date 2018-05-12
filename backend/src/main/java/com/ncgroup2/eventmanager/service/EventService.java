@@ -24,6 +24,8 @@ public interface EventService {
 
     void deleteEventById(String eventId);
 
+    void updateEventNotif(EventDTO eventDTO);
+
     void updateEvent(UpdateEventDTO eventDTO);
 
     List<Event> getAllPublicAndFriendsEvents(String customerId);

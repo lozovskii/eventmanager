@@ -60,9 +60,12 @@ export class EventService {
     return this.http.post<number>('/api/events/delete', eventId, {headers: AuthenticationService.getAuthHeader()});
   }
 
-  updateEvent(updateEventDTO: UpdateEventDTO) {
-    console.log("updateEvent(eventDTO: EventDTOModel): " + JSON.stringify(updateEventDTO));
-    return this.http.put<EventDTOModel>('/api/events/update', updateEventDTO, {headers: AuthenticationService.getAuthHeader()});
+  updateEvent(updatEventDTO: UpdateEventDTO) {
+    return this.http.put<UpdateEventDTO>('/api/events/update', updatEventDTO, {headers: AuthenticationService.getAuthHeader()});
+  }
+
+  updateEventNotif(eventDTO: EventDTOModel) {
+    return this.http.put<EventDTOModel>('/api/events/updatenotif', eventDTO, {headers: AuthenticationService.getAuthHeader()});
   }
 
   addParticipant(eventId) {

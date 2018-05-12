@@ -6,6 +6,7 @@ import com.ncgroup2.eventmanager.dto.InviteNotificationDTO;
 import com.ncgroup2.eventmanager.entity.Event;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -56,4 +57,6 @@ public interface EventDao {
     List<Event> getInvitesByCustId(String custId);
 
     List<Event> getDraftsByCustId(String custId);
+
+    void updateStartNotifTime(Event event, LocalDateTime startNotifTime);
 }

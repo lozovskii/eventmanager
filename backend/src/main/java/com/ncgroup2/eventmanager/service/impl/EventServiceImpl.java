@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -101,15 +102,24 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void updateEvent(UpdateEventDTO eventDTO) {
+    public void updateEventNotif(EventDTO eventDTO) {
         Event event = eventDTO.getEvent();
-        String priority = eventDTO.getPriority();
-        eventDao.updateEvent(event, priority);
+        LocalDateTime startNotifTime = eventDTO.getAdditionEvent().getStartTimeNotification();
+        if(startNotifTime!=null){
+            eventDao.updateStartNotifTime(event, startNotifTime);
+        }
+    }
 
-        getExistingCustomers(eventDTO.getNewPeople()).
+    @Override
+    public void updateEvent(UpdateEventDTO updateEventDTO) {
+        Event event = updateEventDTO.getEvent();
+        String priority = updateEventDTO.getPriority();
+        System.out.println("updateEventDTO = " + updateEventDTO);
+        eventDao.updateEvent(event, priority);
+        getExistingCustomers(updateEventDTO.getNewPeople()).
                 forEach(login -> eventDao.createEventInvitation(login,UUID.fromString(event.getId())));
 
-        eventDTO.getRemovedPeople().
+        updateEventDTO.getRemovedPeople().
                 forEach(login -> eventDao.removeParticipant(login, event.getId()));
     }
 
@@ -151,7 +161,6 @@ public class EventServiceImpl implements EventService {
     public List<Event> getInvitesByCustId(String custId) {
         return eventDao.getInvitesByCustId(custId);
     }
-
 
     private Object[] checkDefaultCustEventFrequency(EventDTO eventDTO) {
         Long frequencyNumber = eventDTO.getAdditionEvent().getFrequencyNumber();
