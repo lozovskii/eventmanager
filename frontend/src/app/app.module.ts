@@ -48,6 +48,7 @@ import {FriendComponent} from "./profile/friend/friend.component";
 import {SortingItemsPipe} from "./wishlist/sorting-items/sorting-items.pipe";
 import {SearchUserComponent} from "./profile/search-user/search-user.component";
 import {AddItemsComponent} from "./wishlist/add-items/add-items.component";
+import { EventNotificationComponent } from './events/event-notification/event-notification.component';
 
 @NgModule({
   imports: [
@@ -94,7 +95,8 @@ import {AddItemsComponent} from "./wishlist/add-items/add-items.component";
     FriendComponent,
     SearchUserComponent,
     SortingItemsPipe,
-    AddItemsComponent
+    AddItemsComponent,
+    EventNotificationComponent
   ],
   providers: [
     AuthGuard,

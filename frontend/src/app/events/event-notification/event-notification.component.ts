@@ -1,20 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {EventService} from "../../_services";
+import { Component, OnInit } from '@angular/core';
+import {AdditionEventModel} from "../../_models/additionEvent.model";
+import {AlertService} from "../../_services/alert.service";
+import {UpdateEventComponent} from "../update-event/update-event.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
-import {AlertService} from "../../_services/alert.service";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {Event} from '../../_models/event'
-import {AdditionEventModel} from "../../_models/additionEvent.model";
-import {UpdateEventComponent} from "../update-event/update-event.component";
+import {EventService} from "../../_services";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 
 @Component({
-  selector: 'app-event',
-  templateUrl: './event.component.html',
-  styleUrls: ['./event.component.css']
+  selector: 'app-event-notification',
+  templateUrl: './event-notification.component.html',
+  styleUrls: ['./event-notification.component.css']
 })
-export class EventComponent implements OnInit {
-   updateEventDTO: UpdateEventComponent;
+export class EventNotificationComponent implements OnInit {
+  updateEventDTO: UpdateEventComponent;
   eventDTO: EventDTOModel;
   isCreator: boolean;
   isParticipant: boolean;
@@ -49,29 +48,15 @@ export class EventComponent implements OnInit {
     });
   }
 
-  addParticipant() {
-    this.eventService.addParticipant(this.eventDTO.event.id).subscribe(() => {
-      this.isParticipant = true;
-      //this.eventDTO.people.push(JSON.parse(sessionStorage.getItem('currentUser')).id);
-    });
+
+  changeNotStartTime(additionEvent:AdditionEventModel){
+    console.log('additionEvent = ' + JSON.stringify(additionEvent));
+    if (additionEvent.startTimeNotification != null) {
+      this.eventDTO.additionEvent.startTimeNotification = (additionEvent.startTimeNotification).slice(0, 10) + ' ' + (additionEvent.startTimeNotification).slice(11, 16) + ':00';
+    }
+    console.log('additionEvent = ' + JSON.stringify(this.eventDTO.additionEvent));
+    this.eventService.updateEventNotif(this.eventDTO).subscribe(() => {
+      this.alertService.info('Notification time successfully set!',true);
+      this.router.navigate(['event','my'])});
   }
-
-  removeParticipant() {
-    this.eventService.removeParticipant(this.eventDTO.event.id).subscribe(() => {
-      this.isParticipant = false;
-      // const index = this.eventDTO.people.indexOf(JSON.parse(sessionStorage.getItem('currentUser')).id);
-      // if (index>-1) {
-      //   this.eventDTO.people.slice(index);
-      // }
-    });
-  }
-
-  delete() {
-    this.eventService.deleteEvent(this.eventDTO.event.id).subscribe(() => {
-      this.alertService.info('Event successfully deleted!',true);
-      this.router.navigate(['../home']);
-    });
-  }
-
-
 }
