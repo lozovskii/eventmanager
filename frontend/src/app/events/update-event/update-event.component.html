@@ -60,7 +60,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let login of people">
+            <tr *ngFor="let login of eventDTO.additionEvent.people">
               <td>{{login}}</td>
               <td>
                 <button type="button" class="btn btn-primary" (click)="deleteUserFromEvent(login)">remove</button>
