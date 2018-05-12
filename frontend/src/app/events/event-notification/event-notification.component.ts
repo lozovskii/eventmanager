@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AdditionEventModel} from "../../_models/additionEvent.model";
 import {AlertService} from "../../_services/alert.service";
-import {UpdateEventComponent} from "../update-event/update-event.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
 import {EventService} from "../../_services";
@@ -13,7 +12,6 @@ import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
   styleUrls: ['./event-notification.component.css']
 })
 export class EventNotificationComponent implements OnInit {
-  updateEventDTO: UpdateEventComponent;
   eventDTO: EventDTOModel;
   isCreator: boolean;
   isParticipant: boolean;
@@ -47,7 +45,6 @@ export class EventNotificationComponent implements OnInit {
       startTimeNotification: new FormControl()
     });
   }
-
 
   changeNotStartTime(additionEvent:AdditionEventModel){
     console.log('additionEvent = ' + JSON.stringify(additionEvent));

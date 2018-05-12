@@ -36,6 +36,8 @@ public interface EventDao {
 
     AdditionalEventModelDTO getAdditionById(String id);
 
+    List getParticipants(String eventId);
+
     List<Event> getAllPublicAndFriends(String customerId);
 
     List<InviteNotificationDTO> getInviteNotifications(String customerId);

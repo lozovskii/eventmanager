@@ -20,7 +20,6 @@ public class EventServiceImpl implements EventService {
     private final String EVENT_STATUS_EVENT = "EVENT";
     private final String EVENT_STATUS_NOTE = "NOTE";
     private final String EVENT_VISIBILITY_PRIVATE = "PRIVATE";
-    private final String CUSTOMER_EVENT_FREQUENCY_PERIOD_DAY = "day";
 
     @Autowired
     private EventDao eventDao;
@@ -53,9 +52,13 @@ public class EventServiceImpl implements EventService {
                     eventId = UUID.randomUUID();
                     createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
                     frequencyPeriod = startFrequencyPeriod;
+                    List loginList = getExistingCustomers(eventDTO.getAdditionEvent().getPeople());
+                    createEventInvitations(loginList, eventId);
                 }
             } else {
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
+                List loginList = getExistingCustomers(eventDTO.getAdditionEvent().getPeople());
+                createEventInvitations(loginList, eventId);
             }
         } else {
             if ((frequencyNumber != null) && (frequencyPeriod != null)) {
@@ -65,10 +68,7 @@ public class EventServiceImpl implements EventService {
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
             }
         }
-        List loginList = getExistingCustomers(eventDTO.getAdditionEvent().getPeople());
-        createEventInvitations(loginList, eventId);
     }
-
 
     private List<String> getExistingCustomers(List<String> logins) {
         return logins.stream()
@@ -90,6 +90,10 @@ public class EventServiceImpl implements EventService {
     public EventDTO getEventById(String eventId) {
         Event event = eventDao.getEventById(eventId);
         AdditionalEventModelDTO additionalEventModelDTO = eventDao.getAdditionById(eventId);
+        List<String> listParticipants = eventDao.getParticipants(eventId);
+        System.out.println("listParticipants = " + listParticipants);
+        additionalEventModelDTO.setPeople(listParticipants);
+        System.out.println("additionalEventModelDTO = " + additionalEventModelDTO);
         EventDTO eventDTO = new EventDTO();
         eventDTO.setEvent(event);
         eventDTO.setAdditionEvent(additionalEventModelDTO);

@@ -218,10 +218,26 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         Object[] params = new Object[]{
                 eventId
         };
-        List<AdditionalEventModelDTO> list = this.getJdbcTemplate().query(query, params,
+        List<AdditionalEventModelDTO> listAddition = this.getJdbcTemplate().query(query, params,
                 new BeanPropertyRowMapper(AdditionalEventModelDTO.class));
-        if (!list.isEmpty()) {
-            return list.iterator().next();
+        if (!listAddition.isEmpty()) {
+            return listAddition.iterator().next();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public List getParticipants(String eventId) {
+        System.out.println(eventId);
+        String query = queryService.getQuery("event.getParticipants");
+        Object[] params = new Object[]{
+                eventId
+        };
+        List<String> listParticipants = this.getJdbcTemplate().queryForList(query, params, String.class);
+        System.out.println(listParticipants);
+        if (!listParticipants.isEmpty()) {
+            return listParticipants;
         } else {
             return null;
         }
@@ -282,7 +298,6 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         Object[] params = new Object[]{
                 customerId
         };
-
         return this.getJdbcTemplate().query(query, params, (resultSet, i) -> {
             InviteNotificationDTO notification = new InviteNotificationDTO();
             notification.setEventId(resultSet.getString("event_id"));
@@ -317,8 +332,6 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
     @Override
     public void addParticipant(String customerId, String eventId, Instant startDateNotifications, int priority) {
-
-
         boolean isPresent = isCustomerEventPresent(customerId, eventId);
         if (isPresent) {
             updateParticipant(customerId, eventId, startDateNotifications, priority);
@@ -365,7 +378,6 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
                 customerId,
                 eventId
         };
-
         List<String> result = this.getJdbcTemplate().query(sql, params, (rs, i) -> rs.getString("id"));
         return !result.isEmpty();
     }
