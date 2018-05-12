@@ -15,6 +15,7 @@
   height: 20px;
   border-radius: 50px;
   overflow: hidden;
+  margin: auto;
 }
 
 .select-style select {
@@ -23,4 +24,33 @@
   width: 30px;
   height: 30px;
   border-radius: 50px;
+}
+
+.tdName:hover {
+  cursor:pointer;
+  background-color: rgba(0,0,0,0.02);
+}
+
+th:hover{
+  cursor:pointer;
+  background-color: rgba(0,0,0,0.02);
+}
+
+tr {
+  width: 100%;
+  display: inline-table;
+  height:60px;
+  table-layout: fixed;
+
+}
+
+table{
+  height:500px;
+  display: -moz-groupbox;
+}
+tbody{
+  overflow-y: scroll;
+  height: 450px;
+  width: 100%;
+  position: absolute;
 }
