@@ -24,7 +24,7 @@ import {BookedItemsComponent} from "./wishlist/bookeditems/bookeditems.component
 import {FriendComponent} from "./profile/friend/friend.component";
 import {CreateItemComponent} from "./wishlist/create-item/create-item.component";
 import {CreatedItemsComponent} from "./wishlist/createdItems/createditems.component";
-import {AddItemsComponent} from "./wishlist/add-items/add-items.component";
+import {EditWishListComponent} from "./wishlist/edit-wishlist/edit-wishlist.component";
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full'},
@@ -41,7 +41,7 @@ const appRoutes: Routes = [
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
   { path: 'vnavbar', component: VnavbarComponent, canActivate: [AuthGuard]},
   { path: 'folder-list', component: FolderListComponent, canActivate: [AuthGuard]},
-  { path: 'wishlist/:id', component: WishListComponent, canActivate: [AuthGuard]},
+  { path: 'wishlist', component: WishListComponent, canActivate: [AuthGuard]},
   { path: 'edit-profile', component: EditProfileComponent, canActivate: [AuthGuard]},
   { path: 'upload-img', component: UploadImgComponent, canActivate: [AuthGuard]},
   { path: 'notifications', component: NotificationContainerComponent, canActivate: [AuthGuard]},
@@ -49,7 +49,7 @@ const appRoutes: Routes = [
   { path: 'booked-items', component: BookedItemsComponent, canActivate: [AuthGuard]},
   { path: 'create-item', component: CreateItemComponent, canActivate: [AuthGuard]},
   { path: 'created-items', component: CreatedItemsComponent, canActivate: [AuthGuard]},
-  { path: 'add-items/:id', component: AddItemsComponent, canActivate: [AuthGuard]},
+  { path: 'wishlist/edit', component: EditWishListComponent, canActivate: [AuthGuard]},
 
   // otherwise redirect to home
  { path: '**', redirectTo: '' }

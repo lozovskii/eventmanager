@@ -35,9 +35,17 @@ public class EventController {
     }
 
     @PutMapping("/update")
-    public void updateEvent(@RequestBody UpdateEventDTO eventDTO){
+    public void updateEvent(@RequestBody UpdateEventDTO updateEventDTO){
         System.out.println("controller works!");
-        eventService.updateEvent(eventDTO);
+        System.out.println(updateEventDTO);
+        eventService.updateEvent(updateEventDTO);
+    }
+
+    @PutMapping("/updatenotif")
+    public void updateEventNotif(@RequestBody EventDTO EventDTO){
+        System.out.println("controller works!");
+        System.out.println(EventDTO);
+        eventService.updateEventNotif(EventDTO);
     }
 
     @GetMapping(value = "/public_and_friends")

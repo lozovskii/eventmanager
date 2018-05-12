@@ -32,8 +32,6 @@ public class CountdownEmailService {
         simpleMailMessage.setSubject("Don't forget!");
         simpleMailMessage.setText(message);
         mailSender.send(simpleMailMessage);
-        System.out.println(message + " sent to " + email);
-
-
+//        System.out.println(message + " sent to " + email);
     }
 }

@@ -10,7 +10,7 @@ import {Item} from "../../_models/item";
   styleUrls: ['../wishlist.component.css']
 })
 export class BookedItemsComponent implements OnInit {
-  wishlist: WishList;
+  wishList: WishList;
   hasChanges: boolean = false;
   items : Item[];
   path: string[] = ['name'];
@@ -27,9 +27,9 @@ export class BookedItemsComponent implements OnInit {
   getBookedItems(): void {
     this.wishListService.getBookedItems()
       .subscribe((wishList) => {
-        this.wishlist = wishList;
+        this.wishList = wishList;
 
-        if(this.wishlist == null){
+        if(this.wishList == null){
           this.alertService.info('Items not found',true);
         }
       });
@@ -42,7 +42,7 @@ export class BookedItemsComponent implements OnInit {
   }
 
   update() : void{
-    this.wishListService.update(this.wishlist).subscribe(data => {
+    this.wishListService.update(this.wishList).subscribe(data => {
 
       this.alertService.success('Wishlist successfully updated!',
         true);

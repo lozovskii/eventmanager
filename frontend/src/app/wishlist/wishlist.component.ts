@@ -1,11 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {Component, Input, OnInit} from '@angular/core';
 import {WishList} from "../_models/wishlist";
 import {AlertService} from "../_services/alert.service";
 import {WishListService} from "../_services/wishlist.service";
 import {UserService} from "../_services/user.service";
 import {ItemDto} from "../_models/dto/itemDto";
-import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-wishlist',
@@ -13,43 +11,63 @@ import { Location } from '@angular/common';
   styleUrls: ['./wishlist.component.css']
 })
 export class WishListComponent implements OnInit {
-  wishlist: WishList;
+  @Input('eventId') eventId: string;
+  @Input('included') isIncluded: boolean;
+
+  trash: ItemDto[];
+  wishList: WishList;
   hasChanges: boolean = false;
   path: string[] = ['name'];
   order: number = 1; // 1 asc, -1 desc;
 
   constructor(private wishListService: WishListService,
               private userService: UserService,
-              private activatedRoute: ActivatedRoute,
-              private alertService: AlertService,
-              private location: Location) {
+              private alertService: AlertService) {
   }
 
   ngOnInit() {
-    this.wishlist = new WishList();
-
-    this.activatedRoute.params.subscribe(params => {
-      let eventId = params['id'];
-      this.getWishListByEventId(eventId);
-    });
+    if (this.isIncluded || this.wishList != null)
+      this.wishListService.currentWishList.subscribe(wishList => this.wishList = wishList);
+    else {
+      this.getWishListByEventId(this.eventId);
+    }
+    this.trash = [];
   }
 
   getWishListByEventId(eventId: string): void {
     this.wishListService.getByEventId(eventId)
       .subscribe((wishList) => {
-          this.wishlist = wishList;
-
+          this.wishList = wishList;
+          this.wishListService.setCurrentWishList(wishList);
+        }, () => {
+          this.alertService.info('Wish list not found');
         }
-        // , (error) => {
-        // this.alertService.info('Wish list not found',true);
-        // }
       );
   }
 
+  updateWishList(): void {
+    if (this.trash.length > 0) {
+      this.wishListService.deleteItems(this.trash).subscribe(() =>
+          this.alertService.success('Wish list successfully updated!'),
+        () => this.alertService.error('Something wrong'));
+    }
+
+    this.wishListService.update(this.wishList).subscribe(() => {
+      this.alertService.success('Wish list successfully updated!');
+    }, () => {
+      this.alertService.error('Something wrong');
+    });
+  }
+
+  removeItem(itemDto: ItemDto): void {
+    this.hasChanges = true;
+    let index = this.wishList.items.indexOf(itemDto);
+    this.wishList.items.splice(index, 1);
+    this.trash.push(itemDto);
+  }
+
   bookItem(item: ItemDto): void {
-
     item.booker_customer_login = this.userService.getCurrentLogin();
-
     this.hasChanges = true;
   }
 
@@ -59,21 +77,16 @@ export class WishListComponent implements OnInit {
     return false; // do not reload
   }
 
-  // setPriority(item : ItemDto, priority : any) : void{
-  //   item.priority = priority.target.value;
-  //   this.hasChanges = true;
-  // }
 
   update(): void {
-    this.wishListService.update(this.wishlist).subscribe(data => {
-
+    this.wishListService.update(this.wishList).subscribe(() => {
       this.alertService.success('Wish list successfully updated!');
-    }, error2 => {
+    }, () => {
       this.alertService.error('Something wrong');
     });
   }
 
   isBooker(bookerLogin: string): boolean {
-    return bookerLogin ? this.wishListService.isBooker(bookerLogin) : false;
+    return this.wishListService.isBooker(bookerLogin);
   }
 }

@@ -3,6 +3,10 @@ import {EventService} from "../../_services";
 import {ActivatedRoute, Router} from "@angular/router";
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
 import {AlertService} from "../../_services/alert.service";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {Event} from '../../_models/event'
+import {AdditionEventModel} from "../../_models/additionEvent.model";
+import {UpdateEventComponent} from "../update-event/update-event.component";
 
 @Component({
   selector: 'app-event',
@@ -10,30 +14,38 @@ import {AlertService} from "../../_services/alert.service";
   styleUrls: ['./event.component.css']
 })
 export class EventComponent implements OnInit {
+   updateEventDTO: UpdateEventComponent;
   eventDTO: EventDTOModel;
   isCreator: boolean;
   isParticipant: boolean;
+  additionEventForm: FormGroup;
 
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
-              private alertService : AlertService) {
+              private alertService : AlertService,
+              private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
+    this.initAdditionEventForm();
     this.isCreator = false;
-    this.activatedRoute.params.subscribe(params => {
-      let eventId = params['id'];
-      this.eventService.getEventById(eventId)
-        .subscribe((eventDTO) => {
-          //this.eventDTO = new EventDTOModel();
-          this.eventDTO = eventDTO;
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    this.eventService.getEventById(id).subscribe((eventDTO) => {
+      this.eventDTO = eventDTO;
+      console.log(this.eventDTO);
+      console.log(this.eventDTO.additionEvent.startTimeNotification);
+      let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
+      this.isCreator = currentUserId == this.eventDTO.event.creatorId;
+      console.log('eventId = ' + this.eventDTO.event.id);
+      this.eventService.isParticipant(currentUserId,this.eventDTO.event.id).subscribe(()=>{this.isParticipant=true}, ()=>{this.isParticipant=false})
 
-          let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
-          this.isCreator = currentUserId == this.eventDTO.event.creatorId;
-          console.log('eventId = ' + this.eventDTO.event.id);
-          this.eventService.isParticipant(currentUserId,this.eventDTO.event.id).subscribe(()=>{this.isParticipant=true}, ()=>{this.isParticipant=false})
-        });
+    });
+  }
+
+  initAdditionEventForm(): FormGroup {
+    return this.additionEventForm = this.formBuilder.group({
+      startTimeNotification: new FormControl()
     });
   }
 
@@ -60,4 +72,6 @@ export class EventComponent implements OnInit {
       this.router.navigate(['../home']);
     });
   }
+
+
 }

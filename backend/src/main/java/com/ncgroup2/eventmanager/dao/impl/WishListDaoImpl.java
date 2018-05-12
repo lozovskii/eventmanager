@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 @Transactional
@@ -72,7 +73,7 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
 
         Collection<WishList> wishLists = getEntitiesByField(fieldName, fieldValue);
 
-        return  wishLists != null ?
+        return wishLists != null ?
                 wishLists.iterator().next() : null;
     }
 
@@ -106,25 +107,6 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
                 null : Mapper.mapWishListToCollection(wishListMap);
     }
 
-    @Override
-    public void update(WishList wishList) {
-
-        String updateItem_WishListSql =
-                "UPDATE \"Item_WishList\" " +
-                        "SET booker_customer_login=?, priority=? " +
-                        "WHERE id=?::UUID; ";
-
-        List<ItemWishListDto> items = wishList.getItems();
-
-        this.getJdbcTemplate().batchUpdate(
-                updateItem_WishListSql, items, items.size(),
-                (ps, itemDto) -> {
-
-                    ps.setString(1, itemDto.getBooker_customer_login());
-                    ps.setInt(2, itemDto.getPriority());
-                    ps.setString(3, itemDto.getItem_wishlist_id());
-                });
-    }
 
     /**
      * Allows possibility to update booker id or set new priority
@@ -181,6 +163,29 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
         }
     }
 
+    @Override
+    public void update(WishList wishList) {
+
+        addItems(wishList);
+
+        String updateItem_WishListSql =
+                "UPDATE \"Item_WishList\" " +
+                        "SET booker_customer_login=?, priority=? " +
+                        "WHERE id=?::UUID; ";
+
+        List<ItemWishListDto> items = wishList.getItems();
+
+        this.getJdbcTemplate().batchUpdate(
+                updateItem_WishListSql, items, items.size(),
+                (ps, itemDto) -> {
+
+                    ps.setString(1, itemDto.getBooker_customer_login());
+                    ps.setInt(2, itemDto.getPriority());
+                    ps.setString(3, itemDto.getItem_wishlist_id());
+                });
+    }
+
+
     /**
      * Creates new entry in table "Event_WishList".
      * Expected that object "ItemWishListDto" has all required ties
@@ -192,12 +197,21 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
 
         List<ItemWishListDto> items = wishList.getItems();
 
-        addItems(items);
+        createItems(items);
+
+        addItems(wishList);
+    }
+
+
+    public void addItems(WishList wishList) {
+
+        List<ItemWishListDto> items = wishList.getItems();
 
         String itemWishListInsertSql =
                 "INSERT INTO \"Item_WishList\"" +
-                        "(id, item_id, booker_customer_login, priority)" +
-                        "VALUES (?::UUID, ?::UUID, ?, ?::SMALLINT);";
+                        "(id, item_id, priority)" +
+                        "VALUES (?::UUID, ?::UUID, ?::SMALLINT)" +
+                        "ON CONFLICT (id) DO NOTHING;";
 
         this.getJdbcTemplate().batchUpdate(
                 itemWishListInsertSql,
@@ -206,26 +220,27 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
                     Item item1 = item.getItem();
                     ps.setString(1, item.getItem_wishlist_id());
                     ps.setString(2, item1.getId());
-                    ps.setString(3, item.getBooker_customer_login());
-                    ps.setInt(4, item.getPriority());
+                    ps.setInt(3, item.getPriority());
 
                 });
 
         String eventWishListInsertSql =
                 "INSERT INTO \"Event_WishList\"" +
-                        "(event_id, item_wishlist_id)" +
-                        "VALUES (?::UUID, ?::UUID);";
+                        "(id, event_id, item_wishlist_id)" +
+                        "VALUES (?::UUID,?::UUID, ?::UUID)" +
+                        "ON CONFLICT (id) DO NOTHING;";
 
         this.getJdbcTemplate().batchUpdate(
                 eventWishListInsertSql,
                 items, items.size(),
                 (ps, item) -> {
-                    ps.setString(1, wishList.getId());
-                    ps.setString(2, item.getItem_wishlist_id());
+                    ps.setString(1, item.getEvent_wishlist_id());
+                    ps.setString(2, wishList.getId());
+                    ps.setString(3, item.getItem_wishlist_id());
                 });
     }
 
-    public void addItems(List<ItemWishListDto> itemWishListDtos) {
+    public void createItems(List<ItemWishListDto> itemWishListDtos) {
 
         List<Item> items = (List<Item>) Mapper.mapDtoItemToItemCollection(itemWishListDtos);
 

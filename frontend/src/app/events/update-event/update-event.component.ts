@@ -86,7 +86,6 @@ export class UpdateEventComponent implements OnInit {
       this.updateEventDTO.priority = eventDTO.additionEvent.priority;
     }
 
-
     this.updateEventDTO.newPeople = this.newPeople;
     this.updateEventDTO.removedPeople = this.removedPeople;
     console.log("before update > " + JSON.stringify(this.updateEventDTO));
@@ -99,19 +98,16 @@ export class UpdateEventComponent implements OnInit {
 
   addUserToEvent(login) {
     if (!this.people.includes(login)) {
-
       this.newPeople.push(login);
       this.people.push(login);
     }
   }
-
 
   deleteUserFromEvent(login) {
     this.removeElementFromArray(this.people, login);
     this.removeElementFromArray(this.newPeople, login);
     this.removedPeople.push(login);
   }
-
 
   private removeElementFromArray(array: any[], value: any) {
     let index = this.people.indexOf(value, 0);

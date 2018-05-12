@@ -1,10 +1,13 @@
 package com.ncgroup2.eventmanager.service.impl;
 
 import com.ncgroup2.eventmanager.dao.WishListDao;
+import com.ncgroup2.eventmanager.dto.ItemWishListDto;
 import com.ncgroup2.eventmanager.entity.WishList;
 import com.ncgroup2.eventmanager.service.WishListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class WishListServiceImpl implements WishListService{
@@ -40,5 +43,10 @@ public class WishListServiceImpl implements WishListService{
     public void update(WishList wishList){
 
         wishListDao.update(wishList);
+    }
+
+    public void deleteItems(List<ItemWishListDto> trash){
+
+        wishListDao.deleteItems(trash);
     }
 }

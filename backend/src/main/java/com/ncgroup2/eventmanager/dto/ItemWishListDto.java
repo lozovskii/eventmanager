@@ -24,8 +24,10 @@ public class ItemWishListDto {
 
     public ItemWishListDto() {
 
-        UUID uuid = UUID.randomUUID();
+        this.item_wishlist_id = UUID.randomUUID().toString();
 
-        this.item_wishlist_id = uuid.toString();
+        this.event_wishlist_id = UUID.randomUUID().toString();
+
+        this.priority = 1;
     }
 }

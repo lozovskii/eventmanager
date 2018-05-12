@@ -8,7 +8,6 @@ import {User} from "../../_models/index";
   templateUrl: './friend.component.html',
   styleUrls: ['./friend.component.css']
 })
-
 export class FriendComponent implements OnInit {
 
   friends: User[];
@@ -22,7 +21,7 @@ export class FriendComponent implements OnInit {
         friends => {
           this.friends = friends;
           if (friends.toString() == '') {
-            this.alertService.info('You have no friends', true);
+            this.alertService.info('You have no friends yet.', true);
           }
         }
       )

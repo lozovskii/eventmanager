@@ -216,8 +216,6 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
                             "ON CONFLICT (name) DO UPDATE SET count = \"Tag\".count + 1 " +
                             "RETURNING id;";
 
-//TODO: BatchUpdate doesn't return conflicted id's
-
             this.getJdbcTemplate().batchUpdate(
                     tagsInsertSql, tags, tags.size(),
                     (ps, tag) -> {
@@ -229,7 +227,6 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
             String itemTagInsertSql =
                     "INSERT INTO \"Item_Tag\"" +
                             "(tag_id, item_id) " +
-// See TOD0                   "VALUES (?::uuid, '"+ item.getId() + "'::uuid);";
                             "VALUES ((SELECT id FROM \"Tag\" WHERE name = ?)::uuid, '" + item_id + "'::uuid);";
 
 
