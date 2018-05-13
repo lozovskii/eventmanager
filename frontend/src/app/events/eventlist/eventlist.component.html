@@ -16,7 +16,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let event of events" [routerLink]="['/event',event.id]">
+        <tr *ngFor="let event of events" [routerLink]="['/event-container',event.id]">
           <td>{{event.name}}</td>
           <td>{{event.startTime}}</td>
           <td>{{event.endTime}}</td>

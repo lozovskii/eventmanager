@@ -10,7 +10,7 @@ import {WishList} from "../../_models/wishlist";
 import {Item} from "../../_models/item";
 
 @Component({
-  selector: 'app-event',
+  selector: 'app-create-item',
   templateUrl: './create-item.component.html'
 })
 export class CreateItemComponent implements OnInit {

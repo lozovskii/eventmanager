@@ -6,7 +6,7 @@ import {Router} from "@angular/router";
 import {VISIBILITY} from "../../event-visibility";
 
 @Component({
-  selector: 'app-event',
+  selector: 'app-event-create',
   templateUrl: './create-event.component.html',
   styleUrls: ['./create-event.component.css']
 })

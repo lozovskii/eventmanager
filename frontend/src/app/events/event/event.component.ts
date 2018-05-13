@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {EventService} from "../../_services";
 import {ActivatedRoute, Router} from "@angular/router";
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
@@ -14,7 +14,9 @@ import {UpdateEventComponent} from "../update-event/update-event.component";
   styleUrls: ['./event.component.css']
 })
 export class EventComponent implements OnInit {
-   updateEventDTO: UpdateEventComponent;
+  @Input('eventId') eventId: string;
+
+  updateEventDTO: UpdateEventComponent;
   eventDTO: EventDTOModel;
   isCreator: boolean;
   isParticipant: boolean;
@@ -30,7 +32,7 @@ export class EventComponent implements OnInit {
   ngOnInit() {
     this.initAdditionEventForm();
     this.isCreator = false;
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    const id = this.eventId;
     this.eventService.getEventById(id).subscribe((eventDTO) => {
       this.eventDTO = eventDTO;
       console.log(this.eventDTO);
@@ -38,8 +40,6 @@ export class EventComponent implements OnInit {
       let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
       this.isCreator = currentUserId == this.eventDTO.event.creatorId;
       console.log('eventId = ' + this.eventDTO.event.id);
-      this.eventService.isParticipant(currentUserId,this.eventDTO.event.id).subscribe(()=>{this.isParticipant=true}, ()=>{this.isParticipant=false})
-
     });
   }
 

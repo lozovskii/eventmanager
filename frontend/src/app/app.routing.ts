@@ -15,7 +15,7 @@ import {SendLinkComponent} from "./reset-password/send-link/send-link.component"
 import {ResetComponent} from "./reset-password/reset/reset.component";
 import {EventComponent} from "./events/event/event.component";
 import {UpdateEventComponent} from "./events/update-event/update-event.component";
-import {FolderListComponent} from "./folder-list/folder-list.component";
+import {FolderListComponent} from "./folders/folder-list/folder-list.component";
 import {WishListComponent} from "./wishlist/wishlist.component";
 import {EditProfileComponent} from "./profile/edit-profile/edit-profile.component";
 import {UploadImgComponent} from "./upload-img/upload-img.component";
@@ -25,6 +25,8 @@ import {FriendComponent} from "./profile/friend/friend.component";
 import {CreateItemComponent} from "./wishlist/create-item/create-item.component";
 import {CreatedItemsComponent} from "./wishlist/createdItems/createditems.component";
 import {EditWishListComponent} from "./wishlist/edit-wishlist/edit-wishlist.component";
+import {CreateFolderComponent} from "./folders/create-folder/create-folder.component";
+import {EventContainerComponent} from "./events/event-container/event-container.component";
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full'},
@@ -50,7 +52,9 @@ const appRoutes: Routes = [
   { path: 'create-item', component: CreateItemComponent, canActivate: [AuthGuard]},
   { path: 'created-items', component: CreatedItemsComponent, canActivate: [AuthGuard]},
   { path: 'wishlist/edit', component: EditWishListComponent, canActivate: [AuthGuard]},
+  { path: 'create-folder', component: CreateFolderComponent, canActivate: [AuthGuard]},
 
+  { path: 'event-container/:id', component: EventContainerComponent, canActivate: [AuthGuard]},
   // otherwise redirect to home
  { path: '**', redirectTo: '' }
 ];
