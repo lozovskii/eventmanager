@@ -3,7 +3,6 @@ import {User} from "../_models";
 import {ProfileService} from "../_services/profile.service";
 import {UserService} from "../_services";
 import {AlertService} from "../_services/alert.service";
-import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-profile',
@@ -16,7 +15,10 @@ export class ProfileComponent implements OnInit {
   users: User[];
   request = '';
   currentUser: User;
-  public isSearchUser = false;
+  isSearchUser = false;
+  page: number = 1;
+  pages: Number[];
+
   //
   // constructor(private profileService: ProfileService,
   //             private userService: UserService,
@@ -55,30 +57,48 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {}
+
   closeUsers() {
     this.isSearchUser = false;
     this.users = null;
   }
 
+  // searchUser(request) {
+  //   // if(this.request !== '') {
+  //   //   this.isSearchUser = true
+  //   // }
+  //   console.log(this.request)
+  //   this.profileService.search(request)
+  //     .subscribe(
+  //       users => {
+  //         this.users = users;
+  //         if (users.toString() == '') {
+  //           this.alertService.info('This user does not exist', true);
+  //         }
+  //       }
+  //     )
+  // }
+
   searchUser(request) {
-    // if(this.request !== '') {
-    //   this.isSearchUser = true
-    // }
-    console.log(this.request)
-    this.profileService.search(request)
-      .subscribe(
-        users => {
-          this.users = users;
-          if (users.toString() == '') {
-            this.alertService.info('This user does not exist', true);
-          }
-        }
-      )
+    if (this.request !== '') {
+      this.isSearchUser = true;
+    }
+
+    this.profileService.search(this.page, 6, request)
+      .subscribe((data) => {
+        this.users = data['pageItems'];
+        this.pages = new Array(data['pagesAvailable']);
+    });
   }
 
-   onKeyUp(event){
-     this.isSearchUser = true;
-    console.log(event.target.value)
+  setPage(i,event:any) {
+    event.preventDefault();
+    this.page=i;
+    this.searchUser(this.request);
+  }
+
+  onKeyUp(event){
+    this.isSearchUser = true;
     this.request = event.target.value;
     this.searchUser(this.request);
 

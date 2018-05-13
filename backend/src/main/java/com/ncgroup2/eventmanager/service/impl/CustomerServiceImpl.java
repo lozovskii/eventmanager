@@ -2,6 +2,7 @@ package com.ncgroup2.eventmanager.service.impl;
 
 import com.ncgroup2.eventmanager.dao.CustomerDao;
 import com.ncgroup2.eventmanager.entity.Customer;
+import com.ncgroup2.eventmanager.entity.Page;
 import com.ncgroup2.eventmanager.entity.Relationship;
 import com.ncgroup2.eventmanager.service.CustomerService;
 import com.ncgroup2.eventmanager.service.sender.MyMailSender;
@@ -86,9 +87,14 @@ public class CustomerServiceImpl implements CustomerService {
         customerDao.edit(customer);
     }
 
+//    @Override
+//    public List<Customer> search(String search) {
+//        return customerDao.search(search);
+//    }
+
     @Override
-    public List<Customer> search(String search) {
-        return customerDao.search(search);
+    public Page<Customer> search(int pageNo, int pageSize, String search) {
+        return customerDao.search(pageNo, pageSize, search);
     }
 
     @Override

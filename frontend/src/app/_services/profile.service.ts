@@ -37,9 +37,15 @@ export class ProfileService {
   }
 
 
-  search(request): Observable<User[]> {
-    return this.http.get<User[]>(
-      `${this.url}/search?request=${request}`,
+  // search(request): Observable<User[]> {
+  //   return this.http.get<User[]>(
+  //     `${this.url}/search?request=${request}`,
+  //     {headers: AuthenticationService.getAuthHeader()});
+  // }
+
+  search(page: number, size: number, search: string) {
+    return this.http.get(
+      `${this.url}/search?page=${page}&size=${size}&search=${search}`,
       {headers: AuthenticationService.getAuthHeader()});
   }
 
