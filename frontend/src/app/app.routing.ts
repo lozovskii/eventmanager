@@ -15,7 +15,7 @@ import {SendLinkComponent} from "./reset-password/send-link/send-link.component"
 import {ResetComponent} from "./reset-password/reset/reset.component";
 import {EventComponent} from "./events/event/event.component";
 import {UpdateEventComponent} from "./events/update-event/update-event.component";
-import {FolderListComponent} from "./folder-list/folder-list.component";
+import {FolderListComponent} from "./folders/folder-list/folder-list.component";
 import {WishListComponent} from "./wishlist/wishlist.component";
 import {EditProfileComponent} from "./profile/edit-profile/edit-profile.component";
 import {UploadImgComponent} from "./upload-img/upload-img.component";

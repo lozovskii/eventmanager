@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {EditorModule} from '@tinymce/tinymce-angular';
 
@@ -30,7 +30,7 @@ import {ResetComponent} from './reset-password/reset/reset.component';
 import {NavbarService} from "./_services/navbar.service";
 import {EventComponent} from './events/event/event.component';
 import {UpdateEventComponent} from './events/update-event/update-event.component';
-import {FolderListComponent} from './folder-list/folder-list.component';
+import {FolderListComponent} from './folders/folder-list/folder-list.component';
 import {WishListComponent} from './wishlist/wishlist.component';
 import {WishListService} from "./_services/wishlist.service";
 import {BookedItemsComponent} from "./wishlist/bookeditems/bookeditems.component";
@@ -48,11 +48,13 @@ import {FriendComponent} from "./profile/friend/friend.component";
 import {SortingItemsPipe} from "./wishlist/sorting-items/sorting-items.pipe";
 import {SearchUserComponent} from "./profile/search-user/search-user.component";
 import { EventNotificationComponent } from './events/event-notification/event-notification.component';
+import { CreateFolderComponent } from './folders/create-folder/create-folder.component';
 import {EditWishListComponent} from "./wishlist/edit-wishlist/edit-wishlist.component";
 import {CalendarComponent} from "./home/calendar/calendar.component";
 
 import { CalendarModule } from 'angular-calendar';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import {HttpClientModule} from "@angular/common/http";
 @NgModule({
   imports: [
     BrowserModule,
@@ -100,6 +102,8 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     FriendComponent,
     SearchUserComponent,
     SortingItemsPipe,
+    EventNotificationComponent,
+    CreateFolderComponent,
     EditWishListComponent,
     EventNotificationComponent,
     CalendarComponent
