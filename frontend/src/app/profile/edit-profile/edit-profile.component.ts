@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ProfileService} from "../../_services/profile.service";
 import {AlertService, UserService} from "../../_services/index";
 import {Router} from "@angular/router";
@@ -24,11 +24,11 @@ export class EditProfileComponent implements OnInit {
               private userService: UserService,
               private alertService: AlertService,
               private router: Router,) {
-    let login = JSON.parse(localStorage.getItem('currentUser')).login;
+    let login = JSON.parse(sessionStorage.getItem('currentUser')).login;
     this.userService.getByLogin(login).subscribe(
       user => {
         this.currentUser = user;
-        localStorage.setItem('currentUserObject', JSON.stringify(this.currentUser));
+        sessionStorage.setItem('currentUserObject', JSON.stringify(this.currentUser));
       }
     );
     // if(sessionStorage.getItem('currentUser')==null) {
