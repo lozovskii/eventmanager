@@ -4,7 +4,9 @@ import com.ncgroup2.eventmanager.dao.CustomerDao;
 import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.entity.Relationship;
 import com.ncgroup2.eventmanager.service.CustomerService;
+import com.ncgroup2.eventmanager.service.sender.MyMailSender;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +16,12 @@ import java.util.List;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerDao customerDao;
+    private final MyMailSender mailSender;
 
     @Autowired
-    public CustomerServiceImpl(CustomerDao customerDao) {
+    public CustomerServiceImpl(CustomerDao customerDao, MyMailSender mailSender) {
         this.customerDao = customerDao;
+        this.mailSender = mailSender;
     }
 
     @Override
@@ -105,6 +109,22 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void addFriend(String login) {
         customerDao.addFriend(login);
+        sendRequestEmail(login);
+    }
+
+    private void sendRequestEmail(String login) {
+        Customer sender = customerDao.getEntityByField("login", SecurityContextHolder.getContext().getAuthentication().getName());
+        String sendTo = customerDao.getEntityByField("login", login).getEmail();
+
+        String subject = "Friend request";
+
+        String template = "%s %s sent you friend request. \n See profile: ";
+        String message = String.format(template, sender.getName(), sender.getSecondName());
+
+        String link = "/profile/"+login;
+        
+        mailSender.sendBasicEmailWithLink(sendTo,subject,message,link);
+
     }
 
     @Override
