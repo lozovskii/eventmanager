@@ -17,21 +17,16 @@ public class WishListController {
     private WishListService wishListService;
 
     @Autowired
-    public WishListController(WishListService wishListService){
+    public WishListController(WishListService wishListService) {
         this.wishListService = wishListService;
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<WishList> getWishList(@PathVariable("id") String id) {
-
         if (id.isEmpty()) {
-
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
         } else {
-
             WishList wishList = wishListService.getByEventId(id);
-
             if (wishList == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
@@ -42,31 +37,27 @@ public class WishListController {
 
     @GetMapping(value = "/booked")
     public ResponseEntity<WishList> getBookedItems(@RequestParam String customerLogin) {
+        WishList bookedItems = wishListService.getBookedItems(customerLogin);
 
-            WishList bookedItems = wishListService.getBookedItems(customerLogin);
-
-            if (bookedItems == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-
-            return new ResponseEntity<>(bookedItems, HttpStatus.OK);
+        if (bookedItems == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
+        return new ResponseEntity<>(bookedItems, HttpStatus.OK);
+    }
 
     @PostMapping(value = "/update")
     public void update(@RequestBody WishList wishList) {
-
         wishListService.update(wishList);
     }
 
     @PostMapping(value = "/add")
     public void addItems(@RequestBody WishList wishList) {
-
         wishListService.createWishlist(wishList);
     }
 
     @PostMapping(value = "/delete")
     public void removeItems(@RequestBody List<ItemWishListDto> trash) {
-
         wishListService.deleteItems(trash);
     }
 

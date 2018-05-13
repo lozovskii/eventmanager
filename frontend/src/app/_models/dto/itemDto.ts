@@ -12,14 +12,5 @@ export class ItemDto{
 
   booker_customer_login: string;
 
-  private _priority: number;
-
-
-  get priority(): number {
-    return this._priority;
-  }
-
-  set priority(value: number) {
-    this._priority = value;
-  }
+  priority: number;
 }

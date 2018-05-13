@@ -32,6 +32,8 @@ export class CreatedItemsComponent implements OnInit {
   addItem(item: Item): void {
     let itemDto: ItemDto = new ItemDto();
     itemDto.item = item;
+    itemDto.event_id = this.wishList.id;
+    itemDto.priority = 3;
     this.wishList.items.push(itemDto);
   }
 
@@ -39,10 +41,7 @@ export class CreatedItemsComponent implements OnInit {
     this.wishListService.getCreatedItems()
       .subscribe((items) => {
         this.items = items;
-      }, (error) => {
-
-        this.location.back();
-
+      }, () => {
         this.alertService.info('Items not found', true);
       });
   }

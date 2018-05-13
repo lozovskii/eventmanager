@@ -166,14 +166,12 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
     @Override
     public void update(WishList wishList) {
 
-        addItems(wishList);
+        List<ItemWishListDto> items = wishList.getItems();
 
         String updateItem_WishListSql =
                 "UPDATE \"Item_WishList\" " +
                         "SET booker_customer_login=?, priority=? " +
                         "WHERE id=?::UUID; ";
-
-        List<ItemWishListDto> items = wishList.getItems();
 
         this.getJdbcTemplate().batchUpdate(
                 updateItem_WishListSql, items, items.size(),
@@ -200,6 +198,8 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
         createItems(items);
 
         addItems(wishList);
+
+        update(wishList);
     }
 
 
@@ -240,7 +240,7 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
                 });
     }
 
-    public void createItems(List<ItemWishListDto> itemWishListDtos) {
+    private void createItems(List<ItemWishListDto> itemWishListDtos) {
 
         List<Item> items = (List<Item>) Mapper.mapDtoItemToItemCollection(itemWishListDtos);
 

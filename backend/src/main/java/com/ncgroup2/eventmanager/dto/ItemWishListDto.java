@@ -27,7 +27,17 @@ public class ItemWishListDto {
         this.item_wishlist_id = UUID.randomUUID().toString();
 
         this.event_wishlist_id = UUID.randomUUID().toString();
+    }
 
-        this.priority = 1;
+    @Override
+    public String toString() {
+        return "ItemWishListDto{" +
+                "item=" + item.toString() +
+                "\n, item_wishlist_id='" + item_wishlist_id + '\'' +
+                ", event_wishlist_id='" + event_wishlist_id + '\'' +
+                ", event_id='" + event_id + '\'' +
+                ", booker_customer_login='" + booker_customer_login + '\'' +
+                ", priority=" + priority +
+                '}';
     }
 }

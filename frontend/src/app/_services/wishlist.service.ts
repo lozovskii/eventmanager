@@ -50,11 +50,6 @@ export class WishListService {
     return this.http.post<WishList>(url, wishList, {headers: AuthenticationService.getAuthHeader()});
   }
 
-  createWishList(wishList: WishList){
-    const url = `${this.wishListUrl}/create`;
-    return this.http.post<WishList>(url, wishList, {headers: AuthenticationService.getAuthHeader()});
-  }
-
   deleteItems(trash: ItemDto[]){
     const url = `${this.wishListUrl}/delete`;
     return this.http.post<WishList>(url, trash, {headers: AuthenticationService.getAuthHeader()});

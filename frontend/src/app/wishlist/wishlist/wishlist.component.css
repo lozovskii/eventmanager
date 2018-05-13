@@ -26,6 +26,13 @@
   border-radius: 50px;
 }
 
+a{
+  cursor:pointer;
+}
+a:hover{
+  font-weight: 300;
+}
+
 .tdName:hover {
   cursor:pointer;
   background-color: rgba(0,0,0,0.02);
