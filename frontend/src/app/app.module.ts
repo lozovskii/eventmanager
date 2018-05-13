@@ -56,6 +56,7 @@ import { CalendarModule } from 'angular-calendar';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import {HttpClientModule} from "@angular/common/http";
 import {EventContainerComponent} from "./events/event-container/event-container.component";
+import {FolderService} from "./_services/folder.service";
 @NgModule({
   imports: [
     BrowserModule,
@@ -121,7 +122,8 @@ import {EventContainerComponent} from "./events/event-container/event-container.
     NavbarService,
     WishListService,
     ProfileService,
-    NotificationService
+    NotificationService,
+    FolderService
     // provider used to create fake backend
   ],
   entryComponents: [
