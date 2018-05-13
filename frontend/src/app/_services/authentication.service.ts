@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import {UserAuthParam} from "../_models/userAuthParam.model";
-import {Observable} from "rxjs/Rx";
 
 @Injectable()
 export class AuthenticationService {

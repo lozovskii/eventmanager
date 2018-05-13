@@ -16,8 +16,8 @@ export class UpdateEventComponent implements OnInit {
 
   updateEventDTO: UpdateEventDTO = new UpdateEventDTO();
   people: string[] = [];
-  newPeople: string[]= [];
-  removedPeople: string[] =[];
+  newPeople: string[] = [];
+  removedPeople: string[] = [];
 
   canEdit: boolean;
   currentEventId: string;
@@ -41,8 +41,9 @@ export class UpdateEventComponent implements OnInit {
     this.eventService.getEventById(id).subscribe((eventDTO) => {
       this.eventDTO = eventDTO;
       console.log(this.eventDTO);
-      //TODO uncomment when response will contain participants
-      // this.people = eventDTO.additionEvent.people;
+      if (this.eventDTO.additionEvent.people != null) {
+        this.people = eventDTO.additionEvent.people;
+      }
 
     });
   }
@@ -72,10 +73,10 @@ export class UpdateEventComponent implements OnInit {
     this.updateEventDTO.event = this.eventDTO.event;
     this.updateEventDTO.priority = this.eventDTO.additionEvent.priority;
     if (eventDTO.event.startTime != null) {
-      this.updateEventDTO.event.startTime = (eventDTO.event.startTime).slice(0, 10) + ' ' + (eventDTO.event.startTime).slice(11, 16) +':00';
+      this.updateEventDTO.event.startTime = (eventDTO.event.startTime).slice(0, 10) + ' ' + (eventDTO.event.startTime).slice(11, 16) + ':00';
     }
     if (eventDTO.event.endTime != null) {
-      this.updateEventDTO.event.endTime = (eventDTO.event.endTime).slice(0, 10) + ' ' + (eventDTO.event.endTime).slice(11, 16) +':00';
+      this.updateEventDTO.event.endTime = (eventDTO.event.endTime).slice(0, 10) + ' ' + (eventDTO.event.endTime).slice(11, 16) + ':00';
     }
     if (eventDTO.event.name != null) {
       this.updateEventDTO.event.name = eventDTO.event.name;

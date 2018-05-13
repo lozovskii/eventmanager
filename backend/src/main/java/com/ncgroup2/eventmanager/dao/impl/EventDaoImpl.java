@@ -14,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -245,45 +243,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
     @Override
     public List<Event> getAllPublicAndFriends(String customerId) {
-        String sql = "SELECT\n" +
-                "  \"Event\".id              AS id,\n" +
-                "  \"Event\".name            AS name,\n" +
-                "  start_time,\n" +
-                "  end_time,\n" +
-                "  \"Event\".description     AS description,\n" +
-                "  \"Event_Visibility\".name AS visibility\n" +
-                "FROM (\"Event\"\n" +
-                "  INNER JOIN \"Event_Visibility\"\n" +
-                "    ON \"Event\".visibility = \"Event_Visibility\".id)\n" +
-                "WHERE \"Event\".visibility = (SELECT id\n" +
-                "                            FROM \"Event_Visibility\"\n" +
-                "                            WHERE name = 'PUBLIC')\n" +
-                "      AND start_time IS NOT NULL\n" +
-                "      AND end_time IS NOT NULL\n" +
-                "\n" +
-                "UNION\n" +
-                "\n" +
-                "SELECT\n" +
-                "  \"Event\".id              AS id,\n" +
-                "  \"Event\".name            AS name,\n" +
-                "  start_time,\n" +
-                "  end_time,\n" +
-                "  \"Event\".description     AS description,\n" +
-                "  \"Event_Visibility\".name AS visibility\n" +
-                "FROM (\"Event\"\n" +
-                "  INNER JOIN \"Event_Visibility\"\n" +
-                "    ON \"Event\".visibility = \"Event_Visibility\".id)\n" +
-                "WHERE \"Event\".visibility = (SELECT id\n" +
-                "                            FROM \"Event_Visibility\"\n" +
-                "                            WHERE name = 'FRIENDS')\n" +
-                "\n" +
-                "       AND (\"isFriends\"(creator_id, cast(? AS UUID))\n" +
-                "           OR creator_id = cast(? AS UUID))\n" +
-                "\n" +
-                "\n" +
-                "      AND start_time IS NOT NULL\n" +
-                "      AND end_time IS NOT NULL\n" +
-                "ORDER BY start_time";
+        String sql = queryService.getQuery("event.public_and_friends");
 
         Object[] params = new Object[]{
                 customerId,
@@ -309,8 +269,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
     @Override
     public boolean isParticipant(String customerId, String eventId) {
-        String sql = "SELECT * FROM \"Customer_Event\" WHERE event_id = cast (? AS UUID)" +
-                " AND customer_id = cast(? AS UUID) AND status = (SELECT id FROM \"Customer_Event_Status\" WHERE name ='ACCEPTED')";
+        String sql = queryService.getQuery("customer_event.is_participant");
         Object[] params = new Object[]{
                 eventId,
                 customerId
@@ -321,8 +280,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
     @Override
     public void removeParticipant(String customerId, String eventId) {
-        String sql = "UPDATE \"Customer_Event\" SET status = (SELECT id from \"Customer_Event_Status\" WHERE name = 'DELETED') WHERE customer_id = cast(? AS UUID) " +
-                "AND event_id = cast(? AS UUID)";
+        String sql = queryService.getQuery("customer_event.remove_participant");
         Object[] params = new Object[]{
                 customerId,
                 eventId
@@ -331,40 +289,27 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     }
 
     @Override
-    public void addParticipant(String customerId, String eventId, Instant startDateNotifications, int priority) {
+    public void addParticipant(String customerId, String eventId) {
         boolean isPresent = isCustomerEventPresent(customerId, eventId);
         if (isPresent) {
-            updateParticipant(customerId, eventId, startDateNotifications, priority);
+            updateParticipant(customerId, eventId);
         } else {
-            insertParticipant(customerId, eventId, startDateNotifications, priority);
+            insertParticipant(customerId, eventId);
         }
     }
 
-    private void insertParticipant(String customerId, String eventId, Instant startDateNotifications, int priority) {
-        String sql = "INSERT INTO \"Customer_Event\" (customer_id, event_id, start_date_notification, priority, status)\n" +
-                "    VALUES (cast(? as uuid), cast(? as uuid), ?, ?, (select id\n" +
-                "                                                                           from \"Customer_Event_Status\"\n" +
-                "                                                                           where name = 'ACCEPTED'))";
+    private void insertParticipant(String customerId, String eventId) {
+        String sql = queryService.getQuery("customer_event.insert_participant");
         Object[] params = new Object[]{
                 customerId,
-                eventId,
-                new Timestamp(startDateNotifications.toEpochMilli()),
-                priority
+                eventId
         };
         this.getJdbcTemplate().update(sql, params);
     }
 
-    private void updateParticipant(String customerId, String eventId, Instant startDateNotifications, int priority) {
-        String sql = "UPDATE \"Customer_Event\"\n" +
-                "    SET start_date_notification = ?,\n" +
-                "      priority                  = ?,\n" +
-                "      status                    = (SELECT id\n" +
-                "                                   FROM \"Customer_Event_Status\"\n" +
-                "                                   WHERE name = 'ACCEPTED')\n" +
-                "    WHERE customer_id = cast(? as uuid) AND event_id = cast(? as uuid)";
+    private void updateParticipant(String customerId, String eventId) {
+        String sql = queryService.getQuery("customer_event.update_participant");
         Object[] params = new Object[]{
-                new Timestamp(startDateNotifications.toEpochMilli()),
-                priority,
                 customerId,
                 eventId
         };
@@ -373,7 +318,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     }
 
     private boolean isCustomerEventPresent(String customerId, String eventId) {
-        String sql = "select id from \"Customer_Event\" where customer_id = cast(? as uuid) and event_id = cast(? as uuid)";
+        String sql = queryService.getQuery("customer_event.is_present");
         Object[] params = {
                 customerId,
                 eventId
@@ -384,18 +329,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
     @Override
     public List<EventCountdownDTO> getCountdownMessages() {
-        String sql = "SELECT\n" +
-                "  (SELECT email\n" +
-                "   FROM \"Customer\"\n" +
-                "   WHERE id = ce.customer_id) AS email,\n" +
-                "  event_countdown_message(event_id) AS message\n" +
-                "FROM \"Customer_Event\" ce\n" +
-                "WHERE date_trunc('day', start_date_notification) <= date_trunc('day', now()) AND\n" +
-                "      ce.event_id = (SELECT id\n" +
-                "                     FROM \"Event\"\n" +
-                "                     WHERE\n" +
-                "                       start_time > now() AND\n" +
-                "                       ce.event_id = \"Event\".id)";
+        String sql = queryService.getQuery("customer_event.countdown_messages");
         return this.getJdbcTemplate().query(sql, (resultSet, i) -> {
             EventCountdownDTO countdownDTO = new EventCountdownDTO();
             countdownDTO.setEmail(resultSet.getString("email"));

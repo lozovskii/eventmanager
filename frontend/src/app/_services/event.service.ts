@@ -9,7 +9,7 @@ import {AuthenticationService} from "./authentication.service";
 import {UpdateEventDTO} from "../_models/dto/UpdateEventDTO";
 
 @Injectable()
-export class EventService {
+  export class EventService {
   private eventsUrl = 'api/events';
 
   constructor(private http: HttpClient,
@@ -18,7 +18,7 @@ export class EventService {
 
   create(event: EventDTOModel) {
     console.log('here: ' + JSON.stringify(event));
-    return this.http.post<Event>('/api/events', event, {headers: AuthenticationService.getAuthHeader()});
+    return this.http.post<Event>(this.eventsUrl, event, {headers: AuthenticationService.getAuthHeader()});
   }
 
   getAllEvents(): Observable<Event[]> {

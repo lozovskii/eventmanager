@@ -1,11 +1,13 @@
 package com.ncgroup2.eventmanager.service.sender;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
-
+@PropertySource("classpath:server.properties")
 @Component
 public class MyMailSender {
 
@@ -19,6 +21,9 @@ public class MyMailSender {
 
     private String text;
 
+    @Value("${host}")
+    private String host;
+
     @Autowired
     public MyMailSender(JavaMailSender mailSender) {
         this.mailSender = mailSender;
@@ -27,7 +32,6 @@ public class MyMailSender {
     public void sendEmail(String recipientAddress, SubjectEnum subjectEnum, String token) {
 
         String message = "Confirmation link: \n";
-        String hosting = "https://eventmanager2018.herokuapp.com";
 
         this.recipientAddress = recipientAddress;
 
@@ -62,10 +66,17 @@ public class MyMailSender {
 
         this.confirmationUrl += "?token=" + token;
 
-        this.text = message + hosting + confirmationUrl;
+        this.text = message + host + confirmationUrl;
 
         send();
 
+    }
+
+    public void sendBasicEmailWithLink(String sendTo, String subject, String message, String link) {
+        recipientAddress = sendTo;
+        this.subject = subject;
+        text = message + host + link;
+        send();
     }
 
     private void send() {
@@ -80,5 +91,7 @@ public class MyMailSender {
 
         mailSender.send(email);
     }
+
+
 }
 

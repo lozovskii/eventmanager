@@ -6,7 +6,6 @@ import com.ncgroup2.eventmanager.dto.InviteNotificationDTO;
 import com.ncgroup2.eventmanager.dto.UpdateEventDTO;
 import com.ncgroup2.eventmanager.entity.Event;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,7 +33,7 @@ public interface EventService {
 
     void removeParticipant(String customerId, String eventId);
 
-    void addParticipant(String customerId, String eventId, Instant startDateNotification, int priority);
+    void addParticipant(String customerId, String eventId);
 
     List<EventCountdownDTO> getCountdownMessages();
 

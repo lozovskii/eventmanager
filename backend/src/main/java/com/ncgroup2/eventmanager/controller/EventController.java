@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -93,7 +92,7 @@ public class EventController {
 
     @GetMapping("/addParticipant")
     public ResponseEntity addParticipant(@RequestParam String customerId,@RequestParam String eventId) {
-        eventService.addParticipant(customerId, eventId, Instant.now(), 2);
+        eventService.addParticipant(customerId, eventId);
         return new ResponseEntity(HttpStatus.OK);
     }
 

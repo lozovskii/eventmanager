@@ -4,13 +4,24 @@
   </div>
 
   <main role="main" class="col-md-6">
-<form>
+<form [formGroup]="folderForm">
+
   <div class="form-group">
     <label>Title: </label>
-    <input type="date" formControlName="day" class="dateTimeInput">
+    <input formControlName="name" type="text" class="form-control" required>
   </div>
+
+  <div class="form-group row">
+    <div class="col-md-10">
+      <label >For friends available: </label>
+    </div>
+    <div class="col-md-2">
+      <input formControlName="isshared" type="checkbox" class="form-control">
+    </div>
+  </div>
+
   <div>
-    <button class="btn btn-primary">Create</button>
+    <button type = "submit" class="btn btn-primary" (click) = "createFolder(folderForm.value)">Create</button>
   </div>
 </form>
   </main>

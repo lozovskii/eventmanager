@@ -25,6 +25,7 @@ import {FriendComponent} from "./profile/friend/friend.component";
 import {CreateItemComponent} from "./wishlist/create-item/create-item.component";
 import {CreatedItemsComponent} from "./wishlist/created-Items/created-items.component";
 import {EditWishListComponent} from "./wishlist/edit-wishlist/edit-wishlist.component";
+import {CreateFolderComponent} from "./folders/create-folder/create-folder.component";
 import {EventContainerComponent} from "./events/event-container/event-container.component";
 
 const appRoutes: Routes = [
@@ -41,7 +42,7 @@ const appRoutes: Routes = [
   { path: 'reset-password', component: ResetComponent},
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
   { path: 'vnavbar', component: VnavbarComponent, canActivate: [AuthGuard]},
-  { path: 'folder-list', component: FolderListComponent, canActivate: [AuthGuard]},
+  { path: 'folder-list/:type', component: FolderListComponent, canActivate: [AuthGuard]},
   { path: 'wishlist', component: WishListComponent, canActivate: [AuthGuard]},
   { path: 'edit-profile', component: EditProfileComponent, canActivate: [AuthGuard]},
   { path: 'upload-img', component: UploadImgComponent, canActivate: [AuthGuard]},
@@ -51,6 +52,8 @@ const appRoutes: Routes = [
   { path: 'create-item', component: CreateItemComponent, canActivate: [AuthGuard]},
   { path: 'created-items', component: CreatedItemsComponent, canActivate: [AuthGuard]},
   { path: 'wishlist/edit', component: EditWishListComponent, canActivate: [AuthGuard]},
+  { path: 'create-folder', component: CreateFolderComponent, canActivate: [AuthGuard]},
+
   { path: 'event-container/:id', component: EventContainerComponent, canActivate: [AuthGuard]},
   // otherwise redirect to home
  { path: '**', redirectTo: '' }
