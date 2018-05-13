@@ -3,9 +3,12 @@ package com.ncgroup2.eventmanager.service.impl;
 import com.ncgroup2.eventmanager.dao.CustomerDao;
 import com.ncgroup2.eventmanager.dao.EventDao;
 import com.ncgroup2.eventmanager.dto.*;
+import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.entity.Event;
 import com.ncgroup2.eventmanager.service.EventService;
+import com.ncgroup2.eventmanager.service.sender.MyMailSender;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,10 +23,16 @@ public class EventServiceImpl implements EventService {
     private final String EVENT_STATUS_NOTE = "NOTE";
     private final String EVENT_VISIBILITY_PRIVATE = "PRIVATE";
 
+    private final MyMailSender mailSender;
+    private final EventDao eventDao;
+    private final CustomerDao customerDao;
+
     @Autowired
-    private EventDao eventDao;
-    @Autowired
-    private CustomerDao customerDao;
+    public EventServiceImpl(MyMailSender mailSender, EventDao eventDao, CustomerDao customerDao) {
+        this.mailSender = mailSender;
+        this.eventDao = eventDao;
+        this.customerDao = customerDao;
+    }
 
     @Override
     public void createEvent(EventDTO eventDTO) {
@@ -77,7 +86,26 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public void createEventInvitations(List<String> logins, UUID eventId) {
-        logins.forEach(login -> eventDao.createEventInvitation(login, eventId));
+        logins.forEach(login -> {
+            eventDao.createEventInvitation(login, eventId);
+            sendInviteEmail(login,eventId);
+        });
+    }
+
+    private void sendInviteEmail(String login, UUID eventId) {
+        String sendTo = customerDao.getEntityByField("login",login).getEmail();
+        Customer inviter = customerDao.getEntityByField("login",SecurityContextHolder.getContext().getAuthentication().getName());
+        Event event = eventDao.getEventById(eventId.toString());
+
+        String subject = "New invite";
+
+        String template = "%s %s invited you to '%s' event.\n See more: ";
+        String message = String.format(template, inviter.getName(),inviter.getSecondName(),event.getName());
+
+        String url = "/event/"+eventId.toString();
+        mailSender.sendBasicEmailWithLink(sendTo,subject,message,url);
+
+
     }
 
     @Override
