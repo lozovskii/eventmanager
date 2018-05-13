@@ -5,15 +5,22 @@
 
   <main role="main" class="col-md-6">
 <form [formGroup]="folderForm">
+
   <div class="form-group">
     <label>Title: </label>
     <input formControlName="name" type="text" class="form-control" required>
   </div>
-  <div class="form-group">
-    <label >For friends available: </label>
-    <input formControlName="isshared" type="checkbox" class="form-control">
-  <div>
+
+  <div class="form-group row">
+    <div class="col-md-10">
+      <label >For friends available: </label>
+    </div>
+    <div class="col-md-2">
+      <input formControlName="isshared" type="checkbox" class="form-control">
+    </div>
   </div>
+
+  <div>
     <button type = "submit" class="btn btn-primary" (click) = "createFolder(folderForm.value)">Create</button>
   </div>
 </form>

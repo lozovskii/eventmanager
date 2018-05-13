@@ -42,7 +42,7 @@ const appRoutes: Routes = [
   { path: 'reset-password', component: ResetComponent},
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
   { path: 'vnavbar', component: VnavbarComponent, canActivate: [AuthGuard]},
-  { path: 'folder-list', component: FolderListComponent, canActivate: [AuthGuard]},
+  { path: 'folder-list/:type', component: FolderListComponent, canActivate: [AuthGuard]},
   { path: 'wishlist', component: WishListComponent, canActivate: [AuthGuard]},
   { path: 'edit-profile', component: EditProfileComponent, canActivate: [AuthGuard]},
   { path: 'upload-img', component: UploadImgComponent, canActivate: [AuthGuard]},
