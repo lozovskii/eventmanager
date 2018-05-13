@@ -14,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -331,40 +329,34 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     }
 
     @Override
-    public void addParticipant(String customerId, String eventId, Instant startDateNotifications, int priority) {
+    public void addParticipant(String customerId, String eventId) {
         boolean isPresent = isCustomerEventPresent(customerId, eventId);
         if (isPresent) {
-            updateParticipant(customerId, eventId, startDateNotifications, priority);
+            updateParticipant(customerId, eventId);
         } else {
-            insertParticipant(customerId, eventId, startDateNotifications, priority);
+            insertParticipant(customerId, eventId);
         }
     }
 
-    private void insertParticipant(String customerId, String eventId, Instant startDateNotifications, int priority) {
-        String sql = "INSERT INTO \"Customer_Event\" (customer_id, event_id, start_date_notification, priority, status)\n" +
-                "    VALUES (cast(? as uuid), cast(? as uuid), ?, ?, (select id\n" +
+    private void insertParticipant(String customerId, String eventId) {
+        String sql = "INSERT INTO \"Customer_Event\" (customer_id, event_id, status)\n" +
+                "    VALUES (cast(? as uuid), cast(? as uuid),  (select id\n" +
                 "                                                                           from \"Customer_Event_Status\"\n" +
                 "                                                                           where name = 'ACCEPTED'))";
         Object[] params = new Object[]{
                 customerId,
-                eventId,
-                new Timestamp(startDateNotifications.toEpochMilli()),
-                priority
+                eventId
         };
         this.getJdbcTemplate().update(sql, params);
     }
 
-    private void updateParticipant(String customerId, String eventId, Instant startDateNotifications, int priority) {
+    private void updateParticipant(String customerId, String eventId) {
         String sql = "UPDATE \"Customer_Event\"\n" +
-                "    SET start_date_notification = ?,\n" +
-                "      priority                  = ?,\n" +
-                "      status                    = (SELECT id\n" +
+                "     SET status                    = (SELECT id\n" +
                 "                                   FROM \"Customer_Event_Status\"\n" +
                 "                                   WHERE name = 'ACCEPTED')\n" +
                 "    WHERE customer_id = cast(? as uuid) AND event_id = cast(? as uuid)";
         Object[] params = new Object[]{
-                new Timestamp(startDateNotifications.toEpochMilli()),
-                priority,
                 customerId,
                 eventId
         };

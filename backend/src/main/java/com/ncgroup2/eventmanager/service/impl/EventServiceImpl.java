@@ -8,7 +8,6 @@ import com.ncgroup2.eventmanager.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -149,8 +148,8 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void addParticipant(String customerId, String eventId, Instant startDateNotification, int priority) {
-        eventDao.addParticipant(customerId, eventId, startDateNotification, priority);
+    public void addParticipant(String customerId, String eventId) {
+        eventDao.addParticipant(customerId, eventId);
     }
 
     public List<EventCountdownDTO> getCountdownMessages() {
