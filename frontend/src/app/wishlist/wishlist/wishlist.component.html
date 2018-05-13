@@ -58,7 +58,7 @@
       </div>
       <div class="modal-body">
         <div class="card">
-          <img *ngIf="!itemDto.item.image" class="card-img-top" src="../../assets/img/default_image.png" alt="Card image">
+          <img *ngIf="!itemDto.item.image" class="card-img-top" src="../../../assets/img/default_image.png" alt="Card image">
           <img *ngIf="itemDto.item.image" class="card-img-top" [attr.src]="itemDto.item.image" alt="Card image">
           <div class="card-body">
             <h6 class="card-subtitle mb-2 text-muted">{{itemDto.item.dueDate}}</h6>

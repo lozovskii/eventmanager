@@ -5,7 +5,7 @@ import {WishList} from "../../_models/wishlist";
 @Component({
   selector: 'app-edit-items',
   templateUrl: './edit-wishlist.component.html',
-  styleUrls: ['../wishlist.component.css']
+  styleUrls: ['../wishlist/wishlist.component.css']
 })
 export class EditWishListComponent implements OnInit {
 

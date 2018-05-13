@@ -6,8 +6,8 @@ import {Item} from "../../_models/item";
 
 @Component({
   selector: 'app-bookeditems',
-  templateUrl: './bookeditems.component.html',
-  styleUrls: ['../wishlist.component.css']
+  templateUrl: './booked-items.component.html',
+  styleUrls: ['../wishlist/wishlist.component.css']
 })
 export class BookedItemsComponent implements OnInit {
   wishList: WishList;

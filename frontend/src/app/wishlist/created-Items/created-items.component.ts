@@ -8,8 +8,8 @@ import {ItemDto} from "../../_models/dto/itemDto";
 
 @Component({
   selector: 'app-createditems',
-  templateUrl: './createditems.component.html',
-  styleUrls: ['../wishlist.component.css']
+  templateUrl: './created-items.component.html',
+  styleUrls: ['../wishlist/wishlist.component.css']
 })
 export class CreatedItemsComponent implements OnInit {
   @Input('included') isIncluded: boolean;

@@ -1,9 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {WishList} from "../_models/wishlist";
-import {AlertService} from "../_services/alert.service";
-import {WishListService} from "../_services/wishlist.service";
-import {UserService} from "../_services/user.service";
-import {ItemDto} from "../_models/dto/itemDto";
+import {WishList} from "../../_models/wishlist";
+import {AlertService} from "../../_services/alert.service";
+import {WishListService} from "../../_services/wishlist.service";
+import {UserService} from "../../_services/user.service";
+import {ItemDto} from "../../_models/dto/itemDto";
 
 @Component({
   selector: 'app-wishlist',
