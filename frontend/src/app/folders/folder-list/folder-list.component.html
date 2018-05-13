@@ -3,17 +3,30 @@
     <app-vnavbar></app-vnavbar>
   </div>
   <main role="main" class="col-md-9">
-    <button class="btn btn-outline-info" [routerLink]="['/create-folder']">Create</button>
-    <a [routerLink]="['/eventlist','notes']">
-      <table>
-        <tr>
-          <img src="../assets/img/folder.png" width="65" height="77"/>
-        </tr>
-        <tr align="center">
-          <label style="color:#000000">Default</label>
-        </tr>
+    <div class="btn-group" role="group">
+      <button class="btn btn-outline-info" [routerLink]="['/create-folder']">Create</button>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+      <table class="col-md-2">
+        <td>
+          <a [routerLink]="['/eventlist','notes']">
+            <img src="../assets/img/folder.png" width="65" height="77"/>
+            Default
+          </a>
+        </td>
       </table>
-    </a>
+      <table *ngFor="let folder of folders" [routerLink]="['/create-folder',folder.id]" class="col-md-2">
+        <td>
+          <a [routerLink]="['/']">
+            <img src="../assets/img/folder.png" width="65" height="77"/>
+            {{folder.name}}
+          </a>
+        </td>
+      </table>
+    </div>
+
   </main>
 
 

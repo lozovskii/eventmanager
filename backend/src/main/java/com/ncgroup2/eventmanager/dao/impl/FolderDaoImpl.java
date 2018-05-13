@@ -7,6 +7,7 @@ import com.ncgroup2.eventmanager.mapper.FolderMapper;
 import com.ncgroup2.eventmanager.util.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -14,6 +15,7 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.util.Collection;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -113,5 +115,15 @@ public class FolderDaoImpl extends JdbcDaoSupport implements FolderDao {
         Object[] params = entity.getParams();
         this.getJdbcTemplate().update(query, params);
     }
+
+    @Override
+    public List<Folder> getAllByCustId(String custId) {
+        String query = queryService.getQuery("folder.getAllByCustId");
+        Object[] params = new Object[]{
+                custId
+        };
+        return this.getJdbcTemplate().query(query, params,  new BeanPropertyRowMapper(Folder.class));
+    }
+
 
 }
