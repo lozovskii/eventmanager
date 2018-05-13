@@ -16,6 +16,7 @@ export class WishListComponent implements OnInit {
 
   trash: ItemDto[];
   wishList: WishList;
+  currentLogin: string;
   hasChanges: boolean = false;
   path: string[] = ['name'];
   order: number = 1; // 1 asc, -1 desc;
@@ -52,7 +53,7 @@ export class WishListComponent implements OnInit {
         () => this.alertService.error('Something wrong'));
     }
 
-    this.wishListService.update(this.wishList).subscribe(() => {
+    this.wishListService.addItems(this.wishList).subscribe(() => {
       this.alertService.success('Wish list successfully updated!');
     }, () => {
       this.alertService.error('Something wrong');
@@ -66,8 +67,17 @@ export class WishListComponent implements OnInit {
     this.trash.push(itemDto);
   }
 
+  checkBooker(bookerLogin : string) : boolean{
+    return bookerLogin == this.currentLogin;
+  }
+
   bookItem(item: ItemDto): void {
-    item.booker_customer_login = this.userService.getCurrentLogin();
+    item.booker_customer_login = this.currentLogin;
+    this.hasChanges = true;
+  }
+
+  cancelBooking(item: ItemDto): void {
+    item.booker_customer_login = null;
     this.hasChanges = true;
   }
 
@@ -76,7 +86,6 @@ export class WishListComponent implements OnInit {
     this.order = this.order * (-1); // change order
     return false; // do not reload
   }
-
 
   update(): void {
     this.wishListService.update(this.wishList).subscribe(() => {

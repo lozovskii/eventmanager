@@ -7,7 +7,10 @@
     <h2 class="text-center">Booked Items</h2>
     <br>
 
-    <button class="btn btn-outline-info" [routerLink]="['/create-item']">Create new item</button>
+    <button type="button" class="btn btn-outline-primary" [disabled]="!hasChanges" (click)="update()">
+      Save changes
+    </button>
+    <button class="btn btn-outline-secondary" [routerLink]="['/create-item']">Create new item</button>
 
     <table class="table table-hover">
       <thead>
@@ -17,6 +20,7 @@
         <th scope="col">Link</th>
         <th scope="col" (click)="sortItems('dueDate')" class="text-center">Due date</th>
         <th scope="col" (click)="sortItems('priority')" class="text-center">Priority</th>
+        <th scope="col" class="text-center">Cancel</th>
       </tr>
       </thead>
       <tbody>
@@ -41,6 +45,7 @@
             </select>
           </div>
         </td>
+        <td (click)="cancelBooking(itemDto)" class="text-center"> <a>cancel</a> </td>
       </tr>
       </tbody>
     </table>
@@ -74,10 +79,15 @@
 
               <div class="card-footer container">
                 <div class="row">
-                  <div class="col-8">
-                    <small>Event: <a href="event/{{itemDto.event_id}}">link</a></small>
+                  <div class="col-4">
+                    <small>Event: <a href="event-container/{{itemDto.event_id}}">link</a></small>
                   </div>
-                  <div class="col">
+                  <div class="col-4">
+                    <small>
+                    <button class="btn btn-outline-danger btn-sm" (click)="cancelBooking(itemDto)">Cancel booking</button>
+                    </small>
+                  </div>
+                  <div class="col-4">
                     <small>
                       <label for="selectPriority">Priority:</label>
                       <select (change)="hasChanges = true" id="selectPriority">
@@ -97,10 +107,6 @@
         </div>
       </div>
     </div>
-
-    <button type="button" class="btn btn-secondary" [disabled]="!hasChanges" (click)="update()">
-      Save changes
-    </button>
 
   </main>
 </div>
