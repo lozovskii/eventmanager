@@ -73,7 +73,8 @@ export class UpdateEventComponent implements OnInit {
     this.updateEventDTO.priority = this.eventDTO.additionEvent.priority;
     if (eventDTO.event.startTime != null) {
       this.updateEventDTO.event.startTime = (eventDTO.event.startTime).slice(0, 10) + ' ' + (eventDTO.event.startTime).slice(11, 16) +':00';
-    } else if (eventDTO.event.endTime != null) {
+    }
+    if (eventDTO.event.endTime != null) {
       this.updateEventDTO.event.endTime = (eventDTO.event.endTime).slice(0, 10) + ' ' + (eventDTO.event.endTime).slice(11, 16) +':00';
     }
     if (eventDTO.event.name != null) {
