@@ -55,6 +55,7 @@ import {CalendarComponent} from "./home/calendar/calendar.component";
 import { CalendarModule } from 'angular-calendar';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import {HttpClientModule} from "@angular/common/http";
+import {EventContainerComponent} from "./events/event-container/event-container.component";
 @NgModule({
   imports: [
     BrowserModule,
@@ -106,7 +107,8 @@ import {HttpClientModule} from "@angular/common/http";
     CreateFolderComponent,
     EditWishListComponent,
     EventNotificationComponent,
-    CalendarComponent
+    CalendarComponent,
+    EventContainerComponent,
   ],
   providers: [
     AuthGuard,
