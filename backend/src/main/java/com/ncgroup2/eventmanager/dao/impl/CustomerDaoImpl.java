@@ -28,7 +28,7 @@ import java.util.UUID;
 
 @Repository
 @Transactional
-@PropertySource("classpath:profile.properties")
+@PropertySource("classpath:queries/profile.properties")
 public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
     private static final String BASE_SQL = "SELECT * FROM \"Customer\" ";

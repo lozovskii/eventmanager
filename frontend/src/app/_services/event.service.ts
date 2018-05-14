@@ -17,8 +17,8 @@ import {UpdateEventDTO} from "../_models/dto/UpdateEventDTO";
   }
 
   create(event: EventDTOModel) {
-    console.log('here: ' + JSON.stringify(event));
-    return this.http.post<Event>(this.eventsUrl, event, {headers: AuthenticationService.getAuthHeader()});
+    const url = this.eventsUrl;
+    return this.http.post<Event>(url, event, {headers: AuthenticationService.getAuthHeader()});
   }
 
   getAllEvents(): Observable<Event[]> {
@@ -56,16 +56,24 @@ import {UpdateEventDTO} from "../_models/dto/UpdateEventDTO";
     return this.http.get<EventDTOModel>(url, {headers: AuthenticationService.getAuthHeader()});
   }
 
+  getNoteById(eventId: string) {
+    const url = `${this.eventsUrl}/note?noteId=${eventId}`;
+    return this.http.get<EventDTOModel>(url, {headers: AuthenticationService.getAuthHeader()});
+  }
+
   deleteEvent(eventId: string) {
-    return this.http.post<number>('/api/events/delete', eventId, {headers: AuthenticationService.getAuthHeader()});
+    const url = `${this.eventsUrl}/delete`;
+    return this.http.post<number>(url, eventId, {headers: AuthenticationService.getAuthHeader()});
   }
 
   updateEvent(updatEventDTO: UpdateEventDTO) {
-    return this.http.put<UpdateEventDTO>('/api/events/update', updatEventDTO, {headers: AuthenticationService.getAuthHeader()});
+    const url = `${this.eventsUrl}/update`;
+    return this.http.put<UpdateEventDTO>(url, updatEventDTO, {headers: AuthenticationService.getAuthHeader()});
   }
 
   updateEventNotif(eventDTO: EventDTOModel) {
-    return this.http.put<EventDTOModel>('/api/events/updatenotif', eventDTO, {headers: AuthenticationService.getAuthHeader()});
+    const url = `${this.eventsUrl}/updatenotif`;
+    return this.http.put<EventDTOModel>(url, eventDTO, {headers: AuthenticationService.getAuthHeader()});
   }
 
   addParticipant(eventId) {

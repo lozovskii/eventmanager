@@ -118,9 +118,17 @@ public class EventServiceImpl implements EventService {
         Event event = eventDao.getEventById(eventId);
         AdditionalEventModelDTO additionalEventModelDTO = eventDao.getAdditionById(eventId);
         List<String> listParticipants = eventDao.getParticipants(eventId);
-        System.out.println("listParticipants = " + listParticipants);
-        additionalEventModelDTO.setPeople(listParticipants);
-        System.out.println("additionalEventModelDTO = " + additionalEventModelDTO);
+        EventDTO eventDTO = new EventDTO();
+        eventDTO.setEvent(event);
+        eventDTO.setAdditionEvent(additionalEventModelDTO);
+        return eventDTO;
+    }
+
+    @Override
+    public EventDTO getNoteById(String noteId){
+        Event event = eventDao.getNoteById(noteId);
+        AdditionalEventModelDTO additionalEventModelDTO = eventDao.getAdditionById(noteId);
+        List<String> listParticipants = eventDao.getParticipants(noteId);
         EventDTO eventDTO = new EventDTO();
         eventDTO.setEvent(event);
         eventDTO.setAdditionEvent(additionalEventModelDTO);

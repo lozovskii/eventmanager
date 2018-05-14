@@ -34,10 +34,10 @@ export class EventlistComponent implements OnInit {
           this.getDraftsByCustId();
           break;
         }
-        case 'notes' : {
-          this.getNotesByCustId();
-          break;
-        }
+        // case 'notes' : {
+        //   this.getNotesByCustId();
+        //   break;
+        // }
         case 'invites' : {
           this.getInvitesByCustId();
           break;
@@ -76,15 +76,15 @@ export class EventlistComponent implements OnInit {
       });
   }
 
-  getNotesByCustId(): void {
-    this.eventService.getNotesByCustId()
-      .subscribe((events) => {
-        this.events = events;
-        if(events.toString() == ''){
-          this.alertService.info('You have no notes yet.',true);
-        }
-      });
-  }
+  // getNotesByCustId(): void {
+  //   this.eventService.getNotesByCustId()
+  //     .subscribe((events) => {
+  //       this.events = events;
+  //       if(events.toString() == ''){
+  //         this.alertService.info('You have no notes yet.',true);
+  //       }
+  //     });
+  // }
 
   getInvitesByCustId(): void {
     this.eventService.getInvitesByCustId()

@@ -58,6 +58,8 @@ import {HttpClientModule} from "@angular/common/http";
 import {EventContainerComponent} from "./events/event-container/event-container.component";
 import {FolderService} from "./_services/folder.service";
 import { FolderContentComponent } from './folders/folder-content/folder-content.component';
+import { NoteContentComponent } from './folders/note-content/note-content.component';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -112,6 +114,7 @@ import { FolderContentComponent } from './folders/folder-content/folder-content.
     CalendarComponent,
     EventContainerComponent,
     FolderContentComponent,
+    NoteContentComponent
   ],
   providers: [
     AuthGuard,

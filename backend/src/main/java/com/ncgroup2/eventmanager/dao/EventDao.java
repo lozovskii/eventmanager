@@ -33,6 +33,8 @@ public interface EventDao {
 
     Event getEventById(String id);
 
+    Event getNoteById(String noteId);
+
     AdditionalEventModelDTO getAdditionById(String id);
 
     List getParticipants(String eventId);

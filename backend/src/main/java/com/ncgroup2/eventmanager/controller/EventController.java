@@ -73,8 +73,14 @@ public class EventController {
     }
 
     @GetMapping("")
-    public ResponseEntity<EventDTO> getEventsById(@RequestParam String eventId){
+    public ResponseEntity<EventDTO> getEventById(@RequestParam String eventId){
         EventDTO eventById = eventService.getEventById(eventId);
+        return new ResponseEntity<>(eventById, HttpStatus.OK);
+    }
+
+    @GetMapping("/note")
+    public ResponseEntity<EventDTO> getNoteById(@RequestParam String noteId){
+        EventDTO eventById = eventService.getNoteById(noteId);
         return new ResponseEntity<>(eventById, HttpStatus.OK);
     }
 

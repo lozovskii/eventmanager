@@ -21,6 +21,8 @@ public interface EventService {
 
     EventDTO getEventById(String eventId);
 
+    EventDTO getNoteById(String noteId);
+
     void deleteEventById(String eventId);
 
     void updateEventNotif(EventDTO eventDTO);
