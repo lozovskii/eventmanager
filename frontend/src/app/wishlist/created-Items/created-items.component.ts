@@ -22,6 +22,7 @@ export class CreatedItemsComponent implements OnInit {
   constructor(private wishListService: WishListService,
               private alertService: AlertService,
               private location: Location) {
+    this.wishList = new WishList();
   }
 
   ngOnInit() {
@@ -42,6 +43,7 @@ export class CreatedItemsComponent implements OnInit {
       .subscribe((items) => {
         this.items = items;
       }, () => {
+        history.back();
         this.alertService.info('Items not found', true);
       });
   }

@@ -16,6 +16,7 @@ export class WishListComponent implements OnInit {
 
   trash: ItemDto[];
   wishList: WishList;
+  hideWishListTab: boolean = false;
   currentLogin: string;
   hasChanges: boolean = false;
   path: string[] = ['name'];
@@ -24,6 +25,7 @@ export class WishListComponent implements OnInit {
   constructor(private wishListService: WishListService,
               private userService: UserService,
               private alertService: AlertService) {
+    this.wishList = new WishList();
   }
 
   ngOnInit() {
@@ -41,7 +43,7 @@ export class WishListComponent implements OnInit {
           this.wishList = wishList;
           this.wishListService.setCurrentWishList(wishList);
         }, () => {
-          this.alertService.info('Wish list not found');
+          this.hideWishListTab = true;
         }
       );
   }
@@ -67,7 +69,7 @@ export class WishListComponent implements OnInit {
     this.trash.push(itemDto);
   }
 
-  checkBooker(bookerLogin : string) : boolean{
+  checkBooker(bookerLogin: string): boolean {
     return bookerLogin == this.currentLogin;
   }
 

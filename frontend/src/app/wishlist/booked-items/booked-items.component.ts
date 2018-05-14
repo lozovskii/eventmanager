@@ -21,6 +21,7 @@ export class BookedItemsComponent implements OnInit {
 
   constructor(private wishListService: WishListService,
               private alertService: AlertService) {
+    this.wishList = new WishList();
   }
 
   ngOnInit() {
@@ -31,7 +32,9 @@ export class BookedItemsComponent implements OnInit {
     this.wishListService.getBookedItems()
       .subscribe((wishList) => {
         this.wishList = wishList;
-      }, () => {this.alertService.error("Items not found")});
+      }, () => {
+      history.back();
+      this.alertService.error("Items not found",true)});
   }
 
   cancelBooking(itemDto: ItemDto): void {

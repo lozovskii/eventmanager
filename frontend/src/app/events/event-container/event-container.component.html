@@ -10,7 +10,7 @@
         <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-event" role="tab"
            aria-controls="pills-event" aria-selected="true">Event</a>
       </li>
-      <li class="nav-item" *ngIf="isParticipant || isCreator">
+      <li class="nav-item" *ngIf="isCreator || (!hideWishListTab && isParticipant )">
         <a  class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-wishlist"
            role="tab" aria-controls="pills-wishlist" aria-selected="false">Wish List</a>
       </li>
