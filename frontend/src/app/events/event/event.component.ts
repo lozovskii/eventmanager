@@ -25,7 +25,7 @@ export class EventComponent implements OnInit {
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
-              private alertService : AlertService,
+              private alertService: AlertService,
               private formBuilder: FormBuilder) {
   }
 
@@ -33,12 +33,16 @@ export class EventComponent implements OnInit {
     this.initAdditionEventForm();
     this.isCreator = false;
     const id = this.eventId;
-    this.eventService.getEventById(id).subscribe((eventDTO) => {
+    this.eventService.getEventById(id).subscribe((eventDTO : EventDTOModel) => {
       this.eventDTO = eventDTO;
       console.log(this.eventDTO);
       console.log(this.eventDTO.additionEvent.startTimeNotification);
       let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
       this.isCreator = currentUserId == this.eventDTO.event.creatorId;
+      this.eventService.isParticipant(currentUserId, id).subscribe(
+        () => this.isParticipant = true,
+        () => this.isParticipant = false);
+
       console.log('eventId = ' + this.eventDTO.event.id);
     });
   }
@@ -68,7 +72,7 @@ export class EventComponent implements OnInit {
 
   delete() {
     this.eventService.deleteEvent(this.eventDTO.event.id).subscribe(() => {
-      this.alertService.info('Event successfully deleted!',true);
+      this.alertService.info('Event successfully deleted!', true);
       this.router.navigate(['../home']);
     });
   }

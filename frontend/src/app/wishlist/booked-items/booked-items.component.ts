@@ -4,6 +4,7 @@ import {AlertService} from "../../_services/alert.service";
 import {WishListService} from "../../_services/wishlist.service";
 import {Item} from "../../_models/item";
 import {ItemDto} from "../../_models/dto/itemDto";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-bookeditems',
@@ -30,11 +31,7 @@ export class BookedItemsComponent implements OnInit {
     this.wishListService.getBookedItems()
       .subscribe((wishList) => {
         this.wishList = wishList;
-
-        if (this.wishList == null) {
-          this.alertService.info('Items not found', true);
-        }
-      });
+      }, () => {this.alertService.error("Items not found")});
   }
 
   cancelBooking(itemDto: ItemDto): void {
