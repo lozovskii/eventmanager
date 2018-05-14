@@ -1,6 +1,7 @@
 package com.ncgroup2.eventmanager.service.impl;
 
 import com.ncgroup2.eventmanager.dao.FolderDao;
+import com.ncgroup2.eventmanager.entity.Event;
 import com.ncgroup2.eventmanager.entity.Folder;
 import com.ncgroup2.eventmanager.service.FolderService;
 
@@ -22,5 +23,10 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public List<Folder> getAllByCustId(String custId) {
         return folderDao.getAllByCustId(custId);
+    }
+
+    @Override
+    public List<Event> getNotesByCustIdByFolderId(String custId, String folderId){
+        return folderDao.getNotesByCustIdByFolderId(custId,folderId);
     }
 }

@@ -27,6 +27,7 @@ import {CreatedItemsComponent} from "./wishlist/createdItems/createditems.compon
 import {EditWishListComponent} from "./wishlist/edit-wishlist/edit-wishlist.component";
 import {CreateFolderComponent} from "./folders/create-folder/create-folder.component";
 import {EventContainerComponent} from "./events/event-container/event-container.component";
+import {FolderContentComponent} from "./folders/folder-content/folder-content.component";
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full'},
@@ -53,7 +54,7 @@ const appRoutes: Routes = [
   { path: 'created-items', component: CreatedItemsComponent, canActivate: [AuthGuard]},
   { path: 'wishlist/edit', component: EditWishListComponent, canActivate: [AuthGuard]},
   { path: 'create-folder', component: CreateFolderComponent, canActivate: [AuthGuard]},
-
+  { path: 'folder-content/:folderId', component: FolderContentComponent, canActivate: [AuthGuard]},
   { path: 'event-container/:id', component: EventContainerComponent, canActivate: [AuthGuard]},
   // otherwise redirect to home
  { path: '**', redirectTo: '' }

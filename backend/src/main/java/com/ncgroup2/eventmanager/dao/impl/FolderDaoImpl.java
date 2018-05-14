@@ -2,6 +2,7 @@ package com.ncgroup2.eventmanager.dao.impl;
 
 
 import com.ncgroup2.eventmanager.dao.FolderDao;
+import com.ncgroup2.eventmanager.entity.Event;
 import com.ncgroup2.eventmanager.entity.Folder;
 import com.ncgroup2.eventmanager.mapper.FolderMapper;
 import com.ncgroup2.eventmanager.util.QueryService;
@@ -125,5 +126,13 @@ public class FolderDaoImpl extends JdbcDaoSupport implements FolderDao {
         return this.getJdbcTemplate().query(query, params,  new BeanPropertyRowMapper(Folder.class));
     }
 
-
+    @Override
+    public List<Event> getNotesByCustIdByFolderId(String custId, String folderId){
+        String query = queryService.getQuery("folder.getNotesByCustId");
+        Object[] params = new Object[]{
+                custId,
+                folderId
+        };
+        return this.getJdbcTemplate().query(query, params,  new BeanPropertyRowMapper(Event.class));
+    }
 }

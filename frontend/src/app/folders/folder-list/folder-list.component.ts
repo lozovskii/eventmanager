@@ -11,6 +11,7 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class FolderListComponent implements OnInit {
   folders: Folder[];
+  folderId:string;
   constructor(private alertService: AlertService,
               private activatedRoute: ActivatedRoute,
               private folderService: FolderService) { }

@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {AuthenticationService} from "./authentication.service";
 import {Folder} from "../_models/folder";
 import {Observable} from "rxjs/index";
+import {Event} from "../_models/event";
 
 @Injectable()
 export class FolderService {
@@ -22,5 +23,10 @@ export class FolderService {
     let customerId = this.userService.getCurrentId();
     const url = `${this.foldersUrl}/all?customerId=${customerId}`;
     return this.http.get<Folder[]>(url, {headers: AuthenticationService.getAuthHeader()});
+  }
+
+  getNotesByCustIdFolderId(custId: string, folderId: string):Observable<Event[]> {
+    const url = `${this.foldersUrl}/notes?custId=${custId}&folderId=${folderId}`;
+    return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
   }
 }

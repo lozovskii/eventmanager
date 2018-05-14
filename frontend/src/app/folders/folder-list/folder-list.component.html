@@ -1,3 +1,4 @@
+<script src="folder-list.component.ts"></script>
 <div class="row">
   <div class="col-md-3">
     <app-vnavbar></app-vnavbar>
@@ -17,9 +18,9 @@
           </a>
         </td>
       </table>
-      <table *ngFor="let folder of folders" [routerLink]="['/create-folder',folder.id]" class="col-md-2">
+      <table *ngFor="let folder of folders" class="col-md-2">
         <td>
-          <a [routerLink]="['/']">
+          <a [routerLink]="['/folder-content', folder.id]">
             <img src="../assets/img/folder.png" width="65" height="77"/>
             {{folder.name}}
           </a>
