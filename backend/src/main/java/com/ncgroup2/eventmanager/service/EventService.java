@@ -19,6 +19,8 @@ public interface EventService {
 
     List<Event> getEventsByCustId(String custId);
 
+    List<Event> getEventsByCustIdSorted(String custId);
+
     EventDTO getEventById(String eventId);
 
     EventDTO getNoteById(String noteId);

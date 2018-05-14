@@ -11,7 +11,6 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class NoteContentComponent implements OnInit {
   @Input('noteId') noteId: string;
-
   eventDTO: EventDTOModel;
   constructor(private alertService: AlertService,
               private eventService: EventService,

@@ -30,14 +30,14 @@ export class EventlistComponent implements OnInit {
           this.getEventsByCustId();
           break;
         }
+        case 'my/sorted' : {
+          this.getEventsByCustIdSorted();
+          break;
+        }
         case 'drafts' : {
           this.getDraftsByCustId();
           break;
         }
-        // case 'notes' : {
-        //   this.getNotesByCustId();
-        //   break;
-        // }
         case 'invites' : {
           this.getInvitesByCustId();
           break;
@@ -66,6 +66,16 @@ export class EventlistComponent implements OnInit {
       });
   }
 
+  getEventsByCustIdSorted(): void {
+    this.eventService.getEventsByCustIdSorted()
+      .subscribe((events) => {
+        this.events = events;
+        if(events.toString() == ''){
+          this.alertService.info('You have no events yet.',true);
+        }
+      });
+  }
+
   getDraftsByCustId(): void {
     this.eventService.getDraftsByCustId()
       .subscribe((events) => {
@@ -75,16 +85,6 @@ export class EventlistComponent implements OnInit {
         }
       });
   }
-
-  // getNotesByCustId(): void {
-  //   this.eventService.getNotesByCustId()
-  //     .subscribe((events) => {
-  //       this.events = events;
-  //       if(events.toString() == ''){
-  //         this.alertService.info('You have no notes yet.',true);
-  //       }
-  //     });
-  // }
 
   getInvitesByCustId(): void {
     this.eventService.getInvitesByCustId()

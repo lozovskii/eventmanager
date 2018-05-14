@@ -54,6 +54,12 @@ public class EventController {
         return new ResponseEntity<>(eventsByCustId, HttpStatus.OK);
     }
 
+    @GetMapping("/my/sorted{custId}")
+    public ResponseEntity<List<Event>> getEventsByCustIdSorted(@PathVariable String custId){
+        List<Event> eventsByCustId = eventService.getEventsByCustIdSorted(custId);
+        return new ResponseEntity<>(eventsByCustId, HttpStatus.OK);
+    }
+
     @GetMapping("/drafts{custId}")
     public ResponseEntity<List<Event>> getDraftsByCustId(@PathVariable String custId){
         List<Event> draftsByCustId = eventService.getDraftsByCustId(custId);

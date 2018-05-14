@@ -39,6 +39,7 @@ const appRoutes: Routes = [
   { path: 'event/:id', component: EventComponent, canActivate: [AuthGuard]},
   { path: 'update-event/:id', component: UpdateEventComponent, canActivate: [AuthGuard]},
   { path: 'eventlist/:type', component: EventlistComponent, canActivate: [AuthGuard]},
+  { path: 'eventlist/:type/sorted', component: EventlistComponent, canActivate: [AuthGuard]},
   { path: 'registration-confirm', component: RegistrationConfirmComponent},
   { path: 'send-reset-link', component: SendLinkComponent},
   { path: 'reset-password', component: ResetComponent},

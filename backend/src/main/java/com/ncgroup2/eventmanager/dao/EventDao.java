@@ -55,6 +55,8 @@ public interface EventDao {
 
     String getTimeToEventStart(String eventId);
 
+    List getEventsByCustIdSorted(String custId);
+
     List<Event> getNotesByCustId(String custId);
 
     List<Event> getInvitesByCustId(String custId);

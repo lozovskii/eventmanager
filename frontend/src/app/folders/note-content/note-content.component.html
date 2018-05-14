@@ -4,11 +4,21 @@
   </div>
 
   <main role="main" class="col-md-9">
+    <div class="btn-group" role="group">
+      <button class="btn btn-outline-info">Move</button>
+      <button class="btn btn-outline-danger">Delete</button>
+    </div>
+    <br>
+    <br>
+    <p>Title : {{eventDTO.event.name}}</p>
+    <div class="row">
+      <p class="col-md-3">Description: </p>
+      <div class="col-md-7" [innerHTML]="eventDTO.event.description"></div>
+      <div class="col-md-2"></div>
+    </div>
 
-        <p>{{eventDTO.event.name}}</p>
-        <div [innerHTML]="eventDTO.event.description"></div>
-
-    <a [routerLink]="['/folder-list', 'all']" class="btn btn-link"><< Back</a>
+    <!--<a [routerLink]="['/folder-content']" class="btn btn-link"><< Back</a>-->
   </main>
 
 </div>
+

@@ -114,6 +114,11 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public List<Event> getEventsByCustIdSorted(String custId) {
+        return eventDao.getEventsByCustIdSorted(custId);
+    }
+
+    @Override
     public EventDTO getEventById(String eventId) {
         Event event = eventDao.getEventById(eventId);
         AdditionalEventModelDTO additionalEventModelDTO = eventDao.getAdditionById(eventId);
