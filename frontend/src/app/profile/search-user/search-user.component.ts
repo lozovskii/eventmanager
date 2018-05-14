@@ -22,12 +22,12 @@ export class SearchUserComponent implements OnInit {
   ngOnInit() {}
 
   searchUser(request) {
-    this.profileService.search(request)
-      .subscribe(
-        users => {
-          this.users = users;
-        }
-      )
+    // this.profileService.search(request)
+    //   .subscribe(
+    //     users => {
+    //       this.users = users;
+    //     }
+    //   )
   }
 
 }
