@@ -12,7 +12,7 @@
     <div class="row">
       <table class="col-md-2">
         <td>
-          <a [routerLink]="['/eventlist','notes']">
+          <a [routerLink]="['/folder-content','default']">
             <img src="../assets/img/folder.png" width="65" height="77"/>
             Default
           </a>
@@ -20,7 +20,7 @@
       </table>
       <table *ngFor="let folder of folders" class="col-md-2">
         <td>
-          <a [routerLink]="['/folder-content', folder.id]">
+          <a [routerLink]="['/folder-content', 'folder', folder.id]">
             <img src="../assets/img/folder.png" width="65" height="77"/>
             {{folder.name}}
           </a>

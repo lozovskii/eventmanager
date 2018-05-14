@@ -29,4 +29,5 @@ export class FolderService {
     const url = `${this.foldersUrl}/notes?custId=${custId}&folderId=${folderId}`;
     return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
   }
+
 }

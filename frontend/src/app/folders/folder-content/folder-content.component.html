@@ -12,7 +12,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let event of events" [routerLink]="['/event-container',event.id]">
+      <tr *ngFor="let event of events"  [routerLink]="['/note-content', event.id]">
         <td>{{event.name}}</td>
         <td><div [innerHTML]="event.description"></div></td>
       </tr>

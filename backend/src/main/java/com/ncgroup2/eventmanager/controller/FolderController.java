@@ -23,7 +23,6 @@ public class FolderController {
 
     @PostMapping
     public void create(@RequestBody Folder folder){
-        System.out.println(folder);
         folderService.create(folder);
     }
 
@@ -35,7 +34,6 @@ public class FolderController {
 
     @GetMapping("/notes")
     public ResponseEntity<List<Event>> getNotesByCustIdByFolderId(@RequestParam String custId, @RequestParam String folderId){
-        System.out.println("controller works!");
         List<Event> notesByCustId = folderService.getNotesByCustIdByFolderId(custId,folderId);
         return new ResponseEntity<>(notesByCustId, HttpStatus.OK);
     }
