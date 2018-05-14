@@ -34,6 +34,10 @@ export class EventlistComponent implements OnInit {
           this.getEventsByCustIdSorted();
           break;
         }
+        case 'my/sorted/type' : {
+          this.getEventsByCustIdSortedByType();
+          break;
+        }
         case 'drafts' : {
           this.getDraftsByCustId();
           break;
@@ -68,6 +72,16 @@ export class EventlistComponent implements OnInit {
 
   getEventsByCustIdSorted(): void {
     this.eventService.getEventsByCustIdSorted()
+      .subscribe((events) => {
+        this.events = events;
+        if(events.toString() == ''){
+          this.alertService.info('You have no events yet.',true);
+        }
+      });
+  }
+
+  getEventsByCustIdSortedByType(): void {
+    this.eventService.getEventsByCustIdSortedType()
       .subscribe((events) => {
         this.events = events;
         if(events.toString() == ''){
