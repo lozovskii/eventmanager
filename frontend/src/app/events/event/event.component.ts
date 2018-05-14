@@ -4,9 +4,6 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
 import {AlertService} from "../../_services/alert.service";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {Event} from '../../_models/event'
-import {AdditionEventModel} from "../../_models/additionEvent.model";
-import {UpdateEventComponent} from "../update-event/update-event.component";
 
 @Component({
   selector: 'app-event',
@@ -14,9 +11,8 @@ import {UpdateEventComponent} from "../update-event/update-event.component";
   styleUrls: ['./event.component.css']
 })
 export class EventComponent implements OnInit {
-  @Input('eventId') eventId: string;
+   @Input('eventId') eventId: string;
 
-  updateEventDTO: UpdateEventComponent;
   eventDTO: EventDTOModel;
   isCreator: boolean;
   isParticipant: boolean;
