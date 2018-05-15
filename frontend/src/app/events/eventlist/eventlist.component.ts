@@ -26,6 +26,7 @@ export class EventlistComponent implements OnInit {
       let type = params['type'];
       switch (type) {
         case 'all' : {
+          this.isMy = false;
           this.getEvents();
           break;
         }
@@ -60,10 +61,12 @@ export class EventlistComponent implements OnInit {
           break;
         }
         case 'drafts' : {
+          this.isMy = false;
           this.getDraftsByCustId();
           break;
         }
         case 'invites' : {
+          this.isMy = false;
           this.getInvitesByCustId();
           break;
         }
