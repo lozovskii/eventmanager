@@ -11,7 +11,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
   styleUrls: ['./event.component.css']
 })
 export class EventComponent implements OnInit {
-   @Input('eventId') eventId: string;
+  @Input('eventId') eventId: string;
 
   eventDTO: EventDTOModel;
   isCreator: boolean;
@@ -31,11 +31,8 @@ export class EventComponent implements OnInit {
     const id = this.eventId;
     this.eventService.getEventById(id).subscribe((eventDTO) => {
       this.eventDTO = eventDTO;
-      console.log(this.eventDTO);
-      console.log(this.eventDTO.additionEvent.startTimeNotification);
       let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
       this.isCreator = currentUserId == this.eventDTO.event.creatorId;
-      console.log('eventId = ' + this.eventDTO.event.id);
     });
   }
 

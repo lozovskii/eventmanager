@@ -69,9 +69,6 @@ public class EventController {
     @GetMapping("/my/filter/{type}/{custId}")
     public ResponseEntity<List<Event>> getEventsByCustIdFilterByType(@PathVariable("type") String type,
                                                                      @PathVariable("custId") String custId){
-        System.out.println("controller works!");
-        System.out.println("type = " + type);
-        System.out.println("custId = " + custId);
         List<Event> eventsByCustId = eventService.getEventsByCustIdFilterByType(custId,type);
         return new ResponseEntity<>(eventsByCustId, HttpStatus.OK);
     }

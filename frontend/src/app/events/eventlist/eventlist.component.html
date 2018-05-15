@@ -5,31 +5,34 @@
   </div>
 
   <main role="main" class="col-md-9">
-      <div class="btn-group" role="group" *ngIf="isMy">
-        <button class="btn btn-outline-info" [routerLink]="['/eventlist','my/filter/private']">PRIVATE</button>
-        <button class="btn btn-outline-info" [routerLink]="['/eventlist','my/filter/public']">PUBLIC</button>
-        <button class="btn btn-outline-info" [routerLink]="['/eventlist','my/filter/friends']">FRIENDS</button>
+    <div class="row">
+      <div class="btn-group col-md-12" role="group" *ngIf="isMy">
+        <button class="btn btn-outline-info col-md-4" [routerLink]="['/eventlist','my/filter/private']">PRIVATE</button>
+        <button class="btn btn-outline-info col-md-4" [routerLink]="['/eventlist','my/filter/public']">PUBLIC</button>
+        <button class="btn btn-outline-info col-md-4" [routerLink]="['/eventlist','my/filter/friends']">FRIENDS</button>
       </div>
-      <table class="table table-striped" style = "overflow-x: auto; display: block;">
-        <thead>
-        <tr>
-          <th scope="col" [routerLink]="['/eventlist','my/sorted/title']">Title</th>
-          <th scope="col" [routerLink]="['/eventlist','my']">Start time</th>
-          <th scope="col">End time</th>
-          <th scope="col" [routerLink]="['/eventlist','my/sorted/type']">Visibility</th>
-          <th scope="col">Status</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let event of events" [routerLink]="['/event-container',event.id]">
-          <td>{{event.name}}</td>
-          <td>{{event.startTime}}</td>
-          <td>{{event.endTime}}</td>
-          <td>{{event.visibility}}</td>
-          <td>{{event.status}}</td>
-        </tr>
-        </tbody>
-      </table>
+    </div>
+    <br>
+    <table class="table table-striped" style = "overflow-x: auto; display: block;">
+      <thead>
+      <tr>
+        <th scope="col" [routerLink]="['/eventlist','my/sorted/title']">Title</th>
+        <th scope="col" [routerLink]="['/eventlist','my']">Start time</th>
+        <th scope="col">End time</th>
+        <th scope="col" [routerLink]="['/eventlist','my/sorted/type']">Visibility</th>
+        <th scope="col">Status</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let event of events" [routerLink]="['/event-container',event.id]">
+        <td>{{event.name}}</td>
+        <td>{{event.startTime}}</td>
+        <td>{{event.endTime}}</td>
+        <td>{{event.visibility}}</td>
+        <td>{{event.status}}</td>
+      </tr>
+      </tbody>
+    </table>
   </main>
 
 </div>
