@@ -135,6 +135,7 @@ public class EventServiceImpl implements EventService {
         List<String> listParticipants = eventDao.getParticipants(eventId);
         EventDTO eventDTO = new EventDTO();
         eventDTO.setEvent(event);
+        additionalEventModelDTO.setPeople(listParticipants);
         eventDTO.setAdditionEvent(additionalEventModelDTO);
         return eventDTO;
     }
@@ -143,7 +144,6 @@ public class EventServiceImpl implements EventService {
     public EventDTO getNoteById(String noteId){
         Event event = eventDao.getNoteById(noteId);
         AdditionalEventModelDTO additionalEventModelDTO = eventDao.getAdditionById(noteId);
-        List<String> listParticipants = eventDao.getParticipants(noteId);
         EventDTO eventDTO = new EventDTO();
         eventDTO.setEvent(event);
         eventDTO.setAdditionEvent(additionalEventModelDTO);

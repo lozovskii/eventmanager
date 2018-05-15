@@ -17,6 +17,7 @@ export class EventComponent implements OnInit {
   isCreator: boolean;
   isParticipant: boolean;
   additionEventForm: FormGroup;
+  isPeople:boolean;
 
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute,
@@ -33,6 +34,8 @@ export class EventComponent implements OnInit {
       this.eventDTO = eventDTO;
       let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
       this.isCreator = currentUserId == this.eventDTO.event.creatorId;
+      console.log('people = ' + this.eventDTO.additionEvent.people)
+      this.isPeople = !(this.eventDTO.additionEvent.people.length = 0);
     });
   }
 

@@ -14,12 +14,17 @@
       </div>
     </div>
 
-    <p> Name = {{eventDTO.event.name}}</p>
-    <p> Description: </p>
-    <div [innerHTML]="eventDTO.event.description"></div>
-    <p> Start time = {{eventDTO.event.startTime}}</p>
-    <p> End time = {{eventDTO.event.endTime}}</p>
-    <p> Privacy = {{eventDTO.event.visibility}}</p>
+    <p>Name = {{eventDTO.event.name}}</p>
+    <div class="row">
+      <p class="col-md-2">Description: </p>
+      <div class="col-md-10"[innerHTML]="eventDTO.event.description"></div>
+    </div>
+    <p>Start time: {{eventDTO.event.startTime}}</p>
+    <p>End time: {{eventDTO.event.endTime}}</p>
+    <p>Privacy: {{eventDTO.event.visibility}}</p>
+    <p *ngIf="isParticipant || isCreator">Priority: {{eventDTO.additionEvent.priority}}</p>
+    <p *ngIf="isPeople">People:</p>
+    <p *ngFor="let login of eventDTO.additionEvent.people">{{login}}</p>
 
   <div *ngIf="isParticipant || isCreator">
     <app-event-notification></app-event-notification>
