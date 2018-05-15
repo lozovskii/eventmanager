@@ -12,6 +12,8 @@ import java.util.List;
 
 @Service
 public class FolderServiceImpl implements FolderService {
+    private final String FOLDER_NAME_DEFAULT = "Default";
+
     @Autowired
     private FolderDao folderDao;
 
@@ -29,4 +31,20 @@ public class FolderServiceImpl implements FolderService {
     public List<Event> getNotesByCustIdByFolderId(String custId, String folderId){
         return folderDao.getNotesByCustIdByFolderId(custId,folderId);
     }
+
+    @Override
+    public void moveNoteByNoteIdByFolderName(String noteId, String folderName){
+        int countOfFolders = folderDao.getCountByName(folderName);
+        if(countOfFolders !=0) {
+            if(countOfFolders == 1) {
+                if (folderName.equals(FOLDER_NAME_DEFAULT)) {
+                    folderDao.moveNoteByNoteIdByFolderDefault(noteId);
+                } else {
+                    folderDao.moveNoteByNoteIdByFolderName(noteId, folderName);
+                }
+            }
+        }
+    }
+
+
 }

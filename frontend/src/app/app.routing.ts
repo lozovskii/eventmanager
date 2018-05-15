@@ -29,6 +29,7 @@ import {CreateFolderComponent} from "./folders/create-folder/create-folder.compo
 import {EventContainerComponent} from "./events/event-container/event-container.component";
 import {FolderContentComponent} from "./folders/folder-content/folder-content.component";
 import {NoteContentComponent} from "./folders/note-content/note-content.component";
+import {MoveNoteComponent} from "./folders/move-note/move-note.component";
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full'},
@@ -44,6 +45,7 @@ const appRoutes: Routes = [
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
   { path: 'vnavbar', component: VnavbarComponent, canActivate: [AuthGuard]},
   { path: 'folder-list/:type', component: FolderListComponent, canActivate: [AuthGuard]},
+  { path: 'folder-list', component: FolderListComponent, canActivate: [AuthGuard]},
   { path: 'wishlist', component: WishListComponent, canActivate: [AuthGuard]},
   { path: 'edit-profile', component: EditProfileComponent, canActivate: [AuthGuard]},
   { path: 'upload-img', component: UploadImgComponent, canActivate: [AuthGuard]},
@@ -61,6 +63,7 @@ const appRoutes: Routes = [
   { path: 'eventlist/:type', component: EventlistComponent, canActivate: [AuthGuard]},
   { path: 'eventlist/:type/sorted', component: EventlistComponent, canActivate: [AuthGuard]},
   { path: 'eventlist/my/filter', component: EventlistComponent, canActivate: [AuthGuard]},
+  { path: 'move-note/:id', component: MoveNoteComponent, canActivate: [AuthGuard]},
   // otherwise redirect to home
  { path: '**', redirectTo: '' }
 ];

@@ -1,5 +1,6 @@
 package com.ncgroup2.eventmanager.controller;
 
+import com.ncgroup2.eventmanager.dto.UpdateEventDTO;
 import com.ncgroup2.eventmanager.entity.Event;
 import com.ncgroup2.eventmanager.entity.Folder;
 import com.ncgroup2.eventmanager.service.FolderService;
@@ -36,5 +37,13 @@ public class FolderController {
     public ResponseEntity<List<Event>> getNotesByCustIdByFolderId(@RequestParam String custId, @RequestParam String folderId){
         List<Event> notesByCustId = folderService.getNotesByCustIdByFolderId(custId,folderId);
         return new ResponseEntity<>(notesByCustId, HttpStatus.OK);
+    }
+
+    @PutMapping("/move/{noteId}/{folderName}")
+    public void moveNote(@PathVariable("noteId") String noteId, @PathVariable("folderName") String folderName){
+        System.out.println("move controller works!");
+        System.out.println("noteId = " + noteId);
+        System.out.println("folderName = " + folderName);
+        folderService.moveNoteByNoteIdByFolderName(noteId, folderName);
     }
 }

@@ -58,6 +58,7 @@ import {EventContainerComponent} from "./events/event-container/event-container.
 import {FolderService} from "./_services/folder.service";
 import { FolderContentComponent } from './folders/folder-content/folder-content.component';
 import { NoteContentComponent } from './folders/note-content/note-content.component';
+import { MoveNoteComponent } from './folders/move-note/move-note.component';
 
 @NgModule({
   imports: [
@@ -112,7 +113,8 @@ import { NoteContentComponent } from './folders/note-content/note-content.compon
     CalendarComponent,
     EventContainerComponent,
     FolderContentComponent,
-    NoteContentComponent
+    NoteContentComponent,
+    MoveNoteComponent
   ],
   providers: [
     AuthGuard,
