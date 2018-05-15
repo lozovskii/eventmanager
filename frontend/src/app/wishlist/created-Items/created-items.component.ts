@@ -32,8 +32,12 @@ export class CreatedItemsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.wishListService.wishList$.subscribe((wishList) => this.wishList = wishList);
+    this.wishListService.wishList$.subscribe((wishList) => {
+      this.wishList = wishList;
+      console.log(this.wishList.items);
+    });
     this.getCreatedItems();
+    this.editableItem = new Item();
   }
 
   showItemDetails(item: Item): void {
@@ -41,6 +45,9 @@ export class CreatedItemsComponent implements OnInit {
   }
 
   addItem(item: Item): void {
+    this.wishListService.wishList$.subscribe((wishList) => {
+      this.wishList = wishList;
+    });
     let itemDto: ItemDto = new ItemDto();
     itemDto.item = item;
     itemDto.event_id = this.wishList.id;

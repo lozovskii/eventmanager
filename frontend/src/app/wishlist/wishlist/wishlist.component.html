@@ -1,8 +1,8 @@
 <div>
-  <button *ngIf="!isIncluded" type="button" class="btn btn-secondary" [disabled]="!hasChanges" (click)="update()">
+  <button *ngIf="!isIncluded1" type="button" class="btn btn-secondary" [disabled]="!hasChanges" (click)="update()">
     Save changes
   </button>
-  <button *ngIf="isIncluded" type="button" class="btn btn-outline-primary" (click)="updateWishList()">
+  <button *ngIf="isIncluded1" type="button" class="btn btn-outline-primary" (click)="updateWishList()">
     Save changes
   </button>
 
@@ -37,7 +37,7 @@
           </select>
         </div>
       </td>
-      <td *ngIf="isIncluded" class="text-center">
+      <td *ngIf="isIncluded1" class="text-center">
         <button (click)="removeItem(itemDto)" class="btn-sm button btn-outline-danger">Remove</button>
       </td>
     </tr>

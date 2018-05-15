@@ -25,7 +25,7 @@
       </div>
       <div class="tab-pane fade" id="pills-wishlist" role="tabpanel" aria-labelledby="pills-wishlist-tab">
         <button *ngIf="isCreator" class="btn btn-outline-info" [routerLink]="['/wishlist/edit']">Edit wish list</button>
-        <app-wishlist *ngIf="isParticipant" [eventId]="eventId"></app-wishlist>
+        <app-wishlist *ngIf="isParticipant" [eventId]="eventId" [isIncluded]="false"></app-wishlist>
       </div>
       <div class="tab-pane fade" id="pills-chat" role="tabpanel" aria-labelledby="pills-chat-tab">...</div>
     </div>

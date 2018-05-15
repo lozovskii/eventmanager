@@ -9,13 +9,11 @@ import {WishListComponent} from "../../wishlist/wishlist/wishlist.component";
   templateUrl: './event-container.component.html'
 })
 export class EventContainerComponent implements OnInit, AfterViewInit {
-  isParticipant: boolean = true;
+  isParticipant: boolean = false;
   isCreator: boolean = false;
-  hideWishListTab: boolean = true;
   eventId: string;
 
   @ViewChild(EventComponent) eventComponent;
-  @ViewChild(WishListComponent) wishListComponent;
 
   constructor(private activatedRoute: ActivatedRoute) {}
 
@@ -26,6 +24,5 @@ export class EventContainerComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.isParticipant = this.eventComponent.isParticipant;
     this.isCreator = this.eventComponent.isCreator;
-    this.hideWishListTab = this.wishListComponent.hideWishListTab;
   }
 }

@@ -12,29 +12,30 @@ import {ItemDto} from "../../_models/dto/itemDto";
 })
 export class WishListComponent implements OnInit {
   @Input('eventId') eventId: string;
-  @Input('included') isIncluded: boolean;
+  @Input('isIncluded') isIncluded: boolean;
 
+  isIncluded1: boolean = true;
   trash: ItemDto[];
   wishList: WishList;
   itemDtoView: ItemDto;
-  hideWishListTab: boolean = false;
   currentLogin: string;
   hasChanges: boolean = false;
   path: string[] = ['name'];
   order: number = 1; // 1 asc, -1 desc;
 
   constructor(private wishListService: WishListService,
-              private userService: UserService,
               private alertService: AlertService) {
-    this.wishList = new WishList();
+    // this.wishList = new WishList();
   }
 
   ngOnInit() {
-    if (this.isIncluded || this.wishList != null)
-      this.wishListService.wishList$.subscribe(wishList => this.wishList = wishList);
-    else {
-      this.getWishListByEventId(this.eventId);
-    }
+    this.isIncluded1 = this.isIncluded;
+    if (this.isIncluded1) {
+        this.wishListService.wishList$.subscribe(wishList => this.wishList = wishList);
+    } else {
+        this.getWishListByEventId(this.eventId);
+   }
+
     this.trash = [];
   }
 
@@ -42,10 +43,9 @@ export class WishListComponent implements OnInit {
     this.wishListService.getByEventId(eventId)
       .subscribe((wishList) => {
           this.wishList = wishList;
-          this.wishListService.setCurrentWishList(wishList);
+          this.wishListService.setCurrentWishList(this.wishList);
         }, () => {
-          this.hideWishListTab = true;
-          this.wishList.id = this.eventId;
+          this.wishList = new WishList();
         }
       );
   }
@@ -56,12 +56,14 @@ export class WishListComponent implements OnInit {
           this.alertService.success('Wish list successfully updated!'),
         () => this.alertService.error('Something wrong'));
     }
-
-    this.wishListService.addItems(this.wishList).subscribe(() => {
-      this.alertService.success('Wish list successfully updated!');
-    }, () => {
-      this.alertService.error('Something wrong');
-    });
+    console.log("Work bitch");
+    if (this.wishList.items != null)
+      this.wishListService.addItems(this.wishList).subscribe(() => {
+        this.alertService.success('Wish list successfully updated!');
+        console.log(this.wishList.items);
+      }, () => {
+        this.alertService.error('Something wrong');
+      });
   }
 
   removeItem(itemDto: ItemDto): void {
