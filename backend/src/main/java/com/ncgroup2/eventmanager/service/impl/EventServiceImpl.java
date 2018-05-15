@@ -177,7 +177,6 @@ public class EventServiceImpl implements EventService {
     public void updateEvent(UpdateEventDTO updateEventDTO) {
         Event event = updateEventDTO.getEvent();
         String priority = updateEventDTO.getPriority();
-        System.out.println("updateEventDTO = " + updateEventDTO);
         eventDao.updateEvent(event, priority);
         getExistingCustomers(updateEventDTO.getNewPeople()).
                 forEach(login -> eventDao.createEventInvitation(login,UUID.fromString(event.getId())));
