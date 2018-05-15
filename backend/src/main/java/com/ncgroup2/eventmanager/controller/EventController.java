@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -128,5 +130,16 @@ public class EventController {
         List<InviteNotificationDTO> notifications = eventService.getInviteNotifications(customerId);
         notifications.forEach(System.out::println);
         return new ResponseEntity<>(notifications, HttpStatus.OK);
+    }
+
+    @GetMapping("/getNationalEvents")
+    public ResponseEntity<List<Event>> getNationalEvents(){
+        List<Event> list = new LinkedList<>();
+        try{
+            list = eventService.getNationalEvents(LocalDateTime.now(),LocalDateTime.now().plusYears(1));
+        } catch (Exception e) {
+            return new ResponseEntity<>(list, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(list,HttpStatus.OK);
     }
 }

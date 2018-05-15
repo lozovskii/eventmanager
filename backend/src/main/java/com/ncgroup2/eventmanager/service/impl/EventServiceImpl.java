@@ -7,6 +7,7 @@ import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.entity.Event;
 import com.ncgroup2.eventmanager.service.EventService;
 import com.ncgroup2.eventmanager.service.sender.MyMailSender;
+import com.ncgroup2.eventmanager.util.GoogleCalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -26,12 +27,14 @@ public class EventServiceImpl implements EventService {
     private final MyMailSender mailSender;
     private final EventDao eventDao;
     private final CustomerDao customerDao;
+    private final GoogleCalendarService googleCalendarService;
 
     @Autowired
-    public EventServiceImpl(MyMailSender mailSender, EventDao eventDao, CustomerDao customerDao) {
+    public EventServiceImpl(MyMailSender mailSender, EventDao eventDao, CustomerDao customerDao, GoogleCalendarService googleCalendarService) {
         this.mailSender = mailSender;
         this.eventDao = eventDao;
         this.customerDao = customerDao;
+        this.googleCalendarService = googleCalendarService;
     }
 
     @Override
@@ -287,6 +290,11 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<InviteNotificationDTO> getInviteNotifications(String customerId) {
         return eventDao.getInviteNotifications(customerId);
+    }
+
+    @Override
+    public List<Event> getNationalEvents(LocalDateTime from, LocalDateTime to) throws Exception {
+        return googleCalendarService.getEvents(from,to);
     }
 
 }

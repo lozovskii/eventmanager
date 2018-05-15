@@ -6,6 +6,7 @@ import com.ncgroup2.eventmanager.dto.InviteNotificationDTO;
 import com.ncgroup2.eventmanager.dto.UpdateEventDTO;
 import com.ncgroup2.eventmanager.entity.Event;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,4 +53,6 @@ public interface EventService {
     List<Event> getInvitesByCustId(String custId);
 
     List<InviteNotificationDTO> getInviteNotifications(String customerId);
+
+    List<Event> getNationalEvents(LocalDateTime from, LocalDateTime to) throws Exception;
 }

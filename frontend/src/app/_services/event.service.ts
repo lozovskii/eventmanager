@@ -110,4 +110,9 @@ import {UpdateEventDTO} from "../_models/dto/UpdateEventDTO";
     const url = `${this.eventsUrl}/isParticipant?customerId=${customerId}&eventId=${eventId}`;
     return this.http.get(url, {headers: AuthenticationService.getAuthHeader()});
   }
+
+  getNationalEvents(): Observable<Event[]> {
+    const url = `${this.eventsUrl}/getNationalEvents`;
+    return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()});
+  }
 }
