@@ -111,8 +111,8 @@ import {UpdateEventDTO} from "../_models/dto/UpdateEventDTO";
     return this.http.get(url, {headers: AuthenticationService.getAuthHeader()});
   }
 
-  getNationalEvents(): Observable<Event[]> {
-    const url = `${this.eventsUrl}/getNationalEvents`;
+  getNationalEvents(calendarId): Observable<Event[]> {
+    const url = `${this.eventsUrl}/getNationalEvents?calendarId=${calendarId}`;
     return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()});
   }
 }
