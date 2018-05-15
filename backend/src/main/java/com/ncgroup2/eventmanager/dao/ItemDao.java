@@ -8,12 +8,14 @@ import java.util.List;
 
 public interface ItemDao extends DAO<Item, Object>{
 
-    void addTags(List<ItemTagDto> tags, Object item_id);
+    void addTags(Collection<ItemTagDto> tags, Object item_id);
 
     Collection<Item> getCreatedItems(String creator_customer_login);
 
-    void createItems(List<Item> items);
+    void createItems(Collection<Item> items);
 
-    void deleteTags(List<ItemTagDto> trash);
+    void deleteItems(Collection<Item> trash);
+
+    void deleteTags(Collection<ItemTagDto> trash);
 
 }

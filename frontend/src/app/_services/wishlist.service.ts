@@ -6,7 +6,7 @@ import {Observable, throwError} from 'rxjs';
 import {UserService} from "./user.service";
 import {AuthenticationService} from "./authentication.service";
 import {Item} from "../_models/item";
-import {BehaviorSubject} from "rxjs/Rx";
+import {BehaviorSubject, Subject} from "rxjs/Rx";
 import {ItemDto} from "../_models/dto/itemDto";
 
 
@@ -14,8 +14,10 @@ import {ItemDto} from "../_models/dto/itemDto";
 export class WishListService {
 
   private wishListUrl = 'api/wishlist';
+  private itemsUrl = 'api/items';
+
   private wishListSource = new BehaviorSubject<WishList>(new WishList());
-  currentWishList = this.wishListSource.asObservable();
+  wishList$ = this.wishListSource.asObservable();
 
   constructor(private http: HttpClient,
               private userService: UserService) {
@@ -60,23 +62,16 @@ export class WishListService {
         catchError(this.handleError));
   }
 
-  getCreatedItems(): Observable<Item[]> {
-    let currentLogin = this.userService.getCurrentLogin();
-    const url = `api/items/created?customerLogin=${currentLogin}`;
-    return this.http.get<Item[]>(url,{headers: AuthenticationService.getAuthHeader()})
-      .pipe(
-        catchError(this.handleError));
-  }
-
   update(wishList: WishList){
     const url = `${this.wishListUrl}/update`;
     return this.http.post<WishList>(url, wishList, {headers: AuthenticationService.getAuthHeader()});
   }
 
-  deleteItems(trash: ItemDto[]){
+  removeItems(trash: ItemDto[]){
     const url = `${this.wishListUrl}/delete`;
     return this.http.post<WishList>(url, trash, {headers: AuthenticationService.getAuthHeader()});
   }
+
 
   addItems(wishList: WishList){
     const url = `${this.wishListUrl}/add`;
@@ -84,7 +79,25 @@ export class WishListService {
   }
 
   createItem(item: Item){
-    const url = `api/items/create`;
+    const url = `${this.itemsUrl}/create`;
     return this.http.post<Item>(url, item, {headers: AuthenticationService.getAuthHeader()});
+  }
+
+  deleteItems(trash: Item[]){
+    const url = `${this.itemsUrl}/batch-delete`;
+    return this.http.post<Item>(url, trash, {headers: AuthenticationService.getAuthHeader()});
+  }
+
+  updateItem(item: Item){
+    const url = `${this.itemsUrl}/update`;
+    return this.http.put<Item>(url, item, {headers: AuthenticationService.getAuthHeader()});
+  }
+
+  getCreatedItems(): Observable<Item[]> {
+    let currentLogin = this.userService.getCurrentLogin();
+    const url = `${this.itemsUrl}/created?customerLogin=${currentLogin}`;
+    return this.http.get<Item[]>(url,{headers: AuthenticationService.getAuthHeader()})
+      .pipe(
+        catchError(this.handleError));
   }
 }

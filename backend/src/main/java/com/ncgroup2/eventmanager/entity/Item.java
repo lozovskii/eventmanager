@@ -25,7 +25,8 @@ public class Item extends Entity {
                 "creator_customer_login=" + creator_customer_login +
                 " description='" + description + '\'' +
                 ", image='" + image + '\'' +
-                ", link='" + link;
+                ", link='" + link + '\'' +
+                ", dueDate='"+ dueDate;
     }
 
     @Override

@@ -51,7 +51,6 @@ export class BookedItemsComponent implements OnInit {
   }
 
   update(): void {
-    console.log(this.wishList.items);
     this.wishListService.update(this.wishList).subscribe(() => {
       this.alertService.success('Wish list successfully updated!');
     }, () => {

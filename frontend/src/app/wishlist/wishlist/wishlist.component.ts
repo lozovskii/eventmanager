@@ -16,6 +16,7 @@ export class WishListComponent implements OnInit {
 
   trash: ItemDto[];
   wishList: WishList;
+  itemDtoView: ItemDto;
   hideWishListTab: boolean = false;
   currentLogin: string;
   hasChanges: boolean = false;
@@ -30,7 +31,7 @@ export class WishListComponent implements OnInit {
 
   ngOnInit() {
     if (this.isIncluded || this.wishList != null)
-      this.wishListService.currentWishList.subscribe(wishList => this.wishList = wishList);
+      this.wishListService.wishList$.subscribe(wishList => this.wishList = wishList);
     else {
       this.getWishListByEventId(this.eventId);
     }
@@ -44,13 +45,14 @@ export class WishListComponent implements OnInit {
           this.wishListService.setCurrentWishList(wishList);
         }, () => {
           this.hideWishListTab = true;
+          this.wishList.id = this.eventId;
         }
       );
   }
 
   updateWishList(): void {
     if (this.trash.length > 0) {
-      this.wishListService.deleteItems(this.trash).subscribe(() =>
+      this.wishListService.removeItems(this.trash).subscribe(() =>
           this.alertService.success('Wish list successfully updated!'),
         () => this.alertService.error('Something wrong'));
     }

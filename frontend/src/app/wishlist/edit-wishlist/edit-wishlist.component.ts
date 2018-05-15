@@ -14,6 +14,6 @@ export class EditWishListComponent implements OnInit {
   constructor(private wishListService: WishListService) { }
 
   ngOnInit() {
-    this.wishListService.currentWishList.subscribe((wishList) => this.wishList = wishList);
+    this.wishListService.wishList$.subscribe((wishList) => this.wishList = wishList);
   }
 }
