@@ -1,6 +1,7 @@
 package com.ncgroup2.eventmanager.service;
 
 import com.ncgroup2.eventmanager.entity.Customer;
+import com.ncgroup2.eventmanager.entity.Page;
 import com.ncgroup2.eventmanager.entity.Relationship;
 
 import java.util.List;
@@ -19,7 +20,8 @@ public interface CustomerService {
 
     Customer getByLogin(String login);
     void edit(Customer customer);
-    List<Customer> search(String search);
+//    List<Customer> search(String search);
+    Page<Customer> search(int pageNo, int pageSize, String search);
     List<Customer> getFriends(String login);
     void delete(String login);
     List<Relationship> getNotifications(String login);

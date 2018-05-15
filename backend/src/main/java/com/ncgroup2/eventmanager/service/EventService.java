@@ -6,6 +6,7 @@ import com.ncgroup2.eventmanager.dto.InviteNotificationDTO;
 import com.ncgroup2.eventmanager.dto.UpdateEventDTO;
 import com.ncgroup2.eventmanager.entity.Event;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,7 +20,15 @@ public interface EventService {
 
     List<Event> getEventsByCustId(String custId);
 
+    List<Event> getEventsByCustIdSorted(String custId);
+
+    List<Event> getEventsByCustIdSortedByType(String custId);
+
+    List<Event> getEventsByCustIdFilterByType(String custId, String type);
+
     EventDTO getEventById(String eventId);
+
+    EventDTO getNoteById(String noteId);
 
     void deleteEventById(String eventId);
 
@@ -44,4 +53,6 @@ public interface EventService {
     List<Event> getInvitesByCustId(String custId);
 
     List<InviteNotificationDTO> getInviteNotifications(String customerId);
+
+    List<Event> getNationalEvents(LocalDateTime from, LocalDateTime to) throws Exception;
 }

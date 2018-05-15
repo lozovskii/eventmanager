@@ -33,6 +33,8 @@ public interface EventDao {
 
     Event getEventById(String id);
 
+    Event getNoteById(String noteId);
+
     AdditionalEventModelDTO getAdditionById(String id);
 
     List getParticipants(String eventId);
@@ -52,6 +54,12 @@ public interface EventDao {
     List<EventCountdownDTO> getCountdownMessages();
 
     String getTimeToEventStart(String eventId);
+
+    List getEventsByCustIdSorted(String custId);
+
+    List getEventsByCustIdSortedByType(String custId);
+
+    List getEventsByCustIdFilterByType(String custId, String type);
 
     List<Event> getNotesByCustId(String custId);
 

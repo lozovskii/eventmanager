@@ -7,6 +7,7 @@ import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.entity.Event;
 import com.ncgroup2.eventmanager.service.EventService;
 import com.ncgroup2.eventmanager.service.sender.MyMailSender;
+import com.ncgroup2.eventmanager.util.GoogleCalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -26,12 +27,14 @@ public class EventServiceImpl implements EventService {
     private final MyMailSender mailSender;
     private final EventDao eventDao;
     private final CustomerDao customerDao;
+    private final GoogleCalendarService googleCalendarService;
 
     @Autowired
-    public EventServiceImpl(MyMailSender mailSender, EventDao eventDao, CustomerDao customerDao) {
+    public EventServiceImpl(MyMailSender mailSender, EventDao eventDao, CustomerDao customerDao, GoogleCalendarService googleCalendarService) {
         this.mailSender = mailSender;
         this.eventDao = eventDao;
         this.customerDao = customerDao;
+        this.googleCalendarService = googleCalendarService;
     }
 
     @Override
@@ -114,13 +117,36 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public List<Event> getEventsByCustIdSorted(String custId) {
+        return eventDao.getEventsByCustIdSorted(custId);
+    }
+
+    @Override
+    public List<Event> getEventsByCustIdSortedByType(String custId) {
+        return eventDao.getEventsByCustIdSortedByType(custId);
+    }
+
+    @Override
+    public List<Event> getEventsByCustIdFilterByType(String custId, String type) {
+        return eventDao.getEventsByCustIdFilterByType(custId,type);
+    }
+
+    @Override
     public EventDTO getEventById(String eventId) {
         Event event = eventDao.getEventById(eventId);
         AdditionalEventModelDTO additionalEventModelDTO = eventDao.getAdditionById(eventId);
         List<String> listParticipants = eventDao.getParticipants(eventId);
-        System.out.println("listParticipants = " + listParticipants);
+        EventDTO eventDTO = new EventDTO();
+        eventDTO.setEvent(event);
         additionalEventModelDTO.setPeople(listParticipants);
-        System.out.println("additionalEventModelDTO = " + additionalEventModelDTO);
+        eventDTO.setAdditionEvent(additionalEventModelDTO);
+        return eventDTO;
+    }
+
+    @Override
+    public EventDTO getNoteById(String noteId){
+        Event event = eventDao.getNoteById(noteId);
+        AdditionalEventModelDTO additionalEventModelDTO = eventDao.getAdditionById(noteId);
         EventDTO eventDTO = new EventDTO();
         eventDTO.setEvent(event);
         eventDTO.setAdditionEvent(additionalEventModelDTO);
@@ -151,7 +177,6 @@ public class EventServiceImpl implements EventService {
     public void updateEvent(UpdateEventDTO updateEventDTO) {
         Event event = updateEventDTO.getEvent();
         String priority = updateEventDTO.getPriority();
-        System.out.println("updateEventDTO = " + updateEventDTO);
         eventDao.updateEvent(event, priority);
         getExistingCustomers(updateEventDTO.getNewPeople()).
                 forEach(login -> eventDao.createEventInvitation(login,UUID.fromString(event.getId())));
@@ -264,6 +289,11 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<InviteNotificationDTO> getInviteNotifications(String customerId) {
         return eventDao.getInviteNotifications(customerId);
+    }
+
+    @Override
+    public List<Event> getNationalEvents(LocalDateTime from, LocalDateTime to) throws Exception {
+        return googleCalendarService.getEvents(from,to);
     }
 
 }

@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -35,15 +37,11 @@ public class EventController {
 
     @PutMapping("/update")
     public void updateEvent(@RequestBody UpdateEventDTO updateEventDTO){
-        System.out.println("controller works!");
-        System.out.println(updateEventDTO);
         eventService.updateEvent(updateEventDTO);
     }
 
     @PutMapping("/updatenotif")
     public void updateEventNotif(@RequestBody EventDTO EventDTO){
-        System.out.println("controller works!");
-        System.out.println(EventDTO);
         eventService.updateEventNotif(EventDTO);
     }
 
@@ -55,6 +53,25 @@ public class EventController {
     @GetMapping("/my{custId}")
     public ResponseEntity<List<Event>> getEventsByCustId(@PathVariable String custId){
         List<Event> eventsByCustId = eventService.getEventsByCustId(custId);
+        return new ResponseEntity<>(eventsByCustId, HttpStatus.OK);
+    }
+
+    @GetMapping("/my/sorted{custId}")
+    public ResponseEntity<List<Event>> getEventsByCustIdSorted(@PathVariable String custId){
+        List<Event> eventsByCustId = eventService.getEventsByCustIdSorted(custId);
+        return new ResponseEntity<>(eventsByCustId, HttpStatus.OK);
+    }
+
+    @GetMapping("/my/sorted/type{custId}")
+    public ResponseEntity<List<Event>> getEventsByCustIdSortedByType(@PathVariable String custId){
+        List<Event> eventsByCustId = eventService.getEventsByCustIdSortedByType(custId);
+        return new ResponseEntity<>(eventsByCustId, HttpStatus.OK);
+    }
+
+    @GetMapping("/my/filter/{type}/{custId}")
+    public ResponseEntity<List<Event>> getEventsByCustIdFilterByType(@PathVariable("type") String type,
+                                                                     @PathVariable("custId") String custId){
+        List<Event> eventsByCustId = eventService.getEventsByCustIdFilterByType(custId,type);
         return new ResponseEntity<>(eventsByCustId, HttpStatus.OK);
     }
 
@@ -77,8 +94,14 @@ public class EventController {
     }
 
     @GetMapping("")
-    public ResponseEntity<EventDTO> getEventsById(@RequestParam String eventId){
+    public ResponseEntity<EventDTO> getEventById(@RequestParam String eventId){
         EventDTO eventById = eventService.getEventById(eventId);
+        return new ResponseEntity<>(eventById, HttpStatus.OK);
+    }
+
+    @GetMapping("/note")
+    public ResponseEntity<EventDTO> getNoteById(@RequestParam String noteId){
+        EventDTO eventById = eventService.getNoteById(noteId);
         return new ResponseEntity<>(eventById, HttpStatus.OK);
     }
 
@@ -107,5 +130,16 @@ public class EventController {
         List<InviteNotificationDTO> notifications = eventService.getInviteNotifications(customerId);
         notifications.forEach(System.out::println);
         return new ResponseEntity<>(notifications, HttpStatus.OK);
+    }
+
+    @GetMapping("/getNationalEvents")
+    public ResponseEntity<List<Event>> getNationalEvents(){
+        List<Event> list = new LinkedList<>();
+        try{
+            list = eventService.getNationalEvents(LocalDateTime.now(),LocalDateTime.now().plusYears(1));
+        } catch (Exception e) {
+            return new ResponseEntity<>(list, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(list,HttpStatus.OK);
     }
 }

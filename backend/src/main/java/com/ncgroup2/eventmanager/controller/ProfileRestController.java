@@ -1,6 +1,7 @@
 package com.ncgroup2.eventmanager.controller;
 
 import com.ncgroup2.eventmanager.entity.Customer;
+import com.ncgroup2.eventmanager.entity.Page;
 import com.ncgroup2.eventmanager.entity.Relationship;
 import com.ncgroup2.eventmanager.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,12 +115,16 @@ public class ProfileRestController {
 //        }
 //    }
 
-    @GetMapping(value = "search", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List<Customer>> search(@RequestParam String request) {
-        System.out.println("Controler: " + request);
-        List<Customer> customers = customerService.search(request);
+//    @GetMapping(value = "search", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    public ResponseEntity<List<Customer>> search(@RequestParam String search) {
+//        List<Customer> customers = customerService.search(search);
+//
+//        return new ResponseEntity<>(customers, HttpStatus.OK);
+//    }
 
-        return new ResponseEntity<>(customers, HttpStatus.OK);
+    @GetMapping(value = "search", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Page<Customer> search(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
+        return customerService.search(page, size, search);
     }
 
 

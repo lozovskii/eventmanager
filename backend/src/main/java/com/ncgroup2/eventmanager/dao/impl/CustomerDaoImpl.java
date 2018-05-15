@@ -2,9 +2,11 @@ package com.ncgroup2.eventmanager.dao.impl;
 
 import com.ncgroup2.eventmanager.dao.CustomerDao;
 import com.ncgroup2.eventmanager.entity.Customer;
+import com.ncgroup2.eventmanager.entity.Page;
 import com.ncgroup2.eventmanager.entity.Relationship;
 import com.ncgroup2.eventmanager.mapper.CustomerMapper;
 import com.ncgroup2.eventmanager.mapper.RelationshipMapper;
+import com.ncgroup2.eventmanager.util.PaginationHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -26,7 +28,7 @@ import java.util.UUID;
 
 @Repository
 @Transactional
-@PropertySource("classpath:profile.properties")
+@PropertySource("classpath:queries/profile.properties")
 public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
     private static final String BASE_SQL = "SELECT * FROM \"Customer\" ";
@@ -52,6 +54,18 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
     private String deleteFriend;
     @Value("${getFriends}")
     private String getFriends;
+    @Value("${countCustomerByLogin}")
+    private String countCustomerByLogin;
+    @Value("${searchCustomerByLogin}")
+    private String searchCustomerByLogin;
+    @Value("${countCustomerByNameAndLastname}")
+    private String countCustomerByNameAndLastname;
+    @Value("${searchCustomerByNameAndLastname}")
+    private String searchCustomerByNameAndLastname;
+    @Value("${countCustomerEmptyField}")
+    private String countCustomerEmptyField;
+    @Value("${searchCustomerEmptyField}")
+    private String searchCustomerEmptyField;
 
     @PostConstruct
     private void initialize() {
@@ -181,35 +195,87 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
         this.getJdbcTemplate().update(editCustomer, params);
     }
 
-    @Override
-    public List<Customer> search(String search) {
+//    @Override
+//    public List<Customer> search(String search) {
+//
+//        if (search != null && search.trim().length() > 0) {
+//
+//            String[] subStr = search.toLowerCase().split(" ");
+//
+//            if (subStr.length == 1) {
+//                String query = "SELECT * FROM \"Customer\" WHERE LOWER(login) LIKE '" + subStr[0] + "%' " +
+//                        "AND login != '" + SecurityContextHolder.getContext().getAuthentication().getName() + "'";
+//                return this.getJdbcTemplate().query(query, new CustomerMapper());
+//            } else if (subStr.length == 2) {
+//                String query1 = "SELECT * FROM \"Customer\" WHERE LOWER(name) LIKE '"
+//                        + subStr[0] + "%' AND LOWER(second_name) LIKE '" + subStr[1] + "%' AND login != '" +
+//                        SecurityContextHolder.getContext().getAuthentication().getName() + "'";
+//                String query2 = "SELECT * FROM \"Customer\" WHERE LOWER(second_name) LIKE '"
+//                        + subStr[0] + "%' AND LOWER(name) LIKE '" + subStr[1] + "%' AND login != '" +
+//                        SecurityContextHolder.getContext().getAuthentication().getName() + "'";
+//                String result = query1 + " UNION " + query2;
+//
+//                return this.getJdbcTemplate().query(result, new CustomerMapper());
+//            } else {
+//                return null;
+//            }
+//        } else if (search.equals("")) {
+//            String query = "SELECT * FROM \"Customer\" WHERE login != '" +
+//                    SecurityContextHolder.getContext().getAuthentication().getName() + "'";
+//
+//            return this.getJdbcTemplate().query(query, new CustomerMapper());
+//        } else {
+//            return null;
+//        }
+//    }
 
+    @Override
+    public Page<Customer> search(int pageNo, int pageSize, String search) {
         if (search != null && search.trim().length() > 0) {
 
             String[] subStr = search.toLowerCase().split(" ");
 
             if (subStr.length == 1) {
-                String query = "SELECT * FROM \"Customer\" WHERE LOWER(login) LIKE '" + subStr[0] + "%' " +
-                        "AND login != '" + SecurityContextHolder.getContext().getAuthentication().getName() + "'";
-                return this.getJdbcTemplate().query(query, new CustomerMapper());
+                return new PaginationHelper<Customer>().getPage(
+                        this.getJdbcTemplate(),
+                        countCustomerByLogin,
+                        searchCustomerByLogin,
+                        new Object[] {
+                                subStr[0] + "%",
+                                SecurityContextHolder.getContext().getAuthentication().getName()},
+                        pageNo,
+                        pageSize,
+                        new CustomerMapper()
+                );
             } else if (subStr.length == 2) {
-                String query1 = "SELECT * FROM \"Customer\" WHERE LOWER(name) LIKE '"
-                        + subStr[0] + "%' AND LOWER(second_name) LIKE '" + subStr[1] + "%' AND login != '" +
-                        SecurityContextHolder.getContext().getAuthentication().getName() + "'";
-                String query2 = "SELECT * FROM \"Customer\" WHERE LOWER(second_name) LIKE '"
-                        + subStr[0] + "%' AND LOWER(name) LIKE '" + subStr[1] + "%' AND login != '" +
-                        SecurityContextHolder.getContext().getAuthentication().getName() + "'";
-                String result = query1 + " UNION " + query2;
-
-                return this.getJdbcTemplate().query(result, new CustomerMapper());
+                return new PaginationHelper<Customer>().getPage(
+                        this.getJdbcTemplate(),
+                        countCustomerByNameAndLastname,
+                        searchCustomerByNameAndLastname,
+                        new Object[] {
+                                subStr[0] + "%",
+                                subStr[1] + "%",
+                                SecurityContextHolder.getContext().getAuthentication().getName(),
+                                subStr[0] + "%",
+                                subStr[1] + "%",
+                                SecurityContextHolder.getContext().getAuthentication().getName()},
+                        pageNo,
+                        pageSize,
+                        new CustomerMapper()
+                );
             } else {
                 return null;
             }
         } else if (search.equals("")) {
-            String query = "SELECT * FROM \"Customer\" WHERE login != '" +
-                    SecurityContextHolder.getContext().getAuthentication().getName() + "'";
-
-            return this.getJdbcTemplate().query(query, new CustomerMapper());
+            return new PaginationHelper<Customer>().getPage(
+                    this.getJdbcTemplate(),
+                    countCustomerEmptyField,
+                    searchCustomerEmptyField,
+                    new Object[] {SecurityContextHolder.getContext().getAuthentication().getName()},
+                    pageNo,
+                    pageSize,
+                    new CustomerMapper()
+            );
         } else {
             return null;
         }

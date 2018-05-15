@@ -46,7 +46,6 @@ import {CreateItemComponent} from "./wishlist/create-item/create-item.component"
 import {CreatedItemsComponent} from "./wishlist/created-Items/created-items.component";
 import {FriendComponent} from "./profile/friend/friend.component";
 import {SortingItemsPipe} from "./wishlist/sorting-items/sorting-items.pipe";
-import {SearchUserComponent} from "./profile/search-user/search-user.component";
 import { EventNotificationComponent } from './events/event-notification/event-notification.component';
 import { CreateFolderComponent } from './folders/create-folder/create-folder.component';
 import {EditWishListComponent} from "./wishlist/edit-wishlist/edit-wishlist.component";
@@ -59,6 +58,9 @@ import {EventContainerComponent} from "./events/event-container/event-container.
 import {FolderService} from "./_services/folder.service";
 import {UpdateItemComponent} from "./wishlist/edit-item/update-item.component";
 import {ItemDetailsViewComponent} from "./wishlist/item-details-view/item-details-view.component";
+import { FolderContentComponent } from './folders/folder-content/folder-content.component';
+import { NoteContentComponent } from './folders/note-content/note-content.component';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -104,7 +106,6 @@ import {ItemDetailsViewComponent} from "./wishlist/item-details-view/item-detail
     CreatedItemsComponent,
     FriendRequestNotificationComponent,
     FriendComponent,
-    SearchUserComponent,
     SortingItemsPipe,
     EventNotificationComponent,
     CreateFolderComponent,
@@ -112,6 +113,8 @@ import {ItemDetailsViewComponent} from "./wishlist/item-details-view/item-detail
     EventNotificationComponent,
     CalendarComponent,
     EventContainerComponent,
+    FolderContentComponent,
+    NoteContentComponent,
     UpdateItemComponent,
     ItemDetailsViewComponent,
   ],

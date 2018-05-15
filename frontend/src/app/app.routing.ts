@@ -26,6 +26,8 @@ import {CreatedItemsComponent} from "./wishlist/created-Items/created-items.comp
 import {EditWishListComponent} from "./wishlist/edit-wishlist/edit-wishlist.component";
 import {CreateFolderComponent} from "./folders/create-folder/create-folder.component";
 import {EventContainerComponent} from "./events/event-container/event-container.component";
+import {FolderContentComponent} from "./folders/folder-content/folder-content.component";
+import {NoteContentComponent} from "./folders/note-content/note-content.component";
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full'},
@@ -35,7 +37,6 @@ const appRoutes: Routes = [
   { path: 'create-event', component: CreateEventComponent, canActivate: [AuthGuard]},
   { path: 'event/:id', component: EventComponent, canActivate: [AuthGuard]},
   { path: 'update-event/:id', component: UpdateEventComponent, canActivate: [AuthGuard]},
-  { path: 'eventlist/:type', component: EventlistComponent, canActivate: [AuthGuard]},
   { path: 'registration-confirm', component: RegistrationConfirmComponent},
   { path: 'send-reset-link', component: SendLinkComponent},
   { path: 'reset-password', component: ResetComponent},
@@ -51,8 +52,13 @@ const appRoutes: Routes = [
   { path: 'created-items', component: CreatedItemsComponent, canActivate: [AuthGuard]},
   { path: 'wishlist/edit', component: EditWishListComponent, canActivate: [AuthGuard]},
   { path: 'create-folder', component: CreateFolderComponent, canActivate: [AuthGuard]},
-
+  { path: 'folder-content/:type', component: FolderContentComponent, canActivate: [AuthGuard]},
+  { path: 'folder-content/:type/:folderId', component: FolderContentComponent, canActivate: [AuthGuard]},
   { path: 'event-container/:id', component: EventContainerComponent, canActivate: [AuthGuard]},
+  { path: 'note-content/:id', component: NoteContentComponent, canActivate: [AuthGuard]},
+  { path: 'eventlist/:type', component: EventlistComponent, canActivate: [AuthGuard]},
+  { path: 'eventlist/:type/sorted', component: EventlistComponent, canActivate: [AuthGuard]},
+  { path: 'eventlist/my/filter', component: EventlistComponent, canActivate: [AuthGuard]},
   // otherwise redirect to home
  { path: '**', redirectTo: '' }
 ];

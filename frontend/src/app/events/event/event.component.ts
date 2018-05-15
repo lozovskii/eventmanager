@@ -4,9 +4,6 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
 import {AlertService} from "../../_services/alert.service";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {Event} from '../../_models/event'
-import {AdditionEventModel} from "../../_models/additionEvent.model";
-import {UpdateEventComponent} from "../update-event/update-event.component";
 
 @Component({
   selector: 'app-event',
@@ -16,16 +13,16 @@ import {UpdateEventComponent} from "../update-event/update-event.component";
 export class EventComponent implements OnInit {
   @Input('eventId') eventId: string;
 
-  updateEventDTO: UpdateEventComponent;
   eventDTO: EventDTOModel;
   isCreator: boolean;
   isParticipant: boolean;
   additionEventForm: FormGroup;
+  isPeople:boolean;
 
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
-              private alertService: AlertService,
+              private alertService : AlertService,
               private formBuilder: FormBuilder) {
   }
 
@@ -35,10 +32,10 @@ export class EventComponent implements OnInit {
     const id = this.eventId;
     this.eventService.getEventById(id).subscribe((eventDTO : EventDTOModel) => {
       this.eventDTO = eventDTO;
-      console.log(this.eventDTO);
-      console.log(this.eventDTO.additionEvent.startTimeNotification);
       let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
       this.isCreator = currentUserId == this.eventDTO.event.creatorId;
+      console.log('people = ' + this.eventDTO.additionEvent.people[0])
+      // this.isPeople = !(this.eventDTO.additionEvent.people.length = 0);
       this.eventService.isParticipant(currentUserId, id).subscribe(
         () => this.isParticipant = true,
         () => this.isParticipant = false);
@@ -72,7 +69,7 @@ export class EventComponent implements OnInit {
 
   delete() {
     this.eventService.deleteEvent(this.eventDTO.event.id).subscribe(() => {
-      this.alertService.info('Event successfully deleted!', true);
+      this.alertService.info('Event successfully deleted!',true);
       this.router.navigate(['../home']);
     });
   }

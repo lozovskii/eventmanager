@@ -141,9 +141,39 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
     @Override
     public List getEventsByCustId(String custId) {
-        String query = queryService.getQuery("event.getEventsByCustId");
+        String query = queryService.getQuery("event.getByCustIdSortByStartDate");
         Object[] params = new Object[]{
                 custId
+        };
+        return this.getJdbcTemplate().query(query, params, new BeanPropertyRowMapper(Event.class));
+    }
+
+    @Override
+    public List getEventsByCustIdSorted(String custId) {
+        String query = queryService.getQuery("event.getByCustIdSortByName");
+        Object[] params = new Object[]{
+                custId
+        };
+        return this.getJdbcTemplate().query(query, params, new BeanPropertyRowMapper(Event.class));
+    }
+
+    @Override
+    public List getEventsByCustIdSortedByType(String custId) {
+        String query = queryService.getQuery("event.getByCustIdSortByType");
+        Object[] params = new Object[]{
+                custId
+        };
+        return this.getJdbcTemplate().query(query, params, new BeanPropertyRowMapper(Event.class));
+    }
+
+    @Override
+    public List getEventsByCustIdFilterByType(String custId, String type) {
+        System.out.println(custId);
+        System.out.println(type);
+        String query = queryService.getQuery("event.getByCustIdFilterByType");
+        Object[] params = new Object[]{
+                custId,
+                type
         };
         return this.getJdbcTemplate().query(query, params, new BeanPropertyRowMapper(Event.class));
     }
@@ -198,9 +228,23 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
     @Override
     public Event getEventById(String eventId) {
-        String query = queryService.getQuery("event.getEventById");
+        String query = queryService.getQuery("event.getById");
         Object[] params = new Object[]{
                 eventId
+        };
+        List<Event> list = this.getJdbcTemplate().query(query, params, new BeanPropertyRowMapper(Event.class));
+        if (!list.isEmpty()) {
+            return list.iterator().next();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public Event getNoteById(String noteId) {
+        String query = queryService.getQuery("note.getById");
+        Object[] params = new Object[]{
+                noteId
         };
         List<Event> list = this.getJdbcTemplate().query(query, params, new BeanPropertyRowMapper(Event.class));
         if (!list.isEmpty()) {

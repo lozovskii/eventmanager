@@ -23,14 +23,18 @@ public class FolderController {
 
     @PostMapping
     public void create(@RequestBody Folder folder){
-        System.out.println(folder);
         folderService.create(folder);
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<Folder>> getAllByCustId(@RequestParam String customerId) {
-        System.out.println("controller works!" + customerId);
         List<Folder> foldersByCustId = folderService.getAllByCustId(customerId);
         return new ResponseEntity<>(foldersByCustId, HttpStatus.OK);
+    }
+
+    @GetMapping("/notes")
+    public ResponseEntity<List<Event>> getNotesByCustIdByFolderId(@RequestParam String custId, @RequestParam String folderId){
+        List<Event> notesByCustId = folderService.getNotesByCustIdByFolderId(custId,folderId);
+        return new ResponseEntity<>(notesByCustId, HttpStatus.OK);
     }
 }
