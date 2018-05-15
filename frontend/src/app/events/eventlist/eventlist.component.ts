@@ -3,6 +3,7 @@ import {EventService} from "../../_services";
 import {Event} from "../../_models";
 import {ActivatedRoute} from "@angular/router";
 import {AlertService} from "../../_services/alert.service";
+import {VISIBILITY} from "../../event-visibility";
 
 @Component({
   selector: 'app-eventlist',
@@ -12,6 +13,8 @@ import {AlertService} from "../../_services/alert.service";
 
 export class EventlistComponent implements OnInit {
   events: Event[];
+  visibilityList: string[] = VISIBILITY;
+  isMy:boolean = false;
 
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute,
@@ -27,15 +30,33 @@ export class EventlistComponent implements OnInit {
           break;
         }
         case 'my' : {
+          this.isMy = true;
           this.getEventsByCustId();
           break;
         }
-        case 'my/sorted' : {
+        case 'my/sorted/title' : {
+          this.isMy = true;
           this.getEventsByCustIdSorted();
           break;
         }
         case 'my/sorted/type' : {
+          this.isMy = true;
           this.getEventsByCustIdSortedByType();
+          break;
+        }
+        case 'my/filter/private' : {
+          this.isMy = true;
+          this.getEventsByCustIdFilterByType(this.visibilityList[2]);
+          break;
+        }
+        case 'my/filter/public' : {
+          this.isMy = true;
+          this.getEventsByCustIdFilterByType(this.visibilityList[0]);
+          break;
+        }
+        case 'my/filter/friends' : {
+          this.isMy = true;
+          this.getEventsByCustIdFilterByType(this.visibilityList[1]);
           break;
         }
         case 'drafts' : {
@@ -84,6 +105,17 @@ export class EventlistComponent implements OnInit {
     this.eventService.getEventsByCustIdSortedType()
       .subscribe((events) => {
         this.events = events;
+        if(events.toString() == ''){
+          this.alertService.info('You have no events yet.',true);
+        }
+      });
+  }
+
+  getEventsByCustIdFilterByType(type:string): void {
+    this.eventService.getEventsByCustIdFilterByType(type)
+      .subscribe((events) => {
+        this.events = events;
+        console.log('events = ' + events);
         if(events.toString() == ''){
           this.alertService.info('You have no events yet.',true);
         }

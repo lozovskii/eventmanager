@@ -66,6 +66,16 @@ public class EventController {
         return new ResponseEntity<>(eventsByCustId, HttpStatus.OK);
     }
 
+    @GetMapping("/my/filter/{type}/{custId}")
+    public ResponseEntity<List<Event>> getEventsByCustIdFilterByType(@PathVariable("type") String type,
+                                                                     @PathVariable("custId") String custId){
+        System.out.println("controller works!");
+        System.out.println("type = " + type);
+        System.out.println("custId = " + custId);
+        List<Event> eventsByCustId = eventService.getEventsByCustIdFilterByType(custId,type);
+        return new ResponseEntity<>(eventsByCustId, HttpStatus.OK);
+    }
+
     @GetMapping("/drafts{custId}")
     public ResponseEntity<List<Event>> getDraftsByCustId(@PathVariable String custId){
         List<Event> draftsByCustId = eventService.getDraftsByCustId(custId);

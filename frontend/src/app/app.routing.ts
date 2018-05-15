@@ -38,8 +38,6 @@ const appRoutes: Routes = [
   { path: 'create-event', component: CreateEventComponent, canActivate: [AuthGuard]},
   { path: 'event/:id', component: EventComponent, canActivate: [AuthGuard]},
   { path: 'update-event/:id', component: UpdateEventComponent, canActivate: [AuthGuard]},
-  { path: 'eventlist/:type', component: EventlistComponent, canActivate: [AuthGuard]},
-  { path: 'eventlist/:type/sorted', component: EventlistComponent, canActivate: [AuthGuard]},
   { path: 'registration-confirm', component: RegistrationConfirmComponent},
   { path: 'send-reset-link', component: SendLinkComponent},
   { path: 'reset-password', component: ResetComponent},
@@ -60,6 +58,9 @@ const appRoutes: Routes = [
   { path: 'folder-content/:type/:folderId', component: FolderContentComponent, canActivate: [AuthGuard]},
   { path: 'event-container/:id', component: EventContainerComponent, canActivate: [AuthGuard]},
   { path: 'note-content/:id', component: NoteContentComponent, canActivate: [AuthGuard]},
+  { path: 'eventlist/:type', component: EventlistComponent, canActivate: [AuthGuard]},
+  { path: 'eventlist/:type/sorted', component: EventlistComponent, canActivate: [AuthGuard]},
+  { path: 'eventlist/my/filter', component: EventlistComponent, canActivate: [AuthGuard]},
   // otherwise redirect to home
  { path: '**', redirectTo: '' }
 ];

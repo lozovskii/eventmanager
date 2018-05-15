@@ -45,6 +45,12 @@ import {UpdateEventDTO} from "../_models/dto/UpdateEventDTO";
     return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
   }
 
+  getEventsByCustIdFilterByType(type:string): Observable<Event[]> {
+    let custId = this.userService.getCurrentId();
+    const url = `${this.eventsUrl}/my/filter/${type}/${custId}`;
+    return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
+  }
+
   getDraftsByCustId():Observable<Event[]> {
     let custId = this.userService.getCurrentId();
     const url = `${this.eventsUrl}/drafts${custId}`;
