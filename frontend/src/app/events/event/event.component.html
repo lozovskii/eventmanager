@@ -23,9 +23,12 @@
     <p>End time: {{eventDTO.event.endTime}}</p>
     <p>Privacy: {{eventDTO.event.visibility}}</p>
     <p *ngIf="isParticipant || isCreator">Priority: {{eventDTO.additionEvent.priority}}</p>
-    <p *ngIf="isPeople">People:</p>
-    <p *ngFor="let login of eventDTO.additionEvent.people">{{login}}</p>
-
+    <div class="row">
+      <p class="col-md-2">People:</p>
+      <div class="col-md-10" *ngFor="let login of eventDTO.additionEvent.people">
+        <p _nglogin>{{login}}</p>
+      </div>
+    </div>
   <div *ngIf="isParticipant || isCreator">
     <app-event-notification></app-event-notification>
   </div>
