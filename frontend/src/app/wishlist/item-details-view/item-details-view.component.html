@@ -1,0 +1,25 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title" id="modalCenterTitle">{{item.name}}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <img *ngIf="!item.image" class="card-img-top" src="../../assets/img/default_image.png" alt="Card image">
+      <img *ngIf="item.image" class="card-img-top" [src]="item.image" alt="Card image">
+      <div class="card-body">
+        <h6 class="card-subtitle mb-2 text-muted">{{item.dueDate}}</h6>
+        <div class="card-text" [innerHTML]=item.description></div>
+        <a *ngIf="item.link"
+           href="{{item.link}}"
+           class="card-link">link</a>
+      </div>
+      <div class="modal-footer">
+        <button data-dismiss="modal" class="btn btn-secondary">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+

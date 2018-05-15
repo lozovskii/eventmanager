@@ -1,11 +1,4 @@
-<div class="row">
-  <div class="col-md-3">
-    <app-vnavbar></app-vnavbar>
-  </div>
-
-  <main role="main" class="col-md-6">
-    <h2 class="text-center">Create Item</h2>
-    <br>
+<div>
     <form [formGroup]="mainForm" (ngSubmit)="createItem(itemForm.value)">
 
       <form [formGroup]="itemForm">
@@ -76,22 +69,13 @@
 
       <form [formGroup]="additionalForm">
 
-        <div class="form-group">
-          <label>Priority</label>
-          <select formControlName="priority" type="text" class="form-control">
-            <option value="3">Low</option>
-            <option value="2">Average</option>
-            <option value="1">High</option>
-          </select>
-        </div>
-
         <button class="btn btn-outline-secondary" type="button"
-                data-toggle="collapse" data-target="#collapseExample"
-                aria-expanded="false" aria-controls="collapseExample">
+                data-toggle="collapse" data-target="#addImage"
+                aria-expanded="false" aria-controls="addImage">
           Add image
         </button>
 
-        <div class="collapse card" id="collapseExample">
+        <div class="collapse card" id="addImage">
           <h5>Upload from computer</h5>
           <div>
             <!--<input formControlName="image" type="file" class="form-control"-->
@@ -132,14 +116,11 @@
 
       <br>
 
-      <div class="form-group">
+      <div class="modal-footer">
+        <button data-dismiss="modal" class="btn btn-secondary">Cancel</button>
         <button type="submit" [disabled]="itemForm.invalid"
-                class="btn btn-primary btn-lg">Create item
-        </button>
-        <button [routerLink]="['/home']" class="btn btn-link">Cancel</button>
+                class="btn btn-primary">Create item</button>
       </div>
 
     </form>
-  </main>
-
 </div>

@@ -57,6 +57,8 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import {HttpClientModule} from "@angular/common/http";
 import {EventContainerComponent} from "./events/event-container/event-container.component";
 import {FolderService} from "./_services/folder.service";
+import {UpdateItemComponent} from "./wishlist/edit-item/update-item.component";
+import {ItemDetailsViewComponent} from "./wishlist/item-details-view/item-details-view.component";
 @NgModule({
   imports: [
     BrowserModule,
@@ -110,6 +112,8 @@ import {FolderService} from "./_services/folder.service";
     EventNotificationComponent,
     CalendarComponent,
     EventContainerComponent,
+    UpdateItemComponent,
+    ItemDetailsViewComponent,
   ],
   providers: [
     AuthGuard,

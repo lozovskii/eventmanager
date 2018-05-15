@@ -22,7 +22,6 @@ import {UploadImgComponent} from "./upload-img/upload-img.component";
 import {NotificationContainerComponent} from "./notifications/notification-container/notification-container.component";
 import {BookedItemsComponent} from "./wishlist/booked-items/booked-items.component";
 import {FriendComponent} from "./profile/friend/friend.component";
-import {CreateItemComponent} from "./wishlist/create-item/create-item.component";
 import {CreatedItemsComponent} from "./wishlist/created-Items/created-items.component";
 import {EditWishListComponent} from "./wishlist/edit-wishlist/edit-wishlist.component";
 import {CreateFolderComponent} from "./folders/create-folder/create-folder.component";
@@ -49,7 +48,6 @@ const appRoutes: Routes = [
   { path: 'notifications', component: NotificationContainerComponent, canActivate: [AuthGuard]},
   { path: 'profile/friends', component: FriendComponent, canActivate: [AuthGuard]},
   { path: 'booked-items', component: BookedItemsComponent, canActivate: [AuthGuard]},
-  { path: 'create-item', component: CreateItemComponent, canActivate: [AuthGuard]},
   { path: 'created-items', component: CreatedItemsComponent, canActivate: [AuthGuard]},
   { path: 'wishlist/edit', component: EditWishListComponent, canActivate: [AuthGuard]},
   { path: 'create-folder', component: CreateFolderComponent, canActivate: [AuthGuard]},
