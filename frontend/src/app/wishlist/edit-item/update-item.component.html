@@ -1,0 +1,123 @@
+<div>
+  <form [formGroup]="mainForm" (ngSubmit)="updateItem(itemForm.value)">
+
+    <form [formGroup]="itemForm">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input formControlName="name" id="name" type="text" class="form-control" name="name" required/>
+        <small class="text-muted">
+          Must be 3-20 characters long.
+        </small>
+
+        <div *ngIf="name.invalid && (name.dirty || name.touched)"
+             class="alert alert-danger">
+
+          <div *ngIf="name?.errors?.required">
+            Name is required.
+          </div>
+          <div *ngIf="name?.errors?.minlength">
+            Name must be at least 3 characters long.
+          </div>
+          <div *ngIf="name?.errors?.maxlength">
+            Name must be less than 20 characters long.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <editor [formControlName]='["description"]'
+                apiKey="h4g5a6vds8edp6kti3ahmikjin0r9usoqh99fs5l8xymelf5" [init]="{plugins: 'link'}">
+        </editor>
+        <small id="passwordHelpInline" class="text-muted">
+          Must be less than 1024 characters long.
+        </small>
+        <div *ngIf="description.invalid && (description.dirty || description.touched)"
+             class="alert alert-danger">
+          <div *ngIf="description?.errors?.maxlength">
+            Description must be less than 1024 characters long.
+          </div>
+
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="link">Link</label>
+        <input formControlName="link" id="link" type="text" class="form-control" name="link"/>
+        <small class="text-muted">
+          Must be 4-128 characters long.
+        </small>
+
+        <div *ngIf="link.invalid && (link.dirty || link.touched)"
+             class="alert alert-danger">
+
+          <div *ngIf="link?.errors?.minlength">
+            Link must be at least 4 characters long.
+          </div>
+          <div *ngIf="link?.errors?.maxlength">
+            Link must be less than 128 characters long.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="dueDate">Due date</label>
+        <input formControlName="dueDate" id="dueDate" type="date" class="form-control" name="dueDate" required/>
+      </div>
+
+    </form>
+
+    <form [formGroup]="additionalForm">
+
+      <button class="btn btn-outline-secondary" type="button"
+              data-toggle="collapse" data-target="#collapseExample"
+              aria-expanded="false" aria-controls="collapseExample">
+        Add image
+      </button>
+
+      <div class="collapse card" id="collapseExample">
+        <h5>Upload from computer</h5>
+        <div>
+          <!--<input formControlName="image" type="file" class="form-control"-->
+          <!--accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,-->
+          <!--text/plain, application/pdf, image/*" (change)="changeListener($event)">-->
+
+          <small class="text-muted">
+            Image must have an extension: png, jpg, jpeg
+          </small>
+          <small class="text-muted">
+            Max size image is 1 MB
+          </small>
+
+          <button class="btn" (click)="onUpload()">Upload!</button>
+        </div>
+
+        <h5>Upload by link</h5>
+        <div>
+          <input type="url" formControlName="imageUrl" class="form-control">
+          <small class="text-muted">
+            Must be 4-128 characters long.
+          </small>
+
+          <div *ngIf="link.invalid && (link.dirty || link.touched)"
+               class="alert alert-danger">
+
+            <div *ngIf="link?.errors?.minlength">
+              Link must be at least 4 characters long.
+            </div>
+            <div *ngIf="link?.errors?.maxlength">
+              Link must be less than 128 characters long.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </form>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      <button type="submit" [disabled]="itemForm.invalid"
+              class="btn btn-primary">Update item</button>
+    </div>
+  </form>
+</div>

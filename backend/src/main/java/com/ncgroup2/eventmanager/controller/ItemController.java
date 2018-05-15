@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/items")
@@ -23,19 +24,26 @@ public class ItemController {
 
     @PostMapping(value = "/batch-create")
     public void createItems(@RequestBody Collection<Item> item) {
-
         itemService.createItems(item);
     }
 
     @PostMapping(value = "/create")
     public void createItem(@RequestBody Item item) {
-
         itemService.createItem(item);
+    }
+
+    @PutMapping(value = "/update")
+    public void updatetem(@RequestBody Item item) {
+        itemService.update(item);
+    }
+
+    @PostMapping(value = "/batch-delete")
+    public void deleteItems(@RequestBody List<Item> trash) {
+        itemService.deleteItems(trash);
     }
 
     @GetMapping(value = "/created")
     public ResponseEntity<Collection<Item>> getCreatedItems(@RequestParam String customerLogin) {
-
         Collection<Item> createdItems = itemService.getCreatedItems(customerLogin);
 
         if (createdItems == null) {

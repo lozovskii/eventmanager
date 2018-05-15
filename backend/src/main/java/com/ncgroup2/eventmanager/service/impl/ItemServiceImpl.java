@@ -17,38 +17,39 @@ public class ItemServiceImpl implements ItemService {
     private ItemDao itemDao;
 
     public Item getItemById(String itemId){
-
         return itemDao.getById(itemId);
     }
 
     public Collection<Item> getCreatedItems(String creatorId){
-
         return itemDao.getCreatedItems(creatorId);
     }
 
     public void createItem(Item item){
-
         itemDao.create(item);
     }
 
     public void createItems(Collection<Item> items){
-
         itemDao.createItems((List<Item>) items);
     }
 
     public void updateItemByField(String itemId, String fieldName, String fieldValue){
-
         itemDao.updateField(itemId, fieldName, fieldValue);
     }
 
-    public void removeTags(Collection<ItemTagDto> trash){
+    public void update(Item item){
+        itemDao.update(item);
+    }
 
+    public void removeTags(Collection<ItemTagDto> trash){
         itemDao.deleteTags((List<ItemTagDto>)trash);
     }
 
     public void addTags(Collection<ItemTagDto> tags, String itemId){
-
         itemDao.addTags((List<ItemTagDto>)tags, itemId);
+    }
+
+    public void deleteItems(Collection<Item> trash){
+        itemDao.deleteItems(trash);
     }
 
 }

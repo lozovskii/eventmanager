@@ -66,8 +66,7 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
 
         return Objects.requireNonNull(
                 getEntitiesByField(fieldName, fieldValue).iterator().next(),
-                "Item not found"
-                );
+                "Item not found");
     }
 
     @Override
@@ -94,13 +93,13 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
 
     @Override
     public void update(Item item) {
-
+        System.out.println(item.toString());
         String itemUpdateSql =
                 "UPDATE \"Item\"" +
                         "SET creator_customer_login = ?, name = ?, description = ?, image = ?, link = ?, due_date = ?" +
-                        "WHERE id = '" + item.getId() + "'::UUID";
+                        "WHERE id = ?::UUID";
 
-        this.getJdbcTemplate().update(itemUpdateSql, item.getParams());
+        System.out.println(this.getJdbcTemplate().update(itemUpdateSql, item.getParams()));
     }
 
     @Override
@@ -126,7 +125,25 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
 
     }
 
-    public void deleteTags(List<ItemTagDto> trash) {
+    @Override
+    public void deleteItems(Collection<Item> trash) {
+
+        if (trash != null && (!trash.isEmpty())) {
+
+            String itemDeleteSql =
+                    "DELETE FROM \"Item\" " +
+                            "WHERE id = ?::UUID;";
+
+            this.getJdbcTemplate().batchUpdate(
+                    itemDeleteSql, trash, trash.size(),
+                    (ps, item) -> {
+                        ps.setString(1, item.getId());
+                    });
+        }
+
+    }
+
+    public void deleteTags(Collection<ItemTagDto> trash) {
 
         if (trash != null && (!trash.isEmpty())) {
 
@@ -169,7 +186,7 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
 
     }
 
-    public void createItems(List<Item> items){
+    public void createItems(Collection<Item> items){
 
         if (items != null && (!items.isEmpty())){
 
@@ -205,7 +222,7 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
 
     }
 
-    public void addTags(List<ItemTagDto> tags, Object item_id) {
+    public void addTags(Collection<ItemTagDto> tags, Object item_id) {
 
         if (tags != null && (!tags.isEmpty())) {
 

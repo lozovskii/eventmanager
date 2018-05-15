@@ -18,6 +18,10 @@ public interface ItemService {
 
     void updateItemByField(String itemId, String fieldName, String fieldValue);
 
+    void update(Item item);
+
+    void deleteItems(Collection<Item> trash);
+
     void removeTags(Collection<ItemTagDto> trash);
 
     void addTags(Collection<ItemTagDto> tags, String itemId);
