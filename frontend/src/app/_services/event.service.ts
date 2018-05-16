@@ -115,4 +115,9 @@ import {UpdateEventDTO} from "../_models/dto/UpdateEventDTO";
     const url = `${this.eventsUrl}/getNationalEvents?calendarId=${calendarId}`;
     return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()});
   }
+
+  importEventsToPDF() {
+    return this.http.get(`api/import/pdf`,
+      {headers: AuthenticationService.getAuthHeader()})
+  }
 }
