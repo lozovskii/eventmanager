@@ -24,7 +24,6 @@ export class MoveNoteComponent implements OnInit {
 
   ngOnInit() {
     this.noteId = this.activatedRoute.snapshot.paramMap.get('id');
-    console.log('noteId = ' + this.noteId);
     this.moveNoteForm = this.initMoveNoteForm();
   }
 
@@ -35,10 +34,9 @@ export class MoveNoteComponent implements OnInit {
   }
 
   moveNote(folder:Folder){
-    console.log(folder);
     this.folderService.moveNote(this.noteId,folder.name).subscribe(()=>{
       this.alertService.info('Note successfully moved!',true);
-      this.router.navigate(['/folder-list']);
+      this.router.navigate(['/folder-list','all']);
     });
   }
 

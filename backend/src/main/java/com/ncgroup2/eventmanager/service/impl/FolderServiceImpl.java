@@ -34,17 +34,20 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public void moveNoteByNoteIdByFolderName(String noteId, String folderName){
-        int countOfFolders = folderDao.getCountByName(folderName);
-        if(countOfFolders != 0) {
+        if (folderName.equals(FOLDER_NAME_DEFAULT)) {
+            folderDao.moveNoteByNoteIdByFolderDefault(noteId);
+        }else{
+            int countOfFolders = folderDao.getCountByName(folderName);
+            System.out.println(countOfFolders);
             if(countOfFolders == 1) {
-                if (folderName.equals(FOLDER_NAME_DEFAULT)) {
-                    folderDao.moveNoteByNoteIdByFolderDefault(noteId);
-                } else {
-                    folderDao.moveNoteByNoteIdByFolderName(noteId, folderName);
-                }
+                folderDao.moveNoteByNoteIdByFolderName(noteId, folderName);
             }
         }
     }
 
 
+
 }
+
+
+
