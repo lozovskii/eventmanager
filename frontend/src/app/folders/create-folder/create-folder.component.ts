@@ -37,7 +37,7 @@ export class CreateFolderComponent implements OnInit {
     folder.customerId = this.customerId;
     this.folderService.create(folder).subscribe(data => {
         this.alertService.info('Folder successfully saved!', true);
-        this.router.navigate(['../folder-list']);
+        this.router.navigate(['../folder-list','all']);
       },
       error => {
         this.alertService.error('Not saved! We working.. please try again');
