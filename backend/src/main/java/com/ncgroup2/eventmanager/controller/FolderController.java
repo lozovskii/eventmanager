@@ -37,4 +37,9 @@ public class FolderController {
         List<Event> notesByCustId = folderService.getNotesByCustIdByFolderId(custId,folderId);
         return new ResponseEntity<>(notesByCustId, HttpStatus.OK);
     }
+
+    @PutMapping("/move/{noteId}/{folderName}")
+    public void moveNote(@PathVariable("noteId") String noteId, @PathVariable("folderName") String folderName){
+        folderService.moveNoteByNoteIdByFolderName(noteId, folderName);
+    }
 }

@@ -15,6 +15,8 @@ export class EventlistComponent implements OnInit {
   events: Event[];
   visibilityList: string[] = VISIBILITY;
   isMy:boolean = false;
+  from = '';
+  to = '';
 
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute,
@@ -145,4 +147,10 @@ export class EventlistComponent implements OnInit {
       });
   }
 
+  importToPDF(): void {
+    this.eventService.importEventsToPDF()
+      .subscribe(() => {
+        this.alertService.info('You imported your events', true);
+      })
+  }
 }

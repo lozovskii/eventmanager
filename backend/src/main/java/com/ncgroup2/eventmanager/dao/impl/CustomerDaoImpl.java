@@ -231,11 +231,14 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
     @Override
     public Page<Customer> search(int pageNo, int pageSize, String search) {
-        if (search != null && search.trim().length() > 0) {
 
-            String[] subStr = search.toLowerCase().split(" ");
+        String newSearch = search.trim();
+        String[] subStr = newSearch.toLowerCase().split(" ");
 
+        if (subStr.length > 0) {
             if (subStr.length == 1) {
+                System.out.println("length = 1");
+
                 return new PaginationHelper<Customer>().getPage(
                         this.getJdbcTemplate(),
                         countCustomerByLogin,
@@ -245,28 +248,28 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
                                 SecurityContextHolder.getContext().getAuthentication().getName()},
                         pageNo,
                         pageSize,
-                        new CustomerMapper()
-                );
-            } else if (subStr.length == 2) {
-                return new PaginationHelper<Customer>().getPage(
-                        this.getJdbcTemplate(),
-                        countCustomerByNameAndLastname,
-                        searchCustomerByNameAndLastname,
-                        new Object[] {
-                                subStr[0] + "%",
-                                subStr[1] + "%",
-                                SecurityContextHolder.getContext().getAuthentication().getName(),
-                                subStr[0] + "%",
-                                subStr[1] + "%",
-                                SecurityContextHolder.getContext().getAuthentication().getName()},
-                        pageNo,
-                        pageSize,
-                        new CustomerMapper()
-                );
+                        new CustomerMapper());
+//            } else if (subStr.length == 2) {
+//                System.out.println("length = 2");
+//
+//                return new PaginationHelper<Customer>().getPage(
+//                        this.getJdbcTemplate(),
+//                        countCustomerByNameAndLastname,
+//                        searchCustomerByNameAndLastname,
+//                        new Object[] {
+//                                subStr[0] + "%",
+//                                subStr[1] + "%",
+//                                SecurityContextHolder.getContext().getAuthentication().getName(),
+//                                subStr[0] + "%",
+//                                subStr[1] + "%",
+//                                SecurityContextHolder.getContext().getAuthentication().getName()},
+//                        pageNo,
+//                        pageSize,
+//                        new CustomerMapper());
             } else {
                 return null;
             }
-        } else if (search.equals("")) {
+        } else {
             return new PaginationHelper<Customer>().getPage(
                     this.getJdbcTemplate(),
                     countCustomerEmptyField,
@@ -274,10 +277,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
                     new Object[] {SecurityContextHolder.getContext().getAuthentication().getName()},
                     pageNo,
                     pageSize,
-                    new CustomerMapper()
-            );
-        } else {
-            return null;
+                    new CustomerMapper());
         }
     }
 

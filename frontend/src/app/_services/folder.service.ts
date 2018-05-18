@@ -5,6 +5,7 @@ import {AuthenticationService} from "./authentication.service";
 import {Folder} from "../_models/folder";
 import {Observable} from "rxjs/index";
 import {Event} from "../_models/event";
+import {UpdateEventDTO} from "../_models/dto/UpdateEventDTO";
 
 @Injectable()
 export class FolderService {
@@ -30,4 +31,8 @@ export class FolderService {
     return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
   }
 
+  moveNote(noteId:string, folderName:string):Observable<Event>{
+    const url = `${this.foldersUrl}/move/${noteId}/${folderName}`;
+    return this.http.put<Event>(url, Event, {headers: AuthenticationService.getAuthHeader()});
+  }
 }

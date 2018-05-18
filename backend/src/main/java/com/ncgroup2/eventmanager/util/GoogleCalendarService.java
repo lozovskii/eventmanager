@@ -74,14 +74,15 @@ public class GoogleCalendarService {
 
 
 
-    public List<com.ncgroup2.eventmanager.entity.Event> getEvents(LocalDateTime from, LocalDateTime to) throws Exception {
+    public List<com.ncgroup2.eventmanager.entity.Event> getEvents(String calendarId, LocalDateTime from, LocalDateTime to) throws Exception {
         NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
         Calendar service = new Calendar.Builder(httpTransport, JSON_FACTORY, getCredentials(httpTransport))
                 .setApplicationName(APPLICATION_NAME)
                 .build();
         DateTime min = new DateTime(from.toEpochSecond(ZoneOffset.UTC)*1000);
         DateTime max = new DateTime(to.toEpochSecond(ZoneOffset.UTC)*1000);
-        Events events = service.events().list("uk.ukrainian#holiday@group.v.calendar.google.com")
+        System.out.println(calendarId);
+        Events events = service.events().list(calendarId+"#holiday@group.v.calendar.google.com")
                 .setTimeMin(min)
                 .setTimeMax(max)
                 .setOrderBy("startTime")

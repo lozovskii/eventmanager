@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-md-3">
+    <app-vnavbar></app-vnavbar>
+  </div>
+
+  <main role="main" class="col-md-6">
+    <form [formGroup]="moveNoteForm">
+
+      <div class="form-group">
+        <label>Move to Folder: </label>
+        <input formControlName="name" type="text" class="form-control" required>
+      </div>
+      <div>
+        <button type = "submit" class="btn btn-primary" (click) = "moveNote(moveNoteForm.value)">Move</button>
+      </div>
+    </form>
+  </main>
+</div>
+

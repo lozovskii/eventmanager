@@ -1,3 +1,15 @@
+<form (submit)="showHolidays()">
+  <div class="form-group">
+    <label for="holidays">You can see additional events:   </label>
+    <select class="mat-select-content" [(ngModel)]="selectedHoliday" id="holidays" name="holidays">
+      <option *ngFor="let holiday of holidays_list" [value]="holiday[1]">
+        {{holiday[0]}}
+      </option>
+    </select>
+    <button type="submit" class="btn btn-outline-info">Show</button>
+  </div>
+
+</form>
 
 <ng-template #modalContent let-close="close">
   <div class="modal-header">

@@ -56,8 +56,6 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import {HttpClientModule} from "@angular/common/http";
 import {EventContainerComponent} from "./events/event-container/event-container.component";
 import {FolderService} from "./_services/folder.service";
-import {UpdateItemComponent} from "./wishlist/edit-item/update-item.component";
-import {ItemDetailsViewComponent} from "./wishlist/item-details-view/item-details-view.component";
 import { FolderContentComponent } from './folders/folder-content/folder-content.component';
 import { NoteContentComponent } from './folders/note-content/note-content.component';
 
@@ -114,6 +112,7 @@ import { NoteContentComponent } from './folders/note-content/note-content.compon
     CalendarComponent,
     EventContainerComponent,
     FolderContentComponent,
+    MoveNoteComponent,
     NoteContentComponent,
     UpdateItemComponent,
     ItemDetailsViewComponent,

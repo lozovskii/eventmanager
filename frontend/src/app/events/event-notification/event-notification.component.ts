@@ -54,6 +54,7 @@ export class EventNotificationComponent implements OnInit {
     console.log('additionEvent = ' + JSON.stringify(this.eventDTO.additionEvent));
     this.eventService.updateEventNotif(this.eventDTO).subscribe(() => {
       this.alertService.info('Notification time successfully set!',true);
-      this.router.navigate(['event','my'])});
-  }
+      this.router.navigate(['eventlist','my'])
+    });
+    }
 }

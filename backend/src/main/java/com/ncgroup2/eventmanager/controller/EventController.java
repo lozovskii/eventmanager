@@ -133,11 +133,12 @@ public class EventController {
     }
 
     @GetMapping("/getNationalEvents")
-    public ResponseEntity<List<Event>> getNationalEvents(){
+    public ResponseEntity<List<Event>> getNationalEvents(@RequestParam String calendarId){
         List<Event> list = new LinkedList<>();
         try{
-            list = eventService.getNationalEvents(LocalDateTime.now(),LocalDateTime.now().plusYears(1));
+            list = eventService.getNationalEvents(calendarId, LocalDateTime.now(),LocalDateTime.now().plusYears(1));
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(list, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(list,HttpStatus.OK);

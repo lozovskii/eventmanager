@@ -292,8 +292,8 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> getNationalEvents(LocalDateTime from, LocalDateTime to) throws Exception {
-        return googleCalendarService.getEvents(from,to);
+    public List<Event> getNationalEvents(String calendarId, LocalDateTime from, LocalDateTime to) throws Exception {
+        return googleCalendarService.getEvents(calendarId,from,to);
     }
 
 }
