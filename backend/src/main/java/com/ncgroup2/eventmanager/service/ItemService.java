@@ -12,6 +12,8 @@ public interface ItemService {
 
     Collection<Item> getCreatedItems(String creatorId);
 
+    Collection<Item> getAllItems();
+
     void createItem(Item item);
 
     void createItems(Collection<Item> items);

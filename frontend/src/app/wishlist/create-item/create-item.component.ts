@@ -1,10 +1,10 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AlertService, EventService, UserService} from "../../_services";
-import {Router} from "@angular/router";
-import {ItemDto} from "../../_models/dto/itemDto";
+import {AlertService, UserService} from "../../_services";
 import {WishListService} from "../../_services/wishlist.service";
 import {Item} from "../../_models/item";
+import {ItemTagDto} from "../../_models/dto/itemTagDto";
+import {Tag} from "../../_models/tag";
 
 @Component({
   selector: 'app-create-item',
@@ -16,7 +16,8 @@ export class CreateItemComponent implements OnInit {
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
     description: ['', [Validators.maxLength(2048)]],
     link: ['', [Validators.minLength(4), Validators.maxLength(128)]],
-    dueDate: ['']
+    dueDate: [''],
+    tags: ['']
   });
 
   additionalForm = this.formBuilder.group({
@@ -25,40 +26,63 @@ export class CreateItemComponent implements OnInit {
   });
 
   mainForm: FormGroup = this.formBuilder.group({
-    item: this.itemForm,
+    itemF: this.itemForm,
     additionalProperties: this.additionalForm
   });
 
+  @Input('included') isIncluded: boolean = false;
   @Output('createdItem') createdItem = new EventEmitter<Item>();
 
-  itemDto: ItemDto;
   item: Item;
 
   constructor(private wishListService: WishListService,
               private alertService: AlertService,
               private formBuilder: FormBuilder,
               private userService: UserService) {
+    this.item = new Item();
+    this.item.tags = [];
   }
 
   ngOnInit(): void {
-    this.itemDto = new ItemDto();
   }
 
   createItem(item: Item) {
-    this.item = item;
-    this.item.image = this.additionalForm.get('imageUrl').value;
-    this.item.creator_customer_login = this.userService.getCurrentLogin();
+    item.image = this.additionalForm.get('imageUrl').value;
+    item.creator_customer_login = this.userService.getCurrentLogin();
+    item.tags = this.item.tags;
     this.wishListService.createItem(item)
       .subscribe(() => {
-        this.alertService.success('Item created.');
-      },
-      () => {
-        this.alertService.error("Something wrong");
-      });
+          this.alertService.success('Item created.');
+        },
+        () => {
+          this.alertService.error("Something wrong");
+        });
     this.createdItem.emit(item);
   }
 
-  onUpload() { }
+  removeTag(tag: ItemTagDto) {
+    let index = this.item.tags.indexOf(tag);
+    this.item.tags.splice(index, 1);
+  }
+
+  addTags() {
+    if (this.item.tags == null)
+      this.item.tags = [];
+    let tagsString = this.itemForm.get('tags').value;
+    if (tagsString != null) {
+      let tagsArray = tagsString.split(',');
+      for (let tagString of tagsArray) {
+        let tagDto = new ItemTagDto();
+        let tag = new Tag();
+        tag.name = tagString;
+        tagDto.tag = tag;
+        this.item.tags.push(tagDto);
+      }
+    }
+  }
+
+  onUpload() {
+  }
 
   get name() {
     return this.itemForm.get('name');

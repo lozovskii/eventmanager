@@ -1,5 +1,6 @@
 package com.ncgroup2.eventmanager.controller;
 
+import com.ncgroup2.eventmanager.dto.ItemTagDto;
 import com.ncgroup2.eventmanager.dto.ItemWishListDto;
 import com.ncgroup2.eventmanager.entity.Item;
 import com.ncgroup2.eventmanager.service.ItemService;
@@ -42,7 +43,12 @@ public class ItemController {
         itemService.deleteItems(trash);
     }
 
-    @GetMapping(value = "/created")
+    @PostMapping(value = "/batch-delete-tags")
+    public void deleteTags(@RequestBody List<ItemTagDto> trash) {
+        itemService.removeTags(trash);
+    }
+
+    @GetMapping(value = "/collection")
     public ResponseEntity<Collection<Item>> getCreatedItems(@RequestParam String customerLogin) {
         Collection<Item> createdItems = itemService.getCreatedItems(customerLogin);
 
@@ -51,5 +57,16 @@ public class ItemController {
         }
 
         return new ResponseEntity<>(createdItems, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/all")
+    public ResponseEntity<Collection<Item>> getAllItems() {
+        Collection<Item> items = itemService.getAllItems();
+
+        if (items == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(items, HttpStatus.OK);
     }
 }

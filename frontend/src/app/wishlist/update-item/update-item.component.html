@@ -65,6 +65,24 @@
         <input formControlName="dueDate" id="dueDate" type="date" class="form-control" name="dueDate" required/>
       </div>
 
+
+      <div class="form-group">
+        <div class="container">
+          <div>
+            <button class="btn btn-sm" (click)="removeTag(tag)" *ngFor="let tag of item.tags">{{tag.tag.name}}</button>
+          </div>
+          <small class="text-muted" *ngIf="item.tags">
+            You can remove the tag by clicking
+          </small>
+        </div>
+        <label for="tags">Add tags</label>
+        <input formControlName="tags" class="form-control" type="text" name="tags" id="tags">
+        <button class="btn btn-sm" type="button" (click)="addTags()">Add</button>
+        <small class="text-muted">
+          Please write tags separated by comma
+        </small>
+      </div>
+
     </form>
 
     <form [formGroup]="additionalForm">
@@ -117,7 +135,8 @@
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       <button type="submit" [disabled]="itemForm.invalid"
-              class="btn btn-primary">Update item</button>
+              class="btn btn-primary">Update item
+      </button>
     </div>
   </form>
 </div>

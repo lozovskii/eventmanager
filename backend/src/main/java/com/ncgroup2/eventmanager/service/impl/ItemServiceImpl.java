@@ -24,6 +24,10 @@ public class ItemServiceImpl implements ItemService {
         return itemDao.getCreatedItems(creatorId);
     }
 
+    public Collection<Item> getAllItems(){
+        return itemDao.getAll();
+    }
+
     public void createItem(Item item){
         itemDao.create(item);
     }
@@ -41,7 +45,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     public void removeTags(Collection<ItemTagDto> trash){
-        itemDao.deleteTags((List<ItemTagDto>)trash);
+        itemDao.deleteTags(trash);
     }
 
     public void addTags(Collection<ItemTagDto> tags, String itemId){

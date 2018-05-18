@@ -43,7 +43,7 @@ import {NotificationContainerComponent} from './notifications/notification-conta
 import {NotificationService} from "./_services/notification.service";
 import {FriendRequestNotificationComponent} from './notifications/friend-request-notification/friend-request-notification.component';
 import {CreateItemComponent} from "./wishlist/create-item/create-item.component";
-import {CreatedItemsComponent} from "./wishlist/created-Items/created-items.component";
+import {ItemsCollectionComponent} from "./wishlist/items-collection/items-collection.component";
 import {FriendComponent} from "./profile/friend/friend.component";
 import {SortingItemsPipe} from "./wishlist/sorting-items/sorting-items.pipe";
 import { EventNotificationComponent } from './events/event-notification/event-notification.component';
@@ -58,6 +58,10 @@ import {EventContainerComponent} from "./events/event-container/event-container.
 import {FolderService} from "./_services/folder.service";
 import { FolderContentComponent } from './folders/folder-content/folder-content.component';
 import { NoteContentComponent } from './folders/note-content/note-content.component';
+import {MoveNoteComponent} from "./folders/move-note/move-note.component";
+import {UpdateItemComponent} from "./wishlist/update-item/update-item.component";
+import {ItemDetailsViewComponent} from "./wishlist/item-details-view/item-details-view.component";
+import {AllItemsComponent} from "./wishlist/all-Items/all-items.component";
 
 @NgModule({
   imports: [
@@ -101,7 +105,7 @@ import { NoteContentComponent } from './folders/note-content/note-content.compon
     NotificationContainerComponent,
     FriendRequestNotificationComponent,
     CreateItemComponent,
-    CreatedItemsComponent,
+    ItemsCollectionComponent,
     FriendRequestNotificationComponent,
     FriendComponent,
     SortingItemsPipe,
@@ -116,6 +120,7 @@ import { NoteContentComponent } from './folders/note-content/note-content.compon
     NoteContentComponent,
     UpdateItemComponent,
     ItemDetailsViewComponent,
+    AllItemsComponent,
   ],
   providers: [
     AuthGuard,

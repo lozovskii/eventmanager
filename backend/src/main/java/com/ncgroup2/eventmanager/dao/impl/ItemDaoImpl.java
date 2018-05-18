@@ -1,9 +1,7 @@
 package com.ncgroup2.eventmanager.dao.impl;
 
-import com.ncgroup2.eventmanager.dao.DAO;
 import com.ncgroup2.eventmanager.dao.ItemDao;
 import com.ncgroup2.eventmanager.dto.ItemTagDto;
-import com.ncgroup2.eventmanager.entity.Entity;
 import com.ncgroup2.eventmanager.entity.Item;
 import com.ncgroup2.eventmanager.entity.Tag;
 import com.ncgroup2.eventmanager.mapper.ItemMapExtractor;
@@ -34,16 +32,15 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
 
     @Override
     public Collection<Item> getAll() {
-
         String sql =
-                "SELECT  i.*," +
-                        "t.id AS tag_id," +
-                        "t.name AS tag_name," +
-                        "t.count AS tag_count " +
-                        "FROM \"Item\" i " +
-                        "INNER JOIN \"Item_Tag\" it ON (it.item_id = i.id) " +
-                        "INNER JOIN \"Tag\" t ON (it.tag_id = t.id) " +
-                        "ORDER BY t.count DESC";
+                "SELECT   i.*," +
+                        " itag.id as item_tag_id," +
+                        " t.id AS tag_id," +
+                        " t.name AS tag_name," +
+                        " t.count AS tag_count \n" +
+                        "FROM \"Item\" i\n" +
+                        "FULL JOIN \"Item_Tag\" itag ON (itag.item_id = i.id)\n" +
+                        "FULL JOIN \"Tag\" t ON (itag.tag_id = t.id);";
 
         Map<Item, List<ItemTagDto>> itemMap =
                 this.getJdbcTemplate().query(sql, new ItemMapExtractor());
@@ -54,7 +51,6 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
 
     @Override
     public Item getById(Object id) {
-
         return Objects.requireNonNull(
                 getEntitiesByField("i.id", id).iterator().next(),
                 "Object not found");
@@ -63,7 +59,6 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
 
     @Override
     public Item getEntityByField(String fieldName, Object fieldValue) {
-
         return Objects.requireNonNull(
                 getEntitiesByField(fieldName, fieldValue).iterator().next(),
                 "Item not found");
@@ -71,7 +66,6 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
 
     @Override
     public Collection<Item> getEntitiesByField(String fieldName, Object fieldValue) {
-
         String sql =
                 "SELECT  it.id AS item_tag_id," +
                         "i.*," +
@@ -93,18 +87,16 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
 
     @Override
     public void update(Item item) {
-        System.out.println(item.toString());
         String itemUpdateSql =
                 "UPDATE \"Item\"" +
                         "SET creator_customer_login = ?, name = ?, description = ?, image = ?, link = ?, due_date = ?" +
                         "WHERE id = ?::UUID";
 
-        System.out.println(this.getJdbcTemplate().update(itemUpdateSql, item.getParams()));
+        this.getJdbcTemplate().update(itemUpdateSql, item.getParams());
     }
 
     @Override
     public void updateField(Object id, String fieldName, Object fieldValue) {
-
         String itemUpdateSql =
                 "UPDATE \"Item\"" +
                         "SET " + fieldName + " = '" + fieldValue +
@@ -116,7 +108,6 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
 
     @Override
     public void delete(Object itemId) {
-
         String itemDeleteSql =
                 "DELETE FROM \"Item\" " +
                         "WHERE id = " + itemId + "::UUID;";
@@ -127,7 +118,6 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
 
     @Override
     public void deleteItems(Collection<Item> trash) {
-
         if (trash != null && (!trash.isEmpty())) {
 
             String itemDeleteSql =
@@ -144,36 +134,37 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
     }
 
     public void deleteTags(Collection<ItemTagDto> trash) {
-
         if (trash != null && (!trash.isEmpty())) {
 
             String tagDeleteSql =
                     "DELETE FROM \"Item_Tag\" " +
-                            "WHERE id = ?::UUID";
-
-            String decreaseTagCount =
-                    "UPDATE \"Tag\"" +
-                            "SET count = \"Tag\".count-1" +
-                            "WHERE id = ?::UUID";
-
-            String sql = tagDeleteSql + decreaseTagCount;
+                            "WHERE id = ?::UUID; ";
 
             this.getJdbcTemplate().batchUpdate(
-                    sql, trash, trash.size(),
+                    tagDeleteSql, trash, trash.size(),
                     (ps, tagDto) -> {
-                            ps.setString(1, tagDto.getItemTagId());
-                            ps.setString(2, tagDto.getTag().getId());
+                        ps.setString(1, tagDto.getItemTagId());
+                    });
+
+            String decreaseTagCount =
+                    "UPDATE \"Tag\" " +
+                            "SET count = \"Tag\".count-1 " +
+                            "WHERE id = ?::UUID; ";
+
+            this.getJdbcTemplate().batchUpdate(
+                    decreaseTagCount, trash, trash.size(),
+                    (ps, tagDto) -> {
+                            ps.setString(1, tagDto.getTag().getId());
                         });
         }
     }
 
     @Override
     public void create(Item item) {
-
         String itemInsertSql =
                 "INSERT INTO \"Item\"" +
                         "(creator_customer_login, name, description, image, link, due_date, id)" +
-                        "VALUES (?,?,?,?,?,?,?::UUID) ;";
+                        "VALUES (?,?,?,?,?,?,?::UUID)";
 
         this.getJdbcTemplate().update(itemInsertSql, item.getParams());
 
@@ -187,14 +178,12 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
     }
 
     public void createItems(Collection<Item> items){
-
         if (items != null && (!items.isEmpty())){
 
             String itemsInsertSql =
                     "INSERT INTO \"Item\"" +
                             "(creator_customer_login,name, description, image, link, due_date, id)" +
-                            "VALUES (?,?,?,?,?,?,?::UUID) " +
-                            "ON CONFLICT DO NOTHING;";
+                            "VALUES (?,?,?,?,?,?,?::UUID) ";
 
             this.getJdbcTemplate().batchUpdate(
                     itemsInsertSql, items, items.size(),
@@ -219,11 +208,9 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
                 }
             }
         }
-
     }
 
     public void addTags(Collection<ItemTagDto> tags, Object item_id) {
-
         if (tags != null && (!tags.isEmpty())) {
 
             String tagsInsertSql =
@@ -254,13 +241,21 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
     }
 
     public Collection<Item> getCreatedItems(String creator_customer_login){
-
         String sql =
-                "SELECT i.*" +
-                        "FROM \"Item\" i" +
-                        " WHERE i.creator_customer_login = '" + creator_customer_login + "'";
+                "SELECT   i.*," +
+                        " itag.id as item_tag_id," +
+                        " t.id AS tag_id," +
+                        " t.name AS tag_name," +
+                        " t.count AS tag_count \n" +
+                        "FROM \"Item\" i\n" +
+                        "FULL JOIN \"Item_Tag\" itag ON (itag.item_id = i.id)\n" +
+                        "FULL JOIN \"Tag\" t ON (itag.tag_id = t.id)\n" +
+                        "WHERE i.creator_customer_login ='" + creator_customer_login + "'";
 
-        return this.getJdbcTemplate().query(sql, new ItemMapper());
+        Map<Item, List<ItemTagDto>> itemMap =
+                this.getJdbcTemplate().query(sql, new ItemMapExtractor());
 
+        return itemMap.isEmpty() ?
+                null : Mapper.mapItemToCollection(itemMap);
     }
 }

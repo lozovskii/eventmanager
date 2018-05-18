@@ -20,34 +20,22 @@ public class ItemMapExtractor implements ResultSetExtractor<Map<Item, List<ItemT
         int rowNum = 0;
 
         while (rs.next()) {
-
             Item item = new ItemMapper().mapRow(rs,rowNum);
-
             Tag tag = new TagMapper().mapRow(rs, rowNum++);
-
+            if (tag.getId() == null) {itemMap.put(item,null); continue;}
             ItemTagDto tagDto = new ItemTagDto();
-
             tagDto.setTag(tag);
-
             tagDto.setItemTagId(rs.getString("item_tag_id"));
-
             List<ItemTagDto> tags = itemMap.get(item);
-
             if (tags == null) {
-
                 List<ItemTagDto> newTags = new ArrayList<>();
-
                 newTags.add(tagDto);
-
                 itemMap.put(item, newTags);
-
             } else {
-
                 tags.add(tagDto);
             }
 
         }
-
         return itemMap;
     }
 }

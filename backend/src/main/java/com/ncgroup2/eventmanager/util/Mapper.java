@@ -32,7 +32,8 @@ public class Mapper {
                 .stream()
                 .map( temp -> {
                     Item item = temp.getKey();
-                    item.setTags(temp.getValue());
+                    if (temp.getValue() != null)
+                        item.setTags(temp.getValue());
                     return item;
                 })
                 .collect(

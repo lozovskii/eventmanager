@@ -22,13 +22,15 @@ import {UploadImgComponent} from "./upload-img/upload-img.component";
 import {NotificationContainerComponent} from "./notifications/notification-container/notification-container.component";
 import {BookedItemsComponent} from "./wishlist/booked-items/booked-items.component";
 import {FriendComponent} from "./profile/friend/friend.component";
-import {CreatedItemsComponent} from "./wishlist/created-Items/created-items.component";
+import {ItemsCollectionComponent} from "./wishlist/items-collection/items-collection.component";
 import {EditWishListComponent} from "./wishlist/edit-wishlist/edit-wishlist.component";
 import {CreateFolderComponent} from "./folders/create-folder/create-folder.component";
 import {EventContainerComponent} from "./events/event-container/event-container.component";
 import {FolderContentComponent} from "./folders/folder-content/folder-content.component";
 import {NoteContentComponent} from "./folders/note-content/note-content.component";
 import {MoveNoteComponent} from "./folders/move-note/move-note.component";
+import {AllItemsComponent} from "./wishlist/all-Items/all-items.component";
+import {CreateItemComponent} from "./wishlist/create-item/create-item.component";
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full'},
@@ -50,9 +52,11 @@ const appRoutes: Routes = [
   { path: 'upload-img', component: UploadImgComponent, canActivate: [AuthGuard]},
   { path: 'notifications', component: NotificationContainerComponent, canActivate: [AuthGuard]},
   { path: 'profile/friends', component: FriendComponent, canActivate: [AuthGuard]},
-  { path: 'booked-items', component: BookedItemsComponent, canActivate: [AuthGuard]},
-  { path: 'created-items', component: CreatedItemsComponent, canActivate: [AuthGuard]},
+  { path: 'items/booked', component: BookedItemsComponent, canActivate: [AuthGuard]},
+  { path: 'items/collection', component: ItemsCollectionComponent, canActivate: [AuthGuard]},
   { path: 'wishlist/edit', component: EditWishListComponent, canActivate: [AuthGuard]},
+  { path: 'items/create', component: CreateItemComponent, canActivate: [AuthGuard]},
+  { path: 'items/all', component: AllItemsComponent, canActivate: [AuthGuard]},
   { path: 'create-folder', component: CreateFolderComponent, canActivate: [AuthGuard]},
   { path: 'folder-content/:type', component: FolderContentComponent, canActivate: [AuthGuard]},
   { path: 'folder-content/:type/:folderId', component: FolderContentComponent, canActivate: [AuthGuard]},

@@ -1,3 +1,5 @@
+import {ItemTagDto} from "./dto/itemTagDto";
+
 export class Item{
   id: string;
   creator_customer_login : string;
@@ -6,4 +8,5 @@ export class Item{
   image : string;
   link : string;
   dueDate : Date;
+  tags: ItemTagDto[];
 }

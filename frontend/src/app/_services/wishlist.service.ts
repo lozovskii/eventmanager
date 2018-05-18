@@ -8,6 +8,7 @@ import {AuthenticationService} from "./authentication.service";
 import {Item} from "../_models/item";
 import {BehaviorSubject, Subject} from "rxjs/Rx";
 import {ItemDto} from "../_models/dto/itemDto";
+import {ItemTagDto} from "../_models/dto/itemTagDto";
 
 
 @Injectable()
@@ -72,7 +73,6 @@ export class WishListService {
     return this.http.post<WishList>(url, trash, {headers: AuthenticationService.getAuthHeader()});
   }
 
-
   addItems(wishList: WishList){
     const url = `${this.wishListUrl}/add`;
     return this.http.post<WishList>(url, wishList, {headers: AuthenticationService.getAuthHeader()});
@@ -83,8 +83,18 @@ export class WishListService {
     return this.http.post<Item>(url, item, {headers: AuthenticationService.getAuthHeader()});
   }
 
+  copyItems(items: Item[]){
+    const url = `${this.itemsUrl}/batch-create`;
+    return this.http.post<Item>(url, items, {headers: AuthenticationService.getAuthHeader()});
+  }
+
   deleteItems(trash: Item[]){
     const url = `${this.itemsUrl}/batch-delete`;
+    return this.http.post<Item>(url, trash, {headers: AuthenticationService.getAuthHeader()});
+  }
+
+  deleteTags(trash: ItemTagDto[]){
+    const url = `${this.itemsUrl}/batch-delete-tags`;
     return this.http.post<Item>(url, trash, {headers: AuthenticationService.getAuthHeader()});
   }
 
@@ -93,9 +103,16 @@ export class WishListService {
     return this.http.put<Item>(url, item, {headers: AuthenticationService.getAuthHeader()});
   }
 
-  getCreatedItems(): Observable<Item[]> {
+  getItemsCollection(): Observable<Item[]> {
     let currentLogin = this.userService.getCurrentLogin();
-    const url = `${this.itemsUrl}/created?customerLogin=${currentLogin}`;
+    const url = `${this.itemsUrl}/collection?customerLogin=${currentLogin}`;
+    return this.http.get<Item[]>(url,{headers: AuthenticationService.getAuthHeader()})
+      .pipe(
+        catchError(this.handleError));
+  }
+
+  getAllItems(): Observable<Item[]> {
+    const url = `${this.itemsUrl}/all`;
     return this.http.get<Item[]>(url,{headers: AuthenticationService.getAuthHeader()})
       .pipe(
         catchError(this.handleError));

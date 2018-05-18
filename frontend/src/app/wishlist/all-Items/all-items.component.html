@@ -1,0 +1,73 @@
+<div class="row">
+  <div *ngIf="!isIncluded" class="col-md-3">
+    <app-vnavbar></app-vnavbar>
+  </div>
+
+  <main role="main" [ngClass]="{ 'col-md-9': !isIncluded }">
+    <h2 *ngIf="!isIncluded" class="text-center">All Items</h2>
+    <br>
+    <div class="row justify-content-between">
+      <div class="col-auto">
+        <button class="btn btn-outline-info" data-toggle="modal" data-target="#create">Create new item</button>
+      </div>
+    </div>
+
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th scope="col" (click)="sortItems('name')">Name</th>
+        <th scope="col">Image</th>
+        <th scope="col">Link</th>
+        <th scope="col" (click)="sortItems('dueDate')" class="text-center">Due date</th>
+        <th scope="col" (click)="sortItems('creator_customer_login')" class="text-center">Creator</th>
+        <th scope="col" class="text-center"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of items | sortingItems:path:order">
+        <td (click)="showItemDetails(item)" data-toggle="modal" data-target="#itemViewForm" class="tdName">
+          {{item.name}}
+        </td>
+        <td>
+          <a *ngIf="item.image" href="{{item.image}}">image link</a>
+        </td>
+        <td>
+          <a *ngIf="item.link" href="{{item.link}}"> link </a>
+        </td>
+        <td *ngIf="item.dueDate" class="text-center">{{item.dueDate}}</td>
+        <td *ngIf="item.creator_customer_login" class="text-center">{{item.creator_customer_login}}</td>
+        <td class="text-center list-group">
+          <button *ngIf="isIncluded" (click)="addItem(item)" class="btn-sm button btn-outline-primary">Add</button>
+          <button (click)="copyItem(item)" class="btn-sm button btn-outline-primary">Copy</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+
+    <div class="modal fade" id="itemViewForm" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <app-item-details-view [itemView]="itemView"></app-item-details-view>
+      </div>
+    </div>
+
+    <div class="modal fade" id="create"  tabindex="-1" role="dialog"
+         aria-labelledby="modalCreateTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Create item</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <app-create-item [included]="true" (createdItem)="addCreatedItem($event)"></app-create-item>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
