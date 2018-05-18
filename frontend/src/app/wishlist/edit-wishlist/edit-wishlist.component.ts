@@ -7,9 +7,6 @@ import {WishList} from "../../_models/wishlist";
   templateUrl: './edit-wishlist.component.html',
   styleUrls: ['../wishlist/wishlist.component.css']
 })
-export class EditWishListComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() { }
+export class EditWishListComponent {
+  constructor() {}
 }

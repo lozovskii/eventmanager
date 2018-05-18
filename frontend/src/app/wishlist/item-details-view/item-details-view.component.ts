@@ -8,8 +8,8 @@ import {ItemDto} from "../../_models/dto/itemDto";
 })
 export class ItemDetailsViewComponent implements OnInit, OnChanges {
 
-  @Input() itemView: Item;
-  @Input('itemDtoView') itemDtoView: ItemDto;
+  @Input('itemView') itemView: Item;
+  // @Input('itemDtoView') itemDtoView: ItemDto;
   item: Item;
   itemDto: ItemDto;
 
@@ -21,11 +21,7 @@ export class ItemDetailsViewComponent implements OnInit, OnChanges {
   ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges) {
-    for (let propName in changes) {
-      console.log(propName);
-      this.itemDto = changes[propName].currentValue;
-      this.item = changes[propName].currentValue;
-    }
+      this.item = changes['itemView'].currentValue;
   }
 
 }

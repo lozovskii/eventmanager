@@ -53,7 +53,7 @@ public class WishListController {
 
     @PostMapping(value = "/add")
     public void addItems(@RequestBody WishList wishList) {
-        wishListService.createWishlist(wishList);
+        wishListService.create(wishList);
     }
 
     @PostMapping(value = "/delete")

@@ -36,9 +36,6 @@ export class EventComponent implements OnInit {
       this.isCreator = currentUserId == this.eventDTO.event.creatorId;
       console.log('people = ' + this.eventDTO.additionEvent.people[0])
       // this.isPeople = !(this.eventDTO.additionEvent.people.length = 0);
-      this.eventService.isParticipant(currentUserId, id).subscribe(
-        () => this.isParticipant = true,
-        () => this.isParticipant = false);
 
       console.log('eventId = ' + this.eventDTO.event.id);
     });

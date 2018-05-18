@@ -25,14 +25,18 @@
       <li class="nav-item">
         <a class="navbar-brand" data-toggle="collapse" href="#collapseItemsGroup">Items</a>
         <div id="collapseItemsGroup" class="collapse">
-          <ul class="list-group">
-            <li class="list-group-item">
-              <a class="dropdown-item" [routerLink]="['/booked-items']">Booked Items</a></li>
-            <li class="list-group-item">
-              <a class="dropdown-item" [routerLink]="['/created-items']">Created Items</a></li>
-            <li class="list-group-item">
-              <a class="dropdown-item" [routerLink]="['/create-item']">Create Item</a></li>
-          </ul>
+          <span>
+              <a class="dropdown-item" [routerLink]="['/items/all']">All Items</a>
+            </span>
+          <span>
+              <a class="dropdown-item" [routerLink]="['/items/booked']">Booked Items</a>
+          </span>
+          <span>
+              <a class="dropdown-item" [routerLink]="['/items/collection']">Items Collection</a>
+          </span>
+          <span>
+              <a class="dropdown-item" [routerLink]="['/items/create']">Create Item</a>
+          </span>
         </div>
       </li>
 

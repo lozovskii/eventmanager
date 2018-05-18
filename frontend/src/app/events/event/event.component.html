@@ -5,11 +5,11 @@
     </div>
     <br>
     <div class="btn-group" role="group">
-      <div *ngIf="isParticipant || isCreator">
+      <div *ngIf="isParticipant">
         You've joined this event.
         <button class="btn btn-outline-danger" (click)="removeParticipant()">Leave</button>
       </div>
-      <div *ngIf="!isParticipant && !isCreator">
+      <div *ngIf="!isParticipant">
         <button class="btn btn-outline-success" (click)="addParticipant()">Join event</button>
       </div>
     </div>

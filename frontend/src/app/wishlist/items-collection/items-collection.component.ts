@@ -7,11 +7,11 @@ import {WishList} from "../../_models/wishlist";
 import {ItemDto} from "../../_models/dto/itemDto";
 
 @Component({
-  selector: 'app-createditems',
-  templateUrl: './created-items.component.html',
+  selector: 'app-items-collection',
+  templateUrl: './items-collection.component.html',
   styleUrls: ['../wishlist/wishlist.component.css']
 })
-export class CreatedItemsComponent implements OnInit {
+export class ItemsCollectionComponent implements OnInit {
   @Input('included') isIncluded: boolean;
 
   hasChanges: boolean = false;
@@ -29,15 +29,14 @@ export class CreatedItemsComponent implements OnInit {
     this.trash = [];
     this.wishList = new WishList();
     this.editableItem = new Item();
+    this.itemView = new Item();
   }
 
   ngOnInit() {
     this.wishListService.wishList$.subscribe((wishList) => {
       this.wishList = wishList;
-      console.log(this.wishList.items);
     });
-    this.getCreatedItems();
-    this.editableItem = new Item();
+    this.getItemsCollection();
   }
 
   showItemDetails(item: Item): void {
@@ -45,9 +44,6 @@ export class CreatedItemsComponent implements OnInit {
   }
 
   addItem(item: Item): void {
-    this.wishListService.wishList$.subscribe((wishList) => {
-      this.wishList = wishList;
-    });
     let itemDto: ItemDto = new ItemDto();
     itemDto.item = item;
     itemDto.event_id = this.wishList.id;
@@ -75,13 +71,12 @@ export class CreatedItemsComponent implements OnInit {
       this.hasChanges = true;
   }
 
-  getCreatedItems(): void {
-    this.wishListService.getCreatedItems()
+  getItemsCollection(): void {
+    this.wishListService.getItemsCollection()
       .subscribe((items) => {
         this.items = items;
       }, () => {
-        history.back();
-        this.alertService.info('Items not found', true);
+        this.alertService.info('Items not found');
       });
   }
 

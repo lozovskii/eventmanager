@@ -13,7 +13,7 @@ public interface WishListService {
 
     WishList getBookedItems(String booker_customer_login);
 
-    void createWishlist(WishList wishList);
+    void create(WishList wishList);
 
     void updateByField(Object item_wishlist_id, String fieldName, Object fieldValue);
 

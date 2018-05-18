@@ -11,15 +11,20 @@
       <img *ngIf="item.image" class="card-img-top" [src]="item.image" alt="Card image">
       <div class="card-body">
         <h6 class="card-subtitle mb-2 text-muted">{{item.dueDate}}</h6>
-        <div class="card-text" [innerHTML]=item.description></div>
-        <a *ngIf="item.link"
-           href="{{item.link}}"
-           class="card-link">link</a>
+        <ul class="list-group list-group-flush">
+          <div class="card-text" [innerHTML]=item.description></div>
+          <li class="list-group-item" *ngIf="item.link">
+            <a href="{{item.link}}" class="card-link">{{item.link}}</a>
+          </li>
+          <li class="list-group-item" *ngIf="item.tags">
+            <button class="btn btn-sm" *ngFor="let tag of item.tags">{{tag.tag.name}}</button>
+          </li>
+        </ul>
       </div>
-      <div class="modal-footer">
-        <button data-dismiss="modal" class="btn btn-secondary">Close</button>
-      </div>
+    <div class="modal-footer">
+      <button data-dismiss="modal" class="btn btn-secondary">Close</button>
     </div>
   </div>
+</div>
 </div>
 

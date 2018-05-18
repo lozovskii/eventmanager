@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {WishList} from "../../_models/wishlist";
 import {AlertService} from "../../_services/alert.service";
 import {WishListService} from "../../_services/wishlist.service";
@@ -12,30 +12,28 @@ import {ItemDto} from "../../_models/dto/itemDto";
 })
 export class WishListComponent implements OnInit {
   @Input('eventId') eventId: string;
-  @Input('isIncluded') isIncluded: boolean;
+  @Input('editMode') editMode: boolean = false;
 
-  isIncluded1: boolean = true;
   trash: ItemDto[];
   wishList: WishList;
   itemDtoView: ItemDto;
   currentLogin: string;
   hasChanges: boolean = false;
   path: string[] = ['name'];
-  order: number = 1; // 1 asc, -1 desc;
+  order: number = 1;
 
   constructor(private wishListService: WishListService,
+              private userService: UserService,
               private alertService: AlertService) {
-    // this.wishList = new WishList();
   }
 
   ngOnInit() {
-    this.isIncluded1 = this.isIncluded;
-    if (this.isIncluded1) {
-        this.wishListService.wishList$.subscribe(wishList => this.wishList = wishList);
+    if (this.editMode) {
+      this.wishListService.wishList$.subscribe(wishList => this.wishList = wishList);
     } else {
-        this.getWishListByEventId(this.eventId);
-   }
-
+      this.getWishListByEventId(this.eventId);
+    }
+    this.currentLogin = this.userService.getCurrentLogin();
     this.trash = [];
   }
 
@@ -46,6 +44,9 @@ export class WishListComponent implements OnInit {
           this.wishListService.setCurrentWishList(this.wishList);
         }, () => {
           this.wishList = new WishList();
+          this.wishList.id = this.eventId;
+          this.wishList.items = [];
+          this.wishListService.setCurrentWishList(this.wishList);
         }
       );
   }
@@ -56,13 +57,13 @@ export class WishListComponent implements OnInit {
           this.alertService.success('Wish list successfully updated!'),
         () => this.alertService.error('Something wrong'));
     }
-    console.log("Work bitch");
     if (this.wishList.items != null)
       this.wishListService.addItems(this.wishList).subscribe(() => {
         this.alertService.success('Wish list successfully updated!');
-        console.log(this.wishList.items);
       }, () => {
         this.alertService.error('Something wrong');
+      }, () => {
+        this.alertService.success('Wish list successfully updated!');
       });
   }
 
@@ -84,6 +85,7 @@ export class WishListComponent implements OnInit {
 
   cancelBooking(item: ItemDto): void {
     item.booker_customer_login = null;
+    item.priority = 3;
     this.hasChanges = true;
   }
 

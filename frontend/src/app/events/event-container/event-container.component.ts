@@ -6,7 +6,8 @@ import {WishListComponent} from "../../wishlist/wishlist/wishlist.component";
 
 @Component({
   selector: 'app-event-container',
-  templateUrl: './event-container.component.html'
+  templateUrl: './event-container.component.html',
+  styleUrls: ['../../wishlist/wishlist/wishlist.component.css']
 })
 export class EventContainerComponent implements OnInit, AfterViewInit {
   isParticipant: boolean = false;
@@ -15,14 +16,19 @@ export class EventContainerComponent implements OnInit, AfterViewInit {
 
   @ViewChild(EventComponent) eventComponent;
 
-  constructor(private activatedRoute: ActivatedRoute) {}
+  constructor(private eventService: EventService,
+              private activatedRoute: ActivatedRoute) {
+  }
 
   ngOnInit() {
-     this.eventId = this.activatedRoute.snapshot.paramMap.get('id');
+    this.eventId = this.activatedRoute.snapshot.paramMap.get('id');
+    let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
+    this.eventService.isParticipant(currentUserId, this.eventId).subscribe(
+      () => this.isParticipant = true,
+      () => this.isParticipant = false);
   }
 
   ngAfterViewInit() {
-    this.isParticipant = this.eventComponent.isParticipant;
     this.isCreator = this.eventComponent.isCreator;
   }
 }

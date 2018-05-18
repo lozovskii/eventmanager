@@ -13,6 +13,7 @@ import {Subscription} from "rxjs";
 })
 export class BookedItemsComponent implements OnInit {
   wishList: WishList;
+  updatableWishList: WishList;
   hasChanges: boolean = false;
   items: Item[];
   value : number;
@@ -22,10 +23,12 @@ export class BookedItemsComponent implements OnInit {
   constructor(private wishListService: WishListService,
               private alertService: AlertService) {
     this.wishList = new WishList();
+    this.updatableWishList = new WishList();
   }
 
   ngOnInit() {
     this.getBookedItems();
+    this.updatableWishList.items = [];
   }
 
   getBookedItems(): void {
@@ -33,14 +36,20 @@ export class BookedItemsComponent implements OnInit {
       .subscribe((wishList) => {
         this.wishList = wishList;
       }, () => {
-      history.back();
-      this.alertService.error("Items not found",true)});
+      this.alertService.error("Items not found")});
   }
 
   cancelBooking(itemDto: ItemDto): void {
     itemDto.booker_customer_login = null;
+    this.updatableWishList.items.push(itemDto);
+
     let index = this.wishList.items.indexOf(itemDto);
-    this.wishList.items[index].booker_customer_login = null;
+    this.wishList.items.splice(index,1);
+    this.hasChanges = true;
+  }
+
+  updatedPriority(item: ItemDto): void{
+    this.updatableWishList.items.push(item);
     this.hasChanges = true;
   }
 
@@ -51,7 +60,8 @@ export class BookedItemsComponent implements OnInit {
   }
 
   update(): void {
-    this.wishListService.update(this.wishList).subscribe(() => {
+    console.log(this.updatableWishList);
+    this.wishListService.update(this.updatableWishList).subscribe(() => {
       this.alertService.success('Wish list successfully updated!');
     }, () => {
       this.alertService.error('Something wrong');

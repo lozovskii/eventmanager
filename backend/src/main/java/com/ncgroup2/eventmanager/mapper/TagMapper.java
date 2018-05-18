@@ -10,15 +10,10 @@ public class TagMapper implements RowMapper<Tag> {
 
     @Override
     public Tag mapRow(ResultSet rs, int rowNum) throws SQLException {
-
         Tag tag = new Tag();
-
         tag.setId(rs.getString("tag_id"));
-
         tag.setName(rs.getString("tag_name"));
-
         tag.setCount(rs.getInt("tag_count"));
-
         return tag;
     }
 }

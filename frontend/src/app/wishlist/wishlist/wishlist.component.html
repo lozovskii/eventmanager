@@ -1,10 +1,16 @@
 <div>
-  <button *ngIf="!isIncluded1" type="button" class="btn btn-secondary" [disabled]="!hasChanges" (click)="update()">
-    Save changes
-  </button>
-  <button *ngIf="isIncluded1" type="button" class="btn btn-outline-primary" (click)="updateWishList()">
-    Save changes
-  </button>
+  <div class="row">
+    <div class="col-auto" *ngIf="!editMode">
+      <button type="button" class="btn btn-secondary" [disabled]="!hasChanges" (click)="update()">
+        Save changes
+      </button>
+    </div>
+    <div class="col-auto" *ngIf="editMode">
+      <button type="button" class="btn btn-outline-primary" [disabled]="!hasChanges" (click)="updateWishList()">
+        Save changes
+      </button>
+    </div>
+  </div>
 
   <table class="table table-hover">
     <thead>
@@ -13,15 +19,15 @@
       <th scope="col" (click)="sortItems('booker_customer_login')" class="text-center">Booker</th>
       <th scope="col" (click)="sortItems('dueDate')" class="text-center">Due date</th>
       <th scope="col" (click)="sortItems('priority')" class="text-center">Priority</th>
-      <th scope="col" *ngIf="isIncluded"></th>
+      <th scope="col" *ngIf="editMode"></th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let itemDto of wishList.items | sortingItems:path:order; let i = index;">
       <td data-toggle="modal" [attr.data-target]="'#modal'+i" class="tdName">{{itemDto.item.name}}</td>
       <td class="text-center">
-        <a *ngIf="checkBooker(itemDto.booker_customer_login) || isIncluded" class="hyperlink"
-           (click)="cancelBooking(itemDto)">cancel</a>
+        <button *ngIf="checkBooker(itemDto.booker_customer_login) || editMode" class="btn btn-outline-info"
+           (click)="cancelBooking(itemDto)">cancel</button>
         <span *ngIf="!checkBooker(itemDto.booker_customer_login)">{{itemDto.booker_customer_login}}</span>
       </td>
       <td *ngIf="itemDto.item.dueDate" class="text-center">{{itemDto.item.dueDate}}</td>
@@ -30,14 +36,14 @@
              [style.background-color]="
                     itemDto.priority === 1 ? '#d14242':
                     itemDto.priority === 2 ? 'green':'gray'">
-          <select *ngIf="isBooker(itemDto.booker_customer_login) || isIncluded" (change)="hasChanges = true">
+          <select *ngIf="isBooker(itemDto.booker_customer_login) || editMode" (change)="hasChanges = true">
             <option value="1" (click)="itemDto.priority = 1">High</option>
             <option value="2" (click)="itemDto.priority = 2">Avg</option>
             <option value="3" (click)="itemDto.priority = 3">Low</option>
           </select>
         </div>
       </td>
-      <td *ngIf="isIncluded1" class="text-center">
+      <td *ngIf="editMode" class="text-center">
         <button (click)="removeItem(itemDto)" class="btn-sm button btn-outline-danger">Remove</button>
       </td>
     </tr>
@@ -46,10 +52,10 @@
 
 
   <!--<div class="modal fade" id="itemViewForm" tabindex="-1" role="dialog"-->
-       <!--aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
-    <!--<div class="modal-dialog modal-dialog-centered" role="document">-->
-      <!--<app-item-details-view [itemDtoView]="itemDtoView"></app-item-details-view>-->
-    <!--</div>-->
+  <!--aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
+  <!--<div class="modal-dialog modal-dialog-centered" role="document">-->
+  <!--<app-item-details-view [itemDtoView]="itemDtoView"></app-item-details-view>-->
+  <!--</div>-->
   <!--</div>-->
 
 
@@ -74,7 +80,7 @@
             <img *ngIf="itemDto.item.image" class="card-img-top" [attr.src]="itemDto.item.image" alt="Card image">
             <div class="card-body">
               <h6 class="card-subtitle mb-2 text-muted">{{itemDto.item.dueDate}}</h6>
-              <p class="card-text">{{itemDto.item.description}}</p>
+              <div class="card-text" [innerHTML]=itemDto.item.description></div>
               <a *ngIf="itemDto.item.link"
                  href="{{itemDto.item.link}}"
                  class="card-link">link</a>
@@ -84,13 +90,13 @@
                 <div class="col-8">
                   <small *ngIf="itemDto.booker_customer_login"
                          class="text-muted">
-                    <a *ngIf="checkBooker(itemDto.booker_customer_login) || isIncluded" class="hyperlink"
+                    <a *ngIf="checkBooker(itemDto.booker_customer_login) || editMode" class="hyperlink"
                        (click)="cancelBooking(itemDto)">cancel</a>
                   </small>
                   <small *ngIf="!itemDto.booker_customer_login">Booker: none</small>
                 </div>
                 <div class="col">
-                  <small *ngIf="isBooker(itemDto.booker_customer_login) || isIncluded">
+                  <small *ngIf="isBooker(itemDto.booker_customer_login) || editMode">
                     <label for="selectPriority">Priority:</label>
                     <select (change)="hasChanges = true" id="selectPriority">
                       <option value="1" (click)="itemDto.priority = 1">High</option>

@@ -30,7 +30,7 @@ public class WishListServiceImpl implements WishListService{
         return wishListDao.getEntityByField("booker_customer_login", booker_customer_login);
     }
 
-    public void createWishlist(WishList wishList){
+    public void create(WishList wishList){
 
         wishListDao.create(wishList);
     }

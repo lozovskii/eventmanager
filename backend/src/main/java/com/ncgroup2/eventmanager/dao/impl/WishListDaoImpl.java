@@ -36,7 +36,6 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
      */
     @Override
     public Collection<WishList> getAll() {
-
         String sql =
                 "SELECT   ew.id AS event_wishlist_id," +
                         " ew.event_id AS event_id," +
@@ -61,7 +60,6 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
      */
     @Override
     public WishList getById(Object wishlist_id) {
-
         return Objects.requireNonNull(
                 getEntityByField("ew.id", String.valueOf(wishlist_id)),
                 "Wish list not found");
@@ -69,7 +67,6 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
 
     @Override
     public WishList getEntityByField(String fieldName, Object fieldValue) {
-
         Collection<WishList> wishLists = getEntitiesByField(fieldName, fieldValue);
 
         return wishLists != null ?
@@ -78,7 +75,6 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
 
     @Override
     public Collection<WishList> getEntitiesByField(String fieldName, Object fieldValue) {
-
         String castSql;
 
         if (fieldValue.toString().matches("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) {
@@ -116,7 +112,6 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
      */
     @Override
     public void updateField(Object item_wishlist_id, String fieldName, Object fieldValue) {
-
         String updateItem_WishListSql =
                 "UPDATE \"Item_WishList\" " +
                         "SET " + fieldName + " = " + fieldValue +
@@ -133,7 +128,6 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
      */
     @Override
     public void delete(Object id) {
-
         String deleteSql =
                 "DELETE " +
                         "FROM \"Event_WishList\" ew " +
@@ -149,7 +143,6 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
      * @param trash
      */
     public void deleteItems(List<ItemWishListDto> trash) {
-
         if (trash != null && (!trash.isEmpty())) {
 
             String itemDeleteSql =
@@ -164,7 +157,6 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
 
     @Override
     public void update(WishList wishList) {
-
         List<ItemWishListDto> items = wishList.getItems();
 
         String updateItem_WishListSql =
@@ -191,19 +183,12 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
      */
     @Override
     public void create(WishList wishList) {
-
-        List<ItemWishListDto> items = wishList.getItems();
-
-        createItems(items);
-
         addItems(wishList);
-
         update(wishList);
     }
 
 
     public void addItems(WishList wishList) {
-
         List<ItemWishListDto> items = wishList.getItems();
 
         String itemWishListInsertSql =
@@ -237,12 +222,5 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
                     ps.setString(2, wishList.getId());
                     ps.setString(3, item.getItem_wishlist_id());
                 });
-    }
-
-    private void createItems(List<ItemWishListDto> itemWishListDtos) {
-
-        List<Item> items = (List<Item>) Mapper.mapDtoItemToItemCollection(itemWishListDtos);
-
-        itemDao.createItems(items);
     }
 }
