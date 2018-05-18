@@ -9,7 +9,10 @@
 .gray{
   background: gray;
 }
-
+.row .select-style{
+  margin-right: 4px;
+  margin-left: 4px;
+}
 .select-style {
   width: 20px;
   height: 20px;

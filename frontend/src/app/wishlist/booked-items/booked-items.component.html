@@ -8,7 +8,23 @@
     <br>
     <div class="row justify-content-between">
       <div class="col-auto">
-        <button class="btn btn-outline-secondary" [routerLink]="['/create-item']">Create new item</button>
+        <button class="btn btn-outline-info" data-toggle="modal" data-target="#create">Create new item</button>
+      </div>
+      <div class="col-auto">
+        <div class="row">
+          High -
+          <div class="select-style"
+               [style.background-color]="'#d14242'">
+          </div>
+          Average -
+          <div class="select-style"
+               [style.background-color]="'green'">
+          </div>
+          Low -
+          <div class="select-style"
+               [style.background-color]="'gray'">
+          </div>
+        </div>
       </div>
       <div class="col-auto">
         <button type="button" class="btn btn-outline-primary" [disabled]="!hasChanges" (click)="update()">
@@ -16,102 +32,120 @@
         </button>
       </div>
     </div>
-      <table class="table table-hover">
-        <thead>
-        <tr>
-          <th scope="col" (click)="sortItems('name')">Name</th>
-          <th scope="col">Image</th>
-          <th scope="col">Link</th>
-          <th scope="col" (click)="sortItems('dueDate')" class="text-center">Due date</th>
-          <th scope="col" (click)="sortItems('priority')" class="text-center">Priority</th>
-          <th scope="col" class="text-center">Cancel</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let itemDto of wishList.items | sortingItems:path:order; let i = index;">
-          <td data-toggle="modal" [attr.data-target]="'#modal'+i" class="tdName">{{itemDto.item.name}}</td>
-          <td>
-            <a *ngIf="itemDto.item.image" href="{{itemDto.item.image}}">image link</a>
-          </td>
-          <td>
-            <a *ngIf="itemDto.item.link" href="{{itemDto.item.link}}"> link </a>
-          </td>
-          <td *ngIf="itemDto.item.dueDate" class="text-center">{{itemDto.item.dueDate}}</td>
-          <td align="center">
-            <div class="select-style"
-                 [style.background-color]="
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th scope="col" (click)="sortItems('name')">Name</th>
+        <th scope="col">Image</th>
+        <th scope="col">Link</th>
+        <th scope="col" (click)="sortItems('dueDate')" class="text-center">Due date</th>
+        <th scope="col" (click)="sortItems('priority')" class="text-center">Priority</th>
+        <th scope="col" class="text-center"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let itemDto of wishList.items | sortingItems:path:order; let i = index;">
+        <td data-toggle="modal" [attr.data-target]="'#modal'+i" class="tdName">{{itemDto.item.name}}</td>
+        <td>
+          <a *ngIf="itemDto.item.image" href="{{itemDto.item.image}}">image link</a>
+        </td>
+        <td>
+          <a *ngIf="itemDto.item.link" href="{{itemDto.item.link}}"> link </a>
+        </td>
+        <td *ngIf="itemDto.item.dueDate" class="text-center">{{itemDto.item.dueDate}}</td>
+        <td align="center">
+          <div class="select-style"
+               [style.background-color]="
                     itemDto.priority === 1 ? '#d14242':
                     itemDto.priority === 2 ? 'green':'gray'">
-              <select (change)="hasChanges = true">
-                <option value="1" (click)="itemDto.priority = 1">High</option>
-                <option value="2" (click)="itemDto.priority = 2">Avg</option>
-                <option value="3" (click)="itemDto.priority = 3">Low</option>
-              </select>
-            </div>
-          </td>
-          <td (click)="cancelBooking(itemDto)" class="text-center"><a>cancel</a></td>
-        </tr>
-        </tbody>
-      </table>
+            <select (change)="updatedPriority(itemDto)">
+              <option value="1" (click)="itemDto.priority = 1">High</option>
+              <option value="2" (click)="itemDto.priority = 2">Avg</option>
+              <option value="3" (click)="itemDto.priority = 3">Low</option>
+            </select>
+          </div>
+        </td>
+        <td class="text-center">
+          <button class="btn btn-outline-info" (click)="cancelBooking(itemDto)">cancel</button></td>
+      </tr>
+      </tbody>
+    </table>
 
-      <div *ngFor="let itemDto of wishList.items; let i = index;"
-           class="modal fade"
-           id="modal{{i}}"
-           tabindex="-1" role="dialog"
-           aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div *ngFor="let itemDto of wishList.items; let i = index;"
+         class="modal fade"
+         id="modal{{i}}"
+         tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="modalCenterTitle">{{itemDto.item.name}}</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="card">
-                <img *ngIf="!itemDto.item.image" class="card-img-top" src="../../assets/img/default_image.png"
-                     alt="Card image">
-                <img *ngIf="itemDto.item.image" class="card-img-top" [attr.src]="itemDto.item.image" alt="Card image">
-                <div class="card-body">
-                  <h6 class="card-subtitle mb-2 text-muted">{{itemDto.item.dueDate}}</h6>
-                  <p class="card-text">{{itemDto.item.description}}</p>
-                  <a *ngIf="itemDto.item.link"
-                     href="{{itemDto.item.link}}"
-                     class="card-link">link</a>
-                </div>
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalCenterTitle">{{itemDto.item.name}}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="card">
+              <img *ngIf="!itemDto.item.image" class="card-img-top" src="../../assets/img/default_image.png"
+                   alt="Card image">
+              <img *ngIf="itemDto.item.image" class="card-img-top" [attr.src]="itemDto.item.image" alt="Card image">
+              <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">{{itemDto.item.dueDate}}</h6>
+                <p class="card-text">{{itemDto.item.description}}</p>
+                <a *ngIf="itemDto.item.link"
+                   href="{{itemDto.item.link}}"
+                   class="card-link">link</a>
+              </div>
 
-                <div class="card-footer container">
-                  <div class="row">
-                    <div class="col-4">
-                      <small>Event: <a href="event-container/{{itemDto.event_id}}">link</a></small>
-                    </div>
-                    <div class="col-4">
-                      <small>
-                        <button class="btn btn-outline-danger btn-sm" (click)="cancelBooking(itemDto)">Cancel booking
-                        </button>
-                      </small>
-                    </div>
-                    <div class="col-4">
-                      <small>
-                        <label for="selectPriority">Priority:</label>
-                        <select (change)="hasChanges = true" id="selectPriority">
-                          <option value="1" (click)="itemDto.priority = 1">High</option>
-                          <option value="2" (click)="itemDto.priority = 2">Avg</option>
-                          <option value="3" (click)="itemDto.priority = 3">Low</option>
-                        </select>
-                      </small>
-                    </div>
+              <div class="card-footer container">
+                <div class="row">
+                  <div class="col-4">
+                    <small>Event: <a href="event-container/{{itemDto.event_id}}">link</a></small>
+                  </div>
+                  <div class="col-4">
+                    <small>
+                      <button class="btn btn-outline-danger btn-sm" (click)="cancelBooking(itemDto)">Cancel booking
+                      </button>
+                    </small>
+                  </div>
+                  <div class="col-4">
+                    <small>
+                      <label for="selectPriority">Priority:</label>
+                      <select (change)="hasChanges = true" id="selectPriority">
+                        <option value="1" (click)="itemDto.priority = 1">High</option>
+                        <option value="2" (click)="itemDto.priority = 2">Avg</option>
+                        <option value="3" (click)="itemDto.priority = 3">Low</option>
+                      </select>
+                    </small>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="modal fade" id="create"  tabindex="-1" role="dialog"
+         aria-labelledby="modalCreateTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Create item</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <app-create-item [included]="true" (createdItem)="addCreatedItem($event)"></app-create-item>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </main>
 </div>

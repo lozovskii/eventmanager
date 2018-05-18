@@ -10,7 +10,7 @@
         <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-event" role="tab"
            aria-controls="pills-event" aria-selected="true">Event</a>
       </li>
-      <li class="nav-item" *ngIf="isCreator || (!hideWishListTab && isParticipant )">
+      <li class="nav-item" *ngIf="isParticipant || isCreator">
         <a  class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-wishlist"
            role="tab" aria-controls="pills-wishlist" aria-selected="false">Wish List</a>
       </li>
@@ -24,8 +24,29 @@
         <app-event [eventId]="eventId"></app-event>
       </div>
       <div class="tab-pane fade" id="pills-wishlist" role="tabpanel" aria-labelledby="pills-wishlist-tab">
+        <div class="row">
+          <div class="col-auto">
         <button *ngIf="isCreator" class="btn btn-outline-info" [routerLink]="['/wishlist/edit']">Edit wish list</button>
-        <app-wishlist *ngIf="isParticipant" [eventId]="eventId" [isIncluded]="false"></app-wishlist>
+          </div>
+        <div class="col-auto">
+          <div class="row">
+            High -
+            <div class="select-style"
+                 [style.background-color]="'#d14242'">
+            </div>
+            Average -
+            <div class="select-style"
+                 [style.background-color]="'green'">
+            </div>
+            Low -
+            <div class="select-style"
+                 [style.background-color]="'gray'">
+            </div>
+          </div>
+        </div>
+        </div>
+        <br>
+        <app-wishlist *ngIf="isParticipant || isCreator" [eventId]="eventId" [editMode]="false"></app-wishlist>
       </div>
       <div class="tab-pane fade" id="pills-chat" role="tabpanel" aria-labelledby="pills-chat-tab">...</div>
     </div>

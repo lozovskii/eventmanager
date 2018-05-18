@@ -4,11 +4,27 @@
   </div>
 
   <main role="main" [ngClass]="{ 'col-md-9': !isIncluded }">
-    <h2 *ngIf="!isIncluded" class="text-center">Created Items</h2>
+    <h2 *ngIf="!isIncluded" class="text-center">Items collection</h2>
     <br>
     <div class="row justify-content-between">
       <div class="col-auto">
         <button class="btn btn-outline-info" data-toggle="modal" data-target="#create">Create new item</button>
+      </div>
+      <div class="col-auto" *ngIf="!isIncluded">
+        <div class="row">
+          High -
+          <div class="select-style"
+               [style.background-color]="'#d14242'">
+          </div>
+          Average -
+          <div class="select-style"
+               [style.background-color]="'green'">
+          </div>
+          Low -
+          <div class="select-style"
+               [style.background-color]="'gray'">
+          </div>
+        </div>
       </div>
       <div class="col-auto">
         <button type="button" class="btn btn-outline-primary" [disabled]="!hasChanges" (click)="executeDelete()">
@@ -24,7 +40,7 @@
         <th scope="col">Image</th>
         <th scope="col">Link</th>
         <th scope="col" (click)="sortItems('dueDate')" class="text-center">Due date</th>
-        <th *ngIf="isIncluded" scope="col" class="text-center">Add</th>
+        <th *ngIf="isIncluded" scope="col" class="text-center"></th>
         <th *ngIf="!isIncluded" scope="col" class="text-center"></th>
       </tr>
       </thead>
@@ -55,18 +71,15 @@
 
 
     <div class="modal fade" id="itemViewForm" tabindex="-1" role="dialog"
-         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+         aria-labelledby="itemViewFormTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <app-item-details-view [itemView]="itemView"></app-item-details-view>
       </div>
     </div>
 
 
-    <div class="modal fade"
-         id="edit"
-         tabindex="-1" role="dialog"
-         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-
+    <div class="modal fade" id="edit" tabindex="-1" role="dialog"
+         aria-labelledby="editModalTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -82,11 +95,8 @@
       </div>
     </div>
 
-    <div class="modal fade"
-         id="create"
-         tabindex="-1" role="dialog"
-         aria-labelledby="modalEditTitle" aria-hidden="true">
-
+    <div class="modal fade" id="create"  tabindex="-1" role="dialog"
+         aria-labelledby="modalCreateTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -96,7 +106,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <app-create-item (createdItem)="addCreatedItem($event)"></app-create-item>
+            <app-create-item [included]="true" (createdItem)="addCreatedItem($event)"></app-create-item>
           </div>
         </div>
       </div>
