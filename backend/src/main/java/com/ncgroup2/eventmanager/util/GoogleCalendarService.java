@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-@PropertySource("classpath:google-calendar.properties")
+@PropertySource("classpath:properties/google-calendar.properties")
 public class GoogleCalendarService {
 
     private static final String APPLICATION_NAME = "EventManager";

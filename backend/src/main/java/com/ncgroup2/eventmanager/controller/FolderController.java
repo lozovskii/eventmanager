@@ -42,4 +42,9 @@ public class FolderController {
     public void moveNote(@PathVariable("noteId") String noteId, @PathVariable("folderName") String folderName){
         folderService.moveNoteByNoteIdByFolderName(noteId, folderName);
     }
+
+    @PostMapping("/delete/{folderId}")
+    public void deleteFolder(@PathVariable("folderId") String folderId){
+        folderService.deleteFolderById(folderId);
+    }
 }

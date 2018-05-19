@@ -14,4 +14,6 @@ public interface FolderService {
     List<Event> getNotesByCustIdByFolderId(String custId, String folderId);
 
     void moveNoteByNoteIdByFolderName(String noteId, String folderName);
+
+    void deleteFolderById(String folderId);
 }

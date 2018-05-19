@@ -17,7 +17,7 @@ import java.util.Date;
 import io.jsonwebtoken.Jwts;
 
 @Component
-@PropertySource("classpath:token.properties")
+@PropertySource("classpath:properties/token.properties")
 public class TokenGeneratorImpl implements TokenGenerator{
 
     @Value("${key}")
