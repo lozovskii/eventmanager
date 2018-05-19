@@ -16,6 +16,7 @@ export class MoveNoteComponent implements OnInit {
   moveNoteForm:FormGroup;
   event:Event;
   folder:Folder;
+  folders:Folder[];
   constructor(private formBuilder: FormBuilder,
               private activatedRoute: ActivatedRoute,
               private alertService: AlertService,
@@ -23,6 +24,7 @@ export class MoveNoteComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit() {
+    this.getFoldersByCustId();
     this.noteId = this.activatedRoute.snapshot.paramMap.get('id');
     this.moveNoteForm = this.initMoveNoteForm();
   }
@@ -34,10 +36,21 @@ export class MoveNoteComponent implements OnInit {
   }
 
   moveNote(folder:Folder){
+    console.log(folder);
     this.folderService.moveNote(this.noteId,folder.name).subscribe(()=>{
       this.alertService.info('Note successfully moved!',true);
       this.router.navigate(['/folder-list','all']);
     });
+  }
+
+  getFoldersByCustId(): void {
+    this.folderService.getAllFolders()
+      .subscribe((folders) => {
+        this.folders = folders;
+        if(folders.toString() == ''){
+          this.alertService.info('No folders exist yet.',true);
+        }
+      });
   }
 
 }
