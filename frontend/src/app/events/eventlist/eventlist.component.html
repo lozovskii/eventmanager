@@ -5,16 +5,16 @@
   </div>
 
   <main role="main" class="col-md-9">
-    <form>
-      <div class="form-group">
+    <form class="row">
+      <div class="form-group col-md-4">
         <label>From</label>
         <input type="date" formControlName="day" class="dateTimeInput">
       </div>
-      <div class="form-group">
+      <div class="form-group col-md-4">
         <label>To</label>
         <input type="date" formControlName="day" class="dateTimeInput">
       </div>
-      <div>
+      <div class="col-md-4">
         <button class="btn btn-outline-success" (click)="importToPDF()">Import to PDF</button>
       </div>
     </form>
