@@ -64,7 +64,7 @@ const appRoutes: Routes = [
   { path: 'event-container/:id', component: EventContainerComponent, canActivate: [AuthGuard]},
   { path: 'note-content/:id', component: NoteContentComponent, canActivate: [AuthGuard]},
   { path: 'eventlist/:type', component: EventlistComponent, canActivate: [AuthGuard]},
-  { path: 'eventlist/:type/sorted', component: EventlistComponent, canActivate: [AuthGuard]},
+  { path: 'eventlist/:type/sort', component: EventlistComponent, canActivate: [AuthGuard]},
   { path: 'eventlist/my/filter', component: EventlistComponent, canActivate: [AuthGuard]},
   { path: 'move-note/:id', component: MoveNoteComponent, canActivate: [AuthGuard]},
   { path: 'delete-folder', component: DeleteFolderComponent, canActivate: [AuthGuard]},

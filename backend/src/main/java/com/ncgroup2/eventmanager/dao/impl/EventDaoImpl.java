@@ -143,6 +143,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     public List getEventsByCustId(String custId) {
         String query = queryService.getQuery("event.getByCustIdSortByStartDate");
         Object[] params = new Object[]{
+                custId,
                 custId
         };
         return this.getJdbcTemplate().query(query, params, new BeanPropertyRowMapper(Event.class));
@@ -150,8 +151,9 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
     @Override
     public List getEventsByCustIdSorted(String custId) {
-        String query = queryService.getQuery("event.getByCustIdSortByName");
+        String query = queryService.getQuery("event.getByCustIdSortByTitle");
         Object[] params = new Object[]{
+                custId,
                 custId
         };
         return this.getJdbcTemplate().query(query, params, new BeanPropertyRowMapper(Event.class));
@@ -161,6 +163,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     public List getEventsByCustIdSortedByType(String custId) {
         String query = queryService.getQuery("event.getByCustIdSortByType");
         Object[] params = new Object[]{
+                custId,
                 custId
         };
         return this.getJdbcTemplate().query(query, params, new BeanPropertyRowMapper(Event.class));
@@ -168,10 +171,10 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
     @Override
     public List getEventsByCustIdFilterByType(String custId, String type) {
-        System.out.println(custId);
-        System.out.println(type);
         String query = queryService.getQuery("event.getByCustIdFilterByType");
         Object[] params = new Object[]{
+                custId,
+                type,
                 custId,
                 type
         };

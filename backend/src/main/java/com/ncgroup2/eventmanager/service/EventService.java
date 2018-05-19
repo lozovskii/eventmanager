@@ -14,8 +14,6 @@ public interface EventService {
 
     void createEvent(EventDTO eventDTO);
 
-//    List getExistingCustomers(List<String> login);
-
     void createEventInvitations(List<String> login, UUID eventId);
 
     List<Event> getEventsByCustId(String custId);

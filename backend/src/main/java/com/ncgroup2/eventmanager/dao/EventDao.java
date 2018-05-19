@@ -29,8 +29,6 @@ public interface EventDao {
 
     int getPrioriryId(String fieldValue);
 
-    List getEventsByCustId(String custId);
-
     Event getEventById(String id);
 
     Event getNoteById(String noteId);
@@ -54,6 +52,8 @@ public interface EventDao {
     List<EventCountdownDTO> getCountdownMessages();
 
     String getTimeToEventStart(String eventId);
+
+    List getEventsByCustId(String custId);
 
     List getEventsByCustIdSorted(String custId);
 
