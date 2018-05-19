@@ -1,4 +1,8 @@
 package com.ncgroup2.eventmanager.entity;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+
+import java.time.LocalDateTime;
 
 public class Chat extends Entity {
 

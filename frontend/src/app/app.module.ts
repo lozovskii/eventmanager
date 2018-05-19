@@ -51,7 +51,6 @@ import { EventNotificationComponent } from './events/event-notification/event-no
 import { CreateFolderComponent } from './folders/create-folder/create-folder.component';
 import {EditWishListComponent} from "./wishlist/edit-wishlist/edit-wishlist.component";
 import {CalendarComponent} from "./home/calendar/calendar.component";
-
 import { CalendarModule } from 'angular-calendar';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import {HttpClientModule} from "@angular/common/http";
@@ -70,6 +69,9 @@ import { DraftListComponent } from './events/drafts/draft-list/draft-list.compon
 import { DraftContentComponent } from './events/drafts/draft-content/draft-content.component';
 import { FilterItemsPipe } from './wishlist/filter-items/filter-items-pipe.pipe';
 import {AdditionalComponentsContainerComponent} from "./wishlist/additional-components-container/additional-components-container.component";
+
+import {ChatboxComponent} from "./chatbox/chatbox.component";
+import {MessageService} from "./_services/message.service";
 
 @NgModule({
   imports: [
@@ -141,6 +143,7 @@ import {AdditionalComponentsContainerComponent} from "./wishlist/additional-comp
     DraftContentComponent,
     FilterItemsPipe,
     AdditionalComponentsContainerComponent,
+    ChatboxComponent
   ],
   providers: [
     AuthGuard,
@@ -156,6 +159,8 @@ import {AdditionalComponentsContainerComponent} from "./wishlist/additional-comp
     NotificationService,
     FolderService,
     LocationService
+    FolderService,
+    MessageService
     // provider used to create fake backend
   ],
   entryComponents: [
