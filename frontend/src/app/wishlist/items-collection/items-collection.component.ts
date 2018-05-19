@@ -5,6 +5,7 @@ import {Item} from "../../_models/item";
 import {Location} from '@angular/common';
 import {WishList} from "../../_models/wishlist";
 import {ItemDto} from "../../_models/dto/itemDto";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-items-collection',
@@ -14,14 +15,17 @@ import {ItemDto} from "../../_models/dto/itemDto";
 export class ItemsCollectionComponent implements OnInit {
   @Input('included') isIncluded: boolean;
 
+  filterInput = new FormControl();
+  filterText: string;
+  filterPlaceholder: string;
   hasChanges: boolean = false;
   editableItem: Item;
   itemView: Item;
   wishList: WishList;
   trash: Item[];
   items: Item[];
-  path: string[] = ['name'];
-  order: number = 1; // 1 asc, -1 desc;
+  path: string[] = ['item'];
+  order: number = 1;
 
   constructor(private wishListService: WishListService,
               private alertService: AlertService) {
@@ -37,6 +41,24 @@ export class ItemsCollectionComponent implements OnInit {
       this.wishList = wishList;
     });
     this.getItemsCollection();
+
+    this.filterText = '';
+    this.filterPlaceholder = 'You can filter values by name, description, link and creator login';
+    this.filterInput
+      .valueChanges
+      .debounceTime(200)
+      .subscribe(term => {
+        this.filterText = term;
+      });
+  }
+
+  getItemsCollection(): void {
+    this.wishListService.getItemsCollection()
+      .subscribe((items) => {
+        this.items = items;
+      }, () => {
+        this.alertService.info('Items not found');
+      });
   }
 
   showItemDetails(item: Item): void {
@@ -69,15 +91,6 @@ export class ItemsCollectionComponent implements OnInit {
       this.items.splice(index, 1);
       this.trash.push(item);
       this.hasChanges = true;
-  }
-
-  getItemsCollection(): void {
-    this.wishListService.getItemsCollection()
-      .subscribe((items) => {
-        this.items = items;
-      }, () => {
-        this.alertService.info('Items not found');
-      });
   }
 
   executeDelete(): void {

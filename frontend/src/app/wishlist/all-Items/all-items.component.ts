@@ -5,6 +5,7 @@ import {Item} from "../../_models/item";
 import {UserService} from "../../_services/user.service";
 import {WishList} from "../../_models/wishlist";
 import {ItemDto} from "../../_models/dto/itemDto";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-all-items',
@@ -14,6 +15,9 @@ import {ItemDto} from "../../_models/dto/itemDto";
 export class AllItemsComponent implements OnInit {
   @Input('included') isIncluded: boolean = false;
 
+  filterInput = new FormControl();
+  filterText: string;
+  filterPlaceholder: string;
   itemView: Item;
   editableItem: Item;
   wishList: WishList;
@@ -37,6 +41,15 @@ export class AllItemsComponent implements OnInit {
         this.wishList = wishList;
       });
     this.getAllItems();
+
+    this.filterText = '';
+    this.filterPlaceholder = 'You can filter values by name, description, link and creator login';
+    this.filterInput
+      .valueChanges
+      .debounceTime(200)
+      .subscribe(term => {
+        this.filterText = term;
+      });
   }
 
   showItemDetails(item: Item): void {

@@ -62,6 +62,7 @@ import {MoveNoteComponent} from "./folders/move-note/move-note.component";
 import {UpdateItemComponent} from "./wishlist/update-item/update-item.component";
 import {ItemDetailsViewComponent} from "./wishlist/item-details-view/item-details-view.component";
 import {AllItemsComponent} from "./wishlist/all-Items/all-items.component";
+import { FilterItemsPipe } from './wishlist/filter-items/filter-items-pipe.pipe';
 
 @NgModule({
   imports: [
@@ -121,6 +122,7 @@ import {AllItemsComponent} from "./wishlist/all-Items/all-items.component";
     UpdateItemComponent,
     ItemDetailsViewComponent,
     AllItemsComponent,
+    FilterItemsPipe,
   ],
   providers: [
     AuthGuard,

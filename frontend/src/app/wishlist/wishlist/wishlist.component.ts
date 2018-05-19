@@ -4,6 +4,7 @@ import {AlertService} from "../../_services/alert.service";
 import {WishListService} from "../../_services/wishlist.service";
 import {UserService} from "../../_services/user.service";
 import {ItemDto} from "../../_models/dto/itemDto";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-wishlist',
@@ -14,6 +15,9 @@ export class WishListComponent implements OnInit {
   @Input('eventId') eventId: string;
   @Input('editMode') editMode: boolean = false;
 
+  filterInput = new FormControl();
+  filterText: string;
+  filterPlaceholder: string;
   trash: ItemDto[];
   wishList: WishList;
   itemDtoView: ItemDto;
@@ -24,8 +28,7 @@ export class WishListComponent implements OnInit {
 
   constructor(private wishListService: WishListService,
               private userService: UserService,
-              private alertService: AlertService) {
-  }
+              private alertService: AlertService) {}
 
   ngOnInit() {
     if (this.editMode) {
@@ -35,6 +38,20 @@ export class WishListComponent implements OnInit {
     }
     this.currentLogin = this.userService.getCurrentLogin();
     this.trash = [];
+    this.itemDtoView = new ItemDto();
+
+    this.filterText = '';
+    this.filterPlaceholder = 'You can filter values by name, description, link and creator login';
+    this.filterInput
+      .valueChanges
+      .debounceTime(200)
+      .subscribe(term => {
+        this.filterText = term;
+      });
+  }
+
+  showItemDetails(itemDto: ItemDto): void {
+    this.itemDtoView = itemDto;
   }
 
   getWishListByEventId(eventId: string): void {
@@ -74,18 +91,18 @@ export class WishListComponent implements OnInit {
     this.trash.push(itemDto);
   }
 
-  checkBooker(bookerLogin: string): boolean {
-    return bookerLogin == this.currentLogin;
-  }
-
-  bookItem(item: ItemDto): void {
-    item.booker_customer_login = this.currentLogin;
+  bookItem(itemDto: ItemDto): void {
+    itemDto.booker_customer_login = this.currentLogin;
     this.hasChanges = true;
   }
 
-  cancelBooking(item: ItemDto): void {
-    item.booker_customer_login = null;
-    item.priority = 3;
+  cancelBooking(itemDto: ItemDto): void {
+    itemDto.booker_customer_login = null;
+    itemDto.priority = 3;
+    this.hasChanges = true;
+  }
+
+  updatePriority(itemDto: ItemDto): void{
     this.hasChanges = true;
   }
 

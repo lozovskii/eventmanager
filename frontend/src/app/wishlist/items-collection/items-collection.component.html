@@ -3,8 +3,9 @@
     <app-vnavbar></app-vnavbar>
   </div>
 
+
   <main role="main" [ngClass]="{ 'col-md-9': !isIncluded }">
-    <h2 *ngIf="!isIncluded" class="text-center">Items collection</h2>
+    <h2 *ngIf="!isIncluded" class="text-center">Items Collection</h2>
     <br>
     <div class="row justify-content-between">
       <div class="col-auto">
@@ -32,7 +33,10 @@
         </button>
       </div>
     </div>
-
+    <div>
+    <input class="form-control" type="text" [value]="filterText"
+           [placeholder]="filterPlaceholder" [formControl]="filterInput"/>
+    </div>
     <table class="table table-hover">
       <thead>
       <tr>
@@ -45,7 +49,12 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let item of items | sortingItems:path:order; let i = index;">
+      <tr *ngFor="let item of items | filterItems:{
+        name: filterText,
+        description: filterText,
+        creator_customer_login : filterText,
+        link: filterText
+        } : false | sortingItems:path:order">
         <td (click)="showItemDetails(item)" data-toggle="modal" data-target="#itemViewForm" class="tdName">
           {{item.name}}
         </td>

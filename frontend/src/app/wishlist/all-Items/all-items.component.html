@@ -12,6 +12,9 @@
       </div>
     </div>
 
+    <input class="form-control" type="text" [value]="filterText"
+           [placeholder]="filterPlaceholder" [formControl]="filterInput"/>
+
     <table class="table table-hover">
       <thead>
       <tr>
@@ -24,7 +27,12 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let item of items | sortingItems:path:order">
+      <tr *ngFor="let item of items | filterItems:{
+        name: filterText,
+        description: filterText,
+        creator_customer_login : filterText,
+        link: filterText
+        } : false | sortingItems:path:order">
         <td (click)="showItemDetails(item)" data-toggle="modal" data-target="#itemViewForm" class="tdName">
           {{item.name}}
         </td>
@@ -44,7 +52,6 @@
       </tbody>
     </table>
 
-
     <div class="modal fade" id="itemViewForm" tabindex="-1" role="dialog"
          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
@@ -52,7 +59,7 @@
       </div>
     </div>
 
-    <div class="modal fade" id="create"  tabindex="-1" role="dialog"
+    <div class="modal fade" id="create" tabindex="-1" role="dialog"
          aria-labelledby="modalCreateTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">

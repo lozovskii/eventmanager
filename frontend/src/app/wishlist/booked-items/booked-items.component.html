@@ -32,6 +32,10 @@
         </button>
       </div>
     </div>
+
+    <input class="form-control" type="text" [value]="filterText"
+           [placeholder]="filterPlaceholder" [formControl]="filterInput"/>
+
     <table class="table table-hover">
       <thead>
       <tr>
@@ -44,8 +48,15 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let itemDto of wishList.items | sortingItems:path:order; let i = index;">
-        <td data-toggle="modal" [attr.data-target]="'#modal'+i" class="tdName">{{itemDto.item.name}}</td>
+      <tr *ngFor="let itemDto of wishList.items | filterItems:{
+        name: filterText,
+        description: filterText,
+        creator_customer_login : filterText,
+        priority: filterText,
+        link: filterText
+        } : false | sortingItems:path:order; let i = index;">
+        <td (click)="showItemDetails(itemDto)" data-toggle="modal" data-target="#itemViewForm" class="tdName">
+          {{itemDto.item.name}}</td>
         <td>
           <a *ngIf="itemDto.item.image" href="{{itemDto.item.image}}">image link</a>
         </td>
@@ -71,62 +82,10 @@
       </tbody>
     </table>
 
-    <div *ngFor="let itemDto of wishList.items; let i = index;"
-         class="modal fade"
-         id="modal{{i}}"
-         tabindex="-1" role="dialog"
+    <div class="modal fade" id="itemViewForm" tabindex="-1" role="dialog"
          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalCenterTitle">{{itemDto.item.name}}</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="card">
-              <img *ngIf="!itemDto.item.image" class="card-img-top" src="../../assets/img/default_image.png"
-                   alt="Card image">
-              <img *ngIf="itemDto.item.image" class="card-img-top" [attr.src]="itemDto.item.image" alt="Card image">
-              <div class="card-body">
-                <h6 class="card-subtitle mb-2 text-muted">{{itemDto.item.dueDate}}</h6>
-                <p class="card-text">{{itemDto.item.description}}</p>
-                <a *ngIf="itemDto.item.link"
-                   href="{{itemDto.item.link}}"
-                   class="card-link">link</a>
-              </div>
-
-              <div class="card-footer container">
-                <div class="row">
-                  <div class="col-4">
-                    <small>Event: <a href="event-container/{{itemDto.event_id}}">link</a></small>
-                  </div>
-                  <div class="col-4">
-                    <small>
-                      <button class="btn btn-outline-danger btn-sm" (click)="cancelBooking(itemDto)">Cancel booking
-                      </button>
-                    </small>
-                  </div>
-                  <div class="col-4">
-                    <small>
-                      <label for="selectPriority">Priority:</label>
-                      <select (change)="hasChanges = true" id="selectPriority">
-                        <option value="1" (click)="itemDto.priority = 1">High</option>
-                        <option value="2" (click)="itemDto.priority = 2">Avg</option>
-                        <option value="3" (click)="itemDto.priority = 3">Low</option>
-                      </select>
-                    </small>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
-        </div>
+        <app-item-details-view [itemDtoView]="itemDtoView" (cancelledItem)="cancelBooking($event)" (updatedItem)="updatedPriority($event)"></app-item-details-view>
       </div>
     </div>
 
