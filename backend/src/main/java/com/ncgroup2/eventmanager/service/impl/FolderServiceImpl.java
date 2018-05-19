@@ -45,7 +45,11 @@ public class FolderServiceImpl implements FolderService {
         }
     }
 
-
+    @Override
+    public void deleteFolderById(String folderId){
+        folderDao.moveNotesToDefaultFromFolderId(folderId);
+        folderDao.deleteById(folderId);
+    }
 
 }
 

@@ -31,6 +31,7 @@ import {NoteContentComponent} from "./folders/note-content/note-content.componen
 import {MoveNoteComponent} from "./folders/move-note/move-note.component";
 import {AllItemsComponent} from "./wishlist/all-Items/all-items.component";
 import {CreateItemComponent} from "./wishlist/create-item/create-item.component";
+import {DeleteFolderComponent} from "./folders/delete-folder/delete-folder.component";
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full'},
@@ -66,6 +67,7 @@ const appRoutes: Routes = [
   { path: 'eventlist/:type/sorted', component: EventlistComponent, canActivate: [AuthGuard]},
   { path: 'eventlist/my/filter', component: EventlistComponent, canActivate: [AuthGuard]},
   { path: 'move-note/:id', component: MoveNoteComponent, canActivate: [AuthGuard]},
+  { path: 'delete-folder', component: DeleteFolderComponent, canActivate: [AuthGuard]},
   // otherwise redirect to home
  { path: '**', redirectTo: '' }
 ];

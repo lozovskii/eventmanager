@@ -5,7 +5,6 @@ import {AuthenticationService} from "./authentication.service";
 import {Folder} from "../_models/folder";
 import {Observable} from "rxjs/index";
 import {Event} from "../_models/event";
-import {UpdateEventDTO} from "../_models/dto/UpdateEventDTO";
 
 @Injectable()
 export class FolderService {
@@ -35,4 +34,12 @@ export class FolderService {
     const url = `${this.foldersUrl}/move/${noteId}/${folderName}`;
     return this.http.put<Event>(url, Event, {headers: AuthenticationService.getAuthHeader()});
   }
+
+  deleteFolder(folderId:string){
+    console.log('here');
+    const url = `${this.foldersUrl}/delete/${folderId}`;
+    return this.http.post<string>(url, folderId, {headers: AuthenticationService.getAuthHeader()});
+  }
+
+
 }
