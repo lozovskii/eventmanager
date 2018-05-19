@@ -15,7 +15,7 @@ export class SortingItemsPipe implements PipeTransform {
       path.forEach(property => {
         a = a[property];
         b = b[property];
-      })
+      });
 
       return a > b ? order : order * -1;
     });
