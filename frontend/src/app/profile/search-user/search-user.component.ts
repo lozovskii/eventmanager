@@ -20,7 +20,7 @@ export class SearchUserComponent implements OnInit {
   }
 
   ngOnInit() {}
-
+/*
   searchUser(request) {
     this.profileService.search(request)
       .subscribe(
@@ -28,6 +28,6 @@ export class SearchUserComponent implements OnInit {
           this.users = users;
         }
       )
-  }
+  }*/
 
 }

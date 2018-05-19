@@ -9,7 +9,6 @@ import java.util.Arrays;
 @Getter
 @Setter
 public class Customer extends Entity {
-
     private String email;
     private String login;
     private String password;

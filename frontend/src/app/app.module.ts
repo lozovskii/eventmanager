@@ -51,12 +51,14 @@ import { EventNotificationComponent } from './events/event-notification/event-no
 import { CreateFolderComponent } from './folders/create-folder/create-folder.component';
 import {EditWishListComponent} from "./wishlist/edit-wishlist/edit-wishlist.component";
 import {CalendarComponent} from "./home/calendar/calendar.component";
-
 import { CalendarModule } from 'angular-calendar';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import {HttpClientModule} from "@angular/common/http";
 import {EventContainerComponent} from "./events/event-container/event-container.component";
 import {FolderService} from "./_services/folder.service";
+import {ChatboxComponent} from "./chatbox/chatbox.component";
+import {MessageService} from "./_services/message.service";
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -110,6 +112,7 @@ import {FolderService} from "./_services/folder.service";
     EventNotificationComponent,
     CalendarComponent,
     EventContainerComponent,
+    ChatboxComponent
   ],
   providers: [
     AuthGuard,
@@ -123,7 +126,8 @@ import {FolderService} from "./_services/folder.service";
     WishListService,
     ProfileService,
     NotificationService,
-    FolderService
+    FolderService,
+    MessageService
     // provider used to create fake backend
   ],
   entryComponents: [

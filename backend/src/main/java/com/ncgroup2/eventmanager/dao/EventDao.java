@@ -14,6 +14,8 @@ public interface EventDao {
     void createEventWithoutTime(Event event, int visibility, int eventStatus, UUID groupId,
                                 int priorityId, UUID eventId);
 
+    void createChatForEvent(UUID eventId);
+
     void createEvent(Event event, int visibility, int eventStatus, String frequency, UUID groupId,
                      int priorityId, UUID eventId);
 

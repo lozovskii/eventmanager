@@ -258,6 +258,7 @@ public class EventServiceImpl implements EventService {
             } else {
                 eventDao.createEvent(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
             }
+            eventDao.createChatForEvent(eventId);
         }
     }
 

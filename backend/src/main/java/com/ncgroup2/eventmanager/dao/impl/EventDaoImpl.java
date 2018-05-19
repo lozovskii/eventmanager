@@ -52,6 +52,15 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         createCustomerEvent(event, eventId, priorityId);
     }
 
+
+    public  void createChatForEvent(UUID eventId){
+        String query = queryService.getQuery("event.createChatForEvent");
+        Object[] queryParams = new Object[] {
+                eventId
+        };
+        this.getJdbcTemplate().update(query, queryParams);
+    }
+
     @Override
     public void createEvent(Event event, int visibility, int eventStatus, String frequency, UUID groupId,
                             int priorityId, UUID eventId) {
