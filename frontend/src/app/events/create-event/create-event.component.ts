@@ -4,6 +4,7 @@ import {EventDTOModel} from "../../_models/dto/eventDTOModel";
 import {AlertService, EventService, UserService} from "../../_services";
 import {Router} from "@angular/router";
 import {VISIBILITY} from "../../event-visibility";
+import {Location} from "../../_models/location";
 
 @Component({
   selector: 'app-event-create',
@@ -24,6 +25,7 @@ export class CreateEventComponent implements OnInit {
   visibilityList: any[] = VISIBILITY;
   visibility: string;
   selectedPeople: string[] = [];
+  eventLocation: Location;
 
   constructor(private router: Router,
               private eventService: EventService,
@@ -139,4 +141,19 @@ export class CreateEventComponent implements OnInit {
   get frequencyNumber() {
     return this.additionEventForm.get('frequencyNumber');
   }
+
+  addLocation(location: Location) {
+    this.eventLocation = location;
+    console.log('create-event ' + this.eventLocation.street);
+    console.log('create-event ' + this.eventLocation.house);
+    // let customerId = this.userService.getCurrentId();
+    // this.eventService.createLocation(this.eventLocation.country, this.eventLocation.city, this.eventLocation.street,
+    //   this.eventLocation.house).subscribe(data => {
+    //     this.alertService.success('Location added!', true);
+    //   },
+    //   error => {
+    //     this.alertService.error('Not saved! We working.. please try again');
+    //   });
+  }
+
 }

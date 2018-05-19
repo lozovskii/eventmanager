@@ -36,7 +36,7 @@ import {WishListService} from "./_services/wishlist.service";
 import {BookedItemsComponent} from "./wishlist/booked-items/booked-items.component";
 import {EditProfileComponent} from './profile/edit-profile/edit-profile.component';
 import {ProfileService} from "./_services/profile.service";
-import {UploadImgComponent} from './upload-img/upload-img.component';
+import {UploadImgComponent} from './utils/upload-img/upload-img.component';
 import {NotificationsHostDirective} from './notifications/notifications-host.directive';
 import {InviteNotificationComponent} from './notifications/invite-notification/invite-notification.component';
 import {NotificationContainerComponent} from './notifications/notification-container/notification-container.component';
@@ -63,6 +63,8 @@ import {UpdateItemComponent} from "./wishlist/update-item/update-item.component"
 import {ItemDetailsViewComponent} from "./wishlist/item-details-view/item-details-view.component";
 import {AllItemsComponent} from "./wishlist/all-Items/all-items.component";
 import { DeleteFolderComponent } from './folders/delete-folder/delete-folder.component';
+import { GoogleMapsComponent } from './utils/google-maps/google-maps.component';
+import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
   imports: [
@@ -75,7 +77,13 @@ import { DeleteFolderComponent } from './folders/delete-folder/delete-folder.com
     ReactiveFormsModule,
     EditorModule,
     BrowserAnimationsModule, CalendarModule.forRoot(),
-    NgbModalModule.forRoot()
+    NgbModalModule.forRoot(),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyBosHI7J2BNwC_oQb61lOmHcIh9Urt28Es',
+      libraries: ['places'],
+      region: 'UA',
+      language: 'en'
+    })
   ],
   declarations: [
     AppComponent,
@@ -123,6 +131,7 @@ import { DeleteFolderComponent } from './folders/delete-folder/delete-folder.com
     ItemDetailsViewComponent,
     AllItemsComponent,
     DeleteFolderComponent,
+    GoogleMapsComponent,
   ],
   providers: [
     AuthGuard,

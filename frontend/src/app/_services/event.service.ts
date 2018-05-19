@@ -120,4 +120,11 @@ import {UpdateEventDTO} from "../_models/dto/UpdateEventDTO";
     return this.http.get(`api/import/pdf`,
       {headers: AuthenticationService.getAuthHeader()})
   }
+
+  // createLocation(location : Location ) {
+  //   const url = this.eventsUrl;
+  //   return this.http.post<Location>(url, location, {headers: AuthenticationService.getAuthHeader()});
+  //
+  // }
+
 }
