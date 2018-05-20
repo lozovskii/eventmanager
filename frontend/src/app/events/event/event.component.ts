@@ -17,6 +17,7 @@ export class EventComponent implements OnInit {
   isCreator: boolean;
   isParticipant: boolean;
   additionEventForm: FormGroup;
+  isPeople: boolean;
 
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute,
@@ -33,7 +34,7 @@ export class EventComponent implements OnInit {
       this.eventDTO = eventDTO;
       let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
       this.isCreator = currentUserId == this.eventDTO.event.creatorId;
-      // this.isPeople = !(this.eventDTO.additionEvent.people.length = 0);
+      this.isPeople = !(this.eventDTO.additionEvent.people.length = 0);
     });
   }
 
@@ -46,17 +47,18 @@ export class EventComponent implements OnInit {
   addParticipant() {
     this.eventService.addParticipant(this.eventDTO.event.id).subscribe(() => {
       this.isParticipant = true;
-      //this.eventDTO.people.push(JSON.parse(sessionStorage.getItem('currentUser')).id);
+      this.eventDTO.additionEvent.people.push(JSON.parse(sessionStorage.getItem('currentUser')).id);
+      console.log(this.eventDTO.additionEvent.people);
     });
   }
 
   removeParticipant() {
     this.eventService.removeParticipant(this.eventDTO.event.id).subscribe(() => {
       this.isParticipant = false;
-      // const index = this.eventDTO.people.indexOf(JSON.parse(sessionStorage.getItem('currentUser')).id);
-      // if (index>-1) {
-      //   this.eventDTO.people.slice(index);
-      // }
+      const index = this.eventDTO.additionEvent.people.indexOf(JSON.parse(sessionStorage.getItem('currentUser')).id);
+      if (index>-1) {
+        this.eventDTO.additionEvent.people.slice(index);
+      }
     });
   }
 

@@ -95,6 +95,7 @@ import {UpdateEventDTO} from "../_models/dto/UpdateEventDTO";
   }
 
   addParticipant(eventId) {
+    console.log(eventId);
     let customerId = this.userService.getCurrentId();
     const url = `${this.eventsUrl}/addParticipant?customerId=${customerId}&eventId=${eventId}`;
     return this.http.get(url, {headers: AuthenticationService.getAuthHeader()});
