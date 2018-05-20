@@ -9,7 +9,7 @@
         You've joined this event.
         <button class="btn btn-outline-danger" (click)="removeParticipant()">Leave</button>
       </div>
-      <div *ngIf="!isParticipant">
+      <div *ngIf="!isParticipant && !isCreator">
         <button class="btn btn-outline-success" (click)="addParticipant()">Join event</button>
       </div>
     </div>
