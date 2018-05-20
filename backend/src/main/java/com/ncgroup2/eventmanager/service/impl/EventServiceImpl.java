@@ -296,4 +296,17 @@ public class EventServiceImpl implements EventService {
         return googleCalendarService.getEvents(calendarId,from,to);
     }
 
+    @Override
+    public List<Event> getTimeline(String login, LocalDateTime from, LocalDateTime to) {
+        String customerId = customerDao.getEntityByField("login", login).getId();
+        return  eventDao.getTimelineEvents(customerId,from,to);
+    }
+
+//    private boolean isOverlaped(Event first, Event second) {
+//        return first.getEndTime().isAfter(second.getStartTime());
+//    }
+//    private boolean isFirstEndsEarlier(Event first, Event second) {
+//        return first.getEndTime().isBefore(second.getEndTime());
+//    }
+
 }
