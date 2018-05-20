@@ -5,6 +5,7 @@ import {AlertService, EventService, UserService} from "../../_services";
 import {Router} from "@angular/router";
 import {VISIBILITY} from "../../event-visibility";
 import {Location} from "../../_models/location";
+import {LocationService} from "../../_services/location.service";
 
 @Component({
   selector: 'app-event-create',
@@ -31,7 +32,8 @@ export class CreateEventComponent implements OnInit {
               private eventService: EventService,
               private alertService: AlertService,
               private formBuilder: FormBuilder,
-              private userService: UserService) {
+              private userService: UserService,
+              private locationService : LocationService) {
   }
 
   ngOnInit(): void {
@@ -85,14 +87,17 @@ export class CreateEventComponent implements OnInit {
     if ((eventDTO.event.day != null) && (eventDTO.event.day != '')) {
       eventDTO.event.startTime = eventDTO.event.day + ' ' + eventDTO.event.startTime + ':00';
       eventDTO.event.endTime = eventDTO.event.day + ' ' + eventDTO.event.endTime + ':00';
+      // eventDTO.event.id
     }else{
       eventDTO.event.startTime = null;
       eventDTO.event.endTime = null;
     }
     eventDTO.additionEvent.people = this.selectedPeople;
+    eventDTO.additionEvent.location = this.eventLocation;
+    console.log('in create-event loc');
+    console.log(this.eventLocation);
     let customerId = this.userService.getCurrentId();
     eventDTO.event.creatorId = customerId;
-    console.log(JSON.stringify(eventDTO));
     this.eventService.create(eventDTO).subscribe(
       data => {
         if ((eventDTO.event.day != null) && (eventDTO.event.day != '')) {
@@ -142,18 +147,12 @@ export class CreateEventComponent implements OnInit {
     return this.additionEventForm.get('frequencyNumber');
   }
 
+
   addLocation(location: Location) {
     this.eventLocation = location;
     console.log('create-event ' + this.eventLocation.street);
     console.log('create-event ' + this.eventLocation.house);
-    // let customerId = this.userService.getCurrentId();
-    // this.eventService.createLocation(this.eventLocation.country, this.eventLocation.city, this.eventLocation.street,
-    //   this.eventLocation.house).subscribe(data => {
-    //     this.alertService.success('Location added!', true);
-    //   },
-    //   error => {
-    //     this.alertService.error('Not saved! We working.. please try again');
-    //   });
+
   }
 
 }

@@ -10,6 +10,7 @@ import java.util.UUID;
 public class Location extends Entity {
 
     private String id;
+    private String event_id;
     private String country;
     private String city;
     private String street;
@@ -23,11 +24,24 @@ public class Location extends Entity {
 
     public Object[] getParams() {
         return new Object[] {
+                getId(),
+                getEvent_id(),
                 getCountry(),
                 getCity(),
                 getStreet(),
-                getHouse(),
-                getId()
+                getHouse()
         };
+    }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "id='" + id + '\'' +
+                ", event_id='" + event_id + '\'' +
+                ", country='" + country + '\'' +
+                ", city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                ", house='" + house + '\'' +
+                '}';
     }
 }

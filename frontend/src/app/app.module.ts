@@ -20,6 +20,7 @@ import {FooterComponent} from './footer/footer.component';
 import {ReCaptchaModule} from 'angular2-recaptcha';
 import {CreateEventComponent} from './events/create-event/create-event.component';
 import {EventService} from "./_services/event.service";
+import {LocationService} from "./_services/location.service";
 import {EventlistComponent} from './events/eventlist/eventlist.component';
 import {RegistrationConfirmComponent} from './registration-confirm/registration-confirm.component';
 import {ProfileComponent} from './profile/profile.component';
@@ -145,7 +146,8 @@ import { AgmCoreModule } from '@agm/core';
     WishListService,
     ProfileService,
     NotificationService,
-    FolderService
+    FolderService,
+    LocationService
     // provider used to create fake backend
   ],
   entryComponents: [

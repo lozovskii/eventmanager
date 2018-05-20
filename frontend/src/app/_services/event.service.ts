@@ -7,6 +7,7 @@ import {UserService} from "./user.service";
 import {EventDTOModel} from "../_models/dto/eventDTOModel";
 import {AuthenticationService} from "./authentication.service";
 import {UpdateEventDTO} from "../_models/dto/UpdateEventDTO";
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
   export class EventService {
@@ -120,11 +121,5 @@ import {UpdateEventDTO} from "../_models/dto/UpdateEventDTO";
     return this.http.get(`api/import/pdf`,
       {headers: AuthenticationService.getAuthHeader()})
   }
-
-  // createLocation(location : Location ) {
-  //   const url = this.eventsUrl;
-  //   return this.http.post<Location>(url, location, {headers: AuthenticationService.getAuthHeader()});
-  //
-  // }
 
 }

@@ -12,6 +12,7 @@ public class LocationMapper implements RowMapper<Location> {
         Location location = new Location();
 
         location.setId(rs.getString("id"));
+        location.setEvent_id(rs.getString("event_id"));
         location.setCountry(rs.getString("country"));
         location.setCity(rs.getString("city"));
         location.setStreet(rs.getString("street"));

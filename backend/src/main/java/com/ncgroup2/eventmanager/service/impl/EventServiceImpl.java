@@ -2,6 +2,7 @@ package com.ncgroup2.eventmanager.service.impl;
 
 import com.ncgroup2.eventmanager.dao.CustomerDao;
 import com.ncgroup2.eventmanager.dao.EventDao;
+import com.ncgroup2.eventmanager.dao.LocationDao;
 import com.ncgroup2.eventmanager.dto.*;
 import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.entity.Event;
@@ -28,18 +29,26 @@ public class EventServiceImpl implements EventService {
     private final EventDao eventDao;
     private final CustomerDao customerDao;
     private final GoogleCalendarService googleCalendarService;
+    private final LocationDao locationDao;
 
     @Autowired
-    public EventServiceImpl(MyMailSender mailSender, EventDao eventDao, CustomerDao customerDao, GoogleCalendarService googleCalendarService) {
+    public EventServiceImpl(MyMailSender mailSender, EventDao eventDao, CustomerDao customerDao,
+                            GoogleCalendarService googleCalendarService, LocationDao locationDao) {
         this.mailSender = mailSender;
         this.eventDao = eventDao;
         this.customerDao = customerDao;
         this.googleCalendarService = googleCalendarService;
+        this.locationDao = locationDao;
     }
 
     @Override
     public void createEvent(EventDTO eventDTO) {
         Event event = eventDTO.getEvent();
+
+        System.out.println("Loc in createEvent 1: " + eventDTO.getAdditionEvent().getLocation());
+        System.out.println("Id event: " + eventDTO.getEvent().getId());
+
+
         Object[] frequancy = checkDefaultCustEventFrequency(eventDTO);
         Long frequencyNumber = (Long) frequancy[0];
         String frequencyPeriod = (String) frequancy[1];
@@ -65,11 +74,19 @@ public class EventServiceImpl implements EventService {
                     frequencyPeriod = startFrequencyPeriod;
                     List loginList = getExistingCustomers(eventDTO.getAdditionEvent().getPeople());
                     createEventInvitations(loginList, eventId);
+                    System.out.println("Id event 2: " + eventId);
+                    eventDTO.getAdditionEvent().getLocation().setEvent_id(eventId.toString());
+                    System.out.println("Loc in createEvent 2: " + eventDTO.getAdditionEvent().getLocation());
+
                 }
             } else {
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
                 List loginList = getExistingCustomers(eventDTO.getAdditionEvent().getPeople());
                 createEventInvitations(loginList, eventId);
+                System.out.println("Id event 2: " + eventId);
+                eventDTO.getAdditionEvent().getLocation().setEvent_id(eventId.toString());
+                System.out.println("Loc in createEvent 2: " + eventDTO.getAdditionEvent().getLocation());
+                locationDao.create(eventDTO.getAdditionEvent().getLocation());
             }
         } else {
             if ((frequencyNumber != null) && (frequencyPeriod != null)) {
