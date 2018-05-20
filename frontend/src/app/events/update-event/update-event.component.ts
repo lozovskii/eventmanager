@@ -90,7 +90,6 @@ export class UpdateEventComponent implements OnInit {
 
     this.updateEventDTO.newPeople = this.newPeople;
     this.updateEventDTO.removedPeople = this.removedPeople;
-    console.log("before update > " + JSON.stringify(this.updateEventDTO));
     this.eventService.updateEvent(this.updateEventDTO)
       .subscribe(() => {
         this.alertService.info('Event successfully updated!', true);

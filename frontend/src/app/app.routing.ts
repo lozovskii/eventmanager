@@ -39,6 +39,7 @@ const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'create-event', component: CreateEventComponent, canActivate: [AuthGuard]},
+  { path: 'create-event/:type/:id', component: CreateEventComponent, canActivate: [AuthGuard]},
   { path: 'event/:id', component: EventComponent, canActivate: [AuthGuard]},
   { path: 'update-event/:id', component: UpdateEventComponent, canActivate: [AuthGuard]},
   { path: 'registration-confirm', component: RegistrationConfirmComponent},
