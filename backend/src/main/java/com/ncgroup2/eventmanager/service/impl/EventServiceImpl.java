@@ -74,28 +74,31 @@ public class EventServiceImpl implements EventService {
                     frequencyPeriod = startFrequencyPeriod;
                     List loginList = getExistingCustomers(eventDTO.getAdditionEvent().getPeople());
                     createEventInvitations(loginList, eventId);
-                    System.out.println("Id event 2: " + eventId);
-                    eventDTO.getAdditionEvent().getLocation().setEvent_id(eventId.toString());
-                    System.out.println("Loc in createEvent 2: " + eventDTO.getAdditionEvent().getLocation());
-
+                    addLocation(eventDTO,eventId);
                 }
             } else {
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
                 List loginList = getExistingCustomers(eventDTO.getAdditionEvent().getPeople());
                 createEventInvitations(loginList, eventId);
-                System.out.println("Id event 2: " + eventId);
-                eventDTO.getAdditionEvent().getLocation().setEvent_id(eventId.toString());
-                System.out.println("Loc in createEvent 2: " + eventDTO.getAdditionEvent().getLocation());
-                locationDao.create(eventDTO.getAdditionEvent().getLocation());
+                addLocation(eventDTO,eventId);
             }
         } else {
             if ((frequencyNumber != null) && (frequencyPeriod != null)) {
                 frequencyPeriod = frequencyNumber + " " + frequencyPeriod;
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
+                addLocation(eventDTO,eventId);
+
             } else {
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
+                addLocation(eventDTO,eventId);
+
             }
         }
+    }
+
+    private void addLocation(EventDTO eventDTO, UUID eventId) {
+        eventDTO.getAdditionEvent().getLocation().setEvent_id(eventId.toString());
+        locationDao.create(eventDTO.getAdditionEvent().getLocation());
     }
 
     private List<String> getExistingCustomers(List<String> logins) {
