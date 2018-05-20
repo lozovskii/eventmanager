@@ -185,6 +185,15 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     }
 
     @Override
+    public List<Event> getEventsByCustIdSortedByStartTime(String custId) {
+        String query = queryService.getQuery("event.getByCustIdSortByStartDate");
+        Object[] params = new Object[]{
+                custId
+        };
+        return this.getJdbcTemplate().query(query, params, new BeanPropertyRowMapper(Event.class));
+    }
+
+    @Override
     public List<Event> getNotesByCustId(String custId) {
         String query = queryService.getQuery("note.getByCustId");
         Object[] params = new Object[]{
@@ -277,13 +286,11 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
     @Override
     public List getParticipants(String eventId) {
-        System.out.println(eventId);
         String query = queryService.getQuery("event.getParticipants");
         Object[] params = new Object[]{
                 eventId
         };
         List<String> listParticipants = this.getJdbcTemplate().queryForList(query, params, String.class);
-        System.out.println(listParticipants);
         if (!listParticipants.isEmpty()) {
             return listParticipants;
         } else {
@@ -407,6 +414,29 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
                 event.getId()
         };
         this.getJdbcTemplate().update(query_customer_event, customerEventParams);
+    }
+
+    @Override
+    public List<Event> getTimelineEvents(String customerId, LocalDateTime from, LocalDateTime to) {
+        String sql = queryService.getQuery("event.timeline");
+        Object[] params = new Object[] {
+                customerId,
+                from,
+                to
+        };
+        return this.getJdbcTemplate().query(sql, params, (resultSet, i) -> {
+            Event event = new Event();
+            LocalDateTime eventTime = resultSet.getDate("date").toLocalDate().atStartOfDay();
+            System.out.println(eventTime);
+            event.setStartTime(eventTime);
+            event.setEndTime(eventTime.plusDays(1).minusSeconds(1));
+            if(resultSet.getInt("busy")>0) {
+                event.setVisibility("PUBLIC");
+            } else {
+                event.setVisibility("PRIVATE");
+            }
+            return event;
+        });
     }
 
 }

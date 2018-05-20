@@ -124,8 +124,6 @@ public class EventServiceImpl implements EventService {
 
         String url = "/event-container/"+eventId.toString();
         mailSender.sendBasicEmailWithLink(sendTo,subject,message,url);
-
-
     }
 
     @Override
@@ -155,7 +153,9 @@ public class EventServiceImpl implements EventService {
         List<String> listParticipants = eventDao.getParticipants(eventId);
         EventDTO eventDTO = new EventDTO();
         eventDTO.setEvent(event);
-        additionalEventModelDTO.setPeople(listParticipants);
+        if(listParticipants!=null){
+            additionalEventModelDTO.setPeople(listParticipants);
+        }
         eventDTO.setAdditionEvent(additionalEventModelDTO);
         return eventDTO;
     }
@@ -280,7 +280,7 @@ public class EventServiceImpl implements EventService {
 
     private String checkDefaultCustEventVisibility(EventDTO eventDTO) {
         String visibility;
-        if (eventDTO.getEvent().getVisibility() == null) {
+        if ((eventDTO.getEvent().getVisibility() == null) || (eventDTO.getEvent().getVisibility().equals(""))) {
             visibility = EVENT_VISIBILITY_PRIVATE;
         } else {
             visibility = eventDTO.getEvent().getVisibility();
@@ -312,5 +312,18 @@ public class EventServiceImpl implements EventService {
     public List<Event> getNationalEvents(String calendarId, LocalDateTime from, LocalDateTime to) throws Exception {
         return googleCalendarService.getEvents(calendarId,from,to);
     }
+
+    @Override
+    public List<Event> getTimeline(String login, LocalDateTime from, LocalDateTime to) {
+        String customerId = customerDao.getEntityByField("login", login).getId();
+        return  eventDao.getTimelineEvents(customerId,from,to);
+    }
+
+//    private boolean isOverlaped(Event first, Event second) {
+//        return first.getEndTime().isAfter(second.getStartTime());
+//    }
+//    private boolean isFirstEndsEarlier(Event first, Event second) {
+//        return first.getEndTime().isBefore(second.getEndTime());
+//    }
 
 }

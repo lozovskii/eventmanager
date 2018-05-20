@@ -151,4 +151,10 @@ public class EventController {
         }
         return new ResponseEntity<>(list,HttpStatus.OK);
     }
+
+    @GetMapping("/timeline")
+    public ResponseEntity<List<Event>> getTimeline(@RequestParam String  login) {
+        List<Event> list = eventService.getTimeline(login, LocalDateTime.now(),LocalDateTime.now().plusMonths(1));
+        return new ResponseEntity<>(list,HttpStatus.OK);
+    }
 }

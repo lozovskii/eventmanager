@@ -61,6 +61,8 @@ public interface EventDao {
 
     List getEventsByCustIdFilterByType(String custId, String type);
 
+    List<Event> getEventsByCustIdSortedByStartTime(String custId);
+
     List<Event> getNotesByCustId(String custId);
 
     List<Event> getInvitesByCustId(String custId);
@@ -68,4 +70,7 @@ public interface EventDao {
     List<Event> getDraftsByCustId(String custId);
 
     void updateStartNotifTime(Event event, LocalDateTime startNotifTime);
+
+    List<Event> getTimelineEvents(String customerId, LocalDateTime from, LocalDateTime to);
+
 }

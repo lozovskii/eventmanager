@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
 import {AlertService, EventService, UserService} from "../../_services";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {VISIBILITY} from "../../event-visibility";
 import {Location} from "../../_models/location";
 import {LocationService} from "../../_services/location.service";
@@ -13,14 +13,17 @@ import {LocationService} from "../../_services/location.service";
   styleUrls: ['./create-event.component.css']
 })
 export class CreateEventComponent implements OnInit {
+  @Input('noteId') noteId: string;
 
-  eventForm: FormGroup = this.initEventForm();
-  additionEventForm: FormGroup = this.initAdditionEventForm();
+  eventDTO: EventDTOModel;
+  eventForm: FormGroup;
+  additionEventForm: FormGroup;
+  eventDTOForm: FormGroup;
+  isNote:boolean = false;
 
-  eventDTOForm: FormGroup = this.formBuilder.group({
-    event: this.eventForm,
-    additionEvent: this.additionEventForm
-  });
+  nameNote: string;
+  descriptionNote:string;
+
   isValidFormSubmitted = null;
 
   visibilityList: any[] = VISIBILITY;
@@ -30,6 +33,7 @@ export class CreateEventComponent implements OnInit {
 
   constructor(private router: Router,
               private eventService: EventService,
+              private activatedRoute: ActivatedRoute,
               private alertService: AlertService,
               private formBuilder: FormBuilder,
               private userService: UserService,
@@ -37,19 +41,33 @@ export class CreateEventComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.eventForm);
-    console.log(this.additionEventForm);
-    console.log(this.eventDTOForm);
+    this.eventForm = this.initEventForm();
+    this.additionEventForm = this.initAdditionEventForm();
+    this.eventDTOForm = this.formBuilder.group({
+      event: this.eventForm,
+      additionEvent: this.additionEventForm
+    });
+    this.activatedRoute.params.subscribe(params => {
+      let type = params['type'];
+      switch (type) {
+        case 'note' : {
+          this.isNote = true;
+          this.noteId = this.activatedRoute.snapshot.paramMap.get('id');
+          this.getNoteById();
+          break;
+        }
+      }
+    });
   }
 
   initEventForm(): FormGroup {
     return this.formBuilder.group({
-      name : ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
-      description: new FormControl(''),
-      day: new FormControl(''),
-      startTime: new FormControl(''),
-      endTime: new FormControl(''),
-      visibility: new FormControl('')
+      name : new FormControl(),
+      description: new FormControl(),
+      day: new FormControl(),
+      startTime: new FormControl(),
+      endTime: new FormControl(),
+      visibility: new FormControl()
     })
   }
 
@@ -76,9 +94,13 @@ export class CreateEventComponent implements OnInit {
   }
 
   createEventForm(eventDTO: EventDTOModel) {
-
+    if(eventDTO.event.name == null){
+      eventDTO.event.name = this.eventDTO.event.name;
+    }
+    if(eventDTO.event.description == null){
+      eventDTO.event.description = this.eventDTO.event.description;
+    }
     this.isValidFormSubmitted = false;
-
     if (this.eventForm.invalid || this.additionEventForm.invalid) {
       return;
     }
@@ -87,15 +109,12 @@ export class CreateEventComponent implements OnInit {
     if ((eventDTO.event.day != null) && (eventDTO.event.day != '')) {
       eventDTO.event.startTime = eventDTO.event.day + ' ' + eventDTO.event.startTime + ':00';
       eventDTO.event.endTime = eventDTO.event.day + ' ' + eventDTO.event.endTime + ':00';
-      // eventDTO.event.id
     }else{
       eventDTO.event.startTime = null;
       eventDTO.event.endTime = null;
     }
     eventDTO.additionEvent.people = this.selectedPeople;
     eventDTO.additionEvent.location = this.eventLocation;
-    console.log('in create-event loc');
-    console.log(this.eventLocation);
     let customerId = this.userService.getCurrentId();
     eventDTO.event.creatorId = customerId;
     this.eventService.create(eventDTO).subscribe(
@@ -119,6 +138,13 @@ export class CreateEventComponent implements OnInit {
   }
 
   saveAsADraft(eventDTO: EventDTOModel){
+    if(eventDTO.event.name == null){
+      eventDTO.event.name = this.eventDTO.event.name;
+    }
+    if(eventDTO.event.description == null){
+      eventDTO.event.description = this.eventDTO.event.description;
+    }
+    this.isValidFormSubmitted = true;
     if ((eventDTO.event.day != null) && (eventDTO.event.day != '')) {
       eventDTO.event.startTime = eventDTO.event.day + ' ' + eventDTO.event.startTime + ':00';
       eventDTO.event.endTime = eventDTO.event.day + ' ' + eventDTO.event.endTime + ':00';
@@ -147,6 +173,14 @@ export class CreateEventComponent implements OnInit {
     return this.additionEventForm.get('frequencyNumber');
   }
 
+  getNoteById(): void {
+    this.eventService.getNoteById(this.noteId)
+      .subscribe((eventDTO) => {
+        this.eventDTO = eventDTO;
+        this.nameNote = this.eventDTO.event.name;
+        this.descriptionNote = this.eventDTO.event.description;
+      });
+  }
 
   addLocation(location: Location) {
     this.eventLocation = location;

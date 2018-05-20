@@ -76,8 +76,8 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
     public void create(Customer customer) {
 
         String sql = "INSERT INTO \"Customer\" " +
-                "(id,name,second_name,phone,login,email,password,isverified,token,avatar,registration_date)" +
-                " values(uuid_generate_v1(),?,?,?,?,?,?,?,?,?,?)";
+                "(name,second_name,phone,login,email,password,isverified,token,avatar,registration_date)" +
+                " values(?,?,?,?,?,?,?,?,?,?)";
 
         Object[] params = customer.getParams();
 

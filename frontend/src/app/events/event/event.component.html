@@ -9,7 +9,7 @@
         You've joined this event.
         <button class="btn btn-outline-danger" (click)="removeParticipant()">Leave</button>
       </div>
-      <div *ngIf="!isParticipant">
+      <div *ngIf="!isParticipant && !isCreator">
         <button class="btn btn-outline-success" (click)="addParticipant()">Join event</button>
       </div>
     </div>
@@ -21,15 +21,16 @@
     </div>
     <p>Start time: {{eventDTO.event.startTime}}</p>
     <p>End time: {{eventDTO.event.endTime}}</p>
-    <p>Privacy: {{eventDTO.event.visibility}}</p>
-    <p *ngIf="isParticipant || isCreator">Priority: {{eventDTO.additionEvent.priority}}</p>
-    <div class="row">
-      <p class="col-md-2">People:</p>
-      <div class="col-md-10" *ngFor="let login of eventDTO.additionEvent.people">
-        <p _nglogin>{{login}}</p>
+    <p>Visibility: {{eventDTO.event.visibility}}</p>
+
+    <div *ngIf="isParticipant || isCreator">
+      <p *ngIf="isParticipant || isCreator">Priority: {{eventDTO.additionEvent.priority}}</p>
+      <div class="row">
+        <p class="col-md-2">People:</p>
+        <div class="col-md-10" *ngFor="let login of eventDTO.additionEvent.people">
+          <p _nglogin>{{login}}</p>
+        </div>
       </div>
-    </div>
-  <div *ngIf="isParticipant || isCreator">
     <app-event-notification></app-event-notification>
   </div>
 </div>
