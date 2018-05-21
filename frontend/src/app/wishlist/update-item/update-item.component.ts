@@ -65,14 +65,15 @@ export class UpdateItemComponent implements OnInit, OnChanges {
   }
 
   updateItem(item: Item) {
-    item.id = this.item.id;
-    item.creator_customer_login = this.item.creator_customer_login;
+    this.item.name = item.name;
+    this.item.dueDate = item.dueDate;
+    this.item.description = item.description;
+    this.item.link = item.link;
     if (this.base64Image)
-      item.image = this.base64Image;
+      this.item.image = this.base64Image;
     else
-      item.image = this.additionalForm.get('imageUrl').value;
-    item.tags = this.item.tags;
-    this.wishListService.updateItem(item)
+      this.item.image = this.additionalForm.get('imageUrl').value;
+    this.wishListService.updateItem(this.item)
       .subscribe(() => {
           this.alertService.success('Item successfully updated');
         },
@@ -80,7 +81,7 @@ export class UpdateItemComponent implements OnInit, OnChanges {
           this.alertService.error("Something wrong");
         });
 
-    this.updatedItem.emit(item);
+    this.updatedItem.emit(this.item);
 
     if (this.trash.length > 0) {
       this.wishListService.deleteTags(this.trash)

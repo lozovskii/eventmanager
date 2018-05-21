@@ -73,7 +73,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <app-create-item [included]="true"></app-create-item>
+            <app-create-item [included]="true" (createdItem)="addCreatedItem($event)"></app-create-item>
           </div>
         </div>
       </div>

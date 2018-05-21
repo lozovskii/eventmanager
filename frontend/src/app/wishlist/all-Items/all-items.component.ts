@@ -56,6 +56,10 @@ export class AllItemsComponent implements OnInit {
     this.itemView = item;
   }
 
+  addCreatedItem(item: Item): void {
+    this.items.push(item);
+  }
+
   addItem(item: Item): void {
     let wishListItem: WishListItem = new WishListItem();
     wishListItem.item = item;
