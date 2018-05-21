@@ -157,4 +157,10 @@ public class EventController {
         List<Event> list = eventService.getTimeline(login, LocalDateTime.now(),LocalDateTime.now().plusMonths(1));
         return new ResponseEntity<>(list,HttpStatus.OK);
     }
+
+    @GetMapping ("/updatePriority")
+    public ResponseEntity updatePriority(@RequestParam String customerId,@RequestParam String eventId, @RequestParam String priority) {
+        eventService.updatePriority(customerId,eventId,priority);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

@@ -147,7 +147,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
                 custId
         };
         String orderBy = " ORDER BY start_time";
-        return this.getJdbcTemplate().query(query+orderBy, params, new BeanPropertyRowMapper(Event.class));
+        return this.getJdbcTemplate().query(query + orderBy, params, new BeanPropertyRowMapper(Event.class));
     }
 
     @Override
@@ -158,7 +158,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
                 custId
         };
         String orderBy = " ORDER BY name";
-        return this.getJdbcTemplate().query(query+orderBy, params, new BeanPropertyRowMapper(Event.class));
+        return this.getJdbcTemplate().query(query + orderBy, params, new BeanPropertyRowMapper(Event.class));
     }
 
     @Override
@@ -169,7 +169,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
                 custId
         };
         String orderBy = " ORDER BY status";
-        return this.getJdbcTemplate().query(query+orderBy, params, new BeanPropertyRowMapper(Event.class));
+        return this.getJdbcTemplate().query(query + orderBy, params, new BeanPropertyRowMapper(Event.class));
     }
 
     @Override
@@ -420,7 +420,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     @Override
     public List<Event> getTimelineEvents(String customerId, LocalDateTime from, LocalDateTime to) {
         String sql = queryService.getQuery("event.timeline");
-        Object[] params = new Object[] {
+        Object[] params = new Object[]{
                 customerId,
                 from,
                 to
@@ -431,7 +431,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
             System.out.println(eventTime);
             event.setStartTime(eventTime);
             event.setEndTime(eventTime.plusDays(1).minusSeconds(1));
-            if(resultSet.getInt("busy")>0) {
+            if (resultSet.getInt("busy") > 0) {
                 event.setVisibility("PUBLIC");
             } else {
                 event.setVisibility("PRIVATE");
@@ -440,4 +440,18 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         });
     }
 
+    @Override
+    public void updatePriority(String customerId, String eventId, String priority) {
+        String sql = "UPDATE \"Customer_Event\" SET priority = (select id from \"Customer_Event_Priority\" where name = ?)" +
+                "where event_id = cast(? as UUID) " +
+                "and customer_id = cast(? as UUID) ";
+
+        Object[] params = new Object[]{
+                priority,
+                eventId,
+                customerId
+        };
+        this.getJdbcTemplate().update(sql, params);
+
+    }
 }

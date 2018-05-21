@@ -3,7 +3,7 @@ import {EventService} from "../../_services";
 import {ActivatedRoute, Router} from "@angular/router";
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
 import {AlertService} from "../../_services/alert.service";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-event',
@@ -17,11 +17,12 @@ export class EventComponent implements OnInit {
   isCreator: boolean;
   isParticipant: boolean = false;
   additionEventForm: FormGroup;
+  priority: string;
 
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
-              private alertService : AlertService,
+              private alertService: AlertService,
               private formBuilder: FormBuilder) {
   }
 
@@ -30,7 +31,7 @@ export class EventComponent implements OnInit {
     this.initAdditionEventForm();
     this.isCreator = false;
     const id = this.eventId;
-    this.eventService.getEventById(id).subscribe((eventDTO : EventDTOModel) => {
+    this.eventService.getEventById(id).subscribe((eventDTO: EventDTOModel) => {
       this.eventDTO = eventDTO;
       let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
       let currentUserLogin = JSON.parse(sessionStorage.getItem('currentUser')).login;
@@ -57,11 +58,11 @@ export class EventComponent implements OnInit {
     this.eventService.removeParticipant(this.eventDTO.event.id).subscribe(() => {
       this.isParticipant = false;
       const indexOfId = this.eventDTO.additionEvent.people.indexOf(JSON.parse(sessionStorage.getItem('currentUser')).id);
-      if (indexOfId>-1) {
+      if (indexOfId > -1) {
         this.eventDTO.additionEvent.people.slice(indexOfId);
       }
       const indexOfLogin = this.eventDTO.additionEvent.people.indexOf(JSON.parse(sessionStorage.getItem('currentUser')).login);
-      if (indexOfLogin>-1) {
+      if (indexOfLogin > -1) {
         this.eventDTO.additionEvent.people.slice(indexOfLogin);
       }
     });
@@ -69,9 +70,16 @@ export class EventComponent implements OnInit {
 
   delete() {
     this.eventService.deleteEvent(this.eventDTO.event.id).subscribe(() => {
-      this.alertService.info('Event successfully deleted!',true);
+      this.alertService.info('Event successfully deleted!', true);
       this.router.navigate(['../home']);
     });
+  }
+
+  changePriority() {
+    this.eventService.updatePriority(this.eventId, this.priority).subscribe(
+      () => this.eventDTO.additionEvent.priority = this.priority,
+      () => this.alertService.error('Something went wrong while updating priority', false)
+    );
   }
 
 
