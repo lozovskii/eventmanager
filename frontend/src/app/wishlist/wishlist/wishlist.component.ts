@@ -22,10 +22,13 @@ export class WishListComponent implements OnInit {
   hasChanges: boolean = false;
   path: string[] = ['name'];
   order: number = 1;
+  queryString: string;
 
   constructor(private wishListService: WishListService,
               private userService: UserService,
-              private alertService: AlertService) {}
+              private alertService: AlertService) {
+    this.queryString = '';
+  }
 
   ngOnInit() {
     if (this.editMode) {

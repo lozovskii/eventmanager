@@ -22,6 +22,7 @@ export class AllItemsComponent implements OnInit {
   path: string[] = ['name'];
   order: number = 1;
   customerLogin: string;
+  queryString: string;
 
   constructor(private wishListService: WishListService,
               private userService: UserService,
@@ -30,6 +31,7 @@ export class AllItemsComponent implements OnInit {
     this.item = new Item();
     this.itemView = new Item();
     this.editableItem = new Item();
+    this.queryString = '';
   }
 
   ngOnInit() {

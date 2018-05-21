@@ -20,6 +20,7 @@ export class BookedItemsComponent implements OnInit {
   value : number;
   path: string[] = ['item'];
   order: number = 1;
+  queryString: string;
 
   constructor(private wishListService: WishListService,
               private alertService: AlertService) {
@@ -27,6 +28,7 @@ export class BookedItemsComponent implements OnInit {
     this.updatableWishList = new WishList();
     this.updatableWishList.items = [];
     this.wishListItemView = new WishListItem();
+    this.queryString = '';
   }
 
   ngOnInit() {

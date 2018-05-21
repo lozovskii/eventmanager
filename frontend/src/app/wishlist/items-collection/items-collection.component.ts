@@ -21,6 +21,7 @@ export class ItemsCollectionComponent implements OnInit {
   items: Item[];
   path: string[] = ['item'];
   order: number = 1;
+  queryString: string;
 
   constructor(private wishListService: WishListService,
               private alertService: AlertService) {
@@ -29,6 +30,7 @@ export class ItemsCollectionComponent implements OnInit {
     this.wishList = new WishList();
     this.editableItem = new Item();
     this.itemView = new Item();
+    this.queryString = '';
   }
 
   ngOnInit() {
