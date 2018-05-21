@@ -52,13 +52,13 @@
         <br>
         <div class="form-group">
           <label>Visibility</label>
-          <select *ngIf = "isDraft" value = "{{eventDTO.event.visibility}}" formControlName="visibility" [(ngModel)]="visibility" type="text" class="form-control"
+          <select *ngIf = "isDraft" value = "{{eventDTO.event.visibility}}" formControlName="visibility" type="text" class="form-control"
                   name="visibility">
             <option *ngFor="let vision of visibilityList" [ngValue]="vision">
               {{vision}}
             </option>
           </select>
-          <select *ngIf = "!isNote && !isDraft" formControlName="visibility" [(ngModel)]="visibility" type="text" class="form-control"
+          <select *ngIf = "!isNote && !isDraft" formControlName="visibility" type="text" class="form-control"
                   name="visibility">
             <option *ngFor="let vision of visibilityList" [ngValue]="vision">
               {{vision}}

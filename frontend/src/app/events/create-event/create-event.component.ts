@@ -27,6 +27,9 @@ export class CreateEventComponent implements OnInit {
   descriptionNote:string;
   startDateDraft:string;
   endDateDraft:string;
+  visibilityDraft:string;
+  priorityDraft:string;
+  peopleDraft:string[];
 
   isValidFormSubmitted = null;
 
@@ -103,17 +106,18 @@ export class CreateEventComponent implements OnInit {
   }
 
   createEventForm(eventDTO: EventDTOModel) {
+    console.log('here');
     if(eventDTO.event.name == null){
       eventDTO.event.name = this.eventDTO.event.name;
     }
     if(eventDTO.event.description == null){
       eventDTO.event.description = this.eventDTO.event.description;
     }
-    this.isValidFormSubmitted = false;
-    if (this.eventForm.invalid || this.additionEventForm.invalid) {
-      return;
-    }
-    this.isValidFormSubmitted = true;
+    // this.isValidFormSubmitted = false;
+    // if (this.eventForm.invalid || this.additionEventForm.invalid) {
+    //   return;
+    // }
+    // this.isValidFormSubmitted = true;
 
     if ((eventDTO.event.day != null) && (eventDTO.event.day != '')) {
       eventDTO.event.startTime = eventDTO.event.day + ' ' + eventDTO.event.startTime + ':00';
@@ -122,13 +126,23 @@ export class CreateEventComponent implements OnInit {
       eventDTO.event.startTime = this.startDateDraft;
       eventDTO.event.endTime = this.endDateDraft;
     }
+    if((eventDTO.event.visibility ==null) && (this.visibilityDraft !=null)){
+      eventDTO.event.visibility = this.visibilityDraft;
+    }
+    if((eventDTO.additionEvent.priority ==null) && (this.priorityDraft !=null)){
+      eventDTO.additionEvent.priority = this.priorityDraft;
+    }
+    if((eventDTO.additionEvent.people ==null) && (this.peopleDraft !=null)){
+      eventDTO.additionEvent.people = this.peopleDraft;
+    }
     eventDTO.additionEvent.people = this.selectedPeople;
     eventDTO.additionEvent.location = this.eventLocation;
     let customerId = this.userService.getCurrentId();
     eventDTO.event.creatorId = customerId;
+    console.log('eventDTO = ' + eventDTO);
     this.eventService.create(eventDTO).subscribe(
       data => {
-        if ((eventDTO.event.day != null) && (eventDTO.event.day != '')) {
+        if ((eventDTO.event.startTime != null) && (eventDTO.event.startTime != '')) {
           if (eventDTO.event.visibility == 'PUBLIC') {
             this.alertService.success('Public event successfully created! You can invite people to your event.', true);
             this.router.navigate(['../home']);
@@ -138,7 +152,7 @@ export class CreateEventComponent implements OnInit {
           }
         } else {
           this.alertService.success('Note successfully created!', true);
-          this.router.navigate(['../folder-list']);
+          this.router.navigate(['../folder-list', 'all']);
         }
       },
       error => {
@@ -200,6 +214,7 @@ export class CreateEventComponent implements OnInit {
       console.log(this.eventDTO);
       this.startDateDraft = this.eventDTO.event.startTime;
       this.endDateDraft = this.eventDTO.event.endTime;
+      this.visibilityDraft = this.eventDTO.event.visibility;
     });
   }
 
