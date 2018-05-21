@@ -7,7 +7,6 @@ export class Event {
   day: string;
   startTime: string;
   endTime: string;
-  priority: string;
   visibility: string;
   description: string;
   status: string;

@@ -27,28 +27,28 @@ export class EventService {
     return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()});
   }
 
-  getEventsByCustId(): Observable<Event[]> {
+  getEventsByCustId(): Observable<EventDTOModel[]> {
     let custId = this.userService.getCurrentId();
     const url = `${this.eventsUrl}/my${custId}`;
-    return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
+    return this.http.get<EventDTOModel[]>(url, {headers: AuthenticationService.getAuthHeader()})
   }
 
-  getEventsByCustIdSorted(): Observable<Event[]> {
+  getEventsByCustIdSorted(): Observable<EventDTOModel[]> {
     let custId = this.userService.getCurrentId();
     const url = `${this.eventsUrl}/my/sorted${custId}`;
-    return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
+    return this.http.get<EventDTOModel[]>(url, {headers: AuthenticationService.getAuthHeader()})
   }
 
-  getEventsByCustIdSortedType(): Observable<Event[]> {
+  getEventsByCustIdSortedType(): Observable<EventDTOModel[]> {
     let custId = this.userService.getCurrentId();
     const url = `${this.eventsUrl}/my/sorted/type${custId}`;
-    return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
+    return this.http.get<EventDTOModel[]>(url, {headers: AuthenticationService.getAuthHeader()})
   }
 
-  getEventsByCustIdFilterByType(type: string): Observable<Event[]> {
+  getEventsByCustIdFilterByType(type: string): Observable<EventDTOModel[]> {
     let custId = this.userService.getCurrentId();
     const url = `${this.eventsUrl}/my/filter/${type}/${custId}`;
-    return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
+    return this.http.get<EventDTOModel[]>(url, {headers: AuthenticationService.getAuthHeader()})
   }
 
   getDraftsByCustId(): Observable<Event[]> {

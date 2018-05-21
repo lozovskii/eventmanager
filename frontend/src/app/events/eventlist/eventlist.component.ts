@@ -4,6 +4,7 @@ import {Event} from "../../_models";
 import {ActivatedRoute} from "@angular/router";
 import {AlertService} from "../../_services/alert.service";
 import {VISIBILITY} from "../../event-visibility";
+import {EventDTOModel} from "../../_models/dto/eventDTOModel";
 
 @Component({
   selector: 'app-eventlist',
@@ -13,6 +14,7 @@ import {VISIBILITY} from "../../event-visibility";
 
 export class EventlistComponent implements OnInit {
   events: Event[];
+  eventsDTO: EventDTOModel[];
   visibilityList: string[] = VISIBILITY;
   isMy:boolean = false;
   from = '';
@@ -83,9 +85,9 @@ export class EventlistComponent implements OnInit {
 
   getEventsByCustId(): void {
     this.eventService.getEventsByCustId()
-      .subscribe((events) => {
-        this.events = events;
-        if(events.toString() == ''){
+      .subscribe((eventsDTO) => {
+        this.eventsDTO = eventsDTO;
+        if(eventsDTO.toString() == ''){
           this.alertService.info('You have no events yet.',true);
         }
       });
@@ -93,9 +95,9 @@ export class EventlistComponent implements OnInit {
 
   getEventsByCustIdSorted(): void {
     this.eventService.getEventsByCustIdSorted()
-      .subscribe((events) => {
-        this.events = events;
-        if(events.toString() == ''){
+      .subscribe((eventsDTO) => {
+        this.eventsDTO = eventsDTO;
+        if(eventsDTO.toString() == ''){
           this.alertService.info('You have no events yet.',true);
         }
       });
@@ -103,9 +105,9 @@ export class EventlistComponent implements OnInit {
 
   getEventsByCustIdSortedByType(): void {
     this.eventService.getEventsByCustIdSortedType()
-      .subscribe((events) => {
-        this.events = events;
-        if(events.toString() == ''){
+      .subscribe((eventsDTO) => {
+        this.eventsDTO = eventsDTO;
+        if(eventsDTO.toString() == ''){
           this.alertService.info('You have no events yet.',true);
         }
       });
@@ -113,10 +115,9 @@ export class EventlistComponent implements OnInit {
 
   getEventsByCustIdFilterByType(type:string): void {
     this.eventService.getEventsByCustIdFilterByType(type)
-      .subscribe((events) => {
-        this.events = events;
-        console.log('events = ' + events);
-        if(events.toString() == ''){
+      .subscribe((eventsDTO) => {
+        this.eventsDTO = eventsDTO;
+        if(event.toString() == ''){
           this.alertService.info('You have no events yet.',true);
         }
       });

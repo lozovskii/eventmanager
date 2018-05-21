@@ -59,27 +59,27 @@ public class EventController {
     }
 
     @GetMapping("/my{custId}")
-    public ResponseEntity<List<Event>> getEventsByCustId(@PathVariable String custId){
-        List<Event> eventsByCustId = eventService.getEventsByCustId(custId);
+    public ResponseEntity<List<EventDTO>> getEventsByCustId(@PathVariable String custId){
+        List<EventDTO> eventsByCustId = eventService.getEventsByCustId(custId);
         return new ResponseEntity<>(eventsByCustId, HttpStatus.OK);
     }
 
     @GetMapping("/my/sorted{custId}")
-    public ResponseEntity<List<Event>> getEventsByCustIdSorted(@PathVariable String custId){
-        List<Event> eventsByCustId = eventService.getEventsByCustIdSorted(custId);
+    public ResponseEntity<List<EventDTO>> getEventsByCustIdSorted(@PathVariable String custId){
+        List<EventDTO> eventsByCustId = eventService.getEventsByCustIdSorted(custId);
         return new ResponseEntity<>(eventsByCustId, HttpStatus.OK);
     }
 
     @GetMapping("/my/sorted/type{custId}")
-    public ResponseEntity<List<Event>> getEventsByCustIdSortedByType(@PathVariable String custId){
-        List<Event> eventsByCustId = eventService.getEventsByCustIdSortedByType(custId);
+    public ResponseEntity<List<EventDTO>> getEventsByCustIdSortedByType(@PathVariable String custId){
+        List<EventDTO> eventsByCustId = eventService.getEventsByCustIdSortedByType(custId);
         return new ResponseEntity<>(eventsByCustId, HttpStatus.OK);
     }
 
     @GetMapping("/my/filter/{type}/{custId}")
-    public ResponseEntity<List<Event>> getEventsByCustIdFilterByType(@PathVariable("type") String type,
+    public ResponseEntity<List<EventDTO>> getEventsByCustIdFilterByType(@PathVariable("type") String type,
                                                                      @PathVariable("custId") String custId){
-        List<Event> eventsByCustId = eventService.getEventsByCustIdFilterByType(custId,type);
+        List<EventDTO> eventsByCustId = eventService.getEventsByCustIdFilterByType(custId,type);
         return new ResponseEntity<>(eventsByCustId, HttpStatus.OK);
     }
 
