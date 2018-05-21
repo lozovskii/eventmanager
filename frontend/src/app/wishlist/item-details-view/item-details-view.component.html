@@ -7,8 +7,8 @@
   </div>
   <div class="modal-body">
     <div>
-      <img *ngIf="!item.image" class="card-img-top" src="../../assets/img/default_image.png" alt="Card image">
-      <img *ngIf="item.image" class="card-img-top" src="{{item.image}}" alt="Card image">
+      <img *ngIf="!item.image" style="max-height: 45vh; width: auto;max-width: 60vw;" class="card-img-top text-center" src="../../assets/img/default_image.png" alt="Card image">
+      <img *ngIf="item.image" style="max-height: 45vh;width: auto; max-width: 60vw;" class="card-img-top text-center" src="{{item.image}}" alt="Card image">
       <div class="card-body">
         <h6 class="card-subtitle mb-2 text-muted">{{item.dueDate}}</h6>
         <div class="card-text" [innerHTML]=item.description></div>
@@ -54,9 +54,9 @@
   </div>
   <div class="modal-body">
     <div>
-      <img *ngIf="!wishListItem.item.image" class="card-img-top" src="../../assets/img/default_image.png"
+      <img *ngIf="!wishListItem.item.image" style="max-height: 45vh; width: auto;max-width: 60vw;" class="card-img-top text-center" src="../../assets/img/default_image.png"
            alt="Card image">
-      <img *ngIf="wishListItem.item.image" class="card-img-top" [src]="wishListItem.item.image" alt="Card image">
+      <img *ngIf="wishListItem.item.image" style="max-height: 45vh; width: auto;max-width: 60vw;" class="card-img-top text-center" [src]="wishListItem.item.image" alt="Card image">
       <div class="card-body">
         <h6 class="card-subtitle mb-2 text-muted">{{wishListItem.item.dueDate}}</h6>
         <ul class="list-group list-group-flush">
