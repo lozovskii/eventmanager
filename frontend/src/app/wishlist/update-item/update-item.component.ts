@@ -5,12 +5,19 @@ import {WishListService} from "../../_services/wishlist.service";
 import {Item} from "../../_models/wishList/item";
 import {ExtendedTag} from "../../_models/wishList/extendedTag";
 import {Tag} from "../../_models/wishList/tag";
+import {MAX_IMG_SIZE} from "../../app.config";
+import {ALLOWED_IMG_FORMATS} from "../../app.config";
 
 @Component({
   selector: 'app-update-item',
   templateUrl: './update-item.component.html'
 })
 export class UpdateItemComponent implements OnInit, OnChanges {
+
+  allowedFormats: string[] =  ALLOWED_IMG_FORMATS;
+  maxImageSize = MAX_IMG_SIZE;
+  base64Image: string;
+  loading = true;
 
   itemForm = this.formBuilder.group({
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
@@ -60,7 +67,10 @@ export class UpdateItemComponent implements OnInit, OnChanges {
   updateItem(item: Item) {
     item.id = this.item.id;
     item.creator_customer_login = this.item.creator_customer_login;
-    item.image = this.additionalForm.get('imageUrl').value;
+    if (this.base64Image)
+      item.image = this.base64Image;
+    else
+      item.image = this.additionalForm.get('imageUrl').value;
     item.tags = this.item.tags;
     this.wishListService.updateItem(item)
       .subscribe(() => {
@@ -104,9 +114,6 @@ export class UpdateItemComponent implements OnInit, OnChanges {
     }
   }
 
-  onUpload() {
-  }
-
   get name() {
     return this.itemForm.get('name');
   }
@@ -117,6 +124,47 @@ export class UpdateItemComponent implements OnInit, OnChanges {
 
   get link() {
     return this.itemForm.get('link');
+  }
+
+
+
+
+  changeListener($event): void {
+    this.readThis($event.target);
+  }
+
+  getFileExtension(filename) {
+    return filename.split('.').pop();
+  }
+
+  validFormat(format: string) {
+    let isValid = false;
+    for (let allowedFormat of this.allowedFormats) {
+      if (allowedFormat == format) {
+        isValid = true;
+      }
+    }
+    return isValid;
+  }
+
+  validSize(file) {
+    return file.size <= this.maxImageSize;
+  }
+
+  validImg(file: File){
+    let format = this.getFileExtension(file.name);
+    console.log(file.size);
+    this.loading = !(this.validFormat(format) && this.validSize(file));
+  }
+
+  readThis(inputValue: any): void {
+    let file: File = inputValue.files[0];
+    let myReader: FileReader = new FileReader();
+    myReader.onloadend = () => {
+      this.base64Image = myReader.result;
+      this.validImg(file);
+    };
+    myReader.readAsDataURL(file);
   }
 
 }

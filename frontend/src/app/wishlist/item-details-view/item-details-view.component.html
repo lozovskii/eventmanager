@@ -8,7 +8,7 @@
   <div class="modal-body">
     <div>
       <img *ngIf="!item.image" class="card-img-top" src="../../assets/img/default_image.png" alt="Card image">
-      <img *ngIf="item.image" class="card-img-top" [src]="item.image" alt="Card image">
+      <img *ngIf="item.image" class="card-img-top" src="{{item.image}}" alt="Card image">
       <div class="card-body">
         <h6 class="card-subtitle mb-2 text-muted">{{item.dueDate}}</h6>
         <div class="card-text" [innerHTML]=item.description></div>
@@ -73,7 +73,7 @@
         <div class="row">
           <div class="col-4">
             <small *ngIf="isBooker">
-              <a href="event-container/{{wishListItem.event_id}}">Event</a>
+              <button class="btn btn-outline-info btn-sm" [routerLink]="['/event-container',wishListItem.event_id]">Event</button>
             </small>
             <small *ngIf="!isBooker">
               Booker:
