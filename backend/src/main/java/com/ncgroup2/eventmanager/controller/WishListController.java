@@ -1,6 +1,6 @@
 package com.ncgroup2.eventmanager.controller;
 
-import com.ncgroup2.eventmanager.dto.ItemWishListDto;
+import com.ncgroup2.eventmanager.objects.WishListItem;
 import com.ncgroup2.eventmanager.entity.WishList;
 import com.ncgroup2.eventmanager.service.WishListService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +57,7 @@ public class WishListController {
     }
 
     @PostMapping(value = "/delete")
-    public void removeItems(@RequestBody List<ItemWishListDto> trash) {
+    public void removeItems(@RequestBody List<WishListItem> trash) {
         wishListService.deleteItems(trash);
     }
 

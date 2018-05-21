@@ -2,9 +2,9 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AlertService} from "../../_services";
 import {WishListService} from "../../_services/wishlist.service";
-import {Item} from "../../_models/item";
-import {ItemTagDto} from "../../_models/dto/itemTagDto";
-import {Tag} from "../../_models/tag";
+import {Item} from "../../_models/wishList/item";
+import {ExtendedTag} from "../../_models/wishList/extendedTag";
+import {Tag} from "../../_models/wishList/tag";
 
 @Component({
   selector: 'app-update-item',
@@ -34,7 +34,7 @@ export class UpdateItemComponent implements OnInit, OnChanges {
   @Output('updatedItem') updatedItem = new EventEmitter<Item>();
 
   item: Item;
-  trash: ItemTagDto[];
+  trash: ExtendedTag[];
 
   constructor(private wishListService: WishListService,
               private alertService: AlertService,
@@ -83,7 +83,7 @@ export class UpdateItemComponent implements OnInit, OnChanges {
     }
   }
 
-  removeTag(tag: ItemTagDto) {
+  removeTag(tag: ExtendedTag) {
     this.trash.push(tag);
     let index = this.item.tags.indexOf(tag);
     this.item.tags.splice(index, 1);
@@ -98,7 +98,7 @@ export class UpdateItemComponent implements OnInit, OnChanges {
     for (let tagString of tagsArray) {
       let tag = new Tag();
       tag.name = tagString;
-      let tagDto = new ItemTagDto();
+      let tagDto = new ExtendedTag();
       tagDto.tag = tag;
       this.item.tags.push(tagDto);
     }

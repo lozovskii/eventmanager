@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {WishList} from "../../_models/wishlist";
+import {WishList} from "../../_models/wishList/wishList";
 import {AlertService} from "../../_services/alert.service";
 import {WishListService} from "../../_services/wishlist.service";
-import {Item} from "../../_models/item";
-import {ItemDto} from "../../_models/dto/itemDto";
+import {Item} from "../../_models/wishList/item";
+import {WishListItem} from "../../_models/wishList/wishListItem";
 import {Subscription} from "rxjs";
 import {FormControl} from "@angular/forms";
 
@@ -21,7 +21,7 @@ export class BookedItemsComponent implements OnInit {
   updatableWishList: WishList;
   hasChanges: boolean = false;
   items: Item[];
-  itemDtoView: ItemDto;
+  wishListItemView: WishListItem;
   value : number;
   path: string[] = ['item'];
   order: number = 1;
@@ -31,7 +31,7 @@ export class BookedItemsComponent implements OnInit {
     this.wishList = new WishList();
     this.updatableWishList = new WishList();
     this.updatableWishList.items = [];
-    this.itemDtoView = new ItemDto();
+    this.wishListItemView = new WishListItem();
   }
 
   ngOnInit() {
@@ -55,20 +55,20 @@ export class BookedItemsComponent implements OnInit {
       this.alertService.error("Items not found")});
   }
 
-  showItemDetails(item: ItemDto): void {
-    this.itemDtoView = item;
+  showItemDetails(item: WishListItem): void {
+    this.wishListItemView = item;
   }
 
-  cancelBooking(itemDto: ItemDto): void {
-    itemDto.booker_customer_login = null;
-    this.updatableWishList.items.push(itemDto);
+  cancelBooking(wishListItem: WishListItem): void {
+    wishListItem.booker_customer_login = null;
+    this.updatableWishList.items.push(wishListItem);
 
-    let index = this.wishList.items.indexOf(itemDto);
+    let index = this.wishList.items.indexOf(wishListItem);
     this.wishList.items.splice(index,1);
     this.hasChanges = true;
   }
 
-  updatedPriority(item: ItemDto): void{
+  updatedPriority(item: WishListItem): void{
     this.updatableWishList.items.push(item);
     this.hasChanges = true;
   }

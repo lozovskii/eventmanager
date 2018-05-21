@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {Item} from "../../_models/item";
+import {Item} from "../../_models/wishList/item";
 
 @Pipe({
   name: 'sortingItems'

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {WishListService} from "../../_services/wishlist.service";
-import {WishList} from "../../_models/wishlist";
+import {WishList} from "../../_models/wishList/wishList";
 
 @Component({
   selector: 'app-edit-wishList',

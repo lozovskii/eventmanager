@@ -27,29 +27,29 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let itemDto of wishList.items | sortingItems:path:order">
-      <td (click)="showItemDetails(itemDto)" data-toggle="modal" data-target="#itemViewForm" class="tdName">
-        {{itemDto.item.name}}</td>
+    <tr *ngFor="let wishListItem of wishList.items | sortingItems:path:order">
+      <td (click)="showItemDetails(wishListItem)" data-toggle="modal" data-target="#itemViewForm" class="tdName">
+        {{wishListItem.item.name}}</td>
       <td class="text-center">
-        <button *ngIf="editMode || isBooker(itemDto.booker_customer_login)" class="btn btn-outline-info"
-           (click)="cancelBooking(itemDto)">cancel</button>
-        <span *ngIf="!isBooker(itemDto.booker_customer_login)">{{itemDto.booker_customer_login}}</span>
+        <button *ngIf="editMode || isBooker(wishListItem.booker_customer_login)" class="btn btn-outline-info"
+           (click)="cancelBooking(wishListItem)">cancel</button>
+        <span *ngIf="!isBooker(wishListItem.booker_customer_login)">{{wishListItem.booker_customer_login}}</span>
       </td>
-      <td *ngIf="itemDto.item.dueDate" class="text-center">{{itemDto.item.dueDate}}</td>
+      <td *ngIf="wishListItem.item.dueDate" class="text-center">{{wishListItem.item.dueDate}}</td>
       <td class="text-center">
         <div class="select-style"
              [style.background-color]="
-                    itemDto.priority === 1 ? '#d14242':
-                    itemDto.priority === 2 ? 'green':'gray'">
-          <select *ngIf="editMode || isBooker(itemDto.booker_customer_login)" (change)="hasChanges = true">
-            <option value="1" (click)="itemDto.priority = 1">High</option>
-            <option value="2" (click)="itemDto.priority = 2">Avg</option>
-            <option value="3" (click)="itemDto.priority = 3">Low</option>
+                    wishListItem.priority === 1 ? '#d14242':
+                    wishListItem.priority === 2 ? 'green':'gray'">
+          <select *ngIf="editMode || isBooker(wishListItem.booker_customer_login)" (change)="hasChanges = true">
+            <option value="1" (click)="wishListItem.priority = 1">High</option>
+            <option value="2" (click)="wishListItem.priority = 2">Avg</option>
+            <option value="3" (click)="wishListItem.priority = 3">Low</option>
           </select>
         </div>
       </td>
       <td *ngIf="editMode" class="text-center">
-        <button (click)="removeItem(itemDto)" class="btn-sm button btn-outline-danger">Remove</button>
+        <button (click)="removeItem(wishListItem)" class="btn-sm button btn-outline-danger">Remove</button>
       </td>
     </tr>
     </tbody>
@@ -59,7 +59,7 @@
   <div class="modal fade" id="itemViewForm" tabindex="-1" role="dialog"
        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-      <app-item-details-view [itemDtoView]="itemDtoView" (cancelledItem)="cancelBooking($event)" (updatedItem)="updatePriority($event)" (bookedItem)="bookItem($event)"></app-item-details-view>
+      <app-item-details-view [wishListItemView]="wishListItemView" (cancelledItem)="cancelBooking($event)" (updatedItem)="updatePriority($event)" (bookedItem)="bookItem($event)"></app-item-details-view>
     </div>
   </div>
 

@@ -1,10 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AlertService} from "../../_services/alert.service";
 import {WishListService} from "../../_services/wishlist.service";
-import {Item} from "../../_models/item";
+import {Item} from "../../_models/wishList/item";
 import {Location} from '@angular/common';
-import {WishList} from "../../_models/wishlist";
-import {ItemDto} from "../../_models/dto/itemDto";
+import {WishList} from "../../_models/wishList/wishList";
+import {WishListItem} from "../../_models/wishList/wishListItem";
 import {FormControl} from "@angular/forms";
 
 @Component({
@@ -66,11 +66,11 @@ export class ItemsCollectionComponent implements OnInit {
   }
 
   addItem(item: Item): void {
-    let itemDto: ItemDto = new ItemDto();
-    itemDto.item = item;
-    itemDto.event_id = this.wishList.id;
-    itemDto.priority = 3;
-    this.wishList.items.push(itemDto);
+    let wishListItem: WishListItem = new WishListItem();
+    wishListItem.item = item;
+    wishListItem.event_id = this.wishList.id;
+    wishListItem.priority = 3;
+    this.wishList.items.push(wishListItem);
   }
 
   editItem(item: Item): void {

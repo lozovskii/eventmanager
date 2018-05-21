@@ -3,7 +3,6 @@
     <app-vnavbar></app-vnavbar>
   </div>
 
-
   <main role="main" [ngClass]="{ 'col-md-9': !isIncluded }">
     <h2 *ngIf="!isIncluded" class="text-center">Items Collection</h2>
     <br>
@@ -33,7 +32,7 @@
         </button>
       </div>
     </div>
-    <div>
+    <div class="col-auto">
     <input class="form-control" type="text" [value]="filterText"
            [placeholder]="filterPlaceholder" [formControl]="filterInput"/>
     </div>
@@ -65,13 +64,17 @@
           <a *ngIf="item.link" href="{{item.link}}"> link </a>
         </td>
         <td *ngIf="item.dueDate" class="text-center">{{item.dueDate}}</td>
-        <td class="text-center list-group">
-          <button *ngIf="isIncluded" (click)="addItem(item)" class="btn-sm button btn-outline-primary">Add</button>
+        <td class="text-center">
+          <button *ngIf="isIncluded" (click)="addItem(item)" class="btn-sm button btn-outline-primary">
+            Add
+          </button>
           <button (click)="editItem(item)" data-toggle="modal" data-target="#edit"
-                  class="btn-sm button btn-outline-secondary">Edit
+                  class="btn-sm btn-outline-secondary">
+            <i class="far fa-edit"></i> Edit
           </button>
           <button (click)="deleteItem(item)"
-                  class="btn-sm button btn-outline-danger">Delete
+                  class="btn-sm btn-outline-danger">
+            <i class="far fa-trash-alt"></i> Delete
           </button>
         </td>
       </tr>
