@@ -14,8 +14,7 @@ export class NoteContentComponent implements OnInit {
   eventDTO: EventDTOModel;
   constructor(private alertService: AlertService,
               private eventService: EventService,
-              private activatedRoute: ActivatedRoute,
-              private userService: UserService) { }
+              private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.noteId = this.activatedRoute.snapshot.paramMap.get('id');

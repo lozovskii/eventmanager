@@ -62,11 +62,6 @@ export class EventlistComponent implements OnInit {
           this.getEventsByCustIdFilterByType(this.visibilityList[1]);
           break;
         }
-        case 'drafts' : {
-          this.isMy = false;
-          this.getDraftsByCustId();
-          break;
-        }
         case 'invites' : {
           this.isMy = false;
           this.getInvitesByCustId();
@@ -123,16 +118,6 @@ export class EventlistComponent implements OnInit {
         console.log('events = ' + events);
         if(events.toString() == ''){
           this.alertService.info('You have no events yet.',true);
-        }
-      });
-  }
-
-  getDraftsByCustId(): void {
-    this.eventService.getDraftsByCustId()
-      .subscribe((events) => {
-        this.events = events;
-        if(events.toString() == ''){
-          this.alertService.info('You have no drafts yet.',true);
         }
       });
   }

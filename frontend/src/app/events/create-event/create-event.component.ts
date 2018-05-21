@@ -14,6 +14,7 @@ import {LocationService} from "../../_services/location.service";
 })
 export class CreateEventComponent implements OnInit {
   @Input('noteId') noteId: string;
+  @Input('eventId') eventId: string;
 
   eventDTO: EventDTOModel;
   eventForm: FormGroup;
@@ -23,6 +24,8 @@ export class CreateEventComponent implements OnInit {
 
   nameNote: string;
   descriptionNote:string;
+  startDateDraft:string;
+  endDateDraft:string;
 
   isValidFormSubmitted = null;
 
@@ -54,6 +57,10 @@ export class CreateEventComponent implements OnInit {
           this.isNote = true;
           this.noteId = this.activatedRoute.snapshot.paramMap.get('id');
           this.getNoteById();
+          break;
+        }
+        case 'draft' : {
+          this.getDraftById();
           break;
         }
       }
@@ -110,8 +117,8 @@ export class CreateEventComponent implements OnInit {
       eventDTO.event.startTime = eventDTO.event.day + ' ' + eventDTO.event.startTime + ':00';
       eventDTO.event.endTime = eventDTO.event.day + ' ' + eventDTO.event.endTime + ':00';
     }else{
-      eventDTO.event.startTime = null;
-      eventDTO.event.endTime = null;
+      eventDTO.event.startTime = this.startDateDraft;
+      eventDTO.event.endTime = this.endDateDraft;
     }
     eventDTO.additionEvent.people = this.selectedPeople;
     eventDTO.additionEvent.location = this.eventLocation;
@@ -182,11 +189,22 @@ export class CreateEventComponent implements OnInit {
       });
   }
 
+  getDraftById(): void {
+    this.eventId = this.activatedRoute.snapshot.paramMap.get('id');
+    const id = this.eventId;
+    this.eventService.getEventById(id).subscribe((eventDTO : EventDTOModel) => {
+      this.eventDTO = eventDTO;
+      this.isNote = true;
+      console.log(this.eventDTO);
+      this.startDateDraft = this.eventDTO.event.startTime;
+      this.endDateDraft = this.eventDTO.event.endTime;
+    });
+  }
+
   addLocation(location: Location) {
     this.eventLocation = location;
     console.log('create-event ' + this.eventLocation.street);
     console.log('create-event ' + this.eventLocation.house);
-
   }
 
 }
