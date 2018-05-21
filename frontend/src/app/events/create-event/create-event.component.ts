@@ -144,14 +144,14 @@ export class CreateEventComponent implements OnInit {
       data => {
         if ((eventDTO.event.startTime != null) && (eventDTO.event.startTime != '')) {
           if (eventDTO.event.visibility == 'PUBLIC') {
-            this.alertService.success('Public event successfully created! You can invite people to your event.', true);
+            this.alertService.info('Public event successfully created! You can invite people to your event.', true);
             this.router.navigate(['../home']);
           } else {
-            this.alertService.success('Event successfully created!', true);
+            this.alertService.info('Event successfully created!', true);
             this.router.navigate(['../home']);
           }
         } else {
-          this.alertService.success('Note successfully created!', true);
+          this.alertService.info('Note successfully created!', true);
           this.router.navigate(['../folder-list', 'all']);
         }
       },
