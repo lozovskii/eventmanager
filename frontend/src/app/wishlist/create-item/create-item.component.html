@@ -102,18 +102,14 @@
       <div class="collapse card" id="addImage">
         <h5>Upload from computer</h5>
         <div>
-          <!--<input formControlName="image" type="file" class="form-control"-->
-          <!--accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,-->
-          <!--text/plain, application/pdf, image/*" (change)="changeListener($event)">-->
-
+          <input type="file" class="form-control" accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+            text/plain, application/pdf, image/*" (change)="changeListener($event)">
           <small class="text-muted">
             Image must have an extension: png, jpg, jpeg
           </small>
           <small class="text-muted">
             Max size image is 1 MB
           </small>
-
-          <button class="btn" (click)="onUpload()">Upload!</button>
         </div>
 
         <h5>Upload by link</h5>

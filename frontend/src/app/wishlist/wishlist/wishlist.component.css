@@ -29,6 +29,10 @@
   border-radius: 50px;
 }
 
+#filter{
+ margin:2px;
+ }
+
 a{
   cursor:pointer;
 }
