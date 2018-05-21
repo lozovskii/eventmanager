@@ -48,8 +48,20 @@
         <td *ngIf="item.dueDate" class="text-center">{{item.dueDate}}</td>
         <td *ngIf="item.creator_customer_login" class="text-center">{{item.creator_customer_login}}</td>
         <td class="text-center list-group">
-          <button *ngIf="isIncluded" (click)="addItem(item)" class="btn-sm button btn-outline-primary">Add</button>
-          <button (click)="copyItem(item)" class="btn-sm button btn-outline-primary">Copy</button>
+          <button *ngIf="isIncluded" (click)="addItem(item)" class="btn-sm button btn-outline-primary">
+            <i class="fas fa-plus"></i> Add
+          </button>
+          <button *ngIf="isCreator(item)" (click)="editItem(item)" data-toggle="modal" data-target="#edit"
+                  class="btn-sm btn-outline-secondary">
+            <i class="far fa-edit"></i> Edit
+          </button>
+          <button *ngIf="isCreator(item)" (click)="deleteItem(item)"
+                  class="btn-sm btn-outline-danger">
+            <i class="far fa-trash-alt"></i> Delete
+          </button>
+          <button (click)="copyItem(item)" class="btn-sm button btn-outline-primary">
+            <i class="far fa-copy"></i> Copy
+          </button>
         </td>
       </tr>
       </tbody>
@@ -59,6 +71,23 @@
          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <app-item-details-view [itemView]="itemView"></app-item-details-view>
+      </div>
+    </div>
+
+    <div class="modal fade" id="edit" tabindex="-1" role="dialog"
+         aria-labelledby="editModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit item</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <app-update-item [editableItem]="editableItem" (updatedItem)="updateEditedItem($event)"></app-update-item>
+          </div>
+        </div>
       </div>
     </div>
 

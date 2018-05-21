@@ -25,6 +25,7 @@ export class AllItemsComponent implements OnInit {
   items: Item[];
   path: string[] = ['name'];
   order: number = 1;
+  customerLogin: string;
 
   constructor(private wishListService: WishListService,
               private userService: UserService,
@@ -40,6 +41,9 @@ export class AllItemsComponent implements OnInit {
       this.wishListService.wishList$.subscribe((wishList) => {
         this.wishList = wishList;
       });
+
+    this.customerLogin = JSON.parse(sessionStorage.getItem('currentUser')).login;
+
     this.getAllItems();
 
     this.filterText = '';
@@ -50,6 +54,19 @@ export class AllItemsComponent implements OnInit {
       .subscribe(term => {
         this.filterText = term;
       });
+  }
+
+  isCreator(item: Item): boolean{
+    return item.creator_customer_login == this.customerLogin;
+  }
+
+  editItem(item: Item): void {
+    this.editableItem = item;
+  }
+
+  updateEditedItem(item: Item): void {
+    let index = this.items.indexOf(this.editableItem);
+    this.items.fill(item,index,index+1);
   }
 
   showItemDetails(item: Item): void {
@@ -66,6 +83,16 @@ export class AllItemsComponent implements OnInit {
     wishListItem.event_id = this.wishList.id;
     wishListItem.priority = 3;
     this.wishList.items.push(wishListItem);
+  }
+
+  deleteItem(item: Item): void {
+    let index = this.items.indexOf(item);
+    this.items.splice(index, 1);
+    let trash: Item[] = [];
+    trash.push(item);
+    this.wishListService.deleteItems(trash).subscribe(() =>
+        this.alertService.success('Item successfully deleted!'),
+      () => this.alertService.error('Something wrong'));
   }
 
   copyItem(item: Item): void {

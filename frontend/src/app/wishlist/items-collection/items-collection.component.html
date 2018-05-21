@@ -67,7 +67,7 @@
           <a *ngIf="item.link" href="{{item.link}}"> link </a>
         </td>
         <td *ngIf="item.dueDate" class="text-center">{{item.dueDate}}</td>
-        <td class="text-center">
+        <td class="text-center list-group">
           <button *ngIf="isIncluded" (click)="addItem(item)" class="btn-sm button btn-outline-primary">
             Add
           </button>
