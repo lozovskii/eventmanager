@@ -7,7 +7,7 @@
     <div class="btn-group" role="group">
       <button class="btn btn-outline-info" [routerLink] = "['/move-note', eventDTO.event.id]">Move</button>
       <button class="btn btn-outline-info" [routerLink] = "['/create-event','note', eventDTO.event.id]">Convert to Event</button>
-      <button class="btn btn-outline-danger">Delete</button>
+      <button class="btn btn-outline-danger" (click)="delete()">Delete</button>
     </div>
     <br>
     <br>

@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {EventDTOModel} from "../../../_models/dto/eventDTOModel";
 import {EventService} from "../../../_services";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {AlertService} from "../../../_services/alert.service";
 
 @Component({
   selector: 'app-draft-content',
@@ -15,7 +16,9 @@ export class DraftContentComponent implements OnInit {
   isCreator: boolean;
 
   constructor(private eventService: EventService,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              private alertService: AlertService,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -26,6 +29,14 @@ export class DraftContentComponent implements OnInit {
       this.eventDTO = eventDTO;
       let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
       this.isCreator = currentUserId == this.eventDTO.event.creatorId;
+    });
+  }
+
+  delete(){
+    console.log('here');
+    this.eventService.deleteEvent(this.eventDTO.event.id).subscribe(() => {
+      this.alertService.info('Draft successfully deleted!', true);
+      this.router.navigate(['../draft-list']);
     });
   }
 

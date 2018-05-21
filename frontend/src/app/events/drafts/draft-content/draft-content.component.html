@@ -7,11 +7,11 @@
       <div>
         <div class="btn-group" role="group" *ngIf="isCreator">
           <button class="btn btn-outline-info" [routerLink] = "['/create-event','draft', eventDTO.event.id]">Convert to Event</button>
-          <button class="btn btn-outline-danger">Delete</button>
+          <button class="btn btn-outline-danger" (click)="delete()">Delete</button>
         </div>
         <br>
         <br>
-        <p>Name = {{eventDTO.event.name}}</p>
+        <p>Name: {{eventDTO.event.name}}</p>
         <div class="row">
           <p class="col-md-2">Description: </p>
           <div class="col-md-10" [innerHTML]="eventDTO.event.description"></div>

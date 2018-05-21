@@ -54,20 +54,17 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let event of events" [routerLink]="['/event-container',event.id]">
-        <td>{{event.name}}</td>
-        <td>{{event.startTime}}</td>
-        <td>{{event.endTime}}</td>
-        <td>{{event.visibility}}</td>
-        <td>{{event.status}}</td>
-        <td class="text-center" *ngIf="isMy">
-          <div class="dot"
-               [style.background-color]="
-                    event.priority === 'HIGH' ? '#d14242':
-                    event.priority === 'AVERAGE' ? 'green':'gray'">
-
-          </div>
-        </td>
+      <tr *ngFor="let event of eventsDTO" [routerLink]="['/event-container',event.event.id]">
+        <td>{{event.event.name}}</td>
+        <td>{{event.event.startTime}}</td>
+        <td>{{event.event.endTime}}</td>
+        <td>{{event.event.visibility}}</td>
+        <td>{{event.event.status}}</td>
+      <td class="text-center" *ngIf="isMy">
+        <div class="dot"
+             [style.background-color]="event.additionEvent.priority === 'HIGH' ? '#d14242': event.additionEvent.priority === 'AVERAGE' ? 'green':'gray'">
+        </div>
+      </td>
       </tr>
       </tbody>
     </table>

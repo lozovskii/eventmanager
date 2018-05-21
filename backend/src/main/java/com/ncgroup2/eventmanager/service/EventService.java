@@ -16,13 +16,13 @@ public interface EventService {
 
     void createEventInvitations(List<String> login, UUID eventId);
 
-    List<Event> getEventsByCustId(String custId);
+    List<EventDTO> getEventsByCustId(String custId);
 
-    List<Event> getEventsByCustIdSorted(String custId);
+    List<EventDTO> getEventsByCustIdSorted(String custId);
 
-    List<Event> getEventsByCustIdSortedByType(String custId);
+    List<EventDTO> getEventsByCustIdSortedByType(String custId);
 
-    List<Event> getEventsByCustIdFilterByType(String custId, String type);
+    List<EventDTO> getEventsByCustIdFilterByType(String custId, String type);
 
     EventDTO getEventById(String eventId);
 

@@ -6,6 +6,7 @@ import {Event} from "../../_models";
 
 import {Subject} from 'rxjs';
 import {CalendarEvent, DAYS_OF_WEEK} from 'angular-calendar';
+import {EventDTOModel} from "../../_models/dto/eventDTOModel";
 
 const colors: any = {
   red: {
@@ -76,7 +77,7 @@ export class CalendarComponent {
   activeDayIsOpen: boolean = true;
   view: string = 'month';
   weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
-  events: Event[];
+  events: EventDTOModel[];
   nationalEvents: Event[];
   calendarEvents: CalendarEvent[] = [];
   refresh: Subject<any> = new Subject();
@@ -94,13 +95,13 @@ export class CalendarComponent {
       .subscribe((events) => {
         this.events = events;
         for (let i = 0; i < events.length; i++) {
-          console.log(this.events[i].visibility);
-          console.log(this.events[i].startTime + ' ' + this.events[i].endTime)
+          console.log(this.events[i].event.visibility);
+          console.log(this.events[i].event.startTime + ' ' + this.events[i].event.endTime);
           this.calendarEvents.push({
-            title: this.events[i].name,
-            start: new Date(this.events[i].startTime),
-            end: new Date(this.events[i].endTime),
-            color: this.events[i].visibility == "PUBLIC" ? colors.red : colors.blue
+            title: this.events[i].event.name,
+            start: new Date(this.events[i].event.startTime),
+            end: new Date(this.events[i].event.endTime),
+            color: this.events[i].event.visibility == "PUBLIC" ? colors.red : colors.blue
           })
         }
         this.refresh.next();

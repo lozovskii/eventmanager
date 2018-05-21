@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {AlertService} from "../../_services/alert.service";
 import {EventService, UserService} from "../../_services";
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-note-content',
@@ -14,7 +14,8 @@ export class NoteContentComponent implements OnInit {
   eventDTO: EventDTOModel;
   constructor(private alertService: AlertService,
               private eventService: EventService,
-              private activatedRoute: ActivatedRoute) { }
+              private activatedRoute: ActivatedRoute,
+              private router: Router) { }
 
   ngOnInit() {
     this.noteId = this.activatedRoute.snapshot.paramMap.get('id');
@@ -29,5 +30,12 @@ export class NoteContentComponent implements OnInit {
           this.alertService.info('This note is empty.',true);
         }
       });
+  }
+
+  delete(){
+    this.eventService.deleteEvent(this.eventDTO.event.id).subscribe(() => {
+      this.alertService.info('Note successfully deleted!', true);
+      this.router.navigate(['../folder-list', 'all']);
+    });
   }
 }

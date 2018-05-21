@@ -14,9 +14,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -130,23 +132,41 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> getEventsByCustId(String custId) {
-        return eventDao.getEventsByCustId(custId);
+    public List<EventDTO> getEventsByCustId(String custId) {
+        List<Event> events =  eventDao.getEventsByCustId(custId);
+        return setAdditionForEachEvent(events);
     }
 
     @Override
-    public List<Event> getEventsByCustIdSorted(String custId) {
-        return eventDao.getEventsByCustIdSorted(custId);
+    public List<EventDTO> getEventsByCustIdSorted(String custId) {
+        List<Event> events =  eventDao.getEventsByCustIdSorted(custId);
+        return setAdditionForEachEvent(events);
     }
 
     @Override
-    public List<Event> getEventsByCustIdSortedByType(String custId) {
-        return eventDao.getEventsByCustIdSortedByType(custId);
+    public List<EventDTO> getEventsByCustIdSortedByType(String custId) {
+        List<Event> events =  eventDao.getEventsByCustIdSortedByType(custId);
+        return setAdditionForEachEvent(events);
     }
 
     @Override
-    public List<Event> getEventsByCustIdFilterByType(String custId, String type) {
-        return eventDao.getEventsByCustIdFilterByType(custId, type);
+    public List<EventDTO> getEventsByCustIdFilterByType(String custId, String type) {
+        List<Event> events =  eventDao.getEventsByCustIdFilterByType(custId,type);
+        return setAdditionForEachEvent(events);
+    }
+
+
+    private List<EventDTO> setAdditionForEachEvent(List<Event> events) {
+        List<EventDTO> eventsDTO = new ArrayList<>();
+        IntStream.range(0, events.size()).forEachOrdered(i -> {
+            EventDTO eventDTO = new EventDTO();
+            String id = events.get(i).getId();
+            AdditionalEventModelDTO additionalEventModelDTO = eventDao.getAdditionById(id);
+            eventDTO.setEvent(events.get(i));
+            eventDTO.setAdditionEvent(additionalEventModelDTO);
+            eventsDTO.add(eventDTO);
+        });
+        return eventsDTO;
     }
 
     @Override
