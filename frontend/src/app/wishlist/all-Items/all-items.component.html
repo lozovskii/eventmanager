@@ -8,7 +8,9 @@
     <br>
     <div class="row justify-content-between">
       <div class="col-auto">
-        <button class="btn btn-outline-info" data-toggle="modal" data-target="#create">Create new item</button>
+        <button class="btn btn-outline-info" data-toggle="modal" data-target="#create">
+          <i class="fas fa-plus"></i> Create new item
+        </button>
       </div>
     </div>
     <button class="btn btn-sm btn-outline-info" data-toggle="collapse" data-target="#filter"><i
@@ -20,12 +22,12 @@
     <table class="table table-hover">
       <thead>
       <tr>
-        <th scope="col" (click)="sortItems('name')">Name</th>
+        <th scope="col" (click)="sortItems('name')">Name <i class="fas fa-sort"></i></th>
         <th scope="col">Image</th>
         <th scope="col">Link</th>
-        <th scope="col" (click)="sortItems('dueDate')" class="text-center">Due date</th>
-        <th scope="col" (click)="sortItems('creator_customer_login')" class="text-center">Creator</th>
-        <th scope="col" class="text-center"></th>
+        <th scope="col" (click)="sortItems('dueDate')" class="text-center">Due date <i class="fas fa-sort"></i></th>
+        <th scope="col" (click)="sortItems('creator_customer_login')" class="text-center">Creator <i class="fas fa-sort"></i></th>
+        <th scope="col" class="text-center">Actions</th>
       </tr>
       </thead>
       <tbody>
@@ -41,20 +43,22 @@
         </td>
         <td *ngIf="item.dueDate" class="text-center">{{item.dueDate}}</td>
         <td *ngIf="item.creator_customer_login" class="text-center">{{item.creator_customer_login}}</td>
-        <td class="text-center list-group">
-          <button *ngIf="isIncluded" (click)="addItem(item)" class="btn-sm button btn-outline-primary">
-            <i class="fas fa-plus"></i> Add
+        <td class="text-center">
+          <button *ngIf="isIncluded" (click)="addItem(item)"
+                  class="btn-sm button btn-outline-primary" title="Add item to wishlist">
+            <i class="fas fa-plus"></i>
           </button>
           <button *ngIf="isCreator(item)" (click)="editItem(item)" data-toggle="modal" data-target="#edit"
-                  class="btn-sm btn-outline-secondary">
-            <i class="far fa-edit"></i> Edit
+                  class="btn-sm btn-outline-secondary" title="Edit item">
+            <i class="far fa-edit"></i>
           </button>
           <button *ngIf="isCreator(item)" (click)="deleteItem(item)"
-                  class="btn-sm btn-outline-danger">
-            <i class="far fa-trash-alt"></i> Delete
+                  class="btn-sm btn-outline-danger" title="Delete item">
+            <i class="far fa-trash-alt"></i>
           </button>
-          <button (click)="copyItem(item)" class="btn-sm button btn-outline-primary">
-            <i class="far fa-copy"></i> Copy
+          <button (click)="copyItem(item)"
+                  class="btn-sm button btn-outline-primary" title="Copy item to collection">
+            <i class="far fa-copy"></i>
           </button>
         </td>
       </tr>

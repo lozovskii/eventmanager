@@ -4,6 +4,7 @@ import {AlertService} from "../../_services/alert.service";
 import {WishListService} from "../../_services/wishlist.service";
 import {UserService} from "../../_services/user.service";
 import {WishListItem} from "../../_models/wishList/wishListItem";
+import {Item} from "../../_models/wishList/item";
 
 @Component({
   selector: 'app-wishlist',
@@ -91,6 +92,14 @@ export class WishListComponent implements OnInit {
 
   updatePriority(wishListItem: WishListItem): void{
     this.hasChanges = true;
+  }
+
+  addCreatedItem(item: Item): void {
+    let wishListItem: WishListItem = new WishListItem();
+    wishListItem.item = item;
+    wishListItem.event_id = this.wishList.id;
+    wishListItem.priority = 3;
+    this.wishList.items.push(wishListItem);
   }
 
   sortItems(prop: string) {

@@ -8,7 +8,9 @@
     <br>
     <div class="row justify-content-between">
       <div class="col-auto">
-        <button class="btn btn-outline-info" data-toggle="modal" data-target="#create">Create new item</button>
+        <button class="btn btn-outline-info" data-toggle="modal" data-target="#create">
+          <i class="fas fa-plus"></i> Create new item
+        </button>
       </div>
       <div class="col-auto">
         <div class="row">
@@ -28,7 +30,7 @@
       </div>
       <div class="col-auto">
         <button type="button" class="btn btn-outline-primary" [disabled]="!hasChanges" (click)="update()">
-          Save changes
+          <i class="fas fa-save"></i> Save changes
         </button>
       </div>
     </div>
@@ -42,12 +44,12 @@
     <table class="table table-hover">
       <thead>
       <tr>
-        <th scope="col" (click)="sortItems('name')">Name</th>
+        <th scope="col" (click)="sortItems('name')">Name <i class="fas fa-sort"></i></th>
         <th scope="col">Image</th>
         <th scope="col">Link</th>
-        <th scope="col" (click)="sortItems('dueDate')" class="text-center">Due date</th>
-        <th scope="col" (click)="sortItems('priority')" class="text-center">Priority</th>
-        <th scope="col" class="text-center"></th>
+        <th scope="col" (click)="sortItems('dueDate')" class="text-center">Due date <i class="fas fa-sort"></i></th>
+        <th scope="col" (click)="sortItems('priority')" class="text-center">Priority <i class="fas fa-sort"></i></th>
+        <th scope="col" class="text-center">Cancel Booking</th>
       </tr>
       </thead>
       <tbody>
@@ -76,8 +78,9 @@
           </div>
         </td>
         <td class="text-center">
-          <button class="btn btn-outline-danger btn-sm" (click)="cancelBooking(wishListItem)">
-            <i class="fas fa-ban"></i> Cancel
+          <button class="btn btn-outline-danger btn-sm"  title="Cancel booking"
+                  (click)="cancelBooking(wishListItem)">
+            <i class="fas fa-ban"></i>
           </button>
         </td>
       </tr>

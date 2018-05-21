@@ -39,9 +39,7 @@ public class ItemMapExtractor implements ResultSetExtractor<Collection<Item>> {
                 for (Tag tag : tags) {
                     ExtendedTag extendedTag = new ExtendedTag();
                     extendedTag.setTag(tag);
-                    System.out.println("tag:" + tag.getName());
                     extendedTag.setItemTagId(itemTagId[i++]);
-                    System.out.println(extendedTag);
                     extendedTagList.add(extendedTag);
                 }
                 item.setTags(extendedTagList);

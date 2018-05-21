@@ -28,7 +28,7 @@
       </div>
       <div class="col-auto">
         <button type="button" class="btn btn-outline-primary" [disabled]="!hasChanges" (click)="executeDelete()">
-          Save changes
+          <i class="fas fa-save"></i> Save changes
         </button>
       </div>
     </div>
@@ -41,12 +41,11 @@
     <table class="table table-hover">
       <thead>
       <tr>
-        <th scope="col" (click)="sortItems('name')">Name</th>
+        <th scope="col" (click)="sortItems('name')">Name <i class="fas fa-sort"></i></th>
         <th scope="col">Image</th>
         <th scope="col">Link</th>
-        <th scope="col" (click)="sortItems('dueDate')" class="text-center">Due date</th>
-        <th *ngIf="isIncluded" scope="col" class="text-center"></th>
-        <th *ngIf="!isIncluded" scope="col" class="text-center"></th>
+        <th scope="col" (click)="sortItems('dueDate')" class="text-center">Due date <i class="fas fa-sort"></i></th>
+        <th scope="col" class="text-center">Actions</th>
       </tr>
       </thead>
       <tbody>
@@ -61,17 +60,18 @@
           <a *ngIf="item.link" href="{{item.link}}"> link </a>
         </td>
         <td *ngIf="item.dueDate" class="text-center">{{item.dueDate}}</td>
-        <td class="text-center list-group">
-          <button *ngIf="isIncluded" (click)="addItem(item)" class="btn-sm button btn-outline-primary">
-            Add
+        <td class="text-center">
+          <button *ngIf="isIncluded" (click)="addItem(item)"
+                  class="btn-sm button btn-outline-primary" title="Add item to wishlist">
+            <i class="fas fa-plus"></i>
           </button>
           <button (click)="editItem(item)" data-toggle="modal" data-target="#edit"
-                  class="btn-sm btn-outline-secondary">
-            <i class="far fa-edit"></i> Edit
+                  class="btn-sm btn-outline-secondary" title="Edit item">
+            <i class="far fa-edit"></i>
           </button>
           <button (click)="deleteItem(item)"
-                  class="btn-sm btn-outline-danger">
-            <i class="far fa-trash-alt"></i> Delete
+                  class="btn-sm btn-outline-danger" title="Delete item">
+            <i class="far fa-trash-alt"></i>
           </button>
         </td>
       </tr>

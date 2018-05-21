@@ -2,12 +2,17 @@
   <div class="row">
     <div class="col-auto" *ngIf="!editMode">
       <button type="button" class="btn btn-secondary" [disabled]="!hasChanges" (click)="update()">
-        Save changes
+        <i class="fas fa-save"></i> Save changes
       </button>
     </div>
     <div class="col-auto" *ngIf="editMode">
       <button type="button" class="btn btn-outline-primary" [disabled]="!hasChanges" (click)="updateWishList()">
-        Save changes
+        <i class="fas fa-save"></i> Save changes
+      </button>
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-outline-info" data-toggle="modal" data-target="#create">
+        <i class="fas fa-plus"></i> Create new item
       </button>
     </div>
     <button class="btn btn-sm btn-outline-info" data-toggle="collapse" data-target="#filter"><i
@@ -21,11 +26,11 @@
   <table class="table table-hover">
     <thead>
     <tr>
-      <th scope="col" (click)="sortItems('name')">Name</th>
-      <th scope="col" (click)="sortItems('booker_customer_login')" class="text-center">Booker</th>
-      <th scope="col" (click)="sortItems('dueDate')" class="text-center">Due date</th>
-      <th scope="col" (click)="sortItems('priority')" class="text-center">Priority</th>
-      <th scope="col" *ngIf="editMode"></th>
+      <th scope="col" (click)="sortItems('name')">Name <i class="fas fa-sort"></i></th>
+      <th scope="col" (click)="sortItems('booker_customer_login')" class="text-center">Booker <i class="fas fa-sort"></i></th>
+      <th scope="col" (click)="sortItems('dueDate')" class="text-center">Due date <i class="fas fa-sort"></i></th>
+      <th scope="col" (click)="sortItems('priority')" class="text-center">Priority <i class="fas fa-sort"></i></th>
+      <th scope="col" *ngIf="editMode">Remove</th>
     </tr>
     </thead>
     <tbody>
@@ -33,8 +38,11 @@
       <td (click)="showItemDetails(wishListItem)" data-toggle="modal" data-target="#itemViewForm" class="tdName">
         {{wishListItem.item.name}}</td>
       <td class="text-center">
-        <button *ngIf="editMode || isBooker(wishListItem.booker_customer_login)" class="btn btn-outline-info"
-           (click)="cancelBooking(wishListItem)">cancel</button>
+        <button *ngIf="editMode || isBooker(wishListItem.booker_customer_login)"
+                class="btn btn-outline-info btn-sm" title="Cancel booking"
+           (click)="cancelBooking(wishListItem)">
+          <i class="fas fa-ban"></i>
+        </button>
         <span *ngIf="!isBooker(wishListItem.booker_customer_login)">{{wishListItem.booker_customer_login}}</span>
       </td>
       <td *ngIf="wishListItem.item.dueDate" class="text-center">{{wishListItem.item.dueDate}}</td>
@@ -51,7 +59,10 @@
         </div>
       </td>
       <td *ngIf="editMode" class="text-center">
-        <button (click)="removeItem(wishListItem)" class="btn-sm button btn-outline-danger">Remove</button>
+        <button (click)="removeItem(wishListItem)"
+                class="btn-sm button btn-outline-danger" title="Remove item from wishlist">
+          <i class="far fa-trash-alt"></i>
+        </button>
       </td>
     </tr>
     </tbody>
@@ -62,6 +73,23 @@
        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <app-item-details-view [wishListItemView]="wishListItemView" (cancelledItem)="cancelBooking($event)" (updatedItem)="updatePriority($event)" (bookedItem)="bookItem($event)"></app-item-details-view>
+    </div>
+  </div>
+
+  <div class="modal fade" id="create" tabindex="-1" role="dialog"
+       aria-labelledby="modalCreateTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Create item</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <app-create-item [included]="true" (createdItem)="addCreatedItem($event)"></app-create-item>
+        </div>
+      </div>
     </div>
   </div>
 

@@ -71,16 +71,18 @@
           <div>
             <button class="btn btn-sm" (click)="removeTag(tag)" *ngFor="let tag of item.tags">{{tag.tag.name}}</button>
           </div>
-          <small class="text-muted" *ngIf="item.tags">
-            You can remove the tag by clicking
+          <small class="text-muted" *ngIf="item.tags.length > 0">
+            You can remove tag by clicking
           </small>
         </div>
-        <label for="tags">Add tags</label>
-        <input formControlName="tags" class="form-control" type="text" name="tags" id="tags">
-        <button class="btn btn-sm" type="button" (click)="addTags()">Add</button>
-        <small class="text-muted">
-          Please write tags separated by comma
-        </small>
+        <label for="tags">Tags</label>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <button class="btn btn-m btn-outline-secondary" type="button" (click)="addTags()">Add</button>
+          </div>
+          <input formControlName="tags" class="form-control" type="text" name="tags" id="tags"
+                 placeholder="Write tags separated by comma" aria-label="Username" aria-describedby="basic-addon1">
+        </div>
       </div>
 
     </form>
