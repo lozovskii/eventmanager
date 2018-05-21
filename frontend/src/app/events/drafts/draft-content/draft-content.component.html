@@ -1,0 +1,35 @@
+<div class="row">
+  <div  class="col-md-3">
+    <app-vnavbar></app-vnavbar>
+  </div>
+
+  <main role="main" class="col-md-9">
+      <div>
+        <div class="btn-group" role="group" *ngIf="isCreator">
+          <button class="btn btn-outline-info" [routerLink] = "['/create-event','draft', eventDTO.event.id]">Convert to Event</button>
+          <button class="btn btn-outline-danger">Delete</button>
+        </div>
+        <br>
+        <br>
+        <p>Name = {{eventDTO.event.name}}</p>
+        <div class="row">
+          <p class="col-md-2">Description: </p>
+          <div class="col-md-10" [innerHTML]="eventDTO.event.description"></div>
+        </div>
+        <p>Start time: {{eventDTO.event.startTime}}</p>
+        <p>End time: {{eventDTO.event.endTime}}</p>
+        <p>Visibility: {{eventDTO.event.visibility}}</p>
+
+        <div *ngIf="isCreator">
+          <p *ngIf="isCreator">Priority: {{eventDTO.additionEvent.priority}}</p>
+          <div class="row">
+            <p class="col-md-2">People:</p>
+            <div class="col-md-10" *ngFor="let login of eventDTO.additionEvent.people">
+              <p _nglogin>{{login}}</p>
+            </div>
+          </div>
+          <app-event-notification></app-event-notification>
+        </div>
+      </div>
+  </main>
+</div>

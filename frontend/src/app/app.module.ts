@@ -66,6 +66,8 @@ import {AllItemsComponent} from "./wishlist/all-Items/all-items.component";
 import { DeleteFolderComponent } from './folders/delete-folder/delete-folder.component';
 import { GoogleMapsComponent } from './utils/google-maps/google-maps.component';
 import { AgmCoreModule } from '@agm/core';
+import { DraftListComponent } from './events/drafts/draft-list/draft-list.component';
+import { DraftContentComponent } from './events/drafts/draft-content/draft-content.component';
 import { FilterItemsPipe } from './wishlist/filter-items/filter-items-pipe.pipe';
 
 @NgModule({
@@ -134,6 +136,8 @@ import { FilterItemsPipe } from './wishlist/filter-items/filter-items-pipe.pipe'
     AllItemsComponent,
     DeleteFolderComponent,
     GoogleMapsComponent,
+    DraftListComponent,
+    DraftContentComponent,
     FilterItemsPipe,
   ],
   providers: [
