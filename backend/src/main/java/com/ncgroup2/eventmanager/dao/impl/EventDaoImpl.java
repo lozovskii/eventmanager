@@ -359,6 +359,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         String sql = queryService.getQuery("customer_event.insert_participant");
         Object[] params = new Object[]{
                 customerId,
+                eventId,
                 eventId
         };
         this.getJdbcTemplate().update(sql, params);
