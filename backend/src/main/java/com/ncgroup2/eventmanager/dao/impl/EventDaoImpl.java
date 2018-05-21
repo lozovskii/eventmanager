@@ -141,39 +141,54 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
     @Override
     public List getEventsByCustId(String custId) {
-        String query = queryService.getQuery("event.getByCustIdSortByStartDate");
+        String query = queryService.getQuery("event.getByCustIdSort");
         Object[] params = new Object[]{
+                custId,
                 custId
         };
-        return this.getJdbcTemplate().query(query, params, new BeanPropertyRowMapper(Event.class));
+        String orderBy = " ORDER BY start_time";
+        return this.getJdbcTemplate().query(query+orderBy, params, new BeanPropertyRowMapper(Event.class));
     }
 
     @Override
     public List getEventsByCustIdSorted(String custId) {
-        String query = queryService.getQuery("event.getByCustIdSortByName");
+        String query = queryService.getQuery("event.getByCustIdSort");
         Object[] params = new Object[]{
+                custId,
                 custId
         };
-        return this.getJdbcTemplate().query(query, params, new BeanPropertyRowMapper(Event.class));
+        String orderBy = " ORDER BY name";
+        return this.getJdbcTemplate().query(query+orderBy, params, new BeanPropertyRowMapper(Event.class));
     }
 
     @Override
     public List getEventsByCustIdSortedByType(String custId) {
-        String query = queryService.getQuery("event.getByCustIdSortByType");
+        String query = queryService.getQuery("event.getByCustIdSort");
         Object[] params = new Object[]{
+                custId,
                 custId
+        };
+        String orderBy = " ORDER BY status";
+        return this.getJdbcTemplate().query(query+orderBy, params, new BeanPropertyRowMapper(Event.class));
+    }
+
+    @Override
+    public List getEventsByCustIdFilterByType(String custId, String type) {
+        String query = queryService.getQuery("event.getByCustIdFilterByType");
+        Object[] params = new Object[]{
+                custId,
+                type,
+                custId,
+                type
         };
         return this.getJdbcTemplate().query(query, params, new BeanPropertyRowMapper(Event.class));
     }
 
     @Override
-    public List getEventsByCustIdFilterByType(String custId, String type) {
-        System.out.println(custId);
-        System.out.println(type);
-        String query = queryService.getQuery("event.getByCustIdFilterByType");
+    public List<Event> getEventsByCustIdSortedByStartTime(String custId) {
+        String query = queryService.getQuery("event.getByCustIdSortByStartDate");
         Object[] params = new Object[]{
-                custId,
-                type
+                custId
         };
         return this.getJdbcTemplate().query(query, params, new BeanPropertyRowMapper(Event.class));
     }
@@ -271,13 +286,11 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
 
     @Override
     public List getParticipants(String eventId) {
-        System.out.println(eventId);
         String query = queryService.getQuery("event.getParticipants");
         Object[] params = new Object[]{
                 eventId
         };
         List<String> listParticipants = this.getJdbcTemplate().queryForList(query, params, String.class);
-        System.out.println(listParticipants);
         if (!listParticipants.isEmpty()) {
             return listParticipants;
         } else {
@@ -346,6 +359,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         String sql = queryService.getQuery("customer_event.insert_participant");
         Object[] params = new Object[]{
                 customerId,
+                eventId,
                 eventId
         };
         this.getJdbcTemplate().update(sql, params);
@@ -401,6 +415,29 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
                 event.getId()
         };
         this.getJdbcTemplate().update(query_customer_event, customerEventParams);
+    }
+
+    @Override
+    public List<Event> getTimelineEvents(String customerId, LocalDateTime from, LocalDateTime to) {
+        String sql = queryService.getQuery("event.timeline");
+        Object[] params = new Object[] {
+                customerId,
+                from,
+                to
+        };
+        return this.getJdbcTemplate().query(sql, params, (resultSet, i) -> {
+            Event event = new Event();
+            LocalDateTime eventTime = resultSet.getDate("date").toLocalDate().atStartOfDay();
+            System.out.println(eventTime);
+            event.setStartTime(eventTime);
+            event.setEndTime(eventTime.plusDays(1).minusSeconds(1));
+            if(resultSet.getInt("busy")>0) {
+                event.setVisibility("PUBLIC");
+            } else {
+                event.setVisibility("PRIVATE");
+            }
+            return event;
+        });
     }
 
 }

@@ -19,10 +19,10 @@ export class NoteContentComponent implements OnInit {
 
   ngOnInit() {
     this.noteId = this.activatedRoute.snapshot.paramMap.get('id');
-    this.getNotesById();
+    this.getNoteById();
   }
 
-  getNotesById(): void {
+  getNoteById(): void {
     this.eventService.getNoteById(this.noteId)
       .subscribe((eventDTO) => {
         this.eventDTO = eventDTO;

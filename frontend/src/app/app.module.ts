@@ -20,6 +20,7 @@ import {FooterComponent} from './footer/footer.component';
 import {ReCaptchaModule} from 'angular2-recaptcha';
 import {CreateEventComponent} from './events/create-event/create-event.component';
 import {EventService} from "./_services/event.service";
+import {LocationService} from "./_services/location.service";
 import {EventlistComponent} from './events/eventlist/eventlist.component';
 import {RegistrationConfirmComponent} from './registration-confirm/registration-confirm.component';
 import {ProfileComponent} from './profile/profile.component';
@@ -36,7 +37,7 @@ import {WishListService} from "./_services/wishlist.service";
 import {BookedItemsComponent} from "./wishlist/booked-items/booked-items.component";
 import {EditProfileComponent} from './profile/edit-profile/edit-profile.component';
 import {ProfileService} from "./_services/profile.service";
-import {UploadImgComponent} from './upload-img/upload-img.component';
+import {UploadImgComponent} from './utils/upload-img/upload-img.component';
 import {NotificationsHostDirective} from './notifications/notifications-host.directive';
 import {InviteNotificationComponent} from './notifications/invite-notification/invite-notification.component';
 import {NotificationContainerComponent} from './notifications/notification-container/notification-container.component';
@@ -62,6 +63,9 @@ import {MoveNoteComponent} from "./folders/move-note/move-note.component";
 import {UpdateItemComponent} from "./wishlist/update-item/update-item.component";
 import {ItemDetailsViewComponent} from "./wishlist/item-details-view/item-details-view.component";
 import {AllItemsComponent} from "./wishlist/all-Items/all-items.component";
+import { DeleteFolderComponent } from './folders/delete-folder/delete-folder.component';
+import { GoogleMapsComponent } from './utils/google-maps/google-maps.component';
+import { AgmCoreModule } from '@agm/core';
 import { FilterItemsPipe } from './wishlist/filter-items/filter-items-pipe.pipe';
 
 @NgModule({
@@ -75,7 +79,13 @@ import { FilterItemsPipe } from './wishlist/filter-items/filter-items-pipe.pipe'
     ReactiveFormsModule,
     EditorModule,
     BrowserAnimationsModule, CalendarModule.forRoot(),
-    NgbModalModule.forRoot()
+    NgbModalModule.forRoot(),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyBosHI7J2BNwC_oQb61lOmHcIh9Urt28Es',
+      libraries: ['places'],
+      region: 'UA',
+      language: 'en'
+    })
   ],
   declarations: [
     AppComponent,
@@ -122,6 +132,8 @@ import { FilterItemsPipe } from './wishlist/filter-items/filter-items-pipe.pipe'
     UpdateItemComponent,
     ItemDetailsViewComponent,
     AllItemsComponent,
+    DeleteFolderComponent,
+    GoogleMapsComponent,
     FilterItemsPipe,
   ],
   providers: [
@@ -136,7 +148,8 @@ import { FilterItemsPipe } from './wishlist/filter-items/filter-items-pipe.pipe'
     WishListService,
     ProfileService,
     NotificationService,
-    FolderService
+    FolderService,
+    LocationService
     // provider used to create fake backend
   ],
   entryComponents: [

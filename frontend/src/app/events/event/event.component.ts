@@ -15,9 +15,8 @@ export class EventComponent implements OnInit {
 
   eventDTO: EventDTOModel;
   isCreator: boolean;
-  isParticipant: boolean;
+  isParticipant: boolean = false;
   additionEventForm: FormGroup;
-  isPeople:boolean;
 
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute,
@@ -27,17 +26,17 @@ export class EventComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('isParticipant = ' + this.isParticipant);
     this.initAdditionEventForm();
     this.isCreator = false;
     const id = this.eventId;
     this.eventService.getEventById(id).subscribe((eventDTO : EventDTOModel) => {
       this.eventDTO = eventDTO;
       let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
+      let currentUserLogin = JSON.parse(sessionStorage.getItem('currentUser')).login;
       this.isCreator = currentUserId == this.eventDTO.event.creatorId;
-      console.log('people = ' + this.eventDTO.additionEvent.people[0])
-      // this.isPeople = !(this.eventDTO.additionEvent.people.length = 0);
-
-      console.log('eventId = ' + this.eventDTO.event.id);
+      let isCurrentParticipant = this.eventDTO.additionEvent.people.find(x => x.valueOf() == currentUserLogin);
+      this.isParticipant = isCurrentParticipant != undefined;
     });
   }
 
@@ -50,17 +49,21 @@ export class EventComponent implements OnInit {
   addParticipant() {
     this.eventService.addParticipant(this.eventDTO.event.id).subscribe(() => {
       this.isParticipant = true;
-      //this.eventDTO.people.push(JSON.parse(sessionStorage.getItem('currentUser')).id);
+      this.eventDTO.additionEvent.people.push(JSON.parse(sessionStorage.getItem('currentUser')).id);
     });
   }
 
   removeParticipant() {
     this.eventService.removeParticipant(this.eventDTO.event.id).subscribe(() => {
       this.isParticipant = false;
-      // const index = this.eventDTO.people.indexOf(JSON.parse(sessionStorage.getItem('currentUser')).id);
-      // if (index>-1) {
-      //   this.eventDTO.people.slice(index);
-      // }
+      const indexOfId = this.eventDTO.additionEvent.people.indexOf(JSON.parse(sessionStorage.getItem('currentUser')).id);
+      if (indexOfId>-1) {
+        this.eventDTO.additionEvent.people.slice(indexOfId);
+      }
+      const indexOfLogin = this.eventDTO.additionEvent.people.indexOf(JSON.parse(sessionStorage.getItem('currentUser')).login);
+      if (indexOfLogin>-1) {
+        this.eventDTO.additionEvent.people.slice(indexOfLogin);
+      }
     });
   }
 

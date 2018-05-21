@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 // Base 64 IMage display issues with unsafe image
 import { DomSanitizer } from '@angular/platform-browser';
-import {User} from "../_models";
-import {AlertService, UserService} from "../_services";
-import {ProfileService} from "../_services/profile.service";
+import {User} from "../../_models";
+import {AlertService, UserService} from "../../_services";
+import {ProfileService} from "../../_services/profile.service";
 import {Router} from "@angular/router";
-import {MAX_IMG_SIZE} from "../app.config";
-import {ALLOWED_IMG_FORMATS} from "../app.config";
+import {MAX_IMG_SIZE} from "../../app.config";
+import {ALLOWED_IMG_FORMATS} from "../../app.config";
 
 
 @Component({
@@ -30,14 +30,6 @@ export class UploadImgComponent implements OnInit {
               private alertService: AlertService,
               private router: Router,
   ) {
-    // let login = JSON.parse(localStorage.getItem('currentUser')).login;
-    // this.userService.getByLogin(login).subscribe(
-    //   user => {
-    //     this.currentUser = user;
-    //     localStorage.setItem('currentUserObject', JSON.stringify(this.currentUser));
-    //   }
-    // );
-
       this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
   }
 

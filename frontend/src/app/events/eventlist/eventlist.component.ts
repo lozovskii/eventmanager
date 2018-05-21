@@ -150,7 +150,7 @@ export class EventlistComponent implements OnInit {
   importToPDF(): void {
     this.eventService.importEventsToPDF()
       .subscribe(() => {
-        this.alertService.info('You imported your events', true);
+        this.alertService.info('You imported your events.', true);
       })
   }
 }

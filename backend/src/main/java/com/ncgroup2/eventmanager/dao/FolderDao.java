@@ -15,4 +15,8 @@ public interface FolderDao extends DAO<Folder, Object> {
     void moveNoteByNoteIdByFolderDefault(String noteId);
 
     int getCountByName(String folderName);
+
+    void deleteById(String folderId);
+
+    void moveNotesToDefaultFromFolderId(String folderId);
 }

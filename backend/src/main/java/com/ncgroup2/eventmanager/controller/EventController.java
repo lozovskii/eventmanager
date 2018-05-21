@@ -30,6 +30,14 @@ public class EventController {
         eventService.createEvent(eventDTO);
     }
 
+    //    @PostMapping
+//     public ResponseEntity<String> create(@RequestBody EventDTO eventDTO){
+//        UUID eventId =  eventService.createEvent(eventDTO);
+//        String evIdStr = eventId.toString();
+//        System.out.println(evIdStr);
+//        System.out.println("Id to string " + evIdStr);
+//        return new ResponseEntity<>(evIdStr, HttpStatus.OK);
+
     @PostMapping("/delete")
     public void deleteEvent(@RequestBody String eventId){
         eventService.deleteEventById(eventId);
@@ -141,6 +149,12 @@ public class EventController {
             e.printStackTrace();
             return new ResponseEntity<>(list, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        return new ResponseEntity<>(list,HttpStatus.OK);
+    }
+
+    @GetMapping("/timeline")
+    public ResponseEntity<List<Event>> getTimeline(@RequestParam String  login) {
+        List<Event> list = eventService.getTimeline(login, LocalDateTime.now(),LocalDateTime.now().plusMonths(1));
         return new ResponseEntity<>(list,HttpStatus.OK);
     }
 }

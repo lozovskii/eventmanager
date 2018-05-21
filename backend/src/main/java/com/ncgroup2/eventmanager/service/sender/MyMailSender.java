@@ -7,7 +7,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
-@PropertySource("classpath:server.properties")
+@PropertySource("classpath:properties/server.properties")
 @Component
 public class MyMailSender {
 

@@ -33,7 +33,6 @@ export class CreateFolderComponent implements OnInit {
   }
 
   createFolder(folder:Folder) {
-    console.log(JSON.stringify(folder));
     folder.customerId = this.customerId;
     this.folderService.create(folder).subscribe(data => {
         this.alertService.info('Folder successfully saved!', true);

@@ -17,7 +17,8 @@ DROP TABLE IF EXISTS
 "Folder",
 "Relationship",
 "Customer",
-"Relation_Status";
+"Relation_Status",
+"Location";
 
 CREATE TABLE "Relation_Status"
 (
@@ -180,4 +181,14 @@ CREATE TABLE "Message"
   author_id		uuid NOT NULL REFERENCES "Customer" (id) ON DELETE CASCADE,
   content		text NOT NULL,
   date			TIMESTAMP WITHOUT TIME ZONE NOT NULL
+);
+
+CREATE TABLE "Location"
+(
+  id			uuid PRIMARY KEY DEFAULT uuid_generate_v1(),
+  event_id		uuid NOT NULL REFERENCES "Event" (id) ON DELETE CASCADE,
+  country			varchar(30),
+  city			varchar(30),
+  street			varchar(35),
+  house			varchar(10)
 );

@@ -38,14 +38,17 @@ public class FolderServiceImpl implements FolderService {
             folderDao.moveNoteByNoteIdByFolderDefault(noteId);
         }else{
             int countOfFolders = folderDao.getCountByName(folderName);
-            System.out.println(countOfFolders);
             if(countOfFolders == 1) {
                 folderDao.moveNoteByNoteIdByFolderName(noteId, folderName);
             }
         }
     }
 
-
+    @Override
+    public void deleteFolderById(String folderId){
+        folderDao.moveNotesToDefaultFromFolderId(folderId);
+        folderDao.deleteById(folderId);
+    }
 
 }
 

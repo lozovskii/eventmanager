@@ -18,7 +18,7 @@ import {UpdateEventComponent} from "./events/update-event/update-event.component
 import {FolderListComponent} from "./folders/folder-list/folder-list.component";
 import {WishListComponent} from "./wishlist/wishlist/wishlist.component";
 import {EditProfileComponent} from "./profile/edit-profile/edit-profile.component";
-import {UploadImgComponent} from "./upload-img/upload-img.component";
+import {UploadImgComponent} from "./utils/upload-img/upload-img.component";
 import {NotificationContainerComponent} from "./notifications/notification-container/notification-container.component";
 import {BookedItemsComponent} from "./wishlist/booked-items/booked-items.component";
 import {FriendComponent} from "./profile/friend/friend.component";
@@ -31,6 +31,7 @@ import {NoteContentComponent} from "./folders/note-content/note-content.componen
 import {MoveNoteComponent} from "./folders/move-note/move-note.component";
 import {AllItemsComponent} from "./wishlist/all-Items/all-items.component";
 import {CreateItemComponent} from "./wishlist/create-item/create-item.component";
+import {DeleteFolderComponent} from "./folders/delete-folder/delete-folder.component";
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full'},
@@ -38,6 +39,7 @@ const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'create-event', component: CreateEventComponent, canActivate: [AuthGuard]},
+  { path: 'create-event/:type/:id', component: CreateEventComponent, canActivate: [AuthGuard]},
   { path: 'event/:id', component: EventComponent, canActivate: [AuthGuard]},
   { path: 'update-event/:id', component: UpdateEventComponent, canActivate: [AuthGuard]},
   { path: 'registration-confirm', component: RegistrationConfirmComponent},
@@ -63,9 +65,10 @@ const appRoutes: Routes = [
   { path: 'event-container/:id', component: EventContainerComponent, canActivate: [AuthGuard]},
   { path: 'note-content/:id', component: NoteContentComponent, canActivate: [AuthGuard]},
   { path: 'eventlist/:type', component: EventlistComponent, canActivate: [AuthGuard]},
-  { path: 'eventlist/:type/sorted', component: EventlistComponent, canActivate: [AuthGuard]},
+  { path: 'eventlist/:type/sort', component: EventlistComponent, canActivate: [AuthGuard]},
   { path: 'eventlist/my/filter', component: EventlistComponent, canActivate: [AuthGuard]},
   { path: 'move-note/:id', component: MoveNoteComponent, canActivate: [AuthGuard]},
+  { path: 'delete-folder', component: DeleteFolderComponent, canActivate: [AuthGuard]},
   // otherwise redirect to home
  { path: '**', redirectTo: '' }
 ];

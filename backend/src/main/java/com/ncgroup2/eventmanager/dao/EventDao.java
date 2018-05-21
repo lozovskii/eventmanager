@@ -29,8 +29,6 @@ public interface EventDao {
 
     int getPrioriryId(String fieldValue);
 
-    List getEventsByCustId(String custId);
-
     Event getEventById(String id);
 
     Event getNoteById(String noteId);
@@ -55,11 +53,15 @@ public interface EventDao {
 
     String getTimeToEventStart(String eventId);
 
+    List getEventsByCustId(String custId);
+
     List getEventsByCustIdSorted(String custId);
 
     List getEventsByCustIdSortedByType(String custId);
 
     List getEventsByCustIdFilterByType(String custId, String type);
+
+    List<Event> getEventsByCustIdSortedByStartTime(String custId);
 
     List<Event> getNotesByCustId(String custId);
 
@@ -68,4 +70,7 @@ public interface EventDao {
     List<Event> getDraftsByCustId(String custId);
 
     void updateStartNotifTime(Event event, LocalDateTime startNotifTime);
+
+    List<Event> getTimelineEvents(String customerId, LocalDateTime from, LocalDateTime to);
+
 }

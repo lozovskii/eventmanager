@@ -30,11 +30,8 @@ export class EventNotificationComponent implements OnInit {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     this.eventService.getEventById(id).subscribe((eventDTO) => {
       this.eventDTO = eventDTO;
-      console.log(this.eventDTO);
-      console.log(this.eventDTO.additionEvent.startTimeNotification);
       let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
       this.isCreator = currentUserId == this.eventDTO.event.creatorId;
-      console.log('eventId = ' + this.eventDTO.event.id);
       this.eventService.isParticipant(currentUserId,this.eventDTO.event.id).subscribe(()=>{this.isParticipant=true}, ()=>{this.isParticipant=false})
 
     });
@@ -47,11 +44,9 @@ export class EventNotificationComponent implements OnInit {
   }
 
   changeNotStartTime(additionEvent:AdditionEventModel){
-    console.log('additionEvent = ' + JSON.stringify(additionEvent));
     if (additionEvent.startTimeNotification != null) {
       this.eventDTO.additionEvent.startTimeNotification = (additionEvent.startTimeNotification).slice(0, 10) + ' ' + (additionEvent.startTimeNotification).slice(11, 16) + ':00';
     }
-    console.log('additionEvent = ' + JSON.stringify(this.eventDTO.additionEvent));
     this.eventService.updateEventNotif(this.eventDTO).subscribe(() => {
       this.alertService.info('Notification time successfully set!',true);
       this.router.navigate(['eventlist','my'])
