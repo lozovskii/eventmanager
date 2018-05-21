@@ -1,4 +1,5 @@
-import {ItemTagDto} from "./dto/itemTagDto";
+import {ExtendedTag} from "./extendedTag";
+import {ItemRater} from "./itemRater";
 
 export class Item{
   id: string;
@@ -8,5 +9,6 @@ export class Item{
   image : string;
   link : string;
   dueDate : Date;
-  tags: ItemTagDto[];
+  tags: ExtendedTag[];
+  raters: ItemRater[];
 }

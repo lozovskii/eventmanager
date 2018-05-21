@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
-import {WishList} from '../_models/wishlist';
+import {WishList} from '../_models/wishList/wishList';
 import {Observable, throwError} from 'rxjs';
 import {UserService} from "./user.service";
 import {AuthenticationService} from "./authentication.service";
-import {Item} from "../_models/item";
+import {Item} from "../_models/wishList/item";
 import {BehaviorSubject, Subject} from "rxjs/Rx";
-import {ItemDto} from "../_models/dto/itemDto";
-import {ItemTagDto} from "../_models/dto/itemTagDto";
+import {WishListItem} from "../_models/wishList/wishListItem";
+import {ExtendedTag} from "../_models/wishList/extendedTag";
 
 
 @Injectable()
@@ -68,7 +68,7 @@ export class WishListService {
     return this.http.post<WishList>(url, wishList, {headers: AuthenticationService.getAuthHeader()});
   }
 
-  removeItems(trash: ItemDto[]){
+  removeItems(trash: WishListItem[]){
     const url = `${this.wishListUrl}/delete`;
     return this.http.post<WishList>(url, trash, {headers: AuthenticationService.getAuthHeader()});
   }
@@ -93,7 +93,7 @@ export class WishListService {
     return this.http.post<Item>(url, trash, {headers: AuthenticationService.getAuthHeader()});
   }
 
-  deleteTags(trash: ItemTagDto[]){
+  deleteTags(trash: ExtendedTag[]){
     const url = `${this.itemsUrl}/batch-delete-tags`;
     return this.http.post<Item>(url, trash, {headers: AuthenticationService.getAuthHeader()});
   }
@@ -101,6 +101,12 @@ export class WishListService {
   updateItem(item: Item){
     const url = `${this.itemsUrl}/update`;
     return this.http.put<Item>(url, item, {headers: AuthenticationService.getAuthHeader()});
+  }
+
+  updateRating(itemId: string, customerLogin:string) {
+    const url = `${this.itemsUrl}/update-rating`;
+    let params = [itemId, customerLogin];
+    return this.http.put(url,params, {headers: AuthenticationService.getAuthHeader()});
   }
 
   getItemsCollection(): Observable<Item[]> {

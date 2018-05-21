@@ -1,11 +1,10 @@
 package com.ncgroup2.eventmanager.dao.impl;
 
 import com.ncgroup2.eventmanager.dao.ItemDao;
-import com.ncgroup2.eventmanager.dto.ItemTagDto;
+import com.ncgroup2.eventmanager.objects.ExtendedTag;
 import com.ncgroup2.eventmanager.entity.Item;
 import com.ncgroup2.eventmanager.entity.Tag;
 import com.ncgroup2.eventmanager.mapper.ItemMapExtractor;
-import com.ncgroup2.eventmanager.mapper.ItemMapper;
 import com.ncgroup2.eventmanager.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -33,28 +32,24 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
     @Override
     public Collection<Item> getAll() {
         String sql =
-                "SELECT   i.*," +
-                        " itag.id as item_tag_id," +
-                        " t.id AS tag_id," +
-                        " t.name AS tag_name," +
-                        " t.count AS tag_count \n" +
-                        "FROM \"Item\" i\n" +
-                        "FULL JOIN \"Item_Tag\" itag ON (itag.item_id = i.id)\n" +
-                        "FULL JOIN \"Tag\" t ON (itag.tag_id = t.id);";
+                "SELECT   i.*,\n" +
+                        " array_agg(DISTINCT itag.id) as itag_ids,\n" +
+                        " array_agg(DISTINCT t.*) as tags,\n" +
+                        " array_agg(DISTINCT r.*) as rating\n" +
+                        " FROM \"Item\" i\n" +
+                        " LEFT JOIN \"Item_Tag\" itag ON (itag.item_id = i.id)\t\n" +
+                        " LEFT JOIN \"Tag\" t ON (itag.tag_id = t.id)\n" +
+                        " LEFT JOIN \"Rating_Item\" r ON (r.item_id = i.id)\n" +
+                        " GROUP BY i.id;";
 
-        Map<Item, List<ItemTagDto>> itemMap =
-                this.getJdbcTemplate().query(sql, new ItemMapExtractor());
-
-        return itemMap.isEmpty() ?
-                null : Mapper.mapItemToCollection(itemMap);
+        return this.getJdbcTemplate().query(sql, new ItemMapExtractor());
     }
 
     @Override
     public Item getById(Object id) {
         return Objects.requireNonNull(
                 getEntitiesByField("i.id", id).iterator().next(),
-                "Object not found");
-
+                "Item not found");
     }
 
     @Override
@@ -67,22 +62,18 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
     @Override
     public Collection<Item> getEntitiesByField(String fieldName, Object fieldValue) {
         String sql =
-                "SELECT  it.id AS item_tag_id," +
-                        "i.*," +
-                        "t.id AS tag_id," +
-                        "t.name AS tag_name," +
-                        "t.count AS tag_count " +
-                        "FROM \"Item\" i\n" +
-                        "INNER JOIN \"Item_Tag\" it ON (it.item_id = i.id)\t\n" +
-                        "INNER JOIN \"Tag\" t ON (it.tag_id = t.id)\t" +
-                        "WHERE " + fieldName + " = '" + fieldValue + "'::UUID " +
-                        "ORDER BY t.count desc";
+                "SELECT   i.*,\n" +
+                        " array_agg(DISTINCT itag.id) as itag_ids,\n" +
+                        " array_agg(DISTINCT t.*) as tags,\n" +
+                        " array_agg(DISTINCT r.*) as rating\n" +
+                        " FROM \"Item\" i\n" +
+                        " LEFT JOIN \"Item_Tag\" itag ON (itag.item_id = i.id)\t\n" +
+                        " LEFT JOIN \"Tag\" t ON (itag.tag_id = t.id)\n" +
+                        " LEFT JOIN \"Rating_Item\" r ON (r.item_id = i.id)\n" +
+                        " WHERE " + fieldName + " = '" + fieldValue + "'" +
+                        " GROUP BY i.id;";
 
-        Map<Item, List<ItemTagDto>> itemMap =
-                this.getJdbcTemplate().query(sql, new ItemMapExtractor());
-
-        return itemMap.isEmpty() ?
-                null : Mapper.mapItemToCollection(itemMap);
+        return this.getJdbcTemplate().query(sql, new ItemMapExtractor());
     }
 
     @Override
@@ -91,6 +82,11 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
                 "UPDATE \"Item\"" +
                         "SET creator_customer_login = ?, name = ?, description = ?, image = ?, link = ?, due_date = ?" +
                         "WHERE id = ?::UUID";
+
+        List<ExtendedTag> tags = item.getTags();
+        if (tags != null && (!tags.isEmpty())) {
+            addTags(tags, item.getId());
+        }
 
         this.getJdbcTemplate().update(itemUpdateSql, item.getParams());
     }
@@ -101,7 +97,6 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
                 "UPDATE \"Item\"" +
                         "SET " + fieldName + " = '" + fieldValue +
                         "' WHERE id = '" + id + "'::UUID;";
-
 
         this.getJdbcTemplate().update(itemUpdateSql);
     }
@@ -133,7 +128,7 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
 
     }
 
-    public void deleteTags(Collection<ItemTagDto> trash) {
+    public void deleteTags(Collection<ExtendedTag> trash) {
         if (trash != null && (!trash.isEmpty())) {
 
             String tagDeleteSql =
@@ -154,8 +149,8 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
             this.getJdbcTemplate().batchUpdate(
                     decreaseTagCount, trash, trash.size(),
                     (ps, tagDto) -> {
-                            ps.setString(1, tagDto.getTag().getId());
-                        });
+                        ps.setString(1, tagDto.getTag().getId());
+                    });
         }
     }
 
@@ -168,17 +163,14 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
 
         this.getJdbcTemplate().update(itemInsertSql, item.getParams());
 
-        List<ItemTagDto> tags = item.getTags();
-
+        List<ExtendedTag> tags = item.getTags();
         if (tags != null && (!tags.isEmpty())) {
-
             addTags(tags, item.getId());
         }
-
     }
 
-    public void createItems(Collection<Item> items){
-        if (items != null && (!items.isEmpty())){
+    public void createItems(Collection<Item> items) {
+        if (items != null && (!items.isEmpty())) {
 
             String itemsInsertSql =
                     "INSERT INTO \"Item\"" +
@@ -187,30 +179,26 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
 
             this.getJdbcTemplate().batchUpdate(
                     itemsInsertSql, items, items.size(),
-
                     (ps, item) -> {
                         ps.setString(1, item.getCreator_customer_login());
                         ps.setString(2, item.getName());
                         ps.setString(3, item.getDescription());
                         ps.setString(4, item.getImage());
                         ps.setString(5, item.getLink());
-                        ps.setDate(6,   Date.valueOf(item.getDueDate()));
+                        ps.setDate(6, Date.valueOf(item.getDueDate()));
                         ps.setString(7, item.getId());
                     });
 
             for (Item item : items) {
-
-                List<ItemTagDto> tags = item.getTags();
-
+                List<ExtendedTag> tags = item.getTags();
                 if (tags != null && (!tags.isEmpty())) {
-
                     addTags(tags, item.getId());
                 }
             }
         }
     }
 
-    public void addTags(Collection<ItemTagDto> tags, Object item_id) {
+    public void addTags(Collection<ExtendedTag> tags, Object item_id) {
         if (tags != null && (!tags.isEmpty())) {
 
             String tagsInsertSql =
@@ -223,10 +211,10 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
             this.getJdbcTemplate().batchUpdate(
                     tagsInsertSql, tags, tags.size(),
                     (ps, tag) -> {
-                            Tag tag1 = tag.getTag();
-                            ps.setString(1, tag1.getId());
-                            ps.setString(2, tag1.getName());
-                        });
+                        Tag tag1 = tag.getTag();
+                        ps.setString(1, tag1.getId());
+                        ps.setString(2, tag1.getName());
+                    });
 
             String itemTagInsertSql =
                     "INSERT INTO \"Item_Tag\"" +
@@ -240,22 +228,22 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
         }
     }
 
-    public Collection<Item> getCreatedItems(String creator_customer_login){
-        String sql =
-                "SELECT   i.*," +
-                        " itag.id as item_tag_id," +
-                        " t.id AS tag_id," +
-                        " t.name AS tag_name," +
-                        " t.count AS tag_count \n" +
-                        "FROM \"Item\" i\n" +
-                        "FULL JOIN \"Item_Tag\" itag ON (itag.item_id = i.id)\n" +
-                        "FULL JOIN \"Tag\" t ON (itag.tag_id = t.id)\n" +
-                        "WHERE i.creator_customer_login ='" + creator_customer_login + "'";
+    public void updateRating(Object id, Object customerLogin) {
+        String ratingUp =
+                "INSERT INTO public.\"Rating_Item\" " +
+                        "(customer_login, item_id)\n" +
+                        "VALUES (?, ?::UUID);";
 
-        Map<Item, List<ItemTagDto>> itemMap =
-                this.getJdbcTemplate().query(sql, new ItemMapExtractor());
+        String ratingDown =
+                "DELETE FROM \"Rating_Item\" " +
+                        "WHERE id = ?::UUID;";
 
-        return itemMap.isEmpty() ?
-                null : Mapper.mapItemToCollection(itemMap);
+        if (customerLogin == null) {
+            Object[] params = {id};
+            this.getJdbcTemplate().update(ratingDown, params);
+        } else {
+            Object[] params = {customerLogin, id};
+            this.getJdbcTemplate().update(ratingUp, params);
+        }
     }
 }

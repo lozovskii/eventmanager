@@ -1,66 +1,110 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {Item} from "../../_models/item";
-import {ItemDto} from "../../_models/dto/itemDto";
-import {WishList} from "../../_models/wishlist";
+import {Item} from "../../_models/wishList/item";
+import {WishListItem} from "../../_models/wishList/wishListItem";
+import {WishList} from "../../_models/wishList/wishList";
 import {WishListService} from "../../_services/wishlist.service";
+import {ItemRater} from "../../_models/wishList/itemRater";
 
 @Component({
   selector: 'app-item-details-view',
-  templateUrl: './item-details-view.component.html'
+  templateUrl: './item-details-view.component.html',
+  styleUrls: ['./item-details-view.component.css']
 })
 export class ItemDetailsViewComponent implements OnInit, OnChanges {
 
   @Input('isBooker') boolean = false;
   @Input('itemView') itemView: Item;
-  @Input('itemDtoView') itemDtoView: ItemDto;
-  @Output('updatedItem') updatedItem = new EventEmitter<ItemDto>();
-  @Output('cancelledItem') cancelledItem = new EventEmitter<ItemDto>();
-  @Output('bookedItem') bookedItem = new EventEmitter<ItemDto>();
+  @Input('wishListItemView') wishListItemView: WishListItem;
+  @Output('updatedItem') updatedItem = new EventEmitter<WishListItem>();
+  @Output('cancelledItem') cancelledItem = new EventEmitter<WishListItem>();
+  @Output('bookedItem') bookedItem = new EventEmitter<WishListItem>();
+  advancedMode: boolean = false;
   item: Item;
-  itemDto: ItemDto;
+  wishListItem: WishListItem;
+  customerLogin: string;
   isBooker: boolean = false;
+  rated: boolean;
+  rating: ItemRater;
 
   constructor(private wishListService: WishListService) {
     this.item = new Item();
-    this.itemDto = new ItemDto();
+    this.wishListItem = new WishListItem();
   }
 
   ngOnInit(): void {
     this.item = new Item();
-    this.itemDto = new ItemDto();
+    this.wishListItem = new WishListItem();
+    this.customerLogin = JSON.parse(sessionStorage.getItem('currentUser')).login;
+    this.advancedMode = false;
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.item = new Item();
-    this.itemDto = new ItemDto();
-    for (let prop in changes) {
-      if (prop == 'itemDtoView') {
-        this.itemDto = changes['itemDtoView'].currentValue;
-        if (this.itemDto.booker_customer_login != null)
-          this.isBooker = this.checkBooker(this.itemDto.booker_customer_login);
-      }
-      else
-        if (prop == 'itemView')
-          this.item = changes['itemView'].currentValue;
-    }
-      }
+    this.wishListItem = new WishListItem();
+    this.advancedMode = false;
 
-  cancelBooking(itemDto: ItemDto): void {
-    this.cancelledItem.emit(itemDto);
+    for (let prop in changes) {
+      if (prop == 'wishListItemView') {
+        this.wishListItem = changes['wishListItemView'].currentValue;
+        if (this.wishListItem.booker_customer_login != null)
+          this.isBooker = this.checkBooker(this.wishListItem.booker_customer_login);
+        this.advancedMode = true;
+        // this.item = this.wishListItem.item;
+      }
+      else if (prop == 'itemView') {
+        this.advancedMode = false;
+        this.item = changes['itemView'].currentValue;
+      }
+      if (!this.item.raters) {
+        this.item.raters = [];
+        this.rated = false;
+      } else {
+        this.checkRater();
+      }
+    }
+  }
+
+  cancelBooking(): void {
+    this.cancelledItem.emit(this.wishListItem);
     this.isBooker = false;
   }
 
-  updatePriority(itemDto: ItemDto): void{
-    this.updatedItem.emit(itemDto);
+  updatePriority(): void {
+    this.updatedItem.emit(this.wishListItem);
   }
 
-  bookItem(itemDto: ItemDto): void {
-    this.bookedItem.emit(itemDto);
+  bookItem(): void {
+    this.bookedItem.emit(this.wishListItem);
     this.isBooker = true;
   }
 
   checkBooker(bookerLogin: string): boolean {
     return this.wishListService.isBooker(bookerLogin);
+  }
+
+  checkRater(): void {
+    this.rating = this.item.raters.find(r => r.customer_login == this.customerLogin);
+    this.rated = this.rating != null;
+  }
+
+  updateRating(): void {
+    let value;
+    let raterLogin = this.customerLogin;
+    if (this.rated) {
+      value = this.rating.id;
+      raterLogin = null;
+      let index = this.item.raters.indexOf(this.rating);
+      this.item.raters.splice(index, 1);
+    } else {
+      value = this.item.id;
+      let r = new ItemRater();
+      r.customer_login = this.customerLogin;
+      this.item.raters.push(r);
+    }
+    this.wishListService.updateRating(value, raterLogin)
+      .subscribe(() => {
+      }, () => {
+      });
   }
 
 }

@@ -1,10 +1,9 @@
 package com.ncgroup2.eventmanager.service;
 
-import com.ncgroup2.eventmanager.dto.ItemTagDto;
+import com.ncgroup2.eventmanager.objects.ExtendedTag;
 import com.ncgroup2.eventmanager.entity.Item;
 
 import java.util.Collection;
-import java.util.List;
 
 public interface ItemService {
 
@@ -24,7 +23,9 @@ public interface ItemService {
 
     void deleteItems(Collection<Item> trash);
 
-    void removeTags(Collection<ItemTagDto> trash);
+    void removeTags(Collection<ExtendedTag> trash);
 
-    void addTags(Collection<ItemTagDto> tags, String itemId);
+    void addTags(Collection<ExtendedTag> tags, String itemId);
+
+    void updateRating(String itemId, String customerLogin);
 }

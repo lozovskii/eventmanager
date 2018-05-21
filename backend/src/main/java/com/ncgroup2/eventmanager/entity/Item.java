@@ -1,6 +1,7 @@
 package com.ncgroup2.eventmanager.entity;
 
-import com.ncgroup2.eventmanager.dto.ItemTagDto;
+import com.ncgroup2.eventmanager.objects.ExtendedTag;
+import com.ncgroup2.eventmanager.objects.Item_Rater;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +17,9 @@ public class Item extends Entity {
     private String image;
     private String link;
     private LocalDate dueDate;
-    private List<ItemTagDto> tags;
+
+    private List<ExtendedTag> tags;
+    private List<Item_Rater> raters;
 
     @Override
     public String toString() {
@@ -26,7 +29,9 @@ public class Item extends Entity {
                 " description='" + description + '\'' +
                 ", image='" + image + '\'' +
                 ", link='" + link + '\'' +
-                ", dueDate='"+ dueDate;
+                ", dueDate='"+ dueDate + '\'' +
+                ", \ntags='" + getTags() + '\'' +
+                ", \nraters='"+ getRaters();
     }
 
     @Override
