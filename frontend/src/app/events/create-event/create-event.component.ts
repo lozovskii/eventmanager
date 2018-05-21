@@ -21,6 +21,7 @@ export class CreateEventComponent implements OnInit {
   additionEventForm: FormGroup;
   eventDTOForm: FormGroup;
   isNote:boolean = false;
+  isDraft:boolean = false;
 
   nameNote: string;
   descriptionNote:string;
@@ -60,6 +61,7 @@ export class CreateEventComponent implements OnInit {
           break;
         }
         case 'draft' : {
+          this.isDraft = true;
           this.getDraftById();
           break;
         }

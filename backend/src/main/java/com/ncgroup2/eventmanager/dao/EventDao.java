@@ -73,4 +73,6 @@ public interface EventDao {
 
     List<Event> getTimelineEvents(String customerId, LocalDateTime from, LocalDateTime to);
 
+    void updatePriority(String customerId, String eventId, String priority);
+
 }

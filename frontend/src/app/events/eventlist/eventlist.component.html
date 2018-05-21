@@ -18,6 +18,22 @@
         <button class="btn btn-outline-success" (click)="importToPDF()">Import to PDF</button>
       </div>
     </form>
+    <div class="col-auto" *ngIf="isMy" style="margin: 16px">
+      <div class="row">
+        High -
+        <div class="dot"
+             [style.background-color]="'#d14242'">
+        </div>
+        Average -
+        <div class="dot"
+             [style.background-color]="'green'">
+        </div>
+        Low -
+        <div class="dot"
+             [style.background-color]="'gray'">
+        </div>
+      </div>
+    </div>
     <div class="row">
       <div class="btn-group col-md-12" role="group" *ngIf="isMy">
         <button class="btn btn-outline-info col-md-4" [routerLink]="['/eventlist','my/filter/private']">PRIVATE</button>
@@ -34,6 +50,7 @@
         <th scope="col">End time</th>
         <th scope="col" [routerLink]="['/eventlist','my/sorted/type']">Visibility</th>
         <th scope="col">Status</th>
+        <th scope="col" *ngIf="isMy">Priority</th>
       </tr>
       </thead>
       <tbody>
@@ -43,6 +60,14 @@
         <td>{{event.endTime}}</td>
         <td>{{event.visibility}}</td>
         <td>{{event.status}}</td>
+        <td class="text-center" *ngIf="isMy">
+          <div class="dot"
+               [style.background-color]="
+                    event.priority === 'HIGH' ? '#d14242':
+                    event.priority === 'AVERAGE' ? 'green':'gray'">
+
+          </div>
+        </td>
       </tr>
       </tbody>
     </table>
