@@ -5,22 +5,17 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FilterItemsPipe implements PipeTransform {
 
-  transform(items: any, filter: any, isAnd: boolean): any {
-    if (filter && Array.isArray(items)) {
-      let filterKeys = Object.keys(filter);
-      if (isAnd) {
-        return items.filter(item =>
-          filterKeys.reduce((memo, keyName) =>
-            (memo && new RegExp(filter[keyName], 'gi').test(item[keyName])) || filter[keyName] === "", true));
-      } else {
-        return items.filter(item => {
-          return filterKeys.some((keyName) => {
-            return new RegExp(filter[keyName], 'gi').test(item[keyName]) || filter[keyName] === "";
-          });
-        });
-      }
-    } else {
-      return items;
-    }
+  transform(value: any, args?: any): any {
+
+    if (!value) return null;
+    if (!args) return value;
+
+    args = args.toLowerCase();
+
+    return value.filter(function (item: any) {
+      return JSON.stringify(item).toLowerCase().includes(args);
+    });
   }
 }
+
+

@@ -32,13 +32,13 @@
         </button>
       </div>
     </div>
-    <!--<button class="btn btn-sm btn-outline-info" data-toggle="collapse" data-target="#filter"><i-->
-      <!--class="fas fa-filter"></i> Filter-->
-    <!--</button>-->
-    <!--<div class="collapse" id="filter">-->
-      <!--<input class="form-control" type="text" [value]="filterText"-->
-             <!--[placeholder]="filterPlaceholder" [formControl]="filterInput"/>-->
-    <!--</div>-->
+    <button class="btn btn-sm btn-outline-info" data-toggle="collapse" data-target="#filter"><i
+      class="fas fa-filter"></i> Filter
+    </button>
+    <div class="collapse" id="filter">
+      <input class="form-control" type="text" [(ngModel)]="queryString"
+             placeholder="You can filter values by name, description, due date and creator login"/>
+    </div>
     <table class="table table-hover">
       <thead>
       <tr>
@@ -51,15 +51,11 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let wishListItem of wishList.items | filterItems:{
-        name: filterText,
-        description: filterText,
-        creator_customer_login : filterText,
-        priority: filterText,
-        link: filterText
-        } : false | sortingItems:path:order; let i = index;">
+      <tr
+        *ngFor="let wishListItem of wishList.items | filterItems: queryString | sortingItems:path:order; let i = index;">
         <td (click)="showItemDetails(wishListItem)" data-toggle="modal" data-target="#itemViewForm" class="tdName">
-          {{wishListItem.item.name}}</td>
+          {{wishListItem.item.name}}
+        </td>
         <td>
           <a *ngIf="wishListItem.item.image" href="{{wishListItem.item.image}}">image link</a>
         </td>
@@ -82,7 +78,8 @@
         <td class="text-center">
           <button class="btn btn-outline-danger btn-sm" (click)="cancelBooking(wishListItem)">
             <i class="fas fa-ban"></i> Cancel
-          </button></td>
+          </button>
+        </td>
       </tr>
       </tbody>
     </table>
@@ -90,11 +87,12 @@
     <div class="modal fade" id="itemViewForm" tabindex="-1" role="dialog"
          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <app-item-details-view [wishListItemView]="wishListItemView" (cancelledItem)="cancelBooking($event)" (updatedItem)="updatedPriority($event)"></app-item-details-view>
+        <app-item-details-view [wishListItemView]="wishListItemView" (cancelledItem)="cancelBooking($event)"
+                               (updatedItem)="updatedPriority($event)"></app-item-details-view>
       </div>
     </div>
 
-    <div class="modal fade" id="create"  tabindex="-1" role="dialog"
+    <div class="modal fade" id="create" tabindex="-1" role="dialog"
          aria-labelledby="modalCreateTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">

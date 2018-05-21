@@ -4,8 +4,6 @@ import {AlertService} from "../../_services/alert.service";
 import {WishListService} from "../../_services/wishlist.service";
 import {Item} from "../../_models/wishList/item";
 import {WishListItem} from "../../_models/wishList/wishListItem";
-import {Subscription} from "rxjs";
-import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-bookeditems',
@@ -14,9 +12,6 @@ import {FormControl} from "@angular/forms";
 })
 export class BookedItemsComponent implements OnInit {
 
-  filterInput = new FormControl();
-  filterText: string;
-  filterPlaceholder: string;
   wishList: WishList;
   updatableWishList: WishList;
   hasChanges: boolean = false;
@@ -36,15 +31,6 @@ export class BookedItemsComponent implements OnInit {
 
   ngOnInit() {
     this.getBookedItems();
-
-    this.filterText = '';
-    this.filterPlaceholder = 'You can filter values by name, description, link and creator login';
-    this.filterInput
-      .valueChanges
-      .debounceTime(200)
-      .subscribe(term => {
-        this.filterText = term;
-      });
   }
 
   getBookedItems(): void {

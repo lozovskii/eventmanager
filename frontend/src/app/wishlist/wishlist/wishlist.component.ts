@@ -1,10 +1,9 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {WishList} from "../../_models/wishList/wishList";
 import {AlertService} from "../../_services/alert.service";
 import {WishListService} from "../../_services/wishlist.service";
 import {UserService} from "../../_services/user.service";
 import {WishListItem} from "../../_models/wishList/wishListItem";
-import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-wishlist',
@@ -15,9 +14,6 @@ export class WishListComponent implements OnInit {
   @Input('eventId') eventId: string;
   @Input('editMode') editMode: boolean = false;
 
-  filterInput = new FormControl();
-  filterText: string;
-  filterPlaceholder: string;
   trash: WishListItem[];
   wishList: WishList;
   wishListItemView: WishListItem;
@@ -39,15 +35,6 @@ export class WishListComponent implements OnInit {
     this.currentLogin = this.userService.getCurrentLogin();
     this.trash = [];
     this.wishListItemView = new WishListItem();
-
-    this.filterText = '';
-    this.filterPlaceholder = 'You can filter values by name, description, link and creator login';
-    this.filterInput
-      .valueChanges
-      .debounceTime(200)
-      .subscribe(term => {
-        this.filterText = term;
-      });
   }
 
   showItemDetails(wishListItem: WishListItem): void {

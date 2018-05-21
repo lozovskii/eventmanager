@@ -2,10 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {AlertService} from "../../_services/alert.service";
 import {WishListService} from "../../_services/wishlist.service";
 import {Item} from "../../_models/wishList/item";
-import {Location} from '@angular/common';
 import {WishList} from "../../_models/wishList/wishList";
 import {WishListItem} from "../../_models/wishList/wishListItem";
-import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-items-collection',
@@ -15,9 +13,6 @@ import {FormControl} from "@angular/forms";
 export class ItemsCollectionComponent implements OnInit {
   @Input('included') isIncluded: boolean;
 
-  filterInput = new FormControl();
-  filterText: string;
-  filterPlaceholder: string;
   hasChanges: boolean = false;
   editableItem: Item;
   itemView: Item;
@@ -41,15 +36,6 @@ export class ItemsCollectionComponent implements OnInit {
       this.wishList = wishList;
     });
     this.getItemsCollection();
-
-    this.filterText = '';
-    this.filterPlaceholder = 'You can filter values by name, description, link and creator login';
-    this.filterInput
-      .valueChanges
-      .debounceTime(200)
-      .subscribe(term => {
-        this.filterText = term;
-      });
   }
 
   getItemsCollection(): void {
