@@ -1,4 +1,3 @@
-import {WishList} from "../_models/wishlist";
 import {throwError} from "rxjs/index";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {BehaviorSubject} from "rxjs/Rx";
