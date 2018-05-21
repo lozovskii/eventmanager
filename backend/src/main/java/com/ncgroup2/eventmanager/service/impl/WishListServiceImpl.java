@@ -1,7 +1,7 @@
 package com.ncgroup2.eventmanager.service.impl;
 
 import com.ncgroup2.eventmanager.dao.WishListDao;
-import com.ncgroup2.eventmanager.dto.ItemWishListDto;
+import com.ncgroup2.eventmanager.objects.WishListItem;
 import com.ncgroup2.eventmanager.entity.WishList;
 import com.ncgroup2.eventmanager.service.WishListService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,7 @@ public class WishListServiceImpl implements WishListService{
         wishListDao.update(wishList);
     }
 
-    public void deleteItems(List<ItemWishListDto> trash){
+    public void deleteItems(List<WishListItem> trash){
 
         wishListDao.deleteItems(trash);
     }

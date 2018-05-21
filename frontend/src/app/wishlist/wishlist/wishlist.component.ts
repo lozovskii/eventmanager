@@ -1,9 +1,10 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {WishList} from "../../_models/wishlist";
+import {WishList} from "../../_models/wishList/wishList";
 import {AlertService} from "../../_services/alert.service";
 import {WishListService} from "../../_services/wishlist.service";
 import {UserService} from "../../_services/user.service";
-import {ItemDto} from "../../_models/dto/itemDto";
+import {WishListItem} from "../../_models/wishList/wishListItem";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-wishlist',
@@ -14,9 +15,12 @@ export class WishListComponent implements OnInit {
   @Input('eventId') eventId: string;
   @Input('editMode') editMode: boolean = false;
 
-  trash: ItemDto[];
+  filterInput = new FormControl();
+  filterText: string;
+  filterPlaceholder: string;
+  trash: WishListItem[];
   wishList: WishList;
-  itemDtoView: ItemDto;
+  wishListItemView: WishListItem;
   currentLogin: string;
   hasChanges: boolean = false;
   path: string[] = ['name'];
@@ -24,8 +28,7 @@ export class WishListComponent implements OnInit {
 
   constructor(private wishListService: WishListService,
               private userService: UserService,
-              private alertService: AlertService) {
-  }
+              private alertService: AlertService) {}
 
   ngOnInit() {
     if (this.editMode) {
@@ -35,6 +38,20 @@ export class WishListComponent implements OnInit {
     }
     this.currentLogin = this.userService.getCurrentLogin();
     this.trash = [];
+    this.wishListItemView = new WishListItem();
+
+    this.filterText = '';
+    this.filterPlaceholder = 'You can filter values by name, description, link and creator login';
+    this.filterInput
+      .valueChanges
+      .debounceTime(200)
+      .subscribe(term => {
+        this.filterText = term;
+      });
+  }
+
+  showItemDetails(wishListItem: WishListItem): void {
+    this.wishListItemView = wishListItem;
   }
 
   getWishListByEventId(eventId: string): void {
@@ -67,25 +84,25 @@ export class WishListComponent implements OnInit {
       });
   }
 
-  removeItem(itemDto: ItemDto): void {
+  removeItem(wishListItem: WishListItem): void {
     this.hasChanges = true;
-    let index = this.wishList.items.indexOf(itemDto);
+    let index = this.wishList.items.indexOf(wishListItem);
     this.wishList.items.splice(index, 1);
-    this.trash.push(itemDto);
+    this.trash.push(wishListItem);
   }
 
-  checkBooker(bookerLogin: string): boolean {
-    return bookerLogin == this.currentLogin;
-  }
-
-  bookItem(item: ItemDto): void {
-    item.booker_customer_login = this.currentLogin;
+  bookItem(wishListItem: WishListItem): void {
+    wishListItem.booker_customer_login = this.currentLogin;
     this.hasChanges = true;
   }
 
-  cancelBooking(item: ItemDto): void {
-    item.booker_customer_login = null;
-    item.priority = 3;
+  cancelBooking(wishListItem: WishListItem): void {
+    wishListItem.booker_customer_login = null;
+    wishListItem.priority = 3;
+    this.hasChanges = true;
+  }
+
+  updatePriority(wishListItem: WishListItem): void{
     this.hasChanges = true;
   }
 

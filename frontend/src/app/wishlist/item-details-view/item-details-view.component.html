@@ -1,4 +1,4 @@
-<div class="modal-content">
+<div class="modal-content" *ngIf="!advancedMode">
   <div class="modal-header">
     <h5 class="modal-title" id="modalCenterTitle">{{item.name}}</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -11,20 +11,125 @@
       <img *ngIf="item.image" class="card-img-top" [src]="item.image" alt="Card image">
       <div class="card-body">
         <h6 class="card-subtitle mb-2 text-muted">{{item.dueDate}}</h6>
-        <ul class="list-group list-group-flush">
-          <div class="card-text" [innerHTML]=item.description></div>
-          <li class="list-group-item" *ngIf="item.link">
+        <div class="card-text" [innerHTML]=item.description></div>
+        <span *ngIf="item.link">
             <a href="{{item.link}}" class="card-link">{{item.link}}</a>
-          </li>
-          <li class="list-group-item" *ngIf="item.tags">
-            <button class="btn btn-sm" *ngFor="let tag of item.tags">{{tag.tag.name}}</button>
-          </li>
-        </ul>
+          </span>
+        <div *ngIf="item.tags">
+          <button class="btn btn-sm" *ngFor="let tag of item.tags">{{tag.tag.name}}</button>
+        </div>
       </div>
-    <div class="modal-footer">
-      <button data-dismiss="modal" class="btn btn-secondary">Close</button>
+      <div class="modal-footer">
+        <div class="text-muted rating" *ngIf="item.raters">
+          <span *ngFor="let rater of item.raters; let i = index;">
+              <a *ngIf="i < 3" href="/users/{{rater.customer_login}}">{{rater.customer_login}}, </a>
+            <span *ngIf="i == 2" data-toggle="collapse" href="#others" id="expandableText" role="button"
+                  aria-expanded="false" aria-controls="others">
+              and {{item.raters.length-3}} others like this
+            </span>
+            <span *ngIf="i == 2" class="collapse" id="others">
+              <span *ngFor="let rater2 of item.raters; let j = index;">
+                <a *ngIf="j > 2" href="/users/{{rater2.customer_login}}">{{rater2.customer_login}}, </a>
+              </span>
+            </span>
+          </span>
+        </div>
+        <button type="button" class="btn btn-outline-info" [ngClass]="{ 'active': rated }" (click)="updateRating()"
+                data-toggle="button" [attr.aria-pressed]="rated">
+          <span class="far fa-heart"></span>
+        </button>
+        <button data-dismiss="modal" class="btn btn-secondary">Close</button>
+      </div>
     </div>
   </div>
 </div>
-</div>
 
+
+<div class="modal-content" *ngIf="advancedMode">
+  <div class="modal-header">
+    <h5 class="modal-title" id="modalCenterTitle1">{{wishListItem.item.name}}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <img *ngIf="!wishListItem.item.image" class="card-img-top" src="../../assets/img/default_image.png"
+           alt="Card image">
+      <img *ngIf="wishListItem.item.image" class="card-img-top" [src]="wishListItem.item.image" alt="Card image">
+      <div class="card-body">
+        <h6 class="card-subtitle mb-2 text-muted">{{wishListItem.item.dueDate}}</h6>
+        <ul class="list-group list-group-flush">
+          <div class="card-text" [innerHTML]=wishListItem.item.description></div>
+          <span *ngIf="wishListItem.item.link">
+            <a href="{{wishListItem.item.link}}" class="card-link">{{wishListItem.item.link}}</a>
+          </span>
+          <li class="list-group-item" *ngIf="wishListItem.item.tags">
+            <button class="btn btn-sm" *ngFor="let tag of wishListItem.item.tags">{{tag.tag.name}}</button>
+          </li>
+        </ul>
+      </div>
+      <div class="card-footer container">
+        <div class="row">
+          <div class="col-4">
+            <small *ngIf="isBooker">
+              <a href="event-container/{{wishListItem.event_id}}">Event</a>
+            </small>
+            <small *ngIf="!isBooker">
+              Booker:
+              <a>{{wishListItem.booker_customer_login}}</a>
+              <span *ngIf="!wishListItem.booker_customer_login"> none</span>
+            </small>
+
+          </div>
+          <div class="col-4">
+            <small>
+              <button class="btn btn-outline-danger btn-sm" *ngIf="isBooker"
+                      (click)="cancelBooking()">
+                <i class="fas fa-ban"></i> Cancel
+              </button>
+            </small>
+          </div>
+          <div class="col-4">
+            <small *ngIf="isBooker">
+              <label for="selectPriority">Priority:</label>
+              <select (change)="updatePriority()" id="selectPriority">
+                <option value="1" (click)="wishListItem.priority = 1">High</option>
+                <option value="2" (click)="wishListItem.priority = 2">Avg</option>
+                <option value="3" (click)="wishListItem.priority = 3">Low</option>
+              </select>
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!--<div class="text-muted rating" *ngIf="item.raters">-->
+          <!--<span *ngFor="let rater of item.raters; let i = index;">-->
+              <!--<a *ngIf="i < 3" href="/users/{{rater.customer_login}}">{{rater.customer_login}}, </a>-->
+            <!--<span *ngIf="i == 2" data-toggle="collapse" href="#others" id="expandableText" role="button"-->
+                  <!--aria-expanded="false" aria-controls="others">-->
+              <!--and {{item.raters.length-3}} others like this-->
+            <!--</span>-->
+            <!--<span *ngIf="i == 2" class="collapse" id="others">-->
+              <!--<span *ngFor="let rater2 of item.raters; let j = index;">-->
+                <!--<a *ngIf="j > 2" href="/users/{{rater2.customer_login}}">{{rater2.customer_login}}, </a>-->
+              <!--</span>-->
+            <!--</span>-->
+          <!--</span>-->
+        <!--</div>-->
+          <!--<button type="button" class="btn btn-outline-info" [ngClass]="{ 'active': rated }" (click)="updateRating()"-->
+                  <!--data-toggle="button" [attr.aria-pressed]="rated">-->
+            <!--<span class="far fa-heart"></span>-->
+          <!--</button>-->
+          <button data-dismiss="modal" class="btn btn-secondary">Close</button>
+
+
+          <button href="#" class="btn btn-primary" *ngIf="!wishListItem.booker_customer_login"
+                  (click)="bookItem()">
+            <i class="far fa-bookmark"></i> Book It
+          </button>
+
+      </div>
+    </div>
+  </div>
+</div>

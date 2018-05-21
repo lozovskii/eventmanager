@@ -1,0 +1,8 @@
+.rating span a{
+  color: #6c757d;
+  cursor: pointer;
+}
+.rating span[aria-expanded="true"]{
+  display: none;
+}
+

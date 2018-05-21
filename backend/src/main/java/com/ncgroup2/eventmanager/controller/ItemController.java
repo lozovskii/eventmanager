@@ -1,7 +1,6 @@
 package com.ncgroup2.eventmanager.controller;
 
-import com.ncgroup2.eventmanager.dto.ItemTagDto;
-import com.ncgroup2.eventmanager.dto.ItemWishListDto;
+import com.ncgroup2.eventmanager.objects.ExtendedTag;
 import com.ncgroup2.eventmanager.entity.Item;
 import com.ncgroup2.eventmanager.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +43,7 @@ public class ItemController {
     }
 
     @PostMapping(value = "/batch-delete-tags")
-    public void deleteTags(@RequestBody List<ItemTagDto> trash) {
+    public void deleteTags(@RequestBody List<ExtendedTag> trash) {
         itemService.removeTags(trash);
     }
 
@@ -68,5 +67,11 @@ public class ItemController {
         }
 
         return new ResponseEntity<>(items, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/update-rating")
+    public ResponseEntity updateRating(@RequestBody String[] params) {
+        itemService.updateRating(params[0],params[1]);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

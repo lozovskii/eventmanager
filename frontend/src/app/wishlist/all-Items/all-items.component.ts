@@ -1,10 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AlertService} from "../../_services/alert.service";
 import {WishListService} from "../../_services/wishlist.service";
-import {Item} from "../../_models/item";
+import {Item} from "../../_models/wishList/item";
 import {UserService} from "../../_services/user.service";
-import {WishList} from "../../_models/wishlist";
-import {ItemDto} from "../../_models/dto/itemDto";
+import {WishList} from "../../_models/wishList/wishList";
+import {WishListItem} from "../../_models/wishList/wishListItem";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-all-items',
@@ -14,6 +15,9 @@ import {ItemDto} from "../../_models/dto/itemDto";
 export class AllItemsComponent implements OnInit {
   @Input('included') isIncluded: boolean = false;
 
+  filterInput = new FormControl();
+  filterText: string;
+  filterPlaceholder: string;
   itemView: Item;
   editableItem: Item;
   wishList: WishList;
@@ -37,6 +41,15 @@ export class AllItemsComponent implements OnInit {
         this.wishList = wishList;
       });
     this.getAllItems();
+
+    this.filterText = '';
+    this.filterPlaceholder = 'You can filter values by name, description, link and creator login';
+    this.filterInput
+      .valueChanges
+      .debounceTime(200)
+      .subscribe(term => {
+        this.filterText = term;
+      });
   }
 
   showItemDetails(item: Item): void {
@@ -44,11 +57,11 @@ export class AllItemsComponent implements OnInit {
   }
 
   addItem(item: Item): void {
-    let itemDto: ItemDto = new ItemDto();
-    itemDto.item = item;
-    itemDto.event_id = this.wishList.id;
-    itemDto.priority = 3;
-    this.wishList.items.push(itemDto);
+    let wishListItem: WishListItem = new WishListItem();
+    wishListItem.item = item;
+    wishListItem.event_id = this.wishList.id;
+    wishListItem.priority = 3;
+    this.wishList.items.push(wishListItem);
   }
 
   copyItem(item: Item): void {

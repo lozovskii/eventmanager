@@ -4,7 +4,7 @@ import com.ncgroup2.eventmanager.dao.WishListDao;
 import com.ncgroup2.eventmanager.entity.Item;
 import com.ncgroup2.eventmanager.entity.WishList;
 import com.ncgroup2.eventmanager.mapper.WishListMapExtractor;
-import com.ncgroup2.eventmanager.dto.ItemWishListDto;
+import com.ncgroup2.eventmanager.objects.WishListItem;
 import com.ncgroup2.eventmanager.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -47,7 +47,7 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
                         "INNER JOIN \"Item_WishList\" iw ON (iw.item_id = i.id)\t " +
                         "INNER JOIN \"Event_WishList\" ew ON (ew.item_wishlist_id = iw.id) ;";
 
-        Map<String, List<ItemWishListDto>> wishListMap =
+        Map<String, List<WishListItem>> wishListMap =
                 this.getJdbcTemplate().query(sql, new WishListMapExtractor());
 
         return wishListMap.isEmpty() ?
@@ -78,12 +78,32 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
         String castSql;
 
         if (fieldValue.toString().matches("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) {
-            castSql = " = '" + fieldValue + "' ::UUID";
+            castSql = " = '" + fieldValue + "' :: UUID";
         } else {
             castSql = " = '" + fieldValue + "' :: CHARACTER VARYING ";
         }
 
         String sql =
+//                "SELECT   i.*,\n" +
+//                        " ew.id as event_wishlist_id, \n" +
+//                        " ew.event_id AS event_id,\n" +
+//                        " iw.id AS item_wishlist_id,\n" +
+//                        " iw.booker_customer_login,\n" +
+//                        " iw.priority,\n" +
+//                        " array_agg(DISTINCT itag.id) as itag_ids,\n" +
+//                        " array_agg(DISTINCT t.*) as tags,\n" +
+//                        " array_agg(DISTINCT r.*) as rating\n" +
+//                        " FROM \"Item\" i\n" +
+//                        " FULL JOIN \"Item_WishList\" iw ON (iw.item_id = i.id)\t\n" +
+//                        " FULL JOIN \"Event_WishList\" ew ON (ew.item_wishlist_id = iw.id)\n" +
+//                        " FULL JOIN \"Item_Tag\" itag ON (itag.item_id = i.id)\t\n" +
+//                        " FULL JOIN \"Tag\" t ON (itag.tag_id = t.id)\n" +
+//                        " FULL JOIN \"Rating_Item\" r ON (r.item_id = i.id)\n" +
+//                        " WHERE " + fieldName + castSql +
+//                        " GROUP BY i.id,ew.id, ew.event_id,iw.id;";
+
+//        this.getJdbcTemplate().query(sql, new WishListMapExtractor(fieldName));
+//
                 "SELECT   ew.id AS event_wishlist_id," +
                         " ew.event_id AS event_id," +
                         " iw.id AS item_wishlist_id," +
@@ -95,10 +115,10 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
                         "INNER JOIN \"Event_WishList\" ew ON (ew.item_wishlist_id = iw.id) " +
                         "WHERE " + fieldName + castSql;
 
-        Map<String, List<ItemWishListDto>> wishListMap =
+        Map<String, List<WishListItem>> wishListMap =
                 this.getJdbcTemplate().query(sql, new WishListMapExtractor(fieldName));
 
-        return wishListMap.isEmpty() ?
+        return  wishListMap.isEmpty() ?
                 null : Mapper.mapWishListToCollection(wishListMap);
     }
 
@@ -142,7 +162,7 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
      *
      * @param trash
      */
-    public void deleteItems(List<ItemWishListDto> trash) {
+    public void deleteItems(List<WishListItem> trash) {
         if (trash != null && (!trash.isEmpty())) {
 
             String itemDeleteSql =
@@ -157,7 +177,7 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
 
     @Override
     public void update(WishList wishList) {
-        List<ItemWishListDto> items = wishList.getItems();
+        List<WishListItem> items = wishList.getItems();
 
         String updateItem_WishListSql =
                 "UPDATE \"Item_WishList\" " +
@@ -189,7 +209,7 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
 
 
     public void addItems(WishList wishList) {
-        List<ItemWishListDto> items = wishList.getItems();
+        List<WishListItem> items = wishList.getItems();
 
         String itemWishListInsertSql =
                 "INSERT INTO \"Item_WishList\"" +

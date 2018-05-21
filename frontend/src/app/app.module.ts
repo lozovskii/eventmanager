@@ -68,6 +68,7 @@ import { GoogleMapsComponent } from './utils/google-maps/google-maps.component';
 import { AgmCoreModule } from '@agm/core';
 import { DraftListComponent } from './events/drafts/draft-list/draft-list.component';
 import { DraftContentComponent } from './events/drafts/draft-content/draft-content.component';
+import { FilterItemsPipe } from './wishlist/filter-items/filter-items-pipe.pipe';
 
 @NgModule({
   imports: [
@@ -137,6 +138,7 @@ import { DraftContentComponent } from './events/drafts/draft-content/draft-conte
     GoogleMapsComponent,
     DraftListComponent,
     DraftContentComponent,
+    FilterItemsPipe,
   ],
   providers: [
     AuthGuard,

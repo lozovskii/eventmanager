@@ -2,9 +2,9 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AlertService, UserService} from "../../_services";
 import {WishListService} from "../../_services/wishlist.service";
-import {Item} from "../../_models/item";
-import {ItemTagDto} from "../../_models/dto/itemTagDto";
-import {Tag} from "../../_models/tag";
+import {Item} from "../../_models/wishList/item";
+import {ExtendedTag} from "../../_models/wishList/extendedTag";
+import {Tag} from "../../_models/wishList/tag";
 
 @Component({
   selector: 'app-create-item',
@@ -60,7 +60,7 @@ export class CreateItemComponent implements OnInit {
     this.createdItem.emit(item);
   }
 
-  removeTag(tag: ItemTagDto) {
+  removeTag(tag: ExtendedTag) {
     let index = this.item.tags.indexOf(tag);
     this.item.tags.splice(index, 1);
   }
@@ -72,7 +72,7 @@ export class CreateItemComponent implements OnInit {
     if (tagsString != null) {
       let tagsArray = tagsString.split(',');
       for (let tagString of tagsArray) {
-        let tagDto = new ItemTagDto();
+        let tagDto = new ExtendedTag();
         let tag = new Tag();
         tag.name = tagString;
         tagDto.tag = tag;
