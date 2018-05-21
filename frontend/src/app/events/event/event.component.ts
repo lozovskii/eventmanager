@@ -15,9 +15,8 @@ export class EventComponent implements OnInit {
 
   eventDTO: EventDTOModel;
   isCreator: boolean;
-  isParticipant: boolean;
+  isParticipant: boolean = false;
   additionEventForm: FormGroup;
-  isPeople: boolean;
 
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute,
@@ -27,14 +26,17 @@ export class EventComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('isParticipant = ' + this.isParticipant);
     this.initAdditionEventForm();
     this.isCreator = false;
     const id = this.eventId;
     this.eventService.getEventById(id).subscribe((eventDTO : EventDTOModel) => {
       this.eventDTO = eventDTO;
       let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
+      let currentUserLogin = JSON.parse(sessionStorage.getItem('currentUser')).login;
       this.isCreator = currentUserId == this.eventDTO.event.creatorId;
-      this.isPeople = !(this.eventDTO.additionEvent.people.length = 0);
+      let isCurrentParticipant = this.eventDTO.additionEvent.people.find(x => x.valueOf() == currentUserLogin);
+      this.isParticipant = isCurrentParticipant != undefined;
     });
   }
 
@@ -48,16 +50,19 @@ export class EventComponent implements OnInit {
     this.eventService.addParticipant(this.eventDTO.event.id).subscribe(() => {
       this.isParticipant = true;
       this.eventDTO.additionEvent.people.push(JSON.parse(sessionStorage.getItem('currentUser')).id);
-      console.log(this.eventDTO.additionEvent.people);
     });
   }
 
   removeParticipant() {
     this.eventService.removeParticipant(this.eventDTO.event.id).subscribe(() => {
       this.isParticipant = false;
-      const index = this.eventDTO.additionEvent.people.indexOf(JSON.parse(sessionStorage.getItem('currentUser')).id);
-      if (index>-1) {
-        this.eventDTO.additionEvent.people.slice(index);
+      const indexOfId = this.eventDTO.additionEvent.people.indexOf(JSON.parse(sessionStorage.getItem('currentUser')).id);
+      if (indexOfId>-1) {
+        this.eventDTO.additionEvent.people.slice(indexOfId);
+      }
+      const indexOfLogin = this.eventDTO.additionEvent.people.indexOf(JSON.parse(sessionStorage.getItem('currentUser')).login);
+      if (indexOfLogin>-1) {
+        this.eventDTO.additionEvent.people.slice(indexOfLogin);
       }
     });
   }

@@ -74,23 +74,23 @@ public class EventServiceImpl implements EventService {
                     frequencyPeriod = startFrequencyPeriod;
                     List loginList = getExistingCustomers(eventDTO.getAdditionEvent().getPeople());
                     createEventInvitations(loginList, eventId);
-                    addLocation(eventDTO,eventId);
+//                    addLocation(eventDTO,eventId);
                 }
             } else {
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
                 List loginList = getExistingCustomers(eventDTO.getAdditionEvent().getPeople());
                 createEventInvitations(loginList, eventId);
-                addLocation(eventDTO,eventId);
+//                addLocation(eventDTO,eventId);
             }
         } else {
             if ((frequencyNumber != null) && (frequencyPeriod != null)) {
                 frequencyPeriod = frequencyNumber + " " + frequencyPeriod;
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
-                addLocation(eventDTO,eventId);
+//                addLocation(eventDTO,eventId);
 
             } else {
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
-                addLocation(eventDTO,eventId);
+//                addLocation(eventDTO,eventId);
 
             }
         }
