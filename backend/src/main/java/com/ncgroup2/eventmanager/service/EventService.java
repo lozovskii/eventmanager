@@ -52,7 +52,9 @@ public interface EventService {
 
     List<InviteNotificationDTO> getInviteNotifications(String customerId);
 
-    List<Event> getNationalEvents(String calendarId ,LocalDateTime from, LocalDateTime to) throws Exception;
+    List<Event> getNationalEvents(String calendarId, LocalDateTime from, LocalDateTime to) throws Exception;
 
     List<Event> getTimeline(String login, LocalDateTime from, LocalDateTime to);
+
+    void updatePriority(String customerId, String eventId, String priority);
 }

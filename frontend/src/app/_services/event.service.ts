@@ -7,10 +7,9 @@ import {UserService} from "./user.service";
 import {EventDTOModel} from "../_models/dto/eventDTOModel";
 import {AuthenticationService} from "./authentication.service";
 import {UpdateEventDTO} from "../_models/dto/UpdateEventDTO";
-import { v4 as uuid } from 'uuid';
 
 @Injectable()
-  export class EventService {
+export class EventService {
   private eventsUrl = 'api/events';
 
   constructor(private http: HttpClient,
@@ -46,25 +45,25 @@ import { v4 as uuid } from 'uuid';
     return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
   }
 
-  getEventsByCustIdFilterByType(type:string): Observable<Event[]> {
+  getEventsByCustIdFilterByType(type: string): Observable<Event[]> {
     let custId = this.userService.getCurrentId();
     const url = `${this.eventsUrl}/my/filter/${type}/${custId}`;
     return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
   }
 
-  getDraftsByCustId():Observable<Event[]> {
+  getDraftsByCustId(): Observable<Event[]> {
     let custId = this.userService.getCurrentId();
     const url = `${this.eventsUrl}/drafts${custId}`;
     return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
   }
 
-  getNotesByCustId():Observable<Event[]> {
+  getNotesByCustId(): Observable<Event[]> {
     let custId = this.userService.getCurrentId();
     const url = `${this.eventsUrl}/notes${custId}`;
     return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
   }
 
-  getInvitesByCustId():Observable<Event[]> {
+  getInvitesByCustId(): Observable<Event[]> {
     let custId = this.userService.getCurrentId();
     const url = `${this.eventsUrl}/invites${custId}`;
     return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
@@ -120,6 +119,11 @@ import { v4 as uuid } from 'uuid';
   importEventsToPDF() {
     return this.http.get(`api/import/pdf`,
       {headers: AuthenticationService.getAuthHeader()})
+  }
+
+  updatePriority(eventId: string, priority: string) {
+    const url = `${this.eventsUrl}/updatePriority?customerId=${this.userService.getCurrentId()}&eventId=${eventId}&priority=${priority}`;
+    return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()});
   }
 
 }

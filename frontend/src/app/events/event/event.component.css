@@ -1,3 +1,27 @@
 [_nglogin]{
   color: #4183c4;
 }
+.dot {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: inline-block;
+  float: left;
+
+}
+.dot select {
+  opacity: 0;
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: inline-block;
+  float: left;
+
+}
+
+.priority-label {
+  margin-right: 25px;
+  margin-left: 15px;
+}

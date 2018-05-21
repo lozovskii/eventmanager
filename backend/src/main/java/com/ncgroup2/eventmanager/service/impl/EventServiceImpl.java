@@ -111,22 +111,22 @@ public class EventServiceImpl implements EventService {
     public void createEventInvitations(List<String> logins, UUID eventId) {
         logins.forEach(login -> {
             eventDao.createEventInvitation(login, eventId);
-            sendInviteEmail(login,eventId);
+            sendInviteEmail(login, eventId);
         });
     }
 
     private void sendInviteEmail(String login, UUID eventId) {
-        String sendTo = customerDao.getEntityByField("login",login).getEmail();
-        Customer inviter = customerDao.getEntityByField("login",SecurityContextHolder.getContext().getAuthentication().getName());
+        String sendTo = customerDao.getEntityByField("login", login).getEmail();
+        Customer inviter = customerDao.getEntityByField("login", SecurityContextHolder.getContext().getAuthentication().getName());
         Event event = eventDao.getEventById(eventId.toString());
 
         String subject = "New invite";
 
         String template = "%s %s invited you to '%s' event.\n See more: ";
-        String message = String.format(template, inviter.getName(),inviter.getSecondName(),event.getName());
+        String message = String.format(template, inviter.getName(), inviter.getSecondName(), event.getName());
 
-        String url = "/event-container/"+eventId.toString();
-        mailSender.sendBasicEmailWithLink(sendTo,subject,message,url);
+        String url = "/event-container/" + eventId.toString();
+        mailSender.sendBasicEmailWithLink(sendTo, subject, message, url);
     }
 
     @Override
@@ -146,7 +146,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<Event> getEventsByCustIdFilterByType(String custId, String type) {
-        return eventDao.getEventsByCustIdFilterByType(custId,type);
+        return eventDao.getEventsByCustIdFilterByType(custId, type);
     }
 
     @Override
@@ -156,7 +156,7 @@ public class EventServiceImpl implements EventService {
         List<String> listParticipants = eventDao.getParticipants(eventId);
         EventDTO eventDTO = new EventDTO();
         eventDTO.setEvent(event);
-        if(listParticipants!=null){
+        if (listParticipants != null) {
             additionalEventModelDTO.setPeople(listParticipants);
         }
         eventDTO.setAdditionEvent(additionalEventModelDTO);
@@ -164,7 +164,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventDTO getNoteById(String noteId){
+    public EventDTO getNoteById(String noteId) {
         Event event = eventDao.getNoteById(noteId);
         AdditionalEventModelDTO additionalEventModelDTO = eventDao.getAdditionById(noteId);
         EventDTO eventDTO = new EventDTO();
@@ -184,9 +184,9 @@ public class EventServiceImpl implements EventService {
         LocalDateTime startNotifTime = eventDTO.getAdditionEvent().getStartTimeNotification();
         LocalDateTime startTime = eventDTO.getEvent().getStartTime();
         LocalDateTime currentTime = LocalDateTime.now();
-        if(startNotifTime!=null){
-            if(startNotifTime.isBefore(startTime)) {
-                if(startNotifTime.isAfter(currentTime)){
+        if (startNotifTime != null) {
+            if (startNotifTime.isBefore(startTime)) {
+                if (startNotifTime.isAfter(currentTime)) {
                     eventDao.updateStartNotifTime(event, startNotifTime);
                 }
             }
@@ -199,7 +199,7 @@ public class EventServiceImpl implements EventService {
         String priority = updateEventDTO.getPriority();
         eventDao.updateEvent(event, priority);
         getExistingCustomers(updateEventDTO.getNewPeople()).
-                forEach(login -> eventDao.createEventInvitation(login,UUID.fromString(event.getId())));
+                forEach(login -> eventDao.createEventInvitation(login, UUID.fromString(event.getId())));
 
         updateEventDTO.getRemovedPeople().
                 forEach(login -> eventDao.removeParticipant(login, event.getId()));
@@ -313,13 +313,18 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<Event> getNationalEvents(String calendarId, LocalDateTime from, LocalDateTime to) throws Exception {
-        return googleCalendarService.getEvents(calendarId,from,to);
+        return googleCalendarService.getEvents(calendarId, from, to);
     }
 
     @Override
     public List<Event> getTimeline(String login, LocalDateTime from, LocalDateTime to) {
         String customerId = customerDao.getEntityByField("login", login).getId();
-        return  eventDao.getTimelineEvents(customerId,from,to);
+        return eventDao.getTimelineEvents(customerId, from, to);
+    }
+
+    @Override
+    public void updatePriority(String customerId, String eventId, String priority) {
+        eventDao.updatePriority(customerId, eventId, priority);
     }
 
 //    private boolean isOverlaped(Event first, Event second) {
