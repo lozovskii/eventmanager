@@ -1,10 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AlertService} from "../../_services/alert.service";
 import {WishListService} from "../../_services/wishlist.service";
 import {Item} from "../../_models/wishList/item";
 import {UserService} from "../../_services/user.service";
 import {WishList} from "../../_models/wishList/wishList";
 import {WishListItem} from "../../_models/wishList/wishListItem";
+import {EventService} from "../../_services/event.service";
+import {EventDTOModel} from "../../_models/dto/eventDTOModel";
+import {Event} from "../../_models/event";
 
 @Component({
   selector: 'app-all-items',
@@ -13,9 +16,14 @@ import {WishListItem} from "../../_models/wishList/wishListItem";
 })
 export class AllItemsComponent implements OnInit {
   @Input('included') isIncluded: boolean = false;
+  @Output('itemView') outItemView = new EventEmitter<Item>();
+  @Output('editableItem') outEditableItem = new EventEmitter<Item>();
+  @Output('copiedItem') outCopiedItem = new EventEmitter<Item>();
+  @Output('eventsDTO') outEventsDTO = new EventEmitter<EventDTOModel[]>();
 
   itemView: Item;
   editableItem: Item;
+  copiedItem: Item;
   wishList: WishList;
   item: Item;
   items: Item[];
@@ -23,12 +31,15 @@ export class AllItemsComponent implements OnInit {
   order: number = 1;
   customerLogin: string;
   queryString: string;
+  eventsDTO: EventDTOModel[];
 
   constructor(private wishListService: WishListService,
               private userService: UserService,
-              private alertService: AlertService) {
+              private alertService: AlertService,
+              private eventService: EventService) {
     this.items = [];
     this.item = new Item();
+    this.item.tags = [];
     this.itemView = new Item();
     this.editableItem = new Item();
     this.queryString = '';
@@ -45,18 +56,33 @@ export class AllItemsComponent implements OnInit {
     this.getAllItems();
   }
 
-  isCreator(item: Item): boolean{
+  showMyEvents(item: Item): void {
+    this.eventService.getEventsByCustId()
+      .subscribe((eventsDTO) => {
+        this.isIncluded ?
+          this.outEventsDTO.emit(eventsDTO) :
+          this.eventsDTO = eventsDTO;
+      });
+    this.isIncluded ?
+      this.outCopiedItem.emit(item) :
+      this.copiedItem = item;
+  }
+
+  isCreator(item: Item): boolean {
     return item.creator_customer_login == this.customerLogin;
   }
 
   editItem(item: Item): void {
-    this.editableItem = item;
+    this.isIncluded ?
+      this.outEditableItem.emit(item) :
+      this.editableItem = item;
   }
 
   updateEditedItem(item: Item): void {
     let index = this.items.indexOf(this.editableItem);
-    this.items.fill(item,index,index+1);
+    this.items.fill(item, index, index + 1);
   }
+
 
   showItemDetails(item: Item): void {
     this.itemView = item;

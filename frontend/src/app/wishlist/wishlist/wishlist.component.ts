@@ -1,10 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {WishList} from "../../_models/wishList/wishList";
 import {AlertService} from "../../_services/alert.service";
 import {WishListService} from "../../_services/wishlist.service";
 import {UserService} from "../../_services/user.service";
 import {WishListItem} from "../../_models/wishList/wishListItem";
 import {Item} from "../../_models/wishList/item";
+import {EventService} from "../../_services/event.service";
+import {EventDTOModel} from "../../_models/dto/eventDTOModel";
+import {Event} from "../../_models/event";
 
 @Component({
   selector: 'app-wishlist',
@@ -14,20 +17,29 @@ import {Item} from "../../_models/wishList/item";
 export class WishListComponent implements OnInit {
   @Input('eventId') eventId: string;
   @Input('editMode') editMode: boolean = false;
+  @Output('wishListItemView') outWishListItemView = new EventEmitter<WishListItem>();
+  @Output('editableItem') outEditableItem = new EventEmitter<Item>();
+  @Output('copiedItem') outCopiedItem = new EventEmitter<Item>();
+  @Output('eventsDTO') outEventsDTO = new EventEmitter<EventDTOModel[]>();
 
   trash: WishListItem[];
   wishList: WishList;
   wishListItemView: WishListItem;
+  editableItem: Item;
+  copiedItem: Item;
   currentLogin: string;
   hasChanges: boolean = false;
   path: string[] = ['name'];
   order: number = 1;
   queryString: string;
+  eventsDTO: EventDTOModel[];
 
   constructor(private wishListService: WishListService,
               private userService: UserService,
-              private alertService: AlertService) {
+              private alertService: AlertService,
+              private eventService: EventService) {
     this.queryString = '';
+    this.editableItem = new Item();
   }
 
   ngOnInit() {
@@ -41,8 +53,42 @@ export class WishListComponent implements OnInit {
     this.wishListItemView = new WishListItem();
   }
 
-  showItemDetails(wishListItem: WishListItem): void {
-    this.wishListItemView = wishListItem;
+  showMyEvents(item: Item): void {
+    this.eventService.getEventsByCustId()
+      .subscribe((eventsDTO) => {
+        this.editMode ?
+          this.outEventsDTO.emit(eventsDTO) :
+          this.eventsDTO = eventsDTO;
+      });
+    this.editMode ?
+      this.outCopiedItem.emit(item) :
+      this.copiedItem = item;
+  }
+
+  editItem(item: Item): void {
+    this.outEditableItem.emit(item);
+  }
+
+  // copyToEventWishList(event: Event): void {
+  //   let wishList = new WishList();
+  //   let wishListItem: WishListItem = new WishListItem();
+  //   wishListItem.item = this.copiedItem;
+  //   wishListItem.event_id = event.id;
+  //   wishListItem.priority = 3;
+  //   wishList.id = event.id;
+  //   wishList.items = [];
+  //   wishList.items.push(wishListItem);
+  //
+  //   this.wishListService.addItems(wishList)
+  //     .subscribe(() => {
+  //       this.alertService.success('Item successfully copied to wishlist!');
+  //     }, () => {
+  //       this.alertService.error('Something wrong')
+  //     });
+  // }
+
+  showItemDetails(item: WishListItem): void {
+      this.wishListItemView = item;
   }
 
   getWishListByEventId(eventId: string): void {
@@ -61,9 +107,12 @@ export class WishListComponent implements OnInit {
 
   updateWishList(): void {
     if (this.trash.length > 0) {
-      this.wishListService.removeItems(this.trash).subscribe(() =>
-          this.alertService.success('Wish list successfully updated!'),
-        () => this.alertService.error('Something wrong'));
+      this.wishListService.removeItems(this.trash).subscribe(() => {
+          this.alertService.success('Wish list successfully updated!')
+        },
+        () => {
+          this.alertService.error('Something wrong')
+        });
     }
     if (this.wishList.items != null)
       this.wishListService.addItems(this.wishList).subscribe(() => {
@@ -93,7 +142,7 @@ export class WishListComponent implements OnInit {
     this.hasChanges = true;
   }
 
-  updatePriority(wishListItem: WishListItem): void{
+  updatePriority(wishListItem: WishListItem): void {
     this.hasChanges = true;
   }
 
@@ -107,8 +156,8 @@ export class WishListComponent implements OnInit {
 
   sortItems(prop: string) {
     this.path = prop.split('.');
-    this.order = this.order * (-1); // change order
-    return false; // do not reload
+    this.order = this.order * (-1);
+    return false;
   }
 
   update(): void {

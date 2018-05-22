@@ -42,10 +42,12 @@ export class ItemDetailsViewComponent implements OnInit, OnChanges {
     this.item = new Item();
     this.wishListItem = new WishListItem();
     this.advancedMode = false;
+    this.isBooker = false;
+    this.rated = false;
 
     for (let prop in changes) {
       if (prop == 'wishListItemView') {
-        this.wishListItem = changes['wishListItemView'].currentValue;
+        this.wishListItem = changes[prop].currentValue;
         if (this.wishListItem.booker_customer_login != null)
           this.isBooker = this.checkBooker(this.wishListItem.booker_customer_login);
         this.advancedMode = true;
@@ -53,7 +55,7 @@ export class ItemDetailsViewComponent implements OnInit, OnChanges {
       }
       else if (prop == 'itemView') {
         this.advancedMode = false;
-        this.item = changes['itemView'].currentValue;
+        this.item = changes[prop].currentValue;
       }
       if (!this.item.raters) {
         this.item.raters = [];

@@ -69,6 +69,7 @@ import { AgmCoreModule } from '@agm/core';
 import { DraftListComponent } from './events/drafts/draft-list/draft-list.component';
 import { DraftContentComponent } from './events/drafts/draft-content/draft-content.component';
 import { FilterItemsPipe } from './wishlist/filter-items/filter-items-pipe.pipe';
+import {AdditionalComponentsContainerComponent} from "./wishlist/additional-components-container/additional-components-container.component";
 
 @NgModule({
   imports: [
@@ -139,6 +140,7 @@ import { FilterItemsPipe } from './wishlist/filter-items/filter-items-pipe.pipe'
     DraftListComponent,
     DraftContentComponent,
     FilterItemsPipe,
+    AdditionalComponentsContainerComponent,
   ],
   providers: [
     AuthGuard,

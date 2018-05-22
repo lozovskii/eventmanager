@@ -67,9 +67,9 @@
 
 
       <div class="form-group">
-        <div class="container">
+        <div class="container" *ngIf="item.tags">
           <div>
-            <button class="btn btn-sm" (click)="removeTag(tag)" *ngFor="let tag of item.tags">{{tag.tag.name}}</button>
+            <button class="btn btn-sm" *ngFor="let tag of item.tags" (click)="removeTag(tag)">{{tag.tag.name}}</button>
           </div>
           <small class="text-muted" *ngIf="item.tags.length > 0">
             You can remove tag by clicking

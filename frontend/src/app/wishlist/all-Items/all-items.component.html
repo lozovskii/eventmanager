@@ -5,7 +5,6 @@
 
   <main role="main" [ngClass]="{ 'col-md-9': !isIncluded }">
     <h2 *ngIf="!isIncluded" class="text-center">All Items</h2>
-    <br>
     <div class="row justify-content-between">
       <div class="col-auto">
         <button class="btn btn-outline-info" data-toggle="modal" data-target="#create">
@@ -13,11 +12,12 @@
         </button>
       </div>
     </div>
-    <button class="btn btn-sm btn-outline-info" data-toggle="collapse" data-target="#filter"><i
+    <button class="btn btn-sm btn-outline-info" data-toggle="collapse" data-target="#AllFilter"><i
       class="fas fa-filter"></i> Filter
     </button>
-    <div class="collapse" id="filter">
-      <input class="form-control" type="text" [(ngModel)]="queryString" placeholder="You can filter values by name, description, due date and creator login"/>
+    <div class="collapse" id="AllFilter">
+      <input class="form-control" type="text" [(ngModel)]="queryString"
+             placeholder="You can filter values by name, description, due date and creator login"/>
     </div>
     <table class="table table-hover">
       <thead>
@@ -26,13 +26,14 @@
         <th scope="col">Image</th>
         <th scope="col">Link</th>
         <th scope="col" (click)="sortItems('dueDate')" class="text-center">Due date <i class="fas fa-sort"></i></th>
-        <th scope="col" (click)="sortItems('creator_customer_login')" class="text-center">Creator <i class="fas fa-sort"></i></th>
+        <th scope="col" (click)="sortItems('creator_customer_login')" class="text-center">Creator <i
+          class="fas fa-sort"></i></th>
         <th scope="col" class="text-center">Actions</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let item of items | filterItems: queryString | sortingItems:path:order">
-        <td (click)="showItemDetails(item)" data-toggle="modal" data-target="#itemViewForm" class="tdName">
+        <td (click)="showItemDetails(item)" data-toggle="modal" data-target="#AllItemViewForm" class="tdName">
           {{item.name}}
         </td>
         <td>
@@ -45,66 +46,106 @@
         <td *ngIf="item.creator_customer_login" class="text-center">{{item.creator_customer_login}}</td>
         <td class="text-center">
           <button *ngIf="isIncluded" (click)="addItem(item)"
-                  class="btn-sm button btn-outline-primary" title="Add item to wishlist">
+                  class="btn-sm btn-outline-primary" title="Add item to wishlist">
             <i class="fas fa-plus"></i>
           </button>
-          <button *ngIf="isCreator(item)" (click)="editItem(item)" data-toggle="modal" data-target="#edit"
+          <button *ngIf="isCreator(item)"
+                  (click)="editItem(item)" data-toggle="modal" data-target="#edit"
                   class="btn-sm btn-outline-secondary" title="Edit item">
             <i class="far fa-edit"></i>
+          </button>
+          <button (click)="showMyEvents(item)" data-toggle="modal" data-target="#copyTo"
+                  class="btn-sm btn btn-outline-success" title="Copy item to wishlist">
+            <i class="far fa-copy"></i>
           </button>
           <button *ngIf="isCreator(item)" (click)="deleteItem(item)"
                   class="btn-sm btn-outline-danger" title="Delete item">
             <i class="far fa-trash-alt"></i>
           </button>
           <button (click)="copyItem(item)"
-                  class="btn-sm button btn-outline-primary" title="Copy item to collection">
-            <i class="far fa-copy"></i>
+                  class="btn-sm btn-outline-primary" title="Copy item to collection">
+            <i class="far fa-star"></i>
           </button>
         </td>
       </tr>
       </tbody>
     </table>
 
-    <div class="modal fade" id="itemViewForm" tabindex="-1" role="dialog"
+    <div class="modal fade" id="AllItemViewForm" tabindex="-1" role="dialog"
          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <app-item-details-view [itemView]="itemView"></app-item-details-view>
       </div>
     </div>
 
-    <div class="modal fade" id="edit" tabindex="-1" role="dialog"
-         aria-labelledby="editModalTitle" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Edit item</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <app-update-item [editableItem]="editableItem" (updatedItem)="updateEditedItem($event)"></app-update-item>
-          </div>
-        </div>
-      </div>
-    </div>
+    <additional-components-container
+      *ngIf="!isIncluded"
+      [editableItem]="editableItem"
+      [eventsDTO]="eventsDTO"
+      [copiedItem]="copiedItem">
+    </additional-components-container>
 
-    <div class="modal fade" id="create" tabindex="-1" role="dialog"
-         aria-labelledby="modalCreateTitle" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Create item</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <app-create-item [included]="true" (createdItem)="addCreatedItem($event)"></app-create-item>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!--<div class="modal fade" id="itemViewForm1" tabindex="-1" role="dialog"-->
+    <!--aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
+    <!--<div class="modal-dialog modal-dialog-centered" role="document">-->
+    <!--<app-item-details-view [itemView]="itemView"></app-item-details-view>-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="modal fade" id="edit1" tabindex="-1" role="dialog"-->
+    <!--aria-labelledby="editModalTitle" aria-hidden="true">-->
+    <!--<div class="modal-dialog modal-dialog-centered" role="document">-->
+    <!--<div class="modal-content">-->
+    <!--<div class="modal-header">-->
+    <!--<h5 class="modal-title">Edit item</h5>-->
+    <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+    <!--<span aria-hidden="true">&times;</span>-->
+    <!--</button>-->
+    <!--</div>-->
+    <!--<div class="modal-body">-->
+    <!--<app-update-item [editableItem]="editableItem" (updatedItem)="updateEditedItem($event)"></app-update-item>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="modal fade" id="create1" tabindex="-1" role="dialog"-->
+    <!--aria-labelledby="modalCreateTitle" aria-hidden="true">-->
+    <!--<div class="modal-dialog modal-dialog-centered" role="document">-->
+    <!--<div class="modal-content">-->
+    <!--<div class="modal-header">-->
+    <!--<h5 class="modal-title">Create item</h5>-->
+    <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+    <!--<span aria-hidden="true">&times;</span>-->
+    <!--</button>-->
+    <!--</div>-->
+    <!--<div class="modal-body">-->
+    <!--<app-create-item [included]="true" (createdItem)="addCreatedItem($event)"></app-create-item>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="modal fade" id="copyTo1" tabindex="-1" role="dialog"-->
+    <!--aria-labelledby="modalCopyToTitle" aria-hidden="true">-->
+    <!--<div class="modal-dialog modal-dialog-centered" role="document">-->
+    <!--<div class="modal-content">-->
+    <!--<div class="modal-header">-->
+    <!--<h5 class="modal-title">Copy to wishlist</h5>-->
+    <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+    <!--<span aria-hidden="true">&times;</span>-->
+    <!--</button>-->
+    <!--</div>-->
+    <!--<div class="modal-body">-->
+    <!--<ul class="list-group">-->
+    <!--<li class="list-group-item" *ngFor="let event of eventsDTO" (click)="copyToEventWishList(event.event)">-->
+    <!--<a data-dismiss="modal">{{event.event.name}}</a>-->
+    <!--</li>-->
+    <!--</ul>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
 
   </main>
 </div>

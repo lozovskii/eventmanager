@@ -1,9 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AlertService} from "../../_services/alert.service";
 import {WishListService} from "../../_services/wishlist.service";
 import {Item} from "../../_models/wishList/item";
 import {WishList} from "../../_models/wishList/wishList";
 import {WishListItem} from "../../_models/wishList/wishListItem";
+import {EventService} from "../../_services/event.service";
+import {EventDTOModel} from "../../_models/dto/eventDTOModel";
+import {Event} from "../../_models/event";
 
 @Component({
   selector: 'app-items-collection',
@@ -12,9 +15,14 @@ import {WishListItem} from "../../_models/wishList/wishListItem";
 })
 export class ItemsCollectionComponent implements OnInit {
   @Input('included') isIncluded: boolean;
+  @Output('itemView') outItemView = new EventEmitter<Item>();
+  @Output('editableItem') outEditableItem = new EventEmitter<Item>();
+  @Output('copiedItem') outCopiedItem = new EventEmitter<Item>();
+  @Output('eventsDTO') outEventsDTO = new EventEmitter<EventDTOModel[]>();
 
   hasChanges: boolean = false;
   editableItem: Item;
+  copiedItem: Item;
   itemView: Item;
   wishList: WishList;
   trash: Item[];
@@ -22,9 +30,11 @@ export class ItemsCollectionComponent implements OnInit {
   path: string[] = ['item'];
   order: number = 1;
   queryString: string;
+  eventsDTO: EventDTOModel[];
 
   constructor(private wishListService: WishListService,
-              private alertService: AlertService) {
+              private alertService: AlertService,
+              private eventService: EventService) {
     this.items = [];
     this.trash = [];
     this.wishList = new WishList();
@@ -38,6 +48,18 @@ export class ItemsCollectionComponent implements OnInit {
       this.wishList = wishList;
     });
     this.getItemsCollection();
+  }
+
+  showMyEvents(item: Item): void {
+    this.eventService.getEventsByCustId()
+      .subscribe((eventsDTO) => {
+        this.isIncluded ?
+          this.outEventsDTO.emit(eventsDTO) :
+          this.eventsDTO = eventsDTO;
+      });
+    this.isIncluded ?
+      this.outCopiedItem.emit(item) :
+      this.copiedItem = item;
   }
 
   getItemsCollection(): void {
@@ -62,12 +84,14 @@ export class ItemsCollectionComponent implements OnInit {
   }
 
   editItem(item: Item): void {
-    this.editableItem = item;
+    this.isIncluded ?
+      this.outEditableItem.emit(item) :
+      this.editableItem = item;
   }
 
   updateEditedItem(item: Item): void {
     let index = this.items.indexOf(this.editableItem);
-    this.items.fill(item,index,index+1);
+    this.items.fill(item, index, index + 1);
   }
 
   addCreatedItem(item: Item): void {
@@ -75,10 +99,10 @@ export class ItemsCollectionComponent implements OnInit {
   }
 
   deleteItem(item: Item): void {
-      let index = this.items.indexOf(item);
-      this.items.splice(index, 1);
-      this.trash.push(item);
-      this.hasChanges = true;
+    let index = this.items.indexOf(item);
+    this.items.splice(index, 1);
+    this.trash.push(item);
+    this.hasChanges = true;
   }
 
   executeDelete(): void {
@@ -91,7 +115,7 @@ export class ItemsCollectionComponent implements OnInit {
 
   sortItems(prop: string) {
     this.path = prop.split('.');
-    this.order = this.order * (-1); // change order
-    return false; // do not reload
+    this.order = this.order * (-1);
+    return false;
   }
 }

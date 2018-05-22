@@ -9,7 +9,8 @@
       <div class="card">
         <div class="card-header" id="headingOne">
           <h5 class="mb-0">
-            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                    aria-expanded="true" aria-controls="collapseOne">
               Current Wish List
             </button>
           </h5>
@@ -17,40 +18,62 @@
 
         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
           <div class="card-body">
-            <app-wishlist [editMode]="true"></app-wishlist>
+            <app-wishlist
+              [editMode]="true"
+              (editableItem)="setEditableItem($event)"
+              (copiedItem)="setCopiedItem($event)"
+              (eventsDTO)="setEventsDTO($event)">
+            </app-wishlist>
           </div>
         </div>
       </div>
       <div class="card">
         <div class="card-header" id="headingTwo">
           <h5 class="mb-0">
-            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="false" aria-controls="collapseTwo">
               Items Collection
             </button>
           </h5>
         </div>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
           <div class="card-body">
-            <app-items-collection [included]="true"></app-items-collection>
+            <app-items-collection
+              [included]="true"
+              (editableItem)="setEditableItem($event)"
+              (copiedItem)="setCopiedItem($event)"
+              (eventsDTO)="setEventsDTO($event)">
+            </app-items-collection>
           </div>
         </div>
       </div>
       <div class="card">
         <div class="card-header" id="headingThree">
           <h5 class="mb-0">
-            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree"
+                    aria-expanded="false" aria-controls="collapseThree">
               All Items
             </button>
           </h5>
         </div>
         <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
           <div class="card-body">
-            <app-all-items [included]="true"></app-all-items>
+            <app-all-items
+              [included]="true"
+              (editableItem)="setEditableItem($event)"
+              (copiedItem)="setCopiedItem($event)"
+              (eventsDTO)="setEventsDTO($event)">
+            </app-all-items>
           </div>
         </div>
       </div>
     </div>
 
+    <additional-components-container
+      [editableItem]="editableItem"
+      [eventsDTO]="eventsDTO"
+      [copiedItem]="copiedItem">
+    </additional-components-container>
 
   </main>
 

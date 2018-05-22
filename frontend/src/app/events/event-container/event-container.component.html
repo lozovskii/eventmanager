@@ -11,11 +11,11 @@
            aria-controls="pills-event" aria-selected="true">Event</a>
       </li>
       <li class="nav-item" *ngIf="isParticipant || isCreator">
-        <a  class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-wishlist"
+        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-wishlist"
            role="tab" aria-controls="pills-wishlist" aria-selected="false">Wish List</a>
       </li>
       <li class="nav-item" *ngIf="isParticipant">
-        <a  class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-chat"
+        <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-chat"
            role="tab" aria-controls="pills-chat" aria-selected="false">Chat</a>
       </li>
     </ul>
@@ -40,29 +40,9 @@
         <app-event [eventId]="eventId"></app-event>
       </div>
       <div class="tab-pane fade" id="pills-wishlist" role="tabpanel" aria-labelledby="pills-wishlist-tab">
-        <div class="row">
-          <div class="col-auto">
         <button *ngIf="isCreator" class="btn btn-outline-info" [routerLink]="['/wishlist/edit']">
-          <i class="far fa-edit"></i> Edit wish list</button>
-          </div>
-        <div class="col-auto">
-          <div class="row">
-            High -
-            <div class="select-style"
-                 [style.background-color]="'#d14242'">
-            </div>
-            Average -
-            <div class="select-style"
-                 [style.background-color]="'green'">
-            </div>
-            Low -
-            <div class="select-style"
-                 [style.background-color]="'gray'">
-            </div>
-          </div>
-        </div>
-        </div>
-        <br>
+          <i class="far fa-edit"></i> Edit wish list
+        </button>
         <app-wishlist *ngIf="isParticipant || isCreator" [eventId]="eventId" [editMode]="false"></app-wishlist>
       </div>
       <div class="tab-pane fade" id="pills-chat" role="tabpanel" aria-labelledby="pills-chat-tab">...</div>

@@ -1,0 +1,54 @@
+<div class="modal fade" id="edit" tabindex="-1" role="dialog"
+     aria-labelledby="editModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit item</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-update-item [editableItem]="editableItem" (updatedItem)="updateEditedItem($event)"></app-update-item>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="create" tabindex="-1" role="dialog"
+     aria-labelledby="modalCreateTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Create item</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-create-item [included]="true" (createdItem)="addCreatedItem($event)"></app-create-item>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="copyTo" tabindex="-1" role="dialog"
+     aria-labelledby="modalCopyToTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Choose event</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-group" *ngIf="eventsDTO">
+          <li class="list-group-item" *ngFor="let event of eventsDTO" (click)="copyToEventWishList(event.event)">
+            <a data-dismiss="modal">{{event.event.name}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
