@@ -72,4 +72,13 @@ export class AdditionalComponentsContainerComponent implements OnInit, OnChanges
         this.alertService.error('Something wrong')
       });
   }
+
+  // TODO implement it
+  addCreatedItem(){
+
+  }
+
+  updateEditedItem(){
+
+  }
 }
