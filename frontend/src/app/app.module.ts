@@ -4,7 +4,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {EditorModule} from '@tinymce/tinymce-angular';
-
 import {AppComponent} from './app.component';
 import {routing} from './app.routing';
 
@@ -47,28 +46,50 @@ import {CreateItemComponent} from "./wishlist/create-item/create-item.component"
 import {ItemsCollectionComponent} from "./wishlist/items-collection/items-collection.component";
 import {FriendComponent} from "./profile/friend/friend.component";
 import {SortingItemsPipe} from "./wishlist/sorting-items/sorting-items.pipe";
-import { EventNotificationComponent } from './events/event-notification/event-notification.component';
-import { CreateFolderComponent } from './folders/create-folder/create-folder.component';
+import {EventNotificationComponent} from './events/event-notification/event-notification.component';
+import {CreateFolderComponent} from './folders/create-folder/create-folder.component';
 import {EditWishListComponent} from "./wishlist/edit-wishlist/edit-wishlist.component";
 import {CalendarComponent} from "./home/calendar/calendar.component";
 
-import { CalendarModule } from 'angular-calendar';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import {CalendarModule} from 'angular-calendar';
+import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
 import {HttpClientModule} from "@angular/common/http";
 import {EventContainerComponent} from "./events/event-container/event-container.component";
 import {FolderService} from "./_services/folder.service";
-import { FolderContentComponent } from './folders/folder-content/folder-content.component';
-import { NoteContentComponent } from './folders/note-content/note-content.component';
+import {FolderContentComponent} from './folders/folder-content/folder-content.component';
+import {NoteContentComponent} from './folders/note-content/note-content.component';
 import {MoveNoteComponent} from "./folders/move-note/move-note.component";
 import {UpdateItemComponent} from "./wishlist/update-item/update-item.component";
 import {ItemDetailsViewComponent} from "./wishlist/item-details-view/item-details-view.component";
 import {AllItemsComponent} from "./wishlist/all-Items/all-items.component";
-import { DeleteFolderComponent } from './folders/delete-folder/delete-folder.component';
-import { GoogleMapsComponent } from './utils/google-maps/google-maps.component';
-import { AgmCoreModule } from '@agm/core';
-import { DraftListComponent } from './events/drafts/draft-list/draft-list.component';
-import { DraftContentComponent } from './events/drafts/draft-content/draft-content.component';
-import { FilterItemsPipe } from './wishlist/filter-items/filter-items-pipe.pipe';
+import {DeleteFolderComponent} from './folders/delete-folder/delete-folder.component';
+import {GoogleMapsComponent} from './utils/google-maps/google-maps.component';
+import {AgmCoreModule} from '@agm/core';
+import {DraftListComponent} from './events/drafts/draft-list/draft-list.component';
+import {DraftContentComponent} from './events/drafts/draft-content/draft-content.component';
+import {FilterItemsPipe} from './wishlist/filter-items/filter-items-pipe.pipe';
+
+// import { SocialLoginModule, AuthServiceConfig } from "angularx-social-login";
+// import { GoogleLoginProvider, FacebookLoginProvider, LinkedInLoginProvider} from "angularx-social-login";
+
+// let config = new AuthServiceConfig([
+//   {
+//     id: GoogleLoginProvider.PROVIDER_ID,
+//     provider: new GoogleLoginProvider("882385907365-t3b1b4nieo5c2rna6ejf862eadkho2s2.apps.googleusercontent.com")
+//   },
+//   {
+//     id: FacebookLoginProvider.PROVIDER_ID,
+//     provider: new FacebookLoginProvider("408772522930353")
+//   },
+  // {
+  //   id: LinkedInLoginProvider.PROVIDER_ID,
+  //   provider: new LinkedInLoginProvider("LinkedIn-client-Id", false, 'en_US')
+  // }
+// ]);
+//
+// export function provideConfig() {
+//   return config;
+// }
 
 @NgModule({
   imports: [
@@ -80,6 +101,7 @@ import { FilterItemsPipe } from './wishlist/filter-items/filter-items-pipe.pipe'
     ReCaptchaModule,
     ReactiveFormsModule,
     EditorModule,
+    // SocialLoginModule,
     BrowserAnimationsModule, CalendarModule.forRoot(),
     NgbModalModule.forRoot(),
     AgmCoreModule.forRoot({
@@ -153,8 +175,8 @@ import { FilterItemsPipe } from './wishlist/filter-items/filter-items-pipe.pipe'
     ProfileService,
     NotificationService,
     FolderService,
-    LocationService
-    // provider used to create fake backend
+    LocationService,
+
   ],
   entryComponents: [
     InviteNotificationComponent,
