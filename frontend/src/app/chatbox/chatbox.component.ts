@@ -1,8 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MessageService} from "../_services/message.service";
 import {Message} from "../_models/message";
-import {Observable} from "rxjs/Rx";
 import {MessageDTOModel} from "../_models/dto/messageDTOModel";
+import Stomp from 'stompjs';
+import SockJS from 'sockjs.min.js';
+import {UserService} from "../_services/user.service";
 
 @Component({
   selector: 'chat-feature',
@@ -11,29 +13,55 @@ import {MessageDTOModel} from "../_models/dto/messageDTOModel";
 })
 export class ChatboxComponent implements OnInit {
   @Input('eventId') eventId: string;
-  messages: Message[];
-  replyMessage = "";
 
-  constructor(private messageService: MessageService) {
+  messages: Message[];
+  addingMessage = "";
+  stompClient;
+
+  constructor(private messageService: MessageService,
+              private userService: UserService) {
   }
 
   ngOnInit() {
-    this.getMessages("a6a09c3a-4fad-11e8-ac60-28d244397e41")
+    this.getMessages(this.eventId);
+    this.initializeWebSocketConnection();
+  }
 
+  initializeWebSocketConnection() {
+    let ws = new SockJS("http://localhost:8090/socket");
+    this.stompClient = Stomp.over(ws);
+    let that = this;
+
+    this.stompClient.connect({}, function (frame) {
+      that.stompClient.subscribe("/chat", (message) => {
+        let m: Message = JSON.parse(message.body);
+        that.messages.push(m);
+      });
+    });
   }
 
   getMessages(chatId) {
     this.messageService.getAllByChatId(chatId)
       .subscribe((messages) => {
         this.messages = messages;
-        console.log('Messages' + this.messages[1].content);
       })
   }
 
   addMessage(message: string) {
-    let m: MessageDTOModel = new MessageDTOModel();
-    m.message = {id:'0', content: message, authorId: 'd7638c26-4d85-11e8-bb3c-28d244397e45', chatId: "a6a09c3a-4fad-11e8-ac60-28d244397e41", date: '2018-05-15 10:10:10'};
 
-    this.messageService.create(m).subscribe((data) => this.getMessages("a6a09c3a-4fad-11e8-ac60-28d244397e41"));
+    let customerId = this.userService.getCurrentId();
+    let m: MessageDTOModel = new MessageDTOModel();
+    m.message = {
+      id: '0',
+      content: message,
+      authorId: customerId,
+      chatId: this.eventId,
+      date: '2018-05-15 10:10:10'
+    };
+    console.log('look at me'+' '+ this.addingMessage);
+    let that = this;
+
+    that.stompClient.send('/api/messages', {}, JSON.stringify(m));
+    ;
   }
 }

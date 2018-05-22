@@ -5,6 +5,8 @@ import com.ncgroup2.eventmanager.dto.MessageDTO;
 import com.ncgroup2.eventmanager.entity.Message;
 import com.ncgroup2.eventmanager.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,14 +21,18 @@ public class MessageController {
 
     @GetMapping(value = "/chat_messages")
     public List<Message> getAllMessage(@RequestParam String chatId) {
-
         return massageService.getAllByChatId(chatId);
     }
 
-    @PostMapping
-    public void create(@RequestBody MessageDTO messageDTO){
-        System.out.println("Message: "+messageDTO.getMessage().getParams());
+    @MessageMapping("/api/messages")
+    @SendTo("/chat")
+    public Message chat(MessageDTO messageDTO) {
+        System.out.println("Message: "+messageDTO.getMessage().getContent());
 
         massageService.create(messageDTO.getMessage());
+
+        return messageDTO.getMessage();
     }
+
+
 }

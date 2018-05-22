@@ -12,6 +12,7 @@ import {VISIBILITY} from "../../event-visibility";
 })
 export class CreateEventComponent implements OnInit {
 
+
   eventForm: FormGroup = this.initEventForm();
   additionEventForm: FormGroup = this.initAdditionEventForm();
 
