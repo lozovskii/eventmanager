@@ -62,6 +62,6 @@ export class ChatboxComponent implements OnInit {
     let that = this;
 
     that.stompClient.send('/api/messages', {}, JSON.stringify(m));
-    ;
+
   }
 }
