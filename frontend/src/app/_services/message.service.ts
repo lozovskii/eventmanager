@@ -6,11 +6,15 @@ import {AuthenticationService} from "./authentication.service";
 import {Message} from "../_models/message";
 import {MessageDTOModel} from "../_models/dto/messageDTOModel";
 
+import * as Stomp from "stompjs";
+import * as SockJS from "sockjs-client";
+import {UserService} from "./user.service";
 
 @Injectable()
 export class MessageService {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private userService: UserService) {
   }
 
   create(message: MessageDTOModel) {
