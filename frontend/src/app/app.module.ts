@@ -1,10 +1,8 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+// import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {EditorModule} from '@tinymce/tinymce-angular';
-
 import {AppComponent} from './app.component';
 import {routing} from './app.routing';
 
@@ -47,17 +45,18 @@ import {CreateItemComponent} from "./wishlist/create-item/create-item.component"
 import {ItemsCollectionComponent} from "./wishlist/items-collection/items-collection.component";
 import {FriendComponent} from "./profile/friend/friend.component";
 import {SortingItemsPipe} from "./wishlist/sorting-items/sorting-items.pipe";
-import { EventNotificationComponent } from './events/event-notification/event-notification.component';
-import { CreateFolderComponent } from './folders/create-folder/create-folder.component';
+import {EventNotificationComponent} from './events/event-notification/event-notification.component';
+import {CreateFolderComponent} from './folders/create-folder/create-folder.component';
 import {EditWishListComponent} from "./wishlist/edit-wishlist/edit-wishlist.component";
 import {CalendarComponent} from "./home/calendar/calendar.component";
-import { CalendarModule } from 'angular-calendar';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+
+import {CalendarModule} from 'angular-calendar';
+import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
 import {HttpClientModule} from "@angular/common/http";
 import {EventContainerComponent} from "./events/event-container/event-container.component";
 import {FolderService} from "./_services/folder.service";
-import { FolderContentComponent } from './folders/folder-content/folder-content.component';
-import { NoteContentComponent } from './folders/note-content/note-content.component';
+import {FolderContentComponent} from './folders/folder-content/folder-content.component';
+import {NoteContentComponent} from './folders/note-content/note-content.component';
 import {MoveNoteComponent} from "./folders/move-note/move-note.component";
 import {UpdateItemComponent} from "./wishlist/update-item/update-item.component";
 import {ItemDetailsViewComponent} from "./wishlist/item-details-view/item-details-view.component";
@@ -80,11 +79,11 @@ import {MessageService} from "./_services/message.service";
     FormsModule,
     HttpClientModule,
     routing,
-    BrowserAnimationsModule,
+    // BrowserAnimationsModule,
     ReCaptchaModule,
     ReactiveFormsModule,
     EditorModule,
-    BrowserAnimationsModule, CalendarModule.forRoot(),
+     CalendarModule.forRoot(),
     NgbModalModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBosHI7J2BNwC_oQb61lOmHcIh9Urt28Es',
@@ -162,6 +161,8 @@ import {MessageService} from "./_services/message.service";
     LocationService,
     MessageService
     // provider used to create fake backend
+    LocationService,
+
   ],
   entryComponents: [
     InviteNotificationComponent,

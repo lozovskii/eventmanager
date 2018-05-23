@@ -14,11 +14,13 @@ export class HomeComponent implements OnInit {
 
   constructor(private userService: UserService,
               private router: Router) {
-    this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+    console.log('Home constructor');
   }
 
   ngOnInit() {
-
+    console.log('Home on init');
+    this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+    console.log(this.currentUser);
   }
 
   event() {

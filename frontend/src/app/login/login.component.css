@@ -1,0 +1,15 @@
+#googleBtn {
+background: url("../../assets/img/google-button/btn_google_signin_light_normal_web.png") no-repeat;
+  cursor:pointer;
+  width: 191px;
+  height: 46px;
+  border: none;
+}
+
+#googleBtn:hover {
+  background-image: url("../../assets/img/google-button/btn_google_signin_light_focus_web.png");
+}
+
+#googleBtn:disabled {
+  background-image: url("../../assets/img/google-button/btn_google_signin_light_disabled_web.png");
+}

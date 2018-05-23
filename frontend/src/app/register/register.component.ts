@@ -1,36 +1,92 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {AlertService, RegistrationService} from "../_services";
+import {ActivatedRoute, Router} from '@angular/router';
+import {AlertService, RegistrationService, UserService} from "../_services";
 import {FormBuilder, Validators} from "@angular/forms";
 import {User} from "../_models";
+import {NavbarService} from "../_services/navbar.service";
+import GoogleUser = gapi.auth2.GoogleUser;
 
+declare const gapi: any;
 
 @Component({
   moduleId: module.id.toString(),
-  templateUrl: 'register.component.html'
+  templateUrl: 'register.component.html',
+  styleUrls: ['../login/login.component.css']
 })
 
 export class RegisterComponent implements OnInit {
   user: User;
   // loading = false;
   registerForm = this.formBuilder.group({
-    name : ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
-    secondName : ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
-    login : ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]],
-    email : ['', [Validators.email]],
-    password : ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]]
+    name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+    secondName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+    login: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]],
+    email: ['', [Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]]
   });
 
   isValidFormSubmitted = null;
   loading = false;
+  public auth2: any;
 
   constructor(private router: Router,
               private registrationService: RegistrationService,
               private alertService: AlertService,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private userService: UserService,
+              private navbarService: NavbarService,
+              private activatedRoute : ActivatedRoute) {
+  }
+
+  get name() {
+    return this.registerForm.get('name');
+  }
+
+  get secondName() {
+    return this.registerForm.get('secondName');
+  }
+
+  get login() {
+    return this.registerForm.get('login');
+  }
+
+  get email() {
+    return this.registerForm.get('email');
+  }
+
+  get password() {
+    return this.registerForm.get('password');
   }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit() {
+
+    this.googleInit();
+  }
+
+  public googleInit() {
+    console.log('Google Inin gapi ' + gapi);
+    gapi.load('auth2', () => {
+      this.auth2 = gapi.auth2.init({
+        client_id: '882385907365-t3b1b4nieo5c2rna6ejf862eadkho2s2.apps.googleusercontent.com',
+        cookiepolicy: 'single_host_origin',
+        scope: 'profile email'
+      });
+      this.attachSignin(document.getElementById('googleBtn'));
+    });
+  }
+
+  public attachSignin(element) {
+    this.auth2.attachClickHandler(element, {},
+      (googleUser) => {
+        console.log('Google user ' + googleUser);
+        this.registerGoogle(googleUser);
+
+      }, (error) => {
+        alert(JSON.stringify(error, undefined, 2));
+      });
   }
 
   register(userFromForm: User) {
@@ -56,23 +112,39 @@ export class RegisterComponent implements OnInit {
         });
   }
 
-  get name() {
-    return this.registerForm.get('name');
-  }
+  registerGoogle(googleUser: GoogleUser) {
+    let profile = googleUser.getBasicProfile();
+    console.log('Profile ' + profile);
+    let user = new User();
+    user.email = profile.getEmail();
+    user.login = profile.getEmail().substring(0, profile.getEmail().indexOf('@', 0));
+    user.name = profile.getGivenName();
+    user.secondName = profile.getFamilyName();
+    user.avatar = profile.getImageUrl();
+    user.token = googleUser.getAuthResponse().id_token;
+    this.registrationService.googleRegister(user)
+      .subscribe(() => {
+          this.userService.getByLogin(JSON.parse(sessionStorage.getItem('currentToken')).login).subscribe(
+            user => {
+              this.alertService.success('Registration successful!', true);
+              console.log(user);
+              this.navbarService.setNavBarState(true);
+              sessionStorage.setItem('currentUser', JSON.stringify(user));
+//              this.loading = false;
 
-  get secondName() {
-    return this.registerForm.get('secondName');
-  }
-
-  get login() {
-    return this.registerForm.get('login');
-  }
-
-  get email() {
-    return this.registerForm.get('email');
-  }
-
-  get password() {
-    return this.registerForm.get('password');
+              // history.back();
+              // setTimeout(() => {
+              //     return this.router.navigate(['/home'])
+              //   }
+              //   , 1000);
+              // return this.router.navigate(['/'])
+              return this.router.navigate(['/home']);
+            });
+        }
+        , () => {
+          this.alertService.error('Invalid credentials');
+          this.loading = false;
+          return this.router.navigate(['/login']);
+        });
   }
 }
