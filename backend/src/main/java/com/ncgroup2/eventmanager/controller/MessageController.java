@@ -1,6 +1,5 @@
 package com.ncgroup2.eventmanager.controller;
 
-import com.ncgroup2.eventmanager.dto.EventDTO;
 import com.ncgroup2.eventmanager.dto.MessageDTO;
 import com.ncgroup2.eventmanager.entity.Message;
 import com.ncgroup2.eventmanager.service.MessageService;
@@ -27,7 +26,7 @@ public class MessageController {
     @MessageMapping("/api/messages")
     @SendTo("/chat")
     public Message chat(MessageDTO messageDTO) {
-        System.out.println("Message: "+messageDTO.getMessage().getContent());
+        System.out.println("Message: "+messageDTO.getMessage().getAuthorName());
 
         massageService.create(messageDTO.getMessage());
 

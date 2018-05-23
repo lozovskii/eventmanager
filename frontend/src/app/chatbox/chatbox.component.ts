@@ -5,6 +5,8 @@ import {MessageDTOModel} from "../_models/dto/messageDTOModel";
 import Stomp from 'stompjs';
 import SockJS from 'sockjs.min.js';
 import {UserService} from "../_services/user.service";
+import {User} from "../_models";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'chat-feature',
@@ -17,9 +19,12 @@ export class ChatboxComponent implements OnInit {
   messages: Message[];
   addingMessage = "";
   stompClient;
+  currentUser: User;
 
   constructor(private messageService: MessageService,
-              private userService: UserService) {
+              private userService: UserService,
+              private router: Router) {
+    this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
   }
 
   ngOnInit() {
@@ -44,6 +49,9 @@ export class ChatboxComponent implements OnInit {
     this.messageService.getAllByChatId(chatId)
       .subscribe((messages) => {
         this.messages = messages;
+        for(let m in messages) {
+          console.log(messages[m]);
+        }
       })
   }
 
@@ -55,6 +63,7 @@ export class ChatboxComponent implements OnInit {
       id: '0',
       content: message,
       authorId: customerId,
+      authorName:this.currentUser.login,
       chatId: this.eventId,
       date: '2018-05-15 10:10:10'
     };
