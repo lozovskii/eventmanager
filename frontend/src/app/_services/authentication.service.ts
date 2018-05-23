@@ -38,10 +38,19 @@ export class AuthenticationService {
   }
 
   logout() {
+    console.log('In Logout');
     sessionStorage.clear();
-    if(gapi.auth2) {
+    console.log('Session storage cleaned');
+    console.log('Gapi '+ gapi);
+    console.log('Gapi auth2 '+ gapi.auth2);
+    console.log('Gapi auth '+gapi.auth);
+    console.log('Gapi signin 2'+gapi.signin2);
+
+
+    if(gapi.auth2 != undefined) {
+      console.log('Gapi auth2 authInstance'+ gapi.auth2.getAuthInstance());
       console.log("Trying logout");
-      gapi.auth2.getAuthInstance().signOut();
+      gapi.auth2.getAuthInstance().disconnect();
     }
     // let cookies = document.cookie.split(";");
     //

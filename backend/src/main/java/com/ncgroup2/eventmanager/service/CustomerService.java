@@ -35,4 +35,6 @@ public interface CustomerService {
     Customer findByLogin(String login);
 
     Customer getByGoogleId(String googleId);
+
+    void addGoogleId(String email, String googleId);
 }

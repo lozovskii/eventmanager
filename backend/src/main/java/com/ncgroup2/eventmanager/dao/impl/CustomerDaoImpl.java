@@ -243,7 +243,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
                         this.getJdbcTemplate(),
                         countCustomerByLogin,
                         searchCustomerByLogin,
-                        new Object[] {
+                        new Object[]{
                                 subStr[0] + "%",
                                 SecurityContextHolder.getContext().getAuthentication().getName()},
                         pageNo,
@@ -274,7 +274,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
                     this.getJdbcTemplate(),
                     countCustomerEmptyField,
                     searchCustomerEmptyField,
-                    new Object[] {SecurityContextHolder.getContext().getAuthentication().getName()},
+                    new Object[]{SecurityContextHolder.getContext().getAuthentication().getName()},
                     pageNo,
                     pageSize,
                     new CustomerMapper());
@@ -380,10 +380,19 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
         };
         try {
             countOfCustomers = this.getJdbcTemplate().queryForObject(sql, params, Long.class);
-        }catch(NullPointerException e){
+        } catch (NullPointerException e) {
             return false;
         }
         return countOfCustomers > 0 ? true : false;
+    }
+
+    @Override
+    public void addGoogleId(String email, String id) {
+        String sql = "UPDATE \"Customer\" SET google_id = ? WHERE email = ?";
+        Object[] params = new Object[]{
+                id, email
+        };
+        this.getJdbcTemplate().update(sql, params);
     }
 
 }

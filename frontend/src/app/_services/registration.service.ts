@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {User} from "../_models/user";
 import {HttpClient} from "@angular/common/http";
+import {JwtHelper} from "angular2-jwt";
 
 @Injectable()
 export class RegistrationService {
@@ -14,6 +15,19 @@ export class RegistrationService {
 
   verifyEmail(token)  {
       return this.http.get('/api/registrationConfirm?token='+token);
+  }
+
+  googleRegister(user: User) {
+    return this.http.post<User>('/api/googleRegister', user )
+      .map(userParam => {
+        if (userParam && userParam.token) {
+          let h = new JwtHelper();
+          let login = h.decodeToken(userParam.token).login;
+          sessionStorage.setItem('currentToken', JSON.stringify({login: login, token: userParam.token}));
+        }
+        console.log(sessionStorage.getItem('currentToken'));
+        return userParam;
+      });
   }
 
 }

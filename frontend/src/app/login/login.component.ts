@@ -2,14 +2,13 @@ import {Component, NgZone, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AlertService, AuthenticationService, UserService} from "../_services";
 import {NavbarService} from "../_services/navbar.service";
-// import { AuthService } from "angularx-social-login";
-// import { FacebookLoginProvider, GoogleLoginProvider, LinkedInLoginProvider } from "angularx-social-login";
 
 declare const gapi: any;
 
 @Component({
   moduleId: module.id.toString(),
-  templateUrl: 'login.component.html'
+  templateUrl: 'login.component.html',
+  styleUrls: ['./login.component.css']
 })
 
 export class LoginComponent implements OnInit {
@@ -38,14 +37,46 @@ export class LoginComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    gapi.signin2.render('my-signin2', {
-      'scope': 'profile email',
-      'width': 240,
-      'height': 50,
-      'longtitle': false,
-      'theme': 'light',
-      'onsuccess': param => this.onSignIn(param)
+
+    this.googleInit();
+    // gapi.auth2.render('my-signin2', {
+    //   'scope': 'profile email',
+    //   'width': 240,
+    //   'height': 50,
+    //   'longtitle': false,
+    //   'theme': 'light',
+    //   'onsuccess': param => this.onSignIn(param)
+    // });
+  }
+
+  public auth2: any;
+  public googleInit() {
+    gapi.load('auth2', () => {
+      this.auth2 = gapi.auth2.init({
+        client_id: '882385907365-t3b1b4nieo5c2rna6ejf862eadkho2s2.apps.googleusercontent.com',
+        cookiepolicy: 'single_host_origin',
+        scope: 'profile email'
+      });
+      this.attachSignin(document.getElementById('googleBtn'));
     });
+  }
+
+  public attachSignin(element) {
+    this.auth2.attachClickHandler(element, {},
+      (googleUser) => {
+
+        let profile = googleUser.getBasicProfile();
+        console.log('Token || ' + googleUser.getAuthResponse().id_token);
+        console.log('ID: ' + profile.getId());
+        console.log('Name: ' + profile.getName());
+        console.log('Image URL: ' + profile.getImageUrl());
+        console.log('Email: ' + profile.getEmail());
+        //YOUR CODE HERE
+        this.loginGoogle(googleUser.getAuthResponse().id_token);
+
+      }, (error) => {
+        alert(JSON.stringify(error, undefined, 2));
+      });
   }
 
   login() {
@@ -71,18 +102,18 @@ export class LoginComponent implements OnInit {
         });
   }
 
-  public onSignIn(googleUser) {
-    console.log("fucking there");
-    let token = googleUser.getAuthResponse().id_token;
+  loginGoogle(token) {
     this.authenticationService.googleLogin(token)
       .subscribe(() => {
           this.userService.getByLogin(JSON.parse(sessionStorage.getItem('currentToken')).login).subscribe(
             user => {
-              console.log("In Subscribe");
+              console.log("In Google Login Subscribe");
+              console.log(user);
               sessionStorage.setItem('currentUser', JSON.stringify(user));
-              this.loading = false;
+//              this.loading = false;
               this.navbarService.setNavBarState(true);
-              return this.router.navigate([this.returnUrl]);
+              // history.back();
+              return this.router.navigate(['/home']);
             });
         }
         , () => {

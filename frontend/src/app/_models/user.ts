@@ -7,4 +7,5 @@ export class User {
   phone: string;
   avatar: string;
   id: string;
+  token: string;
 }

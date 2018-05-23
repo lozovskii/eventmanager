@@ -1,8 +1,7 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+// import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {EditorModule} from '@tinymce/tinymce-angular';
 import {AppComponent} from './app.component';
 import {routing} from './app.routing';
@@ -69,27 +68,6 @@ import {DraftListComponent} from './events/drafts/draft-list/draft-list.componen
 import {DraftContentComponent} from './events/drafts/draft-content/draft-content.component';
 import {FilterItemsPipe} from './wishlist/filter-items/filter-items-pipe.pipe';
 
-// import { SocialLoginModule, AuthServiceConfig } from "angularx-social-login";
-// import { GoogleLoginProvider, FacebookLoginProvider, LinkedInLoginProvider} from "angularx-social-login";
-
-// let config = new AuthServiceConfig([
-//   {
-//     id: GoogleLoginProvider.PROVIDER_ID,
-//     provider: new GoogleLoginProvider("882385907365-t3b1b4nieo5c2rna6ejf862eadkho2s2.apps.googleusercontent.com")
-//   },
-//   {
-//     id: FacebookLoginProvider.PROVIDER_ID,
-//     provider: new FacebookLoginProvider("408772522930353")
-//   },
-  // {
-  //   id: LinkedInLoginProvider.PROVIDER_ID,
-  //   provider: new LinkedInLoginProvider("LinkedIn-client-Id", false, 'en_US')
-  // }
-// ]);
-//
-// export function provideConfig() {
-//   return config;
-// }
 
 @NgModule({
   imports: [
@@ -97,12 +75,11 @@ import {FilterItemsPipe} from './wishlist/filter-items/filter-items-pipe.pipe';
     FormsModule,
     HttpClientModule,
     routing,
-    BrowserAnimationsModule,
+    // BrowserAnimationsModule,
     ReCaptchaModule,
     ReactiveFormsModule,
     EditorModule,
-    // SocialLoginModule,
-    BrowserAnimationsModule, CalendarModule.forRoot(),
+     CalendarModule.forRoot(),
     NgbModalModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBosHI7J2BNwC_oQb61lOmHcIh9Urt28Es',
