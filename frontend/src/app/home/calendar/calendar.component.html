@@ -97,12 +97,15 @@
     *ngSwitchCase="'week'"
     [viewDate]="viewDate"
     [events]="calendarEvents"
-    [refresh]="refresh">
+    [refresh]="refresh"
+    [weekStartsOn]="weekStartsOn"
+    (eventClicked)="handleEvent('Clicked', $event.event)">
   </mwl-calendar-week-view>
   <mwl-calendar-day-view
     *ngSwitchCase="'day'"
     [viewDate]="viewDate"
     [events]="calendarEvents"
-    [refresh]="refresh">
+    [refresh]="refresh"
+    (eventClicked)="handleEvent('Clicked', $event.event)">
   </mwl-calendar-day-view>
 </div>
