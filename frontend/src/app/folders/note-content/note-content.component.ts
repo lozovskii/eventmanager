@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AlertService} from "../../_services/alert.service";
-import {EventService, UserService} from "../../_services";
+import {EventService} from "../../_services";
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
 import {ActivatedRoute, Router} from "@angular/router";
 

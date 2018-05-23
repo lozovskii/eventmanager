@@ -13,7 +13,7 @@
         <div class="form-group">
           <label>Title</label>
           <input *ngIf = "isNote || isDraft" value="{{eventDTO.event.name}}" formControlName="name" type="text" class="form-control" required/>
-          <input *ngIf = "!isNote && !isDraft" formControlName="name" type="text" class="form-control" required/>
+          <input *ngIf = "!isDraft && !isNote" formControlName="name" type="text" class="form-control" required/>
           <div *ngIf="name.invalid && (name.dirty || name.touched)"
                class="alert alert-danger">
 
@@ -31,23 +31,23 @@
         <div class="form-group">
           <label>Description</label>
           <editor *ngIf = "isNote || isDraft" [initialValue]="eventDTO.event.description" [formControlName]='["description"]' apiKey="h4g5a6vds8edp6kti3ahmikjin0r9usoqh99fs5l8xymelf5"  [init]="{plugins: 'link'}"></editor>
-          <editor *ngIf = "!isNote && !isDraft" [formControlName]='["description"]' apiKey="h4g5a6vds8edp6kti3ahmikjin0r9usoqh99fs5l8xymelf5"  [init]="{plugins: 'link'}"></editor>
+          <editor *ngIf = "!isDraft && !isNote" [formControlName]='["description"]' apiKey="h4g5a6vds8edp6kti3ahmikjin0r9usoqh99fs5l8xymelf5"  [init]="{plugins: 'link'}"></editor>
         </div>
         <br>
         <div class="form-group">
           <label>Day: </label>
           <input *ngIf = "isDraft" type="date" value="{{eventDTO.event.startTime | slice : 0 : 4}}-{{eventDTO.event.startTime | slice : 5 : 7}}-{{eventDTO.event.startTime |slice : 8 : 10}}"  formControlName="day" class="dateTimeInput">
-          <input *ngIf = "!isNote && !isDraft" type="date" formControlName="day" class="dateTimeInput">
+          <input *ngIf = "!isDraft" type="date" formControlName="day" class="dateTimeInput">
         </div>
         <div class="form-group">
           <label>Start time</label>
           <input *ngIf = "isDraft" value = "{{eventDTO.event.startTime | slice : 11 : 16}}" formControlName="startTime" type="time" class="form-control"/>
-          <input *ngIf = "!isNote && !isDraft" formControlName="startTime" type="time" class="form-control"/>
+          <input *ngIf = "!isDraft" formControlName="startTime" type="time" class="form-control"/>
         </div>
         <div class="form-group">
           <label>End time</label>
           <input *ngIf = "isDraft" value = "{{eventDTO.event.endTime | slice : 11 : 16}}" formControlName="endTime" type="time" class="form-control"/>
-          <input *ngIf = "!isNote && !isDraft" formControlName="endTime" type="time" class="form-control"/>
+          <input *ngIf = "!isDraft" formControlName="endTime" type="time" class="form-control"/>
         </div>
         <br>
         <div class="form-group">
@@ -58,7 +58,7 @@
               {{vision}}
             </option>
           </select>
-          <select *ngIf = "!isNote && !isDraft" formControlName="visibility" type="text" class="form-control"
+          <select *ngIf = "!isDraft" formControlName="visibility" type="text" class="form-control"
                   name="visibility">
             <option *ngFor="let vision of visibilityList" [ngValue]="vision">
               {{vision}}
@@ -98,7 +98,7 @@
             <option value="AVERAGE">Average</option>
             <option value="HIGH">High</option>
           </select>
-          <select *ngIf = "!isNote && !isDraft" formControlName="priority" type="text" class="form-control">
+          <select *ngIf = "!isDraft" formControlName="priority" type="text" class="form-control">
             <option value="LOW">Low</option>
             <option value="AVERAGE">Average</option>
             <option value="HIGH">High</option>

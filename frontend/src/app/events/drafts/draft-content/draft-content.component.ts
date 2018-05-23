@@ -33,7 +33,6 @@ export class DraftContentComponent implements OnInit {
   }
 
   delete(){
-    console.log('here');
     this.eventService.deleteEvent(this.eventDTO.event.id).subscribe(() => {
       this.alertService.info('Draft successfully deleted!', true);
       this.router.navigate(['../draft-list']);
