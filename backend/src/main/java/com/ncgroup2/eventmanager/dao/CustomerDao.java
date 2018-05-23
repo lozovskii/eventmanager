@@ -48,4 +48,6 @@ public interface CustomerDao extends DAO<Customer, Object> {
     void deleteUnverifiedCustomers();
 
     boolean isCustomerExist(String login);
+
+    void addGoogleId(String email, String id);
 }

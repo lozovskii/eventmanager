@@ -127,9 +127,9 @@ public class CustomerServiceImpl implements CustomerService {
         String template = "%s %s sent you friend request. \n See profile: ";
         String message = String.format(template, sender.getName(), sender.getSecondName());
 
-        String link = "/profile/"+login;
-        
-        mailSender.sendBasicEmailWithLink(sendTo,subject,message,link);
+        String link = "/profile/" + login;
+
+        mailSender.sendBasicEmailWithLink(sendTo, subject, message, link);
 
     }
 
@@ -156,5 +156,15 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer findByLogin(String login) {
         return customerDao.getEntityByField("login", login);
+    }
+
+    @Override
+    public Customer getByGoogleId(String googleId) {
+        return customerDao.getEntityByField("google_id", googleId);
+    }
+
+    @Override
+    public void addGoogleId(String email, String googleId) {
+        customerDao.addGoogleId(email, googleId);
     }
 }

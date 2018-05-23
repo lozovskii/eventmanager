@@ -5,9 +5,6 @@ import {Observable} from 'rxjs';
 import {AuthenticationService} from "./authentication.service";
 import {Message} from "../_models/message";
 import {MessageDTOModel} from "../_models/dto/messageDTOModel";
-
-import * as Stomp from "stompjs";
-import * as SockJS from "sockjs-client";
 import {UserService} from "./user.service";
 
 @Injectable()

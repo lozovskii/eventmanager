@@ -33,4 +33,8 @@ public interface CustomerService {
     Customer getById(String id);
 
     Customer findByLogin(String login);
+
+    Customer getByGoogleId(String googleId);
+
+    void addGoogleId(String email, String googleId);
 }
