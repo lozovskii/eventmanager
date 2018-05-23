@@ -126,4 +126,8 @@ export class EventService {
     return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()});
   }
 
+  getTimeline(login) {
+    const url = `${this.eventsUrl}/timeline?login=${login}`;
+    return this.http.get<EventDTOModel[]>(url, {headers: AuthenticationService.getAuthHeader()})
+  }
 }

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -153,9 +154,16 @@ public class EventController {
     }
 
     @GetMapping("/timeline")
-    public ResponseEntity<List<Event>> getTimeline(@RequestParam String  login) {
+    public ResponseEntity<List<EventDTO>> getTimeline(@RequestParam String  login) {
         List<Event> list = eventService.getTimeline(login, LocalDateTime.now(),LocalDateTime.now().plusMonths(1));
-        return new ResponseEntity<>(list,HttpStatus.OK);
+        List<EventDTO> dtoList = new ArrayList<>();
+        list.forEach((event) -> {
+            EventDTO dto = new EventDTO();
+            dto.setEvent(event);
+            dtoList.add(dto);
+        });
+
+        return new ResponseEntity<>(dtoList,HttpStatus.OK);
     }
 
     @GetMapping ("/updatePriority")

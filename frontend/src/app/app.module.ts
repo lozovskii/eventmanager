@@ -61,12 +61,12 @@ import {MoveNoteComponent} from "./folders/move-note/move-note.component";
 import {UpdateItemComponent} from "./wishlist/update-item/update-item.component";
 import {ItemDetailsViewComponent} from "./wishlist/item-details-view/item-details-view.component";
 import {AllItemsComponent} from "./wishlist/all-Items/all-items.component";
-import { DeleteFolderComponent } from './folders/delete-folder/delete-folder.component';
-import { GoogleMapsComponent } from './utils/google-maps/google-maps.component';
-import { AgmCoreModule } from '@agm/core';
-import { DraftListComponent } from './events/drafts/draft-list/draft-list.component';
-import { DraftContentComponent } from './events/drafts/draft-content/draft-content.component';
-import { FilterItemsPipe } from './wishlist/filter-items/filter-items-pipe.pipe';
+import {DeleteFolderComponent} from './folders/delete-folder/delete-folder.component';
+import {GoogleMapsComponent} from './utils/google-maps/google-maps.component';
+import {AgmCoreModule} from '@agm/core';
+import {DraftListComponent} from './events/drafts/draft-list/draft-list.component';
+import {DraftContentComponent} from './events/drafts/draft-content/draft-content.component';
+import {FilterItemsPipe} from './wishlist/filter-items/filter-items-pipe.pipe';
 import {AdditionalComponentsContainerComponent} from "./wishlist/additional-components-container/additional-components-container.component";
 
 import {ChatboxComponent} from "./chatbox/chatbox.component";
@@ -159,7 +159,7 @@ import {MessageService} from "./_services/message.service";
     NotificationService,
     FolderService,
     LocationService,
-    MessageService
+    MessageService,
     // provider used to create fake backend
     LocationService,
 

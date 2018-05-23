@@ -1,9 +1,9 @@
-import {Component, TemplateRef, ViewChild} from '@angular/core';
+import {Component, Input, TemplateRef, ViewChild} from '@angular/core';
 import {addDays, addHours, endOfDay, endOfMonth, isSameDay, isSameMonth, startOfDay, subDays} from 'date-fns';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {EventService} from "../../_services"
 import {Event} from "../../_models";
-import {ActivatedRoute, RouterModule, Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 import {Subject} from 'rxjs';
 import {CalendarEvent, DAYS_OF_WEEK} from 'angular-calendar';
@@ -18,6 +18,10 @@ const colors: any = {
     primary: '#1e90ff',
     secondary: '#D1E8FF'
   },
+  pink: {
+    primary: "#9b16dd",
+      secondary: "#e6bdf9"
+  },
   green: {
     primary: '#86af49',
     secondary: '#e3eaa7'
@@ -29,6 +33,10 @@ const colors: any = {
   templateUrl: 'calendar.component.html'
 })
 export class CalendarComponent {
+  @Input() type: string;
+
+  private isMy:boolean;
+
   holidays_list = [
     ['Australian Holidays', 'en.australian#holiday@group.v.calendar.google.com'],
     ['Austrian Holidays', 'en.austrian#holiday@group.v.calendar.google.com'],
@@ -85,7 +93,7 @@ export class CalendarComponent {
     action: string;
     event: CalendarEvent;
   };
-  activeDayIsOpen: boolean = true;
+  activeDayIsOpen: boolean = false;
   view: string = 'month';
   weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
   events: EventDTOModel[];
@@ -95,11 +103,17 @@ export class CalendarComponent {
 
 
   ngOnInit(): void {
-    this.getEvents();
+    if (this.type == 'my') {
+      this.isMy=true;
+    } else if(this.type == 'timeline') {
+      this.isMy=false;
+    }
+    this.getEvents()
+
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-    if (isSameMonth(date, this.viewDate)) {
+    if (this.isMy && isSameMonth(date, this.viewDate)) {
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
         events.length === 0
@@ -116,8 +130,16 @@ export class CalendarComponent {
     this.router.navigate(['/event-container', event.id]);
   }
 
+  queryEvents(){
+    if(this.isMy) {
+      return this.eventService.getEventsByCustId();
+    } else {
+      return this.eventService.getTimeline(JSON.parse(sessionStorage.getItem('currentUser')).login);
+    }
+  }
+
   getEvents(): void {
-    this.eventService.getEventsByCustId()
+    this.queryEvents()
       .subscribe((events) => {
         this.events = events;
         for (let i = 0; i < events.length; i++) {
@@ -128,7 +150,7 @@ export class CalendarComponent {
             title: this.events[i].event.name,
             start: new Date(this.events[i].event.startTime),
             end: new Date(this.events[i].event.endTime),
-            color: this.events[i].event.visibility == "PUBLIC" ? colors.red : colors.blue
+            color: this.events[i].event.visibility == "PUBLIC" ? colors.red : this.events[i].event.visibility ==  "FRIENDS" ? colors.blue : colors.pink
           })
         }
         this.refresh.next();
