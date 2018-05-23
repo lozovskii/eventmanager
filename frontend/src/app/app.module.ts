@@ -73,6 +73,9 @@ import {AdditionalComponentsContainerComponent} from "./wishlist/additional-comp
 import {ChatboxComponent} from "./chatbox/chatbox.component";
 import {MessageService} from "./_services/message.service";
 
+import {ChatboxComponent} from "./chatbox/chatbox.component";
+import {MessageService} from "./_services/message.service";
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -144,6 +147,7 @@ import {MessageService} from "./_services/message.service";
     FilterItemsPipe,
     AdditionalComponentsContainerComponent,
     ChatboxComponent
+    ChatboxComponent
   ],
   providers: [
     AuthGuard,
@@ -159,6 +163,8 @@ import {MessageService} from "./_services/message.service";
     NotificationService,
     FolderService,
     LocationService
+    FolderService,
+    MessageService
     FolderService,
     MessageService
     // provider used to create fake backend
