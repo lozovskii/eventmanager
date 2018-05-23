@@ -159,7 +159,7 @@ import {MessageService} from "./_services/message.service";
     NotificationService,
     FolderService,
     LocationService,
-    MessageService
+    MessageService,
     // provider used to create fake backend
     LocationService,
 
