@@ -19,7 +19,7 @@ export class EventlistComponent implements OnInit {
   isMy:boolean = false;
   from = '';
   to = '';
-
+  isEmpty:boolean = false;
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute,
               private alertService: AlertService) {
@@ -78,6 +78,7 @@ export class EventlistComponent implements OnInit {
       .subscribe((events) => {
         this.events = events;
         if(events.toString() == ''){
+          this.isEmpty = true;
           this.alertService.info('No events exist yet.',true);
         }
           });
@@ -88,6 +89,8 @@ export class EventlistComponent implements OnInit {
       .subscribe((eventsDTO) => {
         this.eventsDTO = eventsDTO;
         if(eventsDTO.toString() == ''){
+          this.isEmpty = true;
+          console.log(this.isEmpty);
           this.alertService.info('You have no events yet.',true);
         }
       });
@@ -98,6 +101,7 @@ export class EventlistComponent implements OnInit {
       .subscribe((eventsDTO) => {
         this.eventsDTO = eventsDTO;
         if(eventsDTO.toString() == ''){
+          this.isEmpty = true;
           this.alertService.info('You have no events yet.',true);
         }
       });
@@ -108,6 +112,7 @@ export class EventlistComponent implements OnInit {
       .subscribe((eventsDTO) => {
         this.eventsDTO = eventsDTO;
         if(eventsDTO.toString() == ''){
+          this.isEmpty = true;
           this.alertService.info('You have no events yet.',true);
         }
       });
@@ -118,6 +123,7 @@ export class EventlistComponent implements OnInit {
       .subscribe((eventsDTO) => {
         this.eventsDTO = eventsDTO;
         if(event.toString() == ''){
+          this.isEmpty = true;
           this.alertService.info('You have no events yet.',true);
         }
       });
@@ -128,6 +134,7 @@ export class EventlistComponent implements OnInit {
       .subscribe((events) => {
         this.events = events;
         if(events.toString() == ''){
+          this.isEmpty = true;
           this.alertService.info('You have no invites yet.',true);
         }
       });

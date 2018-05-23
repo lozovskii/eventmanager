@@ -42,7 +42,7 @@
       </div>
     </div>
     <br>
-    <table class="table table-striped" style = "overflow-x: auto; display: block;">
+    <table *ngIf="!isEmpty" class="table table-striped" style = "overflow-x: auto; display: block;">
       <thead>
       <tr>
         <th scope="col" [routerLink]="['/eventlist','my/sorted/title']">Title</th>
@@ -62,7 +62,8 @@
         <td>{{event.event.status}}</td>
       <td class="text-center" *ngIf="isMy">
         <div class="dot"
-             [style.background-color]="event.additionEvent.priority === 'HIGH' ? '#d14242': event.additionEvent.priority === 'AVERAGE' ? 'green':'gray'">
+             [style.background-color]="event.additionEvent.priority === 'HIGH' ? '#d14242':
+             event.additionEvent.priority === 'AVERAGE' ? 'green':'gray'">
         </div>
       </td>
       </tr>

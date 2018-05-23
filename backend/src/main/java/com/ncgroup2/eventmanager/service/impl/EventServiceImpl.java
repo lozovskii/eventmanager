@@ -158,6 +158,7 @@ public class EventServiceImpl implements EventService {
 
     private List<EventDTO> setAdditionForEachEvent(List<Event> events) {
         List<EventDTO> eventsDTO = new ArrayList<>();
+
         IntStream.range(0, events.size()).forEachOrdered(i -> {
             EventDTO eventDTO = new EventDTO();
             String id = events.get(i).getId();
