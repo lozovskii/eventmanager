@@ -1,8 +1,9 @@
 <div class="chatbox">
   <div class="messages">
 
-    <div *ngFor="let message of messages" [class.right]="">
-      {{message.content}}
+    <div *ngFor="let message of messages" [class.right]="message.authorId == currentUser.id" onload="scrollTop = 9999;">
+      <div><b>{{message.authorName}}</b></div>
+      <div>{{message.content}}</div>
     </div>
 
   </div>

@@ -16,6 +16,7 @@ import {
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {EventService} from "../../_services"
 import {Event} from "../../_models";
+import {ActivatedRoute, RouterModule, Router} from '@angular/router';
 
 import { Subject } from 'rxjs';
 import {
@@ -42,10 +43,17 @@ const colors: any = {
 })
 export class CalendarComponent {
   constructor(private eventService: EventService,
+              private router: Router,
+              private activatedRoute: ActivatedRoute,
               private modal: NgbModal) {}
 
   @ViewChild('modalContent') modalContent: TemplateRef<any>;
   viewDate = new Date();
+
+  modalData: {
+    action: string;
+    event: CalendarEvent;
+  };
 
   activeDayIsOpen: boolean = true;
   view: string = 'month';
@@ -60,6 +68,24 @@ export class CalendarComponent {
 
   refresh: Subject<any> = new Subject();
 
+  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+    if (isSameMonth(date, this.viewDate)) {
+      if (
+        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
+        events.length === 0
+      ) {
+        this.activeDayIsOpen = false;
+      } else {
+        this.activeDayIsOpen = true;
+        this.viewDate = date;
+      }
+    }
+  }
+
+  handleEvent(action: string, event: CalendarEvent): void {
+    this.router.navigate(['/event-container', event.id]);
+  }
+
   getEvents(): void {
     this.eventService.getEventsByCustId()
       .subscribe((events) => {
@@ -68,6 +94,7 @@ export class CalendarComponent {
           console.log(this.events[i].visibility);
           console.log(this.events[i].startTime + ' ' + this.events[i].endTime)
           this.calendarEvents.push({
+            id: this.events[i].id,
             title: this.events[i].name,
             start: new Date(this.events[i].startTime),
             end: new Date(this.events[i].endTime),
