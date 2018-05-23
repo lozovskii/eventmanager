@@ -2,7 +2,7 @@
   "name": "angular-frontend",
   "version": "0.0.0",
   "license": "MIT",
-  "main": "./lib/stomp-node.js",
+  "main": "./node_modules/stompjs/lib/stomp-node.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
