@@ -3,6 +3,11 @@
   "version": "0.0.0",
   "license": "MIT",
   "main": "./node_modules/stompjs/lib/stomp-node.js",
+  "node": {
+    "net": "empty",
+    "tls": "empty",
+    "dns": "empty"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
