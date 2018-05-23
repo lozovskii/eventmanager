@@ -31,17 +31,6 @@ export class CreateEventComponent implements OnInit {
   priorityDraft:string;
   peopleDraft:string[];
 
-<<<<<<< HEAD
-=======
-
-  eventForm: FormGroup = this.initEventForm();
-  additionEventForm: FormGroup = this.initAdditionEventForm();
-
-  eventDTOForm: FormGroup = this.formBuilder.group({
-    event: this.eventForm,
-    additionEvent: this.additionEventForm
-  });
->>>>>>> b2ae88754f22771a82878a0eec8b53edde5299f0
   isValidFormSubmitted = null;
 
   visibilityList: any[] = VISIBILITY;
