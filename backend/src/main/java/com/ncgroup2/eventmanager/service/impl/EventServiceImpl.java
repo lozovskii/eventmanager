@@ -14,9 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -134,35 +132,45 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventDTO> getEventsByCustId(String custId) {
         List<Event> events =  eventDao.getEventsByCustId(custId);
-        return setAdditionForEachEvent(events);
+        return setAdditionForEachEvent(events, custId);
     }
 
     @Override
     public List<EventDTO> getEventsByCustIdSorted(String custId) {
         List<Event> events =  eventDao.getEventsByCustIdSorted(custId);
-        return setAdditionForEachEvent(events);
+        return setAdditionForEachEvent(events,custId);
     }
 
     @Override
     public List<EventDTO> getEventsByCustIdSortedByType(String custId) {
         List<Event> events =  eventDao.getEventsByCustIdSortedByType(custId);
-        return setAdditionForEachEvent(events);
+        return setAdditionForEachEvent(events,custId);
     }
 
     @Override
     public List<EventDTO> getEventsByCustIdFilterByType(String custId, String type) {
         List<Event> events =  eventDao.getEventsByCustIdFilterByType(custId,type);
-        return setAdditionForEachEvent(events);
+        return setAdditionForEachEvent(events,custId);
     }
 
 
-    private List<EventDTO> setAdditionForEachEvent(List<Event> events) {
+    private List<EventDTO> setAdditionForEachEvent(List<Event> events, String custId) {
+        List<EventPriorityDTO> idsPriorities = eventDao.getPriotityByCustId(custId);
         List<EventDTO> eventsDTO = new ArrayList<>();
 
         IntStream.range(0, events.size()).forEachOrdered(i -> {
             EventDTO eventDTO = new EventDTO();
             String id = events.get(i).getId();
-            AdditionalEventModelDTO additionalEventModelDTO = eventDao.getAdditionById(id);
+
+            String priority = idsPriorities.stream()
+                    .map(x -> {
+                        if (x.getEventId().equals(id)) {
+                            return x.getPriority();
+                        }
+                        return null;
+                    }).collect(Collectors.joining(""));
+            AdditionalEventModelDTO additionalEventModelDTO = new AdditionalEventModelDTO();
+            additionalEventModelDTO.setPriority(priority);
             eventDTO.setEvent(events.get(i));
             eventDTO.setAdditionEvent(additionalEventModelDTO);
             eventsDTO.add(eventDTO);

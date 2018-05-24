@@ -3,6 +3,7 @@ package com.ncgroup2.eventmanager.dao.impl;
 import com.ncgroup2.eventmanager.dao.EventDao;
 import com.ncgroup2.eventmanager.dto.AdditionalEventModelDTO;
 import com.ncgroup2.eventmanager.dto.EventCountdownDTO;
+import com.ncgroup2.eventmanager.dto.EventPriorityDTO;
 import com.ncgroup2.eventmanager.dto.InviteNotificationDTO;
 import com.ncgroup2.eventmanager.entity.Event;
 import com.ncgroup2.eventmanager.util.QueryService;
@@ -291,6 +292,18 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public List getPriotityByCustId(String custId) {
+        String query = queryService.getQuery("event.getPriorityByCustId");
+        Object[] params = new Object[]{
+                custId
+        };
+        List<EventPriorityDTO> idsPriorities =  this.getJdbcTemplate().query(query, params,
+                new BeanPropertyRowMapper(EventPriorityDTO.class));
+        System.out.println("idsPriorities = " + idsPriorities);
+        return idsPriorities;
     }
 
     @Override
