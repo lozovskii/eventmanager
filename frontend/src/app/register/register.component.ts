@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AlertService, RegistrationService, UserService} from "../_services";
+import {AlertService, AuthenticationService, RegistrationService, UserService} from "../_services";
 import {FormBuilder, Validators} from "@angular/forms";
 import {User} from "../_models";
 import {NavbarService} from "../_services/navbar.service";
@@ -35,7 +35,8 @@ export class RegisterComponent implements OnInit {
               private formBuilder: FormBuilder,
               private userService: UserService,
               private navbarService: NavbarService,
-              private activatedRoute : ActivatedRoute) {
+              private activatedRoute : ActivatedRoute,
+              private authService: AuthenticationService) {
   }
 
   get name() {
@@ -82,7 +83,7 @@ export class RegisterComponent implements OnInit {
     this.auth2.attachClickHandler(element, {},
       (googleUser) => {
         console.log('Google user ' + googleUser);
-        this.registerGoogle(googleUser);
+        this.signInGoogle(googleUser);
 
       }, (error) => {
         alert(JSON.stringify(error, undefined, 2));
@@ -112,17 +113,8 @@ export class RegisterComponent implements OnInit {
         });
   }
 
-  registerGoogle(googleUser: GoogleUser) {
-    let profile = googleUser.getBasicProfile();
-    console.log('Profile ' + profile);
-    let user = new User();
-    user.email = profile.getEmail();
-    user.login = profile.getEmail().substring(0, profile.getEmail().indexOf('@', 0));
-    user.name = profile.getGivenName();
-    user.secondName = profile.getFamilyName();
-    user.avatar = profile.getImageUrl();
-    user.token = googleUser.getAuthResponse().id_token;
-    this.registrationService.googleRegister(user)
+  public signInGoogle(googleUser: GoogleUser) {
+    this.authService.signInGoogle(googleUser)
       .subscribe(() => {
           this.userService.getByLogin(JSON.parse(sessionStorage.getItem('currentToken')).login).subscribe(
             user => {
@@ -130,21 +122,14 @@ export class RegisterComponent implements OnInit {
               console.log(user);
               this.navbarService.setNavBarState(true);
               sessionStorage.setItem('currentUser', JSON.stringify(user));
-//              this.loading = false;
-
-              // history.back();
-              // setTimeout(() => {
-              //     return this.router.navigate(['/home'])
-              //   }
-              //   , 1000);
-              // return this.router.navigate(['/'])
+              this.loading = false;
               return this.router.navigate(['/home']);
             });
         }
         , () => {
-          this.alertService.error('Invalid credentials');
+          this.alertService.error('Something wrong during signing in with your Google account');
           this.loading = false;
-          return this.router.navigate(['/login']);
+          return this.router.navigate(['/register']);
         });
   }
 }
