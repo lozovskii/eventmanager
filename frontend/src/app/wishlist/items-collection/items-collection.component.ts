@@ -111,6 +111,7 @@ export class ItemsCollectionComponent implements OnInit {
           this.alertService.success('Items successfully deleted!'),
         () => this.alertService.error('Something wrong'));
     }
+    this.hasChanges = false;
   }
 
   sortItems(prop: string) {

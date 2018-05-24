@@ -53,7 +53,7 @@ export class WishListComponent implements OnInit {
     this.wishListItemView = new WishListItem();
   }
 
-  showMyEvents(item: Item): void {
+  getMyEvents(item: Item): void {
     this.eventService.getEventsByCustId()
       .subscribe((eventsDTO) => {
         this.editMode ?
@@ -68,24 +68,6 @@ export class WishListComponent implements OnInit {
   editItem(item: Item): void {
     this.outEditableItem.emit(item);
   }
-
-  // copyToEventWishList(event: Event): void {
-  //   let wishList = new WishList();
-  //   let wishListItem: WishListItem = new WishListItem();
-  //   wishListItem.item = this.copiedItem;
-  //   wishListItem.event_id = event.id;
-  //   wishListItem.priority = 3;
-  //   wishList.id = event.id;
-  //   wishList.items = [];
-  //   wishList.items.push(wishListItem);
-  //
-  //   this.wishListService.addItems(wishList)
-  //     .subscribe(() => {
-  //       this.alertService.success('Item successfully copied to wishlist!');
-  //     }, () => {
-  //       this.alertService.error('Something wrong')
-  //     });
-  // }
 
   showItemDetails(item: WishListItem): void {
       this.wishListItemView = item;
@@ -122,6 +104,8 @@ export class WishListComponent implements OnInit {
       }, () => {
         this.alertService.success('Wish list successfully updated!');
       });
+
+    this.hasChanges = false;
   }
 
   removeItem(wishListItem: WishListItem): void {
@@ -166,6 +150,7 @@ export class WishListComponent implements OnInit {
     }, () => {
       this.alertService.error('Something wrong');
     });
+    this.hasChanges = false;
   }
 
   isBooker(bookerLogin: string): boolean {

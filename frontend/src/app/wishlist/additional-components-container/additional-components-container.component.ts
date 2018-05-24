@@ -27,9 +27,7 @@ export class AdditionalComponentsContainerComponent implements OnInit, OnChanges
   eventsDTO: EventDTOModel[];
 
   constructor(private wishListService: WishListService,
-              private userService: UserService,
-              private alertService: AlertService,
-              private eventService: EventService) {
+              private alertService: AlertService) {
     this.items = [];
     this.item = new Item();
     this.item.tags = [];
@@ -43,12 +41,19 @@ export class AdditionalComponentsContainerComponent implements OnInit, OnChanges
     this.editableItem = new Item();
 
     for (let prop in changes) {
-      if (prop == 'inEditableItem') {
-        this.editableItem = changes[prop].currentValue;
-      } else if (prop == 'inEventsDto') {
-        this.eventsDTO = changes[prop].currentValue;
-      } else if (prop == 'inCopiedItem') {
-        this.copiedItem = changes[prop].currentValue;
+      switch(prop){
+        case 'inEditableItem' : {
+          this.editableItem = changes[prop].currentValue;
+          break;
+        }
+        case 'inEventsDto' : {
+          this.eventsDTO = changes[prop].currentValue;
+          break;
+        }
+        case 'inCopiedItem' : {
+          this.copiedItem = changes[prop].currentValue;
+          break;
+        }
       }
     }
   }

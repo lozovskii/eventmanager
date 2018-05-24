@@ -53,15 +53,13 @@ export class UpdateItemComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    for (let propName in changes) {
-      this.item = (changes[propName].currentValue);
+      this.item = changes['editableItem'].currentValue;
       this.itemForm.controls['name'].setValue(this.item.name);
       this.itemForm.controls['description'].setValue(this.item.description);
       this.itemForm.controls['link'].setValue(this.item.link);
       this.itemForm.controls['dueDate'].setValue(this.item.dueDate);
       this.itemForm.controls['tags'].reset();
       this.additionalForm.controls['imageUrl'].setValue(this.item.image);
-    }
   }
 
   updateItem(item: Item) {
@@ -134,7 +132,7 @@ export class UpdateItemComponent implements OnInit, OnChanges {
     this.readThis($event.target);
   }
 
-  getFileExtension(filename) {
+  static getFileExtension(filename) {
     return filename.split('.').pop();
   }
 
@@ -153,7 +151,7 @@ export class UpdateItemComponent implements OnInit, OnChanges {
   }
 
   validImg(file: File){
-    let format = this.getFileExtension(file.name);
+    let format = UpdateItemComponent.getFileExtension(file.name);
     console.log(file.size);
     this.loading = !(this.validFormat(format) && this.validSize(file));
   }

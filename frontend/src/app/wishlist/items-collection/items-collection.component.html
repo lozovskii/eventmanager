@@ -26,7 +26,9 @@
         </div>
       </div>
       <div class="col-auto">
-        <button type="button" class="btn btn-outline-primary" [disabled]="!hasChanges" (click)="executeDelete()">
+        <button type="button" class="btn btn-outline-primary"
+                [ngClass]="{ 'pulse-button': hasChanges }" [disabled]="!hasChanges"
+                (click)="executeDelete()">
           <i class="fas fa-save"></i> Save changes
         </button>
       </div>
