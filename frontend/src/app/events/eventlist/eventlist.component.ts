@@ -76,7 +76,9 @@ export class EventlistComponent implements OnInit {
   getEvents(): void {
     this.eventService.getAllEvents()
       .subscribe((events) => {
-        this.events = events;
+        this.eventsDTO = events;
+        console.log(this.events);
+        console.log(events);
         if(events.toString() == ''){
           this.isEmpty = true;
           this.alertService.info('No events exist yet.',true);
