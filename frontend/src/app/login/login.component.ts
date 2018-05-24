@@ -64,16 +64,7 @@ export class LoginComponent implements OnInit {
   public attachSignin(element) {
     this.auth2.attachClickHandler(element, {},
       (googleUser) => {
-
-        let profile = googleUser.getBasicProfile();
-        console.log('Token || ' + googleUser.getAuthResponse().id_token);
-        console.log('ID: ' + profile.getId());
-        console.log('Name: ' + profile.getName());
-        console.log('Image URL: ' + profile.getImageUrl());
-        console.log('Email: ' + profile.getEmail());
-        //YOUR CODE HERE
-        this.loginGoogle(googleUser.getAuthResponse().id_token);
-
+        this.signInGoogle(googleUser);
       }, (error) => {
         alert(JSON.stringify(error, undefined, 2));
       });
@@ -102,22 +93,22 @@ export class LoginComponent implements OnInit {
         });
   }
 
-  loginGoogle(token) {
-    this.authenticationService.googleLogin(token)
+  signInGoogle(googleUser) {
+    this.authenticationService.signInGoogle(googleUser)
       .subscribe(() => {
           this.userService.getByLogin(JSON.parse(sessionStorage.getItem('currentToken')).login).subscribe(
             user => {
               console.log("In Google Login Subscribe");
               console.log(user);
               sessionStorage.setItem('currentUser', JSON.stringify(user));
-//              this.loading = false;
+              this.loading = false;
               this.navbarService.setNavBarState(true);
               // history.back();
               return this.router.navigate(['/home']);
             });
         }
         , () => {
-          this.alertService.error('Invalid credentials');
+          this.alertService.error('Something wrong during signing in with your Google account');
           this.loading = false;
           return this.router.navigate(['/login']);
         });
