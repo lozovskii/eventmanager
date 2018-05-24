@@ -2,7 +2,6 @@ package com.ncgroup2.eventmanager.mapper;
 
 import com.ncgroup2.eventmanager.objects.ExtendedTag;
 import com.ncgroup2.eventmanager.entity.Item;
-import com.ncgroup2.eventmanager.entity.Tag;
 import com.ncgroup2.eventmanager.objects.Item_Rater;
 import com.ncgroup2.eventmanager.util.Mapper;
 import org.springframework.dao.DataAccessException;
@@ -21,39 +20,37 @@ public class ItemMapExtractor implements ResultSetExtractor<Collection<Item>> {
         int rowNum = 0;
 
         while (rs.next()) {
-            List<ExtendedTag> extendedTagList = new ArrayList<>();
-
-            Item item = new ItemMapper().mapRow(rs, rowNum);
+            Item item = new ItemMapper().mapRow(rs, rowNum++);
 
             Array tagsSql = rs.getArray("tags");
-            Object[] tagsSqlArray = (Object[]) tagsSql.getArray();
 
-            if (tagsSqlArray != null && tagsSqlArray[0] != null) {
-                List<Tag> tags = new ArrayList<>(Mapper.getTags(tagsSqlArray));
-
-                Array itemTagSql = rs.getArray("itag_ids");
-                Object[] itemTagArray = (Object[]) itemTagSql.getArray();
-                String[] itemTagId = Mapper.getStringArray(itemTagArray);
-
-                int i = 0;
-                for (Tag tag : tags) {
-                    ExtendedTag extendedTag = new ExtendedTag();
-                    extendedTag.setTag(tag);
-                    extendedTag.setItemTagId(itemTagId[i++]);
-                    extendedTagList.add(extendedTag);
-                }
-                item.setTags(extendedTagList);
+            if (tagsSql != null) {
+                Object[] tagsSqlArray = (Object[]) tagsSql.getArray();
+                item.setTags(getExtTags(tagsSqlArray));
             }
 
             Array ratingSql = rs.getArray("rating");
-            Object[] itemRatersArray = (Object[]) ratingSql.getArray();
 
-            if (itemRatersArray != null && itemRatersArray[0] != null) {
-                List<Item_Rater> raters = new ArrayList<>(Mapper.getRaters(itemRatersArray));
-                item.setRaters(raters);
+            if (ratingSql != null){
+                Object[] itemRatersArray = (Object[]) ratingSql.getArray();
+                item.setRaters(getRaters(itemRatersArray));
             }
             items.add(item);
         }
         return items;
+    }
+
+    List<ExtendedTag> getExtTags(Object[] tagsSqlArray) {
+
+        return (tagsSqlArray != null && tagsSqlArray[0] != null) ?
+                new ArrayList<>(Mapper.getTags(tagsSqlArray)) :
+                null;
+    }
+
+    List<Item_Rater> getRaters(Object[] itemRatersArray) {
+
+        return (itemRatersArray != null && itemRatersArray[0] != null) ?
+                new ArrayList<>(Mapper.getRaters(itemRatersArray)) :
+                null;
     }
 }

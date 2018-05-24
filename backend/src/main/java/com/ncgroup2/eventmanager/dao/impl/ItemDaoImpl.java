@@ -33,9 +33,8 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
     public Collection<Item> getAll() {
         String sql =
                 "SELECT   i.*,\n" +
-                        " array_agg(DISTINCT itag.id) as itag_ids,\n" +
-                        " array_agg(DISTINCT t.*) as tags,\n" +
-                        " array_agg(DISTINCT r.*) as rating\n" +
+                        " array_agg(DISTINCT row(itag.id, t.*)) FILTER (WHERE itag.id IS NOT NULL) as tags,\n" +
+                        " array_agg(DISTINCT r.*) FILTER (WHERE r.id IS NOT NULL) as rating\n" +
                         " FROM \"Item\" i\n" +
                         " LEFT JOIN \"Item_Tag\" itag ON (itag.item_id = i.id)\t\n" +
                         " LEFT JOIN \"Tag\" t ON (itag.tag_id = t.id)\n" +
@@ -62,15 +61,14 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
     @Override
     public Collection<Item> getEntitiesByField(String fieldName, Object fieldValue) {
         String sql =
-                "SELECT   i.*,\n" +
-                        " array_agg(DISTINCT itag.id) as itag_ids,\n" +
-                        " array_agg(DISTINCT t.*) as tags,\n" +
-                        " array_agg(DISTINCT r.*) as rating\n" +
+                "\nSELECT i.*,\n" +
+                        " array_agg(DISTINCT row(itag.id, t.*)) FILTER (WHERE itag.id IS NOT NULL) as tags,\n" +
+                        " array_agg(DISTINCT r.*) FILTER (WHERE r.id IS NOT NULL) as rating\n" +
                         " FROM \"Item\" i\n" +
                         " LEFT JOIN \"Item_Tag\" itag ON (itag.item_id = i.id)\t\n" +
                         " LEFT JOIN \"Tag\" t ON (itag.tag_id = t.id)\n" +
                         " LEFT JOIN \"Rating_Item\" r ON (r.item_id = i.id)\n" +
-                        " WHERE " + fieldName + " = '" + fieldValue + "'" +
+                        " WHERE " + fieldName + " = '" + fieldValue + "'\n" +
                         " GROUP BY i.id;";
 
         return this.getJdbcTemplate().query(sql, new ItemMapExtractor());

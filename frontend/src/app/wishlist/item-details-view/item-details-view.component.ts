@@ -32,8 +32,6 @@ export class ItemDetailsViewComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.item = new Item();
-    this.wishListItem = new WishListItem();
     this.customerLogin = JSON.parse(sessionStorage.getItem('currentUser')).login;
     this.advancedMode = false;
   }
@@ -51,17 +49,24 @@ export class ItemDetailsViewComponent implements OnInit, OnChanges {
         if (this.wishListItem.booker_customer_login != null)
           this.isBooker = this.checkBooker(this.wishListItem.booker_customer_login);
         this.advancedMode = true;
-        // this.item = this.wishListItem.item;
+
+        if (!this.wishListItem.item.raters) {
+          this.wishListItem.item.raters = [];
+          this.rated = false;
+        } else {
+          this.checkRater();
+        }
       }
       else if (prop == 'itemView') {
         this.advancedMode = false;
         this.item = changes[prop].currentValue;
-      }
-      if (!this.item.raters) {
-        this.item.raters = [];
-        this.rated = false;
-      } else {
-        this.checkRater();
+
+        if (!this.item.raters) {
+          this.item.raters = [];
+          this.rated = false;
+        } else {
+          this.checkRater();
+        }
       }
     }
   }
@@ -85,7 +90,9 @@ export class ItemDetailsViewComponent implements OnInit, OnChanges {
   }
 
   checkRater(): void {
-    this.rating = this.item.raters.find(r => r.customer_login == this.customerLogin);
+    this.rating = this.advancedMode ?
+      this.wishListItem.item.raters.find(r => r.customer_login == this.customerLogin) :
+      this.rating = this.item.raters.find(r => r.customer_login == this.customerLogin);
     this.rated = this.rating != null;
   }
 
@@ -95,13 +102,21 @@ export class ItemDetailsViewComponent implements OnInit, OnChanges {
     if (this.rated) {
       value = this.rating.id;
       raterLogin = null;
-      let index = this.item.raters.indexOf(this.rating);
-      this.item.raters.splice(index, 1);
+      let index = this.advancedMode ?
+        this.wishListItem.item.raters.indexOf(this.rating) :
+        this.item.raters.indexOf(this.rating);
+      this.advancedMode ?
+        this.wishListItem.item.raters.splice(index, 1) :
+        this.item.raters.splice(index, 1);
     } else {
-      value = this.item.id;
       let r = new ItemRater();
       r.customer_login = this.customerLogin;
-      this.item.raters.push(r);
+      value = this.advancedMode ?
+        this.wishListItem.item.id :
+        this.item.id;
+      this.advancedMode ?
+        this.wishListItem.item.raters.push(r) :
+        this.item.raters.push(r);
     }
     this.wishListService.updateRating(value, raterLogin)
       .subscribe(() => {

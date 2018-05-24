@@ -1,5 +1,6 @@
 package com.ncgroup2.eventmanager.util;
 
+import com.ncgroup2.eventmanager.objects.ExtendedTag;
 import com.ncgroup2.eventmanager.objects.WishListItem;
 import com.ncgroup2.eventmanager.entity.Tag;
 import com.ncgroup2.eventmanager.entity.WishList;
@@ -24,18 +25,23 @@ public class Mapper {
                 .collect(Collectors.toList());
     }
 
-    public static List<Tag> getTags(Object[] array) {
-
+    public static List<ExtendedTag> getTags(Object[] array) {
+        System.out.println(Arrays.toString(array));
         return Stream.of(array)
                 .map(t -> {
                     String[] tagData = String.valueOf(t)
                             .replaceAll("[ \\/()]", "")
                             .split(",");
+                    ExtendedTag extendedTag = new ExtendedTag();
+
                     Tag tag = new Tag();
-                    tag.setId(tagData[0]);
-                    tag.setName(tagData[1]);
-                    tag.setCount(Integer.valueOf(tagData[2]));
-                    return tag;
+                    tag.setId(tagData[1]);
+                    tag.setName(tagData[2]);
+                    tag.setCount(Integer.valueOf(tagData[3]));
+
+                    extendedTag.setTag(tag);
+                    extendedTag.setItemTagId(tagData[0]);
+                    return extendedTag;
                 })
                 .collect(Collectors.toList());
     }

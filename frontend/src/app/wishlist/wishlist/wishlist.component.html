@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="wishList">
   <div class="row justify-content-between">
     <div class="col-auto">
       <button class="btn btn-outline-info" data-toggle="modal" data-target="#create">
@@ -6,12 +6,17 @@
       </button>
     </div>
     <div class="col-auto" *ngIf="!editMode">
-      <button type="button" class="btn btn-secondary" [disabled]="!hasChanges" (click)="update()">
+      <button type="button" class="btn btn-outline-primary"
+              [ngClass]="{ 'pulse-button': hasChanges }"
+              [disabled]="!hasChanges" (click)="update()">
         <i class="fas fa-save"></i> Save changes
       </button>
     </div>
     <div class="col-auto" *ngIf="editMode">
-      <button type="button" class="btn btn-outline-primary" [disabled]="!hasChanges" (click)="updateWishList()">
+      <button type="button" class="btn btn-outline-primary"
+              [ngClass]="{ 'pulse-button': hasChanges }"
+              [disabled]="!hasChanges"
+              (click)="updateWishList()">
         <i class="fas fa-save"></i> Save changes
       </button>
     </div>
@@ -46,10 +51,10 @@
         class="fas fa-sort"></i></th>
       <th scope="col" (click)="sortItems('dueDate')" class="text-center">Due date <i class="fas fa-sort"></i></th>
       <th scope="col" (click)="sortItems('priority')" class="text-center">Priority <i class="fas fa-sort"></i></th>
-      <th scope="col">Actions</th>
+      <th scope="col" class="text-center">Actions</th>
     </tr>
     </thead>
-    <tbody>
+    <tbody *ngIf="wishList.items">
     <tr *ngFor="let wishListItem of wishList.items | filterItems: queryString | sortingItems:path:order">
       <td (click)="showItemDetails(wishListItem)" data-toggle="modal" data-target="#WishListItemViewForm"
           class="tdName">
@@ -81,7 +86,7 @@
                 class="btn-sm button btn-outline-danger" title="Remove item from wishlist">
           <i class="far fa-trash-alt"></i>
         </button>
-        <button class="btn btn-sm btn-outline-info" (click)="showMyEvents(wishListItem.item)"
+        <button class="btn btn-sm btn-outline-info" (click)="getMyEvents(wishListItem.item)"
                 data-toggle="modal" data-target="#copyTo" title="Copy item to wishlist">
           <i class="far fa-copy"></i>
         </button>

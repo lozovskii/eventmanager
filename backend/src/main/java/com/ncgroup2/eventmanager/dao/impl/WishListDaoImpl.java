@@ -37,21 +37,23 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
     @Override
     public Collection<WishList> getAll() {
         String sql =
-                "SELECT   ew.id AS event_wishlist_id," +
-                        " ew.event_id AS event_id," +
-                        " iw.id AS item_wishlist_id," +
-                        " iw.booker_customer_login," +
-                        " iw.priority," +
-                        " i.* " +
-                        "FROM \"Item\" i " +
-                        "INNER JOIN \"Item_WishList\" iw ON (iw.item_id = i.id)\t " +
-                        "INNER JOIN \"Event_WishList\" ew ON (ew.item_wishlist_id = iw.id) ;";
+                "SELECT   i.*,\n" +
+                        " ew.id as event_wishlist_id, \n" +
+                        " ew.event_id AS event_id,\n" +
+                        " iw.id AS item_wishlist_id,\n" +
+                        " iw.booker_customer_login,\n" +
+                        " iw.priority,\n" +
+                        " array_agg(DISTINCT row(itag.id, t.*)) FILTER (WHERE itag.id IS NOT NULL) as tags,\n" +
+                        " array_agg(DISTINCT r.*) FILTER (WHERE r.id IS NOT NULL) as rating\n" +
+                        " FROM \"Item\" i\n" +
+                        " LEFT JOIN \"Item_WishList\" iw ON (iw.item_id = i.id)\t\n" +
+                        " LEFT JOIN \"Event_WishList\" ew ON (ew.item_wishlist_id = iw.id)\n" +
+                        " LEFT JOIN \"Item_Tag\" itag ON (itag.item_id = i.id)\t\n" +
+                        " LEFT JOIN \"Tag\" t ON (itag.tag_id = t.id)\n" +
+                        " LEFT JOIN \"Rating_Item\" r ON (r.item_id = i.id)\n" +
+                        " GROUP BY i.id,ew.id, ew.event_id,iw.id;";
 
-        Map<String, List<WishListItem>> wishListMap =
-                this.getJdbcTemplate().query(sql, new WishListMapExtractor());
-
-        return wishListMap.isEmpty() ?
-                null : Mapper.getWishLists(wishListMap);
+        return this.getJdbcTemplate().query(sql, new WishListMapExtractor());
     }
 
     /**
@@ -84,42 +86,24 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
         }
 
         String sql =
-//                "SELECT   i.*,\n" +
-//                        " ew.id as event_wishlist_id, \n" +
-//                        " ew.event_id AS event_id,\n" +
-//                        " iw.id AS item_wishlist_id,\n" +
-//                        " iw.booker_customer_login,\n" +
-//                        " iw.priority,\n" +
-//                        " array_agg(DISTINCT itag.id) as itag_ids,\n" +
-//                        " array_agg(DISTINCT t.*) as tags,\n" +
-//                        " array_agg(DISTINCT r.*) as rating\n" +
-//                        " FROM \"Item\" i\n" +
-//                        " FULL JOIN \"Item_WishList\" iw ON (iw.item_id = i.id)\t\n" +
-//                        " FULL JOIN \"Event_WishList\" ew ON (ew.item_wishlist_id = iw.id)\n" +
-//                        " FULL JOIN \"Item_Tag\" itag ON (itag.item_id = i.id)\t\n" +
-//                        " FULL JOIN \"Tag\" t ON (itag.tag_id = t.id)\n" +
-//                        " FULL JOIN \"Rating_Item\" r ON (r.item_id = i.id)\n" +
-//                        " WHERE " + fieldName + castSql +
-//                        " GROUP BY i.id,ew.id, ew.event_id,iw.id;";
+                "SELECT   i.*,\n" +
+                        " ew.id as event_wishlist_id, \n" +
+                        " ew.event_id AS event_id,\n" +
+                        " iw.id AS item_wishlist_id,\n" +
+                        " iw.booker_customer_login,\n" +
+                        " iw.priority,\n" +
+                        " array_agg(DISTINCT row(itag.id, t.*)) FILTER (WHERE itag.id IS NOT NULL) as tags,\n" +
+                        " array_agg(DISTINCT r.*) FILTER (WHERE r.id IS NOT NULL) as rating\n" +
+                        " FROM \"Item\" i\n" +
+                        " FULL JOIN \"Item_WishList\" iw ON (iw.item_id = i.id)\t\n" +
+                        " FULL JOIN \"Event_WishList\" ew ON (ew.item_wishlist_id = iw.id)\n" +
+                        " FULL JOIN \"Item_Tag\" itag ON (itag.item_id = i.id)\t\n" +
+                        " FULL JOIN \"Tag\" t ON (itag.tag_id = t.id)\n" +
+                        " FULL JOIN \"Rating_Item\" r ON (r.item_id = i.id)\n" +
+                        " WHERE " + fieldName + castSql +
+                        " GROUP BY i.id,ew.id, ew.event_id,iw.id;";
 
-//        this.getJdbcTemplate().query(sql, new WishListMapExtractor(fieldName));
-//
-                "SELECT   ew.id AS event_wishlist_id," +
-                        " ew.event_id AS event_id," +
-                        " iw.id AS item_wishlist_id," +
-                        " iw.booker_customer_login," +
-                        " iw.priority," +
-                        " i.* " +
-                        "FROM \"Item\" i " +
-                        "INNER JOIN \"Item_WishList\" iw ON (iw.item_id = i.id)\t " +
-                        "INNER JOIN \"Event_WishList\" ew ON (ew.item_wishlist_id = iw.id) " +
-                        "WHERE " + fieldName + castSql;
-
-        Map<String, List<WishListItem>> wishListMap =
-                this.getJdbcTemplate().query(sql, new WishListMapExtractor(fieldName));
-
-        return  wishListMap.isEmpty() ?
-                null : Mapper.getWishLists(wishListMap);
+        return this.getJdbcTemplate().query(sql, new WishListMapExtractor(fieldName));
     }
 
 
