@@ -35,7 +35,7 @@ const colors: any = {
 export class CalendarComponent {
   @Input() type: string;
 
-  private isMy:boolean;
+  isMy:boolean;
 
   holidays_list = [
     ['Australian Holidays', 'en.australian#holiday@group.v.calendar.google.com'],
