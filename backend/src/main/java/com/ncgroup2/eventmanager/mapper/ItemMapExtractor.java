@@ -29,11 +29,11 @@ public class ItemMapExtractor implements ResultSetExtractor<Collection<Item>> {
             Object[] tagsSqlArray = (Object[]) tagsSql.getArray();
 
             if (tagsSqlArray != null && tagsSqlArray[0] != null) {
-                List<Tag> tags = new ArrayList<>(Mapper.mapTagObjectsToList(tagsSqlArray));
+                List<Tag> tags = new ArrayList<>(Mapper.getTags(tagsSqlArray));
 
                 Array itemTagSql = rs.getArray("itag_ids");
                 Object[] itemTagArray = (Object[]) itemTagSql.getArray();
-                String[] itemTagId = Mapper.mapObjectsToStringArray(itemTagArray);
+                String[] itemTagId = Mapper.getStringArray(itemTagArray);
 
                 int i = 0;
                 for (Tag tag : tags) {
@@ -49,7 +49,7 @@ public class ItemMapExtractor implements ResultSetExtractor<Collection<Item>> {
             Object[] itemRatersArray = (Object[]) ratingSql.getArray();
 
             if (itemRatersArray != null && itemRatersArray[0] != null) {
-                List<Item_Rater> raters = new ArrayList<>(Mapper.mapRaterObjectsToList(itemRatersArray));
+                List<Item_Rater> raters = new ArrayList<>(Mapper.getRaters(itemRatersArray));
                 item.setRaters(raters);
             }
             items.add(item);

@@ -51,7 +51,7 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
                 this.getJdbcTemplate().query(sql, new WishListMapExtractor());
 
         return wishListMap.isEmpty() ?
-                null : Mapper.mapWishListToCollection(wishListMap);
+                null : Mapper.getWishLists(wishListMap);
     }
 
     /**
@@ -119,7 +119,7 @@ public class WishListDaoImpl extends JdbcDaoSupport implements WishListDao {
                 this.getJdbcTemplate().query(sql, new WishListMapExtractor(fieldName));
 
         return  wishListMap.isEmpty() ?
-                null : Mapper.mapWishListToCollection(wishListMap);
+                null : Mapper.getWishLists(wishListMap);
     }
 
 

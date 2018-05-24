@@ -7,26 +7,26 @@ import com.ncgroup2.eventmanager.objects.Item_Rater;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Mapper {
 
-    public static Collection<WishList> mapWishListToCollection(Map<String, List<WishListItem>> wishListMap) {
+    public static List<WishList> getWishLists(Map<String, List<WishListItem>> wishListMap) {
 
         return wishListMap.entrySet()
-                .stream()
+                .parallelStream()
                 .map(temp -> {
                     WishList wishList = new WishList();
                     wishList.setId(temp.getKey());
                     wishList.setItems(temp.getValue());
                     return wishList;
                 })
-                .collect(
-                        Collectors.toList());
+                .collect(Collectors.toList());
     }
 
-    public static Collection<Tag> mapTagObjectsToList(Object[] array) {
+    public static List<Tag> getTags(Object[] array) {
 
-        return Arrays.stream(array)
+        return Stream.of(array)
                 .map(t -> {
                     String[] tagData = String.valueOf(t)
                             .replaceAll("[ \\/()]", "")
@@ -40,9 +40,9 @@ public class Mapper {
                 .collect(Collectors.toList());
     }
 
-    public static Collection<Item_Rater> mapRaterObjectsToList(Object[] array) {
+    public static List<Item_Rater> getRaters(Object[] array) {
 
-        return Arrays.stream(array)
+        return Stream.of(array)
                 .map(t -> {
                     String[] tagData = String.valueOf(t)
                             .replaceAll("[ \\/()]", "")
@@ -55,7 +55,7 @@ public class Mapper {
                 .collect(Collectors.toList());
     }
 
-    public static String[] mapObjectsToStringArray(Object[] array) {
+    public static String[] getStringArray(Object[] array) {
 
         return Arrays.toString(array)
                 .replaceAll("[\\[|\\]]", "")
