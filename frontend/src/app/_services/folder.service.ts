@@ -36,10 +36,13 @@ export class FolderService {
   }
 
   deleteFolder(folderId:string){
-    console.log('here');
     const url = `${this.foldersUrl}/delete/${folderId}`;
     return this.http.post<string>(url, folderId, {headers: AuthenticationService.getAuthHeader()});
   }
 
+  updateFolderName(folderId:string, folderName:string):Observable<Folder>{
+    const url = `${this.foldersUrl}/update/${folderId}/${folderName}`;
+    return this.http.put<Folder>(url, Folder,{headers: AuthenticationService.getAuthHeader()});
+  }
 
 }

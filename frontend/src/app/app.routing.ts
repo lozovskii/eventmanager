@@ -34,6 +34,7 @@ import {CreateItemComponent} from "./wishlist/create-item/create-item.component"
 import {DeleteFolderComponent} from "./folders/delete-folder/delete-folder.component";
 import {DraftListComponent} from "./events/drafts/draft-list/draft-list.component";
 import {DraftContentComponent} from "./events/drafts/draft-content/draft-content.component";
+import {EditFolderComponent} from "./folders/edit-folder/edit-folder.component";
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full'},
@@ -73,6 +74,7 @@ const appRoutes: Routes = [
   { path: 'delete-folder', component: DeleteFolderComponent, canActivate: [AuthGuard]},
   { path: 'draft-list', component: DraftListComponent, canActivate: [AuthGuard]},
   { path: 'draft-content/:id', component: DraftContentComponent, canActivate: [AuthGuard]},
+  { path: 'edit-folder', component: EditFolderComponent, canActivate: [AuthGuard]},
   // otherwise redirect to home
  { path: '**', redirectTo: '' }
 ];

@@ -71,6 +71,7 @@ import {AdditionalComponentsContainerComponent} from "./wishlist/additional-comp
 
 import {ChatboxComponent} from "./chatbox/chatbox.component";
 import {MessageService} from "./_services/message.service";
+import { EditFolderComponent } from './folders/edit-folder/edit-folder.component';
 
 
 @NgModule({
@@ -143,7 +144,8 @@ import {MessageService} from "./_services/message.service";
     DraftContentComponent,
     FilterItemsPipe,
     AdditionalComponentsContainerComponent,
-    ChatboxComponent
+    ChatboxComponent,
+    EditFolderComponent
   ],
   providers: [
     AuthGuard,
