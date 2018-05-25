@@ -96,37 +96,12 @@ public class EventServiceImpl implements EventService {
         }
     }
 
-    private void addLocation(EventDTO eventDTO, UUID eventId) {
-        eventDTO.getAdditionEvent().getLocation().setEvent_id(eventId.toString());
-        locationDao.create(eventDTO.getAdditionEvent().getLocation());
-    }
-
-    private List<String> getExistingCustomers(List<String> logins) {
-        return logins.stream()
-                .filter(login -> customerDao.isCustomerExist(login))
-                .collect(Collectors.toList());
-    }
-
     @Override
     public void createEventInvitations(List<String> logins, UUID eventId) {
         logins.forEach(login -> {
             eventDao.createEventInvitation(login, eventId);
             sendInviteEmail(login, eventId);
         });
-    }
-
-    private void sendInviteEmail(String login, UUID eventId) {
-        String sendTo = customerDao.getEntityByField("login", login).getEmail();
-        Customer inviter = customerDao.getEntityByField("login", SecurityContextHolder.getContext().getAuthentication().getName());
-        Event event = eventDao.getEventById(eventId.toString());
-
-        String subject = "New invite";
-
-        String template = "%s %s invited you to '%s' event.\n See more: ";
-        String message = String.format(template, inviter.getName(), inviter.getSecondName(), event.getName());
-
-        String url = "/event-container/" + eventId.toString();
-        mailSender.sendBasicEmailWithLink(sendTo, subject, message, url);
     }
 
     @Override
@@ -151,31 +126,6 @@ public class EventServiceImpl implements EventService {
     public List<EventDTO> getEventsByCustIdFilterByType(String custId, String type) {
         List<Event> events =  eventDao.getEventsByCustIdFilterByType(custId,type);
         return setAdditionForEachEvent(events,custId);
-    }
-
-
-    private List<EventDTO> setAdditionForEachEvent(List<Event> events, String custId) {
-        List<EventPriorityDTO> idsPriorities = eventDao.getPriotityByCustId(custId);
-        List<EventDTO> eventsDTO = new ArrayList<>();
-
-        IntStream.range(0, events.size()).forEachOrdered(i -> {
-            EventDTO eventDTO = new EventDTO();
-            String id = events.get(i).getId();
-
-            String priority = idsPriorities.stream()
-                    .map(x -> {
-                        if (x.getEventId().equals(id)) {
-                            return x.getPriority();
-                        }
-                        return null;
-                    }).collect(Collectors.joining(""));
-            AdditionalEventModelDTO additionalEventModelDTO = new AdditionalEventModelDTO();
-            additionalEventModelDTO.setPriority(priority);
-            eventDTO.setEvent(events.get(i));
-            eventDTO.setAdditionEvent(additionalEventModelDTO);
-            eventsDTO.add(eventDTO);
-        });
-        return eventsDTO;
     }
 
     @Override
@@ -273,6 +223,52 @@ public class EventServiceImpl implements EventService {
         return eventDao.getInvitesByCustId(custId);
     }
 
+    @Override
+    public List<InviteNotificationDTO> getInviteNotifications(String customerId) {
+        return eventDao.getInviteNotifications(customerId);
+    }
+
+    @Override
+    public List<Event> getNationalEvents(String calendarId, LocalDateTime from, LocalDateTime to) throws Exception {
+        return googleCalendarService.getEvents(calendarId, from, to);
+    }
+
+    @Override
+    public List<Event> getTimeline(String login, LocalDateTime from, LocalDateTime to) {
+        String customerId = customerDao.getEntityByField("login", login).getId();
+        return eventDao.getTimelineEvents(customerId, from, to);
+    }
+
+    @Override
+    public void updatePriority(String customerId, String eventId, String priority) {
+        eventDao.updatePriority(customerId, eventId, priority);
+    }
+
+    private void addLocation(EventDTO eventDTO, UUID eventId) {
+        eventDTO.getAdditionEvent().getLocation().setEvent_id(eventId.toString());
+        locationDao.create(eventDTO.getAdditionEvent().getLocation());
+    }
+
+    private List<String> getExistingCustomers(List<String> logins) {
+        return logins.stream()
+                .filter(login -> customerDao.isCustomerExist(login))
+                .collect(Collectors.toList());
+    }
+
+    private void sendInviteEmail(String login, UUID eventId) {
+        String sendTo = customerDao.getEntityByField("login", login).getEmail();
+        Customer inviter = customerDao.getEntityByField("login", SecurityContextHolder.getContext().getAuthentication().getName());
+        Event event = eventDao.getEventById(eventId.toString());
+
+        String subject = "New invite";
+
+        String template = "%s %s invited you to '%s' event.\n See more: ";
+        String message = String.format(template, inviter.getName(), inviter.getSecondName(), event.getName());
+
+        String url = "/event-container/" + eventId.toString();
+        mailSender.sendBasicEmailWithLink(sendTo, subject, message, url);
+    }
+
     private Object[] checkDefaultCustEventFrequency(EventDTO eventDTO) {
         Long frequencyNumber = eventDTO.getAdditionEvent().getFrequencyNumber();
         String frequencyPeriod = eventDTO.getAdditionEvent().getFrequencyPeriod();
@@ -336,28 +332,33 @@ public class EventServiceImpl implements EventService {
         }
     }
 
-    @Override
-    public List<InviteNotificationDTO> getInviteNotifications(String customerId) {
-        return eventDao.getInviteNotifications(customerId);
+    private List<EventDTO> setAdditionForEachEvent(List<Event> events, String custId) {
+        List<EventPriorityDTO> idsPriorities = eventDao.getPriotityByCustId(custId);
+        List<EventDTO> eventsDTO = new ArrayList<>();
+
+        IntStream.range(0, events.size()).forEachOrdered(i -> {
+            EventDTO eventDTO = new EventDTO();
+            String id = events.get(i).getId();
+
+            String priority = idsPriorities.stream()
+                    .map(x -> {
+                        if (x.getEventId().equals(id)) {
+                            return x.getPriority();
+                        }else{
+                            return "";
+                        }
+                    }).collect(Collectors.joining(""));
+            AdditionalEventModelDTO additionalEventModelDTO = new AdditionalEventModelDTO();
+            additionalEventModelDTO.setPriority(priority);
+            eventDTO.setEvent(events.get(i));
+            eventDTO.setAdditionEvent(additionalEventModelDTO);
+            eventsDTO.add(eventDTO);
+        });
+        System.out.println("eventsDTO = " + eventsDTO);
+        return eventsDTO;
     }
 
-    @Override
-    public List<Event> getNationalEvents(String calendarId, LocalDateTime from, LocalDateTime to) throws Exception {
-        return googleCalendarService.getEvents(calendarId, from, to);
-    }
-
-    @Override
-    public List<Event> getTimeline(String login, LocalDateTime from, LocalDateTime to) {
-        String customerId = customerDao.getEntityByField("login", login).getId();
-        return eventDao.getTimelineEvents(customerId, from, to);
-    }
-
-    @Override
-    public void updatePriority(String customerId, String eventId, String priority) {
-        eventDao.updatePriority(customerId, eventId, priority);
-    }
-
-//    private boolean isOverlaped(Event first, Event second) {
+    //    private boolean isOverlaped(Event first, Event second) {
 //        return first.getEndTime().isAfter(second.getStartTime());
 //    }
 //    private boolean isFirstEndsEarlier(Event first, Event second) {
