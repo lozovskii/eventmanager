@@ -19,7 +19,6 @@ export class AllItemsComponent implements OnInit {
   @Output('itemView') outItemView = new EventEmitter<Item>();
   @Output('editableItem') outEditableItem = new EventEmitter<Item>();
   @Output('copiedItem') outCopiedItem = new EventEmitter<Item>();
-  @Output('eventsDTO') outEventsDTO = new EventEmitter<EventDTOModel[]>();
 
   itemView: Item;
   editableItem: Item;
@@ -31,7 +30,6 @@ export class AllItemsComponent implements OnInit {
   order: number = 1;
   customerLogin: string;
   queryString: string;
-  eventsDTO: EventDTOModel[];
 
   constructor(private wishListService: WishListService,
               private userService: UserService,
@@ -56,17 +54,7 @@ export class AllItemsComponent implements OnInit {
     this.getAllItems();
   }
 
-  getMyEvents(): void {
-    this.eventService.getEventsByCustId()
-      .subscribe((eventsDTO) => {
-        this.isIncluded ?
-          this.outEventsDTO.emit(eventsDTO) :
-          this.eventsDTO = eventsDTO;
-      });
-  }
-
   copyItem(item: Item){
-    this.getMyEvents();
     this.isIncluded ?
       this.outCopiedItem.emit(item) :
       this.copiedItem = item;

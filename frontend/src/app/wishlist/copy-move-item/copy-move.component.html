@@ -1,0 +1,5 @@
+<ul class="list-group" *ngIf="eventsDTO">
+  <li class="list-group-item" *ngFor="let event of eventsDTO" (click)="copyToEventWishList(event.event)">
+    <a data-dismiss="modal">{{event.event.name}}</a>
+  </li>
+</ul>

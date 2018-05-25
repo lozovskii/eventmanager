@@ -2,11 +2,8 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 import {AlertService} from "../../_services/alert.service";
 import {WishListService} from "../../_services/wishlist.service";
 import {Item} from "../../_models/wishList/item";
-import {UserService} from "../../_services/user.service";
 import {WishList} from "../../_models/wishList/wishList";
 import {WishListItem} from "../../_models/wishList/wishListItem";
-import {EventService} from "../../_services/event.service";
-import {EventDTOModel} from "../../_models/dto/eventDTOModel";
 import {Event} from "../../_models/event";
 import {Subscription} from "rxjs/Rx";
 
@@ -17,7 +14,6 @@ import {Subscription} from "rxjs/Rx";
 })
 export class AdditionalComponentsContainerComponent implements OnChanges {
   @Input('editableItem') inEditableItem: Item;
-  @Input('eventsDTO') inEventsDto: EventDTOModel;
   @Input('copiedItem') inCopiedItem: Item;
   @Input('movableItem') inMovableItem: WishListItem;
 
@@ -27,10 +23,8 @@ export class AdditionalComponentsContainerComponent implements OnChanges {
   wishList: WishList;
   item: Item;
   items: Item[];
-  eventsDTO: EventDTOModel[];
 
-  constructor(private wishListService: WishListService,
-              private alertService: AlertService) {
+  constructor() {
     this.items = [];
     this.item = new Item();
     this.item.tags = [];
@@ -46,10 +40,6 @@ export class AdditionalComponentsContainerComponent implements OnChanges {
           this.editableItem = changes[prop].currentValue;
           break;
         }
-        case 'inEventsDto' : {
-          this.eventsDTO = changes[prop].currentValue;
-          break;
-        }
         case 'inCopiedItem' : {
           this.copiedItem = changes[prop].currentValue;
           break;
@@ -59,38 +49,6 @@ export class AdditionalComponentsContainerComponent implements OnChanges {
         }
       }
     }
-  }
-
-  copyToEventWishList(event: Event): void {
-    let wishList = new WishList();
-    let wishListItem: WishListItem = new WishListItem();
-    wishListItem.item = new Item();
-    wishListItem.item = this.movableItem ? this.movableItem.item : this.copiedItem;
-    wishListItem.event_id = event.id;
-    wishListItem.priority = 3;
-    wishList.id = event.id;
-    wishList.items = [];
-    wishList.items.push(wishListItem);
-
-    this.wishListService.addItems(wishList)
-      .subscribe(() => {
-        if (this.copiedItem)
-          this.alertService.success('Item successfully copied to wishlist!');
-        else if (this.movableItem) {
-          this.wishListService.removeItems([this.movableItem])
-            .subscribe(() => {
-              let s: Subscription = this.wishListService.wishList$.subscribe((wishList) => {
-                this.wishList = wishList;
-                let index = this.wishList.items.indexOf(this.movableItem);
-                this.wishList.items.splice(index, 1);
-              });
-              s.unsubscribe();
-              this.alertService.success('Item successfully moved to wishlist!')
-            });
-        }
-      }, () => {
-        this.alertService.error('Something wrong')
-      });
   }
 
   // TODO implement it

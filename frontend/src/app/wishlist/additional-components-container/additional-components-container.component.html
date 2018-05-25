@@ -43,11 +43,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <ul class="list-group" *ngIf="eventsDTO">
-          <li class="list-group-item" *ngFor="let event of eventsDTO" (click)="copyToEventWishList(event.event)">
-            <a data-dismiss="modal">{{event.event.name}}</a>
-          </li>
-        </ul>
+       <feature-copy-move [copiedItem]="copiedItem" [movableItem]="movableItem"></feature-copy-move>
       </div>
     </div>
   </div>

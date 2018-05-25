@@ -5,9 +5,6 @@ import {WishListService} from "../../_services/wishlist.service";
 import {UserService} from "../../_services/user.service";
 import {WishListItem} from "../../_models/wishList/wishListItem";
 import {Item} from "../../_models/wishList/item";
-import {EventService} from "../../_services/event.service";
-import {EventDTOModel} from "../../_models/dto/eventDTOModel";
-import {Event} from "../../_models/event";
 
 @Component({
   selector: 'app-wishlist',
@@ -22,7 +19,6 @@ export class WishListComponent implements OnInit {
   @Output('editableItem') outEditableItem = new EventEmitter<Item>();
   @Output('copiedItem') outCopiedItem = new EventEmitter<Item>();
   @Output('movableItem') outMovableItem = new EventEmitter<WishListItem>();
-  @Output('eventsDTO') outEventsDTO = new EventEmitter<EventDTOModel[]>();
 
   trash: WishListItem[];
   wishList: WishList;
@@ -32,15 +28,13 @@ export class WishListComponent implements OnInit {
   movableItem: WishListItem;
   currentLogin: string;
   hasChanges: boolean = false;
-  path: string[] = ['name'];
+  path: string[] = [''];
   order: number = 1;
   queryString: string;
-  eventsDTO: EventDTOModel[];
 
   constructor(private wishListService: WishListService,
               private userService: UserService,
-              private alertService: AlertService,
-              private eventService: EventService) {
+              private alertService: AlertService) {
     this.queryString = '';
     this.editableItem = new Item();
   }
@@ -56,24 +50,13 @@ export class WishListComponent implements OnInit {
     this.wishListItemView = new WishListItem();
   }
 
-  getMyEvents(): void {
-    this.eventService.getEventsByCustId()
-      .subscribe((eventsDTO) => {
-        this.editMode ?
-          this.outEventsDTO.emit(eventsDTO) :
-          this.eventsDTO = eventsDTO;
-      });
-  }
-
   copyItem(item: Item){
-    this.getMyEvents();
     this.editMode ?
       this.outCopiedItem.emit(item) :
       this.copiedItem = item;
   }
 
   moveItem(wishListItem: WishListItem){
-    this.getMyEvents();
     this.editMode ?
       this.outMovableItem.emit(wishListItem) :
       this.movableItem = wishListItem;
