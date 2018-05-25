@@ -1,27 +1,23 @@
-<div class="row">
-  <div class="col-md-3">
-    <app-vnavbar></app-vnavbar>
-  </div>
+<sidebar></sidebar>
 
-  <main role="main" class="col-md-6">
-    <form [formGroup]="folderForm">
+<main role="main">
+  <form [formGroup]="folderForm">
 
-      <div class="form-group">
-        <label>Current Title</label>
-        <select formControlName="id" type="text" class="form-control"
-                name="id">
-          <option *ngFor="let folder of folders" [ngValue]="folder.id">
-            {{folder.name}}
-          </option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>New Title</label>
-        <input formControlName="name" type="text" class="form-control">
-      </div>
-      <div>
-        <button type = "submit" class="btn btn-info"  (click) = "updateFolder(folderForm.value)">Update</button>
-      </div>
-    </form>
-  </main>
-</div>
+    <div class="form-group">
+      <label>Current Title</label>
+      <select formControlName="id" type="text" class="form-control"
+              name="id">
+        <option *ngFor="let folder of folders" [ngValue]="folder.id">
+          {{folder.name}}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>New Title</label>
+      <input formControlName="name" type="text" class="form-control">
+    </div>
+    <div>
+      <button type="submit" class="btn btn-info" (click)="updateFolder(folderForm.value)">Update</button>
+    </div>
+  </form>
+</main>
