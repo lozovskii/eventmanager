@@ -43,7 +43,7 @@
         <button *ngIf="isCreator" class="btn btn-outline-info" [routerLink]="['/wishlist/edit']">
           <i class="far fa-edit"></i> Edit wish list
         </button>
-        <app-wishlist *ngIf="isParticipant || isCreator" [eventId]="eventId" [editMode]="false"></app-wishlist>
+        <app-wishlist *ngIf="isParticipant || isCreator" [isCreator]="isCreator" [eventId]="eventId" [editMode]="false"></app-wishlist>
       </div>
       <div class="tab-pane fade" id="pills-chat" role="tabpanel" aria-labelledby="pills-chat-tab">
         <chat-feature [eventId]="eventId"></chat-feature>

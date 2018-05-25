@@ -86,9 +86,13 @@
                 class="btn-sm button btn-outline-danger" title="Remove item from wishlist">
           <i class="far fa-trash-alt"></i>
         </button>
-        <button class="btn btn-sm btn-outline-info" (click)="getMyEvents(wishListItem.item)"
+        <button class="btn btn-sm btn-outline-info" (click)="copyItem(wishListItem.item)"
                 data-toggle="modal" data-target="#copyTo" title="Copy item to wishlist">
           <i class="far fa-copy"></i>
+        </button>
+        <button *ngIf="isCreator || editMode" class="btn btn-sm btn-outline-info" (click)="moveItem(wishListItem)"
+                data-toggle="modal" data-target="#copyTo" title="Move item to wishlist">
+          <i class="fas fa-angle-double-left"></i>
         </button>
       </td>
     </tr>
@@ -110,7 +114,8 @@
   <additional-components-container
     [editableItem]="editableItem"
     [eventsDTO]="eventsDTO"
-    [copiedItem]="copiedItem">
+    [copiedItem]="copiedItem"
+    [movableItem]="movableItem">
   </additional-components-container>
 
 </div>

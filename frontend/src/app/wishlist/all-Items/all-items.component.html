@@ -54,7 +54,7 @@
                   class="btn-sm btn-outline-secondary" title="Edit item">
             <i class="far fa-edit"></i>
           </button>
-          <button (click)="showMyEvents(item)" data-toggle="modal" data-target="#copyTo"
+          <button (click)="copyItem(item)" data-toggle="modal" data-target="#copyTo"
                   class="btn-sm btn btn-outline-success" title="Copy item to wishlist">
             <i class="far fa-copy"></i>
           </button>
@@ -62,7 +62,7 @@
                   class="btn-sm btn-outline-danger" title="Delete item">
             <i class="far fa-trash-alt"></i>
           </button>
-          <button (click)="copyItem(item)"
+          <button (click)="addToCollection(item)"
                   class="btn-sm btn-outline-primary" title="Copy item to collection">
             <i class="far fa-star"></i>
           </button>

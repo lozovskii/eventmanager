@@ -56,13 +56,17 @@ export class AllItemsComponent implements OnInit {
     this.getAllItems();
   }
 
-  showMyEvents(item: Item): void {
+  getMyEvents(): void {
     this.eventService.getEventsByCustId()
       .subscribe((eventsDTO) => {
         this.isIncluded ?
           this.outEventsDTO.emit(eventsDTO) :
           this.eventsDTO = eventsDTO;
       });
+  }
+
+  copyItem(item: Item){
+    this.getMyEvents();
     this.isIncluded ?
       this.outCopiedItem.emit(item) :
       this.copiedItem = item;
@@ -110,7 +114,7 @@ export class AllItemsComponent implements OnInit {
       () => this.alertService.error('Something wrong'));
   }
 
-  copyItem(item: Item): void {
+  addToCollection(item: Item): void {
     delete item.id;
     item.creator_customer_login = this.userService.getCurrentLogin();
     this.wishListService.createItem(item)

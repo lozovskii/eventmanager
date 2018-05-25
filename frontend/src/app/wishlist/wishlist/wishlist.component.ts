@@ -16,10 +16,12 @@ import {Event} from "../../_models/event";
 })
 export class WishListComponent implements OnInit {
   @Input('eventId') eventId: string;
+  @Input('isCreator') isCreator: boolean = false;
   @Input('editMode') editMode: boolean = false;
   @Output('wishListItemView') outWishListItemView = new EventEmitter<WishListItem>();
   @Output('editableItem') outEditableItem = new EventEmitter<Item>();
   @Output('copiedItem') outCopiedItem = new EventEmitter<Item>();
+  @Output('movableItem') outMovableItem = new EventEmitter<WishListItem>();
   @Output('eventsDTO') outEventsDTO = new EventEmitter<EventDTOModel[]>();
 
   trash: WishListItem[];
@@ -27,6 +29,7 @@ export class WishListComponent implements OnInit {
   wishListItemView: WishListItem;
   editableItem: Item;
   copiedItem: Item;
+  movableItem: WishListItem;
   currentLogin: string;
   hasChanges: boolean = false;
   path: string[] = ['name'];
@@ -53,16 +56,27 @@ export class WishListComponent implements OnInit {
     this.wishListItemView = new WishListItem();
   }
 
-  getMyEvents(item: Item): void {
+  getMyEvents(): void {
     this.eventService.getEventsByCustId()
       .subscribe((eventsDTO) => {
         this.editMode ?
           this.outEventsDTO.emit(eventsDTO) :
           this.eventsDTO = eventsDTO;
       });
+  }
+
+  copyItem(item: Item){
+    this.getMyEvents();
     this.editMode ?
       this.outCopiedItem.emit(item) :
       this.copiedItem = item;
+  }
+
+  moveItem(wishListItem: WishListItem){
+    this.getMyEvents();
+    this.editMode ?
+      this.outMovableItem.emit(wishListItem) :
+      this.movableItem = wishListItem;
   }
 
   editItem(item: Item): void {
@@ -101,18 +115,16 @@ export class WishListComponent implements OnInit {
         this.alertService.success('Wish list successfully updated!');
       }, () => {
         this.alertService.error('Something wrong');
-      }, () => {
-        this.alertService.success('Wish list successfully updated!');
       });
 
     this.hasChanges = false;
   }
 
   removeItem(wishListItem: WishListItem): void {
-    this.hasChanges = true;
     let index = this.wishList.items.indexOf(wishListItem);
     this.wishList.items.splice(index, 1);
     this.trash.push(wishListItem);
+    this.hasChanges = true;
   }
 
   bookItem(wishListItem: WishListItem): void {

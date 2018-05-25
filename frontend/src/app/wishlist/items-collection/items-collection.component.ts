@@ -50,13 +50,17 @@ export class ItemsCollectionComponent implements OnInit {
     this.getItemsCollection();
   }
 
-  showMyEvents(item: Item): void {
+  getMyEvents(): void {
     this.eventService.getEventsByCustId()
       .subscribe((eventsDTO) => {
         this.isIncluded ?
           this.outEventsDTO.emit(eventsDTO) :
           this.eventsDTO = eventsDTO;
       });
+  }
+
+  copyItem(item: Item){
+    this.getMyEvents();
     this.isIncluded ?
       this.outCopiedItem.emit(item) :
       this.copiedItem = item;
