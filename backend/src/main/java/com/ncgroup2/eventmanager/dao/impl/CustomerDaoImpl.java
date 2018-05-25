@@ -88,7 +88,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
     @Override
     public Customer getById(Object id) {
-        String sql = BASE_SQL + "WHERE id = CAST (" + id + " AS uuid) ";
+        String sql = BASE_SQL + "WHERE id = CAST (? AS uuid) ";
 
         Object[] params = new Object[]{id};
 
