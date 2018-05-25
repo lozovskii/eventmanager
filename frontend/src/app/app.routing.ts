@@ -10,7 +10,7 @@ import {CreateEventComponent} from "./events/create-event/create-event.component
 import {EventlistComponent} from "./events/eventlist/eventlist.component";
 import {RegistrationConfirmComponent} from "./registration-confirm/registration-confirm.component";
 import {ProfileComponent} from "./profile/profile.component";
-import {VnavbarComponent} from "./vnavbar/vnavbar.component";
+import {SidebarComponent} from "./sidebar/sidebar.component";
 import {SendLinkComponent} from "./reset-password/send-link/send-link.component";
 import {ResetComponent} from "./reset-password/reset/reset.component";
 import {EventComponent} from "./events/event/event.component";
@@ -48,7 +48,7 @@ const appRoutes: Routes = [
   { path: 'send-reset-link', component: SendLinkComponent},
   { path: 'reset-password', component: ResetComponent},
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
-  { path: 'vnavbar', component: VnavbarComponent, canActivate: [AuthGuard]},
+  { path: 'vnavbar', component: SidebarComponent, canActivate: [AuthGuard]},
   { path: 'folder-list/:type', component: FolderListComponent, canActivate: [AuthGuard]},
   { path: 'folder-list', component: FolderListComponent, canActivate: [AuthGuard]},
   { path: 'wishlist', component: WishListComponent, canActivate: [AuthGuard]},

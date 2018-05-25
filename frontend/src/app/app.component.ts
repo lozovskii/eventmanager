@@ -1,5 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
-import {ReCaptchaComponent} from "angular2-recaptcha";
+import {Component} from '@angular/core';
 
 @Component({
   moduleId: module.id.toString(),
@@ -9,7 +8,4 @@ import {ReCaptchaComponent} from "angular2-recaptcha";
 })
 export class AppComponent {
   title = 'app';
-}
-export class RegisterComponent {
-  @ViewChild(ReCaptchaComponent) captcha: ReCaptchaComponent;
 }

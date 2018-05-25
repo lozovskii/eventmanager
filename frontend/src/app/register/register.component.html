@@ -1,6 +1,7 @@
-<div class="col-md-12">
-  <div class="col-md-6" style="margin:0 auto">
-    <h2>Register</h2>
+<div [ngClass]="{'col-md-12' : !isModal}">
+  <div [ngClass]="{'col-md-6': !isModal}" style="margin:0 auto">
+    <h2 *ngIf="!isModal">Register</h2>
+    <div class="modal-body">
     <form [formGroup]="registerForm" (ngSubmit)="register(registerForm.value)">
 
       <div class="form-group">
@@ -87,14 +88,15 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="modal-footer">
         <button [disabled]="loading" type="submit" class="btn btn-primary">Register</button>
         <img *ngIf="loading"
              src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
-        <a [routerLink]="['/login']" class="btn btn-link">Cancel</a>
+        <a data-dismiss="modal" aria-label="Close" class="btn btn-link">Cancel</a>
       </div>
     </form>
     <h3>Or...</h3>
     <div  id="googleBtn"></div>
   </div>
+</div>
 </div>

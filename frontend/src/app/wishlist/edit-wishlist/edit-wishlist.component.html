@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-3">
-    <app-vnavbar></app-vnavbar>
+    <sidebar></sidebar>
   </div>
 
   <main role="main" class="col-md-9">
@@ -22,6 +22,7 @@
               [editMode]="true"
               (editableItem)="setEditableItem($event)"
               (copiedItem)="setCopiedItem($event)"
+              (movableItem)="setMovableItem($event)"
               (eventsDTO)="setEventsDTO($event)">
             </app-wishlist>
           </div>
@@ -41,8 +42,7 @@
             <app-items-collection
               [included]="true"
               (editableItem)="setEditableItem($event)"
-              (copiedItem)="setCopiedItem($event)"
-              (eventsDTO)="setEventsDTO($event)">
+              (copiedItem)="setCopiedItem($event)">
             </app-items-collection>
           </div>
         </div>
@@ -61,8 +61,7 @@
             <app-all-items
               [included]="true"
               (editableItem)="setEditableItem($event)"
-              (copiedItem)="setCopiedItem($event)"
-              (eventsDTO)="setEventsDTO($event)">
+              (copiedItem)="setCopiedItem($event)">
             </app-all-items>
           </div>
         </div>
@@ -71,8 +70,8 @@
 
     <additional-components-container
       [editableItem]="editableItem"
-      [eventsDTO]="eventsDTO"
-      [copiedItem]="copiedItem">
+      [copiedItem]="copiedItem"
+      [movableItem]="movableItem">
     </additional-components-container>
 
   </main>

@@ -1,7 +1,12 @@
 .jumbotron {
   background: url(back.jpg) no-repeat center top fixed;
 }
+
+main, .details{
+  margin-right: 200px;
+}
+
 #title {
-  color: #890000;
+  color: #240e62;
   font-weight: 600;
 }

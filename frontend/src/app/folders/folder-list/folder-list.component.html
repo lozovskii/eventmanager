@@ -1,35 +1,32 @@
 <script src="folder-list.component.ts"></script>
-<div class="row">
-  <div class="col-md-3">
-    <app-vnavbar></app-vnavbar>
+
+<sidebar></sidebar>
+
+<main role="main">
+  <h2 class="text-center">Folders</h2>
+  <div class="btn-group" role="group">
+    <button class="btn btn-outline-info" [routerLink]="['/create-folder']">Create</button>
+    <button class="btn btn-outline-danger" [routerLink]="['/delete-folder']">Delete</button>
   </div>
-  <main role="main" class="col-md-9">
-    <div class="btn-group" role="group">
-      <button class="btn btn-outline-info" [routerLink]="['/create-folder']">Create</button>
-      <button class="btn btn-outline-danger" [routerLink]="['/delete-folder']">Delete</button>
-    </div>
-    <br>
-    <br>
-    <div class="row">
-      <table class="col-md-2">
-        <td>
-          <a [routerLink]="['/folder-content','default']">
-            <img src="../assets/img/folder.png" width="65" height="77"/>
-            Default
-          </a>
-        </td>
-      </table>
-      <table *ngFor="let folder of folders" class="col-md-2">
-        <td>
-          <a [routerLink]="['/folder-content', 'folder', folder.id]">
-            <img src="../assets/img/folder.png" width="65" height="77"/>
-            {{folder.name}}
-          </a>
-        </td>
-      </table>
-    </div>
+  <br>
+  <br>
+  <div class="row">
+    <table class="col-md-2">
+      <td>
+        <a [routerLink]="['/folder-content','default']">
+          <img src="../assets/img/folder.png" width="65" height="77"/>
+          Default
+        </a>
+      </td>
+    </table>
+    <table *ngFor="let folder of folders" class="col-md-2">
+      <td>
+        <a [routerLink]="['/folder-content', 'folder', folder.id]">
+          <img src="../assets/img/folder.png" width="65" height="77"/>
+          {{folder.name}}
+        </a>
+      </td>
+    </table>
+  </div>
 
-  </main>
-
-
-</div>
+</main>

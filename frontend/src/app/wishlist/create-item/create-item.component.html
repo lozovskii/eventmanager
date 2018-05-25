@@ -1,9 +1,6 @@
-<div [ngClass]="{ 'row': !isIncluded }">
-  <div *ngIf="!isIncluded" class="col-md-3">
-    <app-vnavbar></app-vnavbar>
-  </div>
+<sidebar *ngIf="!isIncluded"></sidebar>
 
-  <main role="main" [ngClass]="{ 'col-md-9': !isIncluded }">
+  <main role="main">
     <h2 *ngIf="!isIncluded" class="text-center">Create item</h2>
     <br>
     <form [formGroup]="mainForm" (ngSubmit)="createItem(itemForm.value)">
@@ -148,4 +145,3 @@
 
     </form>
   </main>
-</div>
