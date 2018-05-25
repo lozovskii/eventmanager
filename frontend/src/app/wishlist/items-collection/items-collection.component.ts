@@ -18,7 +18,6 @@ export class ItemsCollectionComponent implements OnInit {
   @Output('itemView') outItemView = new EventEmitter<Item>();
   @Output('editableItem') outEditableItem = new EventEmitter<Item>();
   @Output('copiedItem') outCopiedItem = new EventEmitter<Item>();
-  @Output('eventsDTO') outEventsDTO = new EventEmitter<EventDTOModel[]>();
 
   hasChanges: boolean = false;
   editableItem: Item;
@@ -30,7 +29,6 @@ export class ItemsCollectionComponent implements OnInit {
   path: string[] = ['item'];
   order: number = 1;
   queryString: string;
-  eventsDTO: EventDTOModel[];
 
   constructor(private wishListService: WishListService,
               private alertService: AlertService,
@@ -50,13 +48,7 @@ export class ItemsCollectionComponent implements OnInit {
     this.getItemsCollection();
   }
 
-  showMyEvents(item: Item): void {
-    this.eventService.getEventsByCustId()
-      .subscribe((eventsDTO) => {
-        this.isIncluded ?
-          this.outEventsDTO.emit(eventsDTO) :
-          this.eventsDTO = eventsDTO;
-      });
+  copyItem(item: Item){
     this.isIncluded ?
       this.outCopiedItem.emit(item) :
       this.copiedItem = item;

@@ -1,11 +1,13 @@
 <script src="folder-list.component.ts"></script>
-<div class="row">
-  <div class="col-md-3">
-    <app-vnavbar></app-vnavbar>
-  </div>
-  <main role="main" class="col-md-9">
+
+
+<sidebar></sidebar>
+
+  <main role="main">
+    <h2 class="text-center">Folders</h2>
     <div class="btn-group" role="group">
       <button class="btn btn-outline-info" [routerLink]="['/create-folder']">Create</button>
+      <button class="btn btn-outline-info" [routerLink]="['/edit-folder']">Edit</button>
       <button class="btn btn-outline-danger" [routerLink]="['/delete-folder']">Delete</button>
     </div>
     <br>
@@ -30,6 +32,3 @@
     </div>
 
   </main>
-
-
-</div>

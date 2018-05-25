@@ -9,8 +9,6 @@ import GoogleUser = gapi.auth2.GoogleUser;
 declare const gapi: any;
 @Injectable()
 export class AuthenticationService {
-  navbar = false;
-  variable = null;
   url = '/api/auth';
 
   constructor(private http: HttpClient) {
@@ -49,37 +47,20 @@ export class AuthenticationService {
   }
 
   logout() {
+    localStorage.setItem('clearSessionStorage', '');
     console.log('In Logout');
     sessionStorage.clear();
-    console.log('Session storage cleaned');
-    console.log('Gapi '+ gapi);
-    console.log('Gapi auth2 '+ gapi.auth2);
-    console.log('Gapi auth '+gapi.auth);
-    console.log('Gapi signin 2'+gapi.signin2);
-
 
     if(gapi.auth2 != undefined) {
-      console.log('Gapi auth2 authInstance'+ gapi.auth2.getAuthInstance());
-      console.log("Trying logout");
       gapi.auth2.getAuthInstance().disconnect();
     }
-    // let cookies = document.cookie.split(";");
-    //
-    // for (let i = 0; i < cookies.length; i++) {
-    //   let cookie = cookies[i];
-    //   let eqPos = cookie.indexOf("=");
-    //   let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-    //   document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    // }
+
+    localStorage.removeItem('clearSessionStorage');
   }
 
   checkingLog() {
-    this.variable = JSON.parse(sessionStorage.getItem('currentToken'));
-    console.log('variable = ' + this.variable);
-    if (this.variable != null) {
-      this.navbar = true;
-    }
-    return this.navbar;
+    let token = JSON.parse(sessionStorage.getItem('currentToken'));
+    return token != null;
   }
 
   static getAuthHeader() {

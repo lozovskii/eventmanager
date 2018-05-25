@@ -50,6 +50,11 @@ public class FolderServiceImpl implements FolderService {
         folderDao.deleteById(folderId);
     }
 
+    @Override
+    public void updateFolderNameById(String folderId, String folderName){
+        folderDao.updateFolderNameById(folderId,folderName);
+    }
+
 }
 
 

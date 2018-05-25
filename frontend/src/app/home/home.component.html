@@ -1,48 +1,43 @@
-<div class="container-fluid">
+<sidebar></sidebar>
 
-  <div class="row">
-    <app-vnavbar></app-vnavbar>
-
-    <br>
-    <main role="main" class="col-md-9">
-      <h1>Hi, {{currentUser.name}} {{currentUser.secondName}}!</h1>
-      <div class="col-auto" style="margin: 16px">
-        <div class="row">
-          Public -
-          <div class="dot"
-               [style.background-color]="'#ad2121'">
-          </div>
-          Friends -
-          <div class="dot"
-               [style.background-color]="'#1e90ff'">
-          </div>
-          Private -
-          <div class="dot"
-               [style.background-color]="'#9b16dd'">
-          </div>
-          National -
-          <div class="dot"
-               [style.background-color]="'#86af49'">
-          </div>
-        </div>
+<main role="main">
+  <h2 class="text-center">Calendar</h2>
+  <!--<h5 class="text-center">Hi, {{currentUser.name}} {{currentUser.secondName}}!</h5>-->
+  <div class="col-auto" style="margin: 16px">
+    <div class="row justify-content-center">
+      Public -
+      <div class="dot"
+           [style.background-color]="'#ad2121'">
       </div>
-      <calendar-component [type]="'my'"></calendar-component>
-      <br>
-      <h1>Timeline</h1>
-      <div class="col-auto" style="margin: 16px">
-        <div class="row">
-          Busy -
-          <div class="dot"
-               [style.background-color]="'#ad2121'">
-          </div>
-          Tentative -
-          <div class="dot"
-               [style.background-color]="'#9b16dd'">
-          </div>
-        </div>
+      Friends -
+      <div class="dot"
+           [style.background-color]="'#1e90ff'">
       </div>
-      <calendar-component [type]="'timeline'"></calendar-component>
-    </main>
+      Private -
+      <div class="dot"
+           [style.background-color]="'#9b16dd'">
+      </div>
+      National -
+      <div class="dot"
+           [style.background-color]="'#86af49'">
+      </div>
+    </div>
   </div>
-</div>
-<br>
+  <calendar-component [type]="'my'"></calendar-component>
+  <br>
+  <h1>Timeline</h1>
+  <div class="col-auto" style="margin: 16px">
+    <div class="row">
+      Busy -
+      <div class="dot"
+           [style.background-color]="'#ad2121'">
+      </div>
+      Tentative -
+      <div class="dot"
+           [style.background-color]="'#9b16dd'">
+      </div>
+    </div>
+  </div>
+  <calendar-component [type]="'timeline'"></calendar-component>
+</main>
+

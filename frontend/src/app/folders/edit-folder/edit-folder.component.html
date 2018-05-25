@@ -4,7 +4,7 @@
   <form [formGroup]="folderForm">
 
     <div class="form-group">
-      <label>Title</label>
+      <label>Current Title</label>
       <select formControlName="id" type="text" class="form-control"
               name="id">
         <option *ngFor="let folder of folders" [ngValue]="folder.id">
@@ -12,8 +12,12 @@
         </option>
       </select>
     </div>
+    <div class="form-group">
+      <label>New Title</label>
+      <input formControlName="name" type="text" class="form-control">
+    </div>
     <div>
-      <button type="submit" class="btn btn-danger" (click)="deleteFolder(folderForm.value)">Delete</button>
+      <button type="submit" class="btn btn-info" (click)="updateFolder(folderForm.value)">Update</button>
     </div>
   </form>
 </main>

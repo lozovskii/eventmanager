@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {Item} from "../../_models/wishList/item";
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
+import {WishListItem} from "../../_models/wishList/wishListItem";
 
 @Component({
   selector: 'app-edit-wishList',
@@ -10,6 +11,7 @@ export class EditWishListComponent {
 
   editableItem: Item;
   copiedItem: Item;
+  movableItem : WishListItem;
   eventsDTO: EventDTOModel[];
 
   constructor() {}
@@ -20,6 +22,10 @@ export class EditWishListComponent {
 
   setCopiedItem(copiedItem: Item){
     this.copiedItem = copiedItem;
+  }
+
+  setMovableItem(movableItem: WishListItem){
+    this.movableItem = movableItem;
   }
 
   setEventsDTO(eventsDTO: EventDTOModel[]){

@@ -22,7 +22,7 @@ import {LocationService} from "./_services/location.service";
 import {EventlistComponent} from './events/eventlist/eventlist.component';
 import {RegistrationConfirmComponent} from './registration-confirm/registration-confirm.component';
 import {ProfileComponent} from './profile/profile.component';
-import {VnavbarComponent} from './vnavbar/vnavbar.component';
+import {SidebarComponent} from './sidebar/sidebar.component';
 import {SendLinkComponent} from './reset-password/send-link/send-link.component';
 import {ResetPasswordService} from "./_services/reset-password.service";
 import {ResetComponent} from './reset-password/reset/reset.component';
@@ -71,6 +71,8 @@ import {AdditionalComponentsContainerComponent} from "./wishlist/additional-comp
 
 import {ChatboxComponent} from "./chatbox/chatbox.component";
 import {MessageService} from "./_services/message.service";
+import { EditFolderComponent } from './folders/edit-folder/edit-folder.component';
+import {CopyMoveComponent} from "./wishlist/copy-move-item/copy-move.component";
 
 
 @NgModule({
@@ -105,7 +107,7 @@ import {MessageService} from "./_services/message.service";
     EventlistComponent,
     RegistrationConfirmComponent,
     ProfileComponent,
-    VnavbarComponent,
+    SidebarComponent,
     SendLinkComponent,
     ResetComponent,
     EventComponent,
@@ -143,7 +145,9 @@ import {MessageService} from "./_services/message.service";
     DraftContentComponent,
     FilterItemsPipe,
     AdditionalComponentsContainerComponent,
-    ChatboxComponent
+    ChatboxComponent,
+    EditFolderComponent,
+    CopyMoveComponent
   ],
   providers: [
     AuthGuard,

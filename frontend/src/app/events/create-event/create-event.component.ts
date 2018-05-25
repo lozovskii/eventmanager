@@ -5,7 +5,6 @@ import {AlertService, EventService, UserService} from "../../_services";
 import {ActivatedRoute, Router} from "@angular/router";
 import {VISIBILITY} from "../../event-visibility";
 import {Location} from "../../_models/location";
-import {LocationService} from "../../_services/location.service";
 
 @Component({
   selector: 'app-event-create',
@@ -43,8 +42,7 @@ export class CreateEventComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private alertService: AlertService,
               private formBuilder: FormBuilder,
-              private userService: UserService,
-              private locationService : LocationService) {
+              private userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -106,7 +104,6 @@ export class CreateEventComponent implements OnInit {
   }
 
   createEventForm(eventDTO: EventDTOModel) {
-    console.log('here');
     if(eventDTO.event.name == null){
       eventDTO.event.name = this.eventDTO.event.name;
     }
@@ -139,7 +136,6 @@ export class CreateEventComponent implements OnInit {
     eventDTO.additionEvent.location = this.eventLocation;
     let customerId = this.userService.getCurrentId();
     eventDTO.event.creatorId = customerId;
-    console.log('eventDTO = ' + eventDTO);
     this.eventService.create(eventDTO).subscribe(
       data => {
         if ((eventDTO.event.startTime != null) && (eventDTO.event.startTime != '')) {
@@ -212,7 +208,6 @@ export class CreateEventComponent implements OnInit {
     this.eventService.getEventById(id).subscribe((eventDTO : EventDTOModel) => {
       this.eventDTO = eventDTO;
       this.isNote = true;
-      console.log(this.eventDTO);
       this.startDateDraft = this.eventDTO.event.startTime;
       this.endDateDraft = this.eventDTO.event.endTime;
       this.visibilityDraft = this.eventDTO.event.visibility;

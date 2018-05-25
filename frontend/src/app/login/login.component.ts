@@ -1,4 +1,4 @@
-import {Component, NgZone, OnInit} from '@angular/core';
+import {Component, Input, NgZone, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AlertService, AuthenticationService, UserService} from "../_services";
 import {NavbarService} from "../_services/navbar.service";
@@ -6,34 +6,38 @@ import {NavbarService} from "../_services/navbar.service";
 declare const gapi: any;
 
 @Component({
-  moduleId: module.id.toString(),
+  selector: 'login',
   templateUrl: 'login.component.html',
   styleUrls: ['./login.component.css']
 })
 
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnChanges {
 
+  @Input('modal') inModal;
   model: any = {};
   loading = false;
   returnUrl: string;
-
+  isModal: boolean = false;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
               private authenticationService: AuthenticationService,
               private alertService: AlertService,
               private navbarService: NavbarService,
-              private userService: UserService,
-              private ngZone: NgZone,
-              /*private authService: AuthService*/) {
+              private userService: UserService) {
   }
 
   ngOnInit() {
-
-    this.authenticationService.logout();
+    if(sessionStorage.getItem('currentToken')) {
+      this.authenticationService.logout();
+    }
 
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
     console.log(this.returnUrl);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+      this.isModal = changes['inModal'].currentValue;
   }
 
   ngAfterViewInit() {
@@ -80,10 +84,16 @@ export class LoginComponent implements OnInit {
       .subscribe(() => {
           this.userService.getByLogin(JSON.parse(sessionStorage.getItem('currentToken')).login).subscribe(
             user => {
+
+
               sessionStorage.setItem('currentUser', JSON.stringify(user));
+              localStorage.setItem('newLogin',JSON.stringify(sessionStorage));
               this.loading = false;
               this.navbarService.setNavBarState(true);
-              return this.router.navigate([this.returnUrl]);
+              document.getElementById('loginCloseBtn').click();
+              localStorage.removeItem('newLogin');
+              return this.router.navigate(['/home']);
+              // return this.router.navigate([this.returnUrl]);
             });
         }
         , () => {
@@ -98,11 +108,14 @@ export class LoginComponent implements OnInit {
       .subscribe(() => {
           this.userService.getByLogin(JSON.parse(sessionStorage.getItem('currentToken')).login).subscribe(
             user => {
+
               console.log("In Google Login Subscribe");
               console.log(user);
               sessionStorage.setItem('currentUser', JSON.stringify(user));
+              localStorage.setItem('newLogin',JSON.stringify(sessionStorage));
               this.loading = false;
               this.navbarService.setNavBarState(true);
+              localStorage.removeItem('newLogin');
               // history.back();
               return this.router.navigate(['/home']);
             });

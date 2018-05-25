@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AlertService, AuthenticationService, RegistrationService, UserService} from "../_services";
 import {FormBuilder, Validators} from "@angular/forms";
@@ -9,12 +9,14 @@ import GoogleUser = gapi.auth2.GoogleUser;
 declare const gapi: any;
 
 @Component({
-  moduleId: module.id.toString(),
+  selector: 'registration',
   templateUrl: 'register.component.html',
   styleUrls: ['../login/login.component.css']
 })
 
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnChanges {
+  @Input('modal') inModal : boolean = false;
+
   user: User;
   // loading = false;
   registerForm = this.formBuilder.group({
@@ -27,6 +29,7 @@ export class RegisterComponent implements OnInit {
 
   isValidFormSubmitted = null;
   loading = false;
+  isModal: boolean = false;
   public auth2: any;
 
   constructor(private router: Router,
@@ -37,6 +40,10 @@ export class RegisterComponent implements OnInit {
               private navbarService: NavbarService,
               private activatedRoute : ActivatedRoute,
               private authService: AuthenticationService) {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.isModal = changes['inModal'].currentValue;
   }
 
   get name() {
@@ -122,7 +129,9 @@ export class RegisterComponent implements OnInit {
               console.log(user);
               this.navbarService.setNavBarState(true);
               sessionStorage.setItem('currentUser', JSON.stringify(user));
+              localStorage.setItem('newLogin',JSON.stringify(sessionStorage));
               this.loading = false;
+              localStorage.removeItem('newLogin');
               return this.router.navigate(['/home']);
             });
         }

@@ -1,9 +1,6 @@
-<div class="row">
-  <div *ngIf="!isIncluded" class="col-md-3">
-    <app-vnavbar></app-vnavbar>
-  </div>
+<sidebar></sidebar>
 
-  <main role="main" [ngClass]="{ 'col-md-9': !isIncluded }">
+  <main role="main">
     <h2 *ngIf="!isIncluded" class="text-center">All Items</h2>
     <div class="row justify-content-between">
       <div class="col-auto">
@@ -54,7 +51,7 @@
                   class="btn-sm btn-outline-secondary" title="Edit item">
             <i class="far fa-edit"></i>
           </button>
-          <button (click)="showMyEvents(item)" data-toggle="modal" data-target="#copyTo"
+          <button (click)="copyItem(item)" data-toggle="modal" data-target="#copyTo"
                   class="btn-sm btn btn-outline-success" title="Copy item to wishlist">
             <i class="far fa-copy"></i>
           </button>
@@ -62,7 +59,7 @@
                   class="btn-sm btn-outline-danger" title="Delete item">
             <i class="far fa-trash-alt"></i>
           </button>
-          <button (click)="copyItem(item)"
+          <button (click)="addToCollection(item)"
                   class="btn-sm btn-outline-primary" title="Copy item to collection">
             <i class="far fa-star"></i>
           </button>
@@ -81,7 +78,6 @@
     <additional-components-container
       *ngIf="!isIncluded"
       [editableItem]="editableItem"
-      [eventsDTO]="eventsDTO"
       [copiedItem]="copiedItem">
     </additional-components-container>
 
@@ -148,4 +144,3 @@
     <!--</div>-->
 
   </main>
-</div>

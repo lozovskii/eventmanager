@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 @Service
 @PropertySource("classpath:queries/event.properties")
 @PropertySource("classpath:queries/folder.properties")
-@PropertySource("classpath:message.properties")
+@PropertySource("classpath:queries/message.properties")
 @PropertySource("classpath:queries/note.properties")
 public class QueryService {
 

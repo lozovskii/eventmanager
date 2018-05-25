@@ -16,4 +16,6 @@ public interface FolderService {
     void moveNoteByNoteIdByFolderName(String noteId, String folderName);
 
     void deleteFolderById(String folderId);
+
+    void updateFolderNameById(String folderId, String folderName);
 }

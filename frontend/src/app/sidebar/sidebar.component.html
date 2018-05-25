@@ -1,0 +1,60 @@
+<body>
+<div id="wrapper" class="toggled">
+  <!-- Sidebar -->
+  <div id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+      <li class="nav-item">
+        <a [routerLink]="['/profile']">My Profile</a>
+      </li>
+      <li>
+        <a [routerLink]="['/home']">Calendar</a>
+      </li>
+      <li class="nav-item">
+        <a [routerLink]="['/notifications']">Notifications</a>
+      </li>
+      <li class="nav-item">
+        <a data-toggle="collapse" href="#collapseEventsGroup">Events</a>
+        <div id="collapseEventsGroup" class="collapse">
+          <span>
+              <a class="dropdown-item" [routerLink]="['/eventlist','my']">My Events</a>
+            </span>
+          <span>
+              <a class="dropdown-item" [routerLink]="['/eventlist','all']">All Events</a>
+          </span>
+          <span>
+              <a class="dropdown-item disabled">Friends Events</a>
+          </span>
+          <span>
+              <a class="dropdown-item" [routerLink]="['/create-event']">Create Event</a>
+          </span>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a [routerLink]="['/folder-list','all']">Folders</a>
+      </li>
+      <li class="nav-item">
+        <a [routerLink]="['/draft-list']">Drafts</a>
+      </li>
+      <li class="nav-item">
+        <a data-toggle="collapse" href="#collapseItemsGroup">Items</a>
+        <div id="collapseItemsGroup" class="collapse">
+          <span>
+              <a class="dropdown-item" [routerLink]="['/items/all']">All Items</a>
+            </span>
+          <span>
+              <a class="dropdown-item" [routerLink]="['/items/booked']">Booked Items</a>
+          </span>
+          <span>
+              <a class="dropdown-item" [routerLink]="['/items/collection']">Items Collection</a>
+          </span>
+          <span>
+              <a class="dropdown-item" [routerLink]="['/items/create']">Create Item</a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <!-- /#sidebar-wrapper -->
+</div>
+</body>
+<!--<p>&copy; NCGroup2 2018</p>-->

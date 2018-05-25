@@ -5,9 +5,6 @@ import {WishListService} from "../../_services/wishlist.service";
 import {UserService} from "../../_services/user.service";
 import {WishListItem} from "../../_models/wishList/wishListItem";
 import {Item} from "../../_models/wishList/item";
-import {EventService} from "../../_services/event.service";
-import {EventDTOModel} from "../../_models/dto/eventDTOModel";
-import {Event} from "../../_models/event";
 
 @Component({
   selector: 'app-wishlist',
@@ -16,28 +13,28 @@ import {Event} from "../../_models/event";
 })
 export class WishListComponent implements OnInit {
   @Input('eventId') eventId: string;
+  @Input('isCreator') isCreator: boolean = false;
   @Input('editMode') editMode: boolean = false;
   @Output('wishListItemView') outWishListItemView = new EventEmitter<WishListItem>();
   @Output('editableItem') outEditableItem = new EventEmitter<Item>();
   @Output('copiedItem') outCopiedItem = new EventEmitter<Item>();
-  @Output('eventsDTO') outEventsDTO = new EventEmitter<EventDTOModel[]>();
+  @Output('movableItem') outMovableItem = new EventEmitter<WishListItem>();
 
   trash: WishListItem[];
   wishList: WishList;
   wishListItemView: WishListItem;
   editableItem: Item;
   copiedItem: Item;
+  movableItem: WishListItem;
   currentLogin: string;
   hasChanges: boolean = false;
-  path: string[] = ['name'];
+  path: string[] = [''];
   order: number = 1;
   queryString: string;
-  eventsDTO: EventDTOModel[];
 
   constructor(private wishListService: WishListService,
               private userService: UserService,
-              private alertService: AlertService,
-              private eventService: EventService) {
+              private alertService: AlertService) {
     this.queryString = '';
     this.editableItem = new Item();
   }
@@ -53,16 +50,16 @@ export class WishListComponent implements OnInit {
     this.wishListItemView = new WishListItem();
   }
 
-  getMyEvents(item: Item): void {
-    this.eventService.getEventsByCustId()
-      .subscribe((eventsDTO) => {
-        this.editMode ?
-          this.outEventsDTO.emit(eventsDTO) :
-          this.eventsDTO = eventsDTO;
-      });
+  copyItem(item: Item){
     this.editMode ?
       this.outCopiedItem.emit(item) :
       this.copiedItem = item;
+  }
+
+  moveItem(wishListItem: WishListItem){
+    this.editMode ?
+      this.outMovableItem.emit(wishListItem) :
+      this.movableItem = wishListItem;
   }
 
   editItem(item: Item): void {
@@ -101,18 +98,16 @@ export class WishListComponent implements OnInit {
         this.alertService.success('Wish list successfully updated!');
       }, () => {
         this.alertService.error('Something wrong');
-      }, () => {
-        this.alertService.success('Wish list successfully updated!');
       });
 
     this.hasChanges = false;
   }
 
   removeItem(wishListItem: WishListItem): void {
-    this.hasChanges = true;
     let index = this.wishList.items.indexOf(wishListItem);
     this.wishList.items.splice(index, 1);
     this.trash.push(wishListItem);
+    this.hasChanges = true;
   }
 
   bookItem(wishListItem: WishListItem): void {
