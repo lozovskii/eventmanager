@@ -264,11 +264,6 @@ public class EventServiceImpl implements EventService {
         eventDao.updatePriority(customerId, eventId, priority);
     }
 
-    private void addLocation(EventDTO eventDTO, UUID eventId) {
-        eventDTO.getAdditionEvent().getLocation().setEvent_id(eventId.toString());
-        locationDao.create(eventDTO.getAdditionEvent().getLocation());
-    }
-
     private List<String> getExistingCustomers(List<String> logins) {
         return logins.stream()
                 .filter(login -> customerDao.isCustomerExist(login))
