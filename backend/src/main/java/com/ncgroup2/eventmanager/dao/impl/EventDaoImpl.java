@@ -302,7 +302,6 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         };
         List<EventPriorityDTO> idsPriorities =  this.getJdbcTemplate().query(query, params,
                 new BeanPropertyRowMapper(EventPriorityDTO.class));
-        System.out.println("idsPriorities = " + idsPriorities);
         return idsPriorities;
     }
 

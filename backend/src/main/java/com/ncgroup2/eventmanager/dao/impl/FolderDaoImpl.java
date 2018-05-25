@@ -181,4 +181,14 @@ public class FolderDaoImpl extends JdbcDaoSupport implements FolderDao {
         };
         this.getJdbcTemplate().update(query, params);
     }
+
+    @Override
+    public void updateFolderNameById(String folderId, String folderName){
+        String query = queryService.getQuery("folder.updateNameById");
+        Object[] params = new Object[]{
+                folderName,
+                folderId
+        };
+        this.getJdbcTemplate().update(query, params);
+    }
 }

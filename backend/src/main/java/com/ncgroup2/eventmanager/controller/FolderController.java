@@ -33,7 +33,8 @@ public class FolderController {
     }
 
     @GetMapping("/notes")
-    public ResponseEntity<List<Event>> getNotesByCustIdByFolderId(@RequestParam String custId, @RequestParam String folderId){
+    public ResponseEntity<List<Event>> getNotesByCustIdByFolderId(@RequestParam String custId,
+                                                                  @RequestParam String folderId){
         List<Event> notesByCustId = folderService.getNotesByCustIdByFolderId(custId,folderId);
         return new ResponseEntity<>(notesByCustId, HttpStatus.OK);
     }
@@ -47,4 +48,11 @@ public class FolderController {
     public void deleteFolder(@PathVariable("folderId") String folderId){
         folderService.deleteFolderById(folderId);
     }
+
+    @PutMapping("/update/{folderId}/{folderName}")
+    public void updateNameById(@PathVariable("folderId") String folderId,
+                            @PathVariable("folderName") String folderName){
+        folderService.updateFolderNameById(folderId,folderName);
+    }
+
 }

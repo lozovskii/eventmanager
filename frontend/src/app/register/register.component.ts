@@ -129,7 +129,9 @@ export class RegisterComponent implements OnInit, OnChanges {
               console.log(user);
               this.navbarService.setNavBarState(true);
               sessionStorage.setItem('currentUser', JSON.stringify(user));
+              localStorage.setItem('newLogin',JSON.stringify(sessionStorage));
               this.loading = false;
+              localStorage.removeItem('newLogin');
               return this.router.navigate(['/home']);
             });
         }

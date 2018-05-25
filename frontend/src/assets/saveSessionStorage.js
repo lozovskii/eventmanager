@@ -26,7 +26,41 @@
       for (var key in data) {
         sessionStorage.setItem(key, data[key]);
       }
+      localStorage.removeItem('getSessionStorage')
 
+    }
+  });
+
+  window.addEventListener('storage', function () {
+
+    if (event.key == 'clearSessionStorage') {
+      // Some tab asked for the sessionStorage -> send it
+      sessionStorage.clear();
+    }
+  });
+
+  window.addEventListener('storage', function () {
+
+    if (event.key == 'clearSessionStorage') {
+      // Some tab asked for the sessionStorage -> send it
+      sessionStorage.clear();
+    }
+  });
+
+
+  window.addEventListener('storage', function (event) {
+
+    //console.log('storage event', event);
+
+    if (event.key == 'newLogin') {
+
+
+      var data = JSON.parse(event.newValue),
+        value;
+
+      for (var key in data) {
+        sessionStorage.setItem(key, data[key]);
+      }
     }
   });
 

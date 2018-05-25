@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, NgZone, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, NgZone, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AlertService, AuthenticationService, UserService} from "../_services";
 import {NavbarService} from "../_services/navbar.service";
@@ -24,16 +24,15 @@ export class LoginComponent implements OnInit, OnChanges {
               private authenticationService: AuthenticationService,
               private alertService: AlertService,
               private navbarService: NavbarService,
-              private userService: UserService,
-              private ngZone: NgZone,
-              /*private authService: AuthService*/) {
+              private userService: UserService) {
   }
 
   ngOnInit() {
-    this.authenticationService.logout();
+    if(sessionStorage.getItem('currentToken')) {
+      this.authenticationService.logout();
+    }
 
-    // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
-    this.returnUrl = '/home';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
     console.log(this.returnUrl);
   }
 
@@ -85,11 +84,16 @@ export class LoginComponent implements OnInit, OnChanges {
       .subscribe(() => {
           this.userService.getByLogin(JSON.parse(sessionStorage.getItem('currentToken')).login).subscribe(
             user => {
+
+
               sessionStorage.setItem('currentUser', JSON.stringify(user));
+              localStorage.setItem('newLogin',JSON.stringify(sessionStorage));
               this.loading = false;
               this.navbarService.setNavBarState(true);
               document.getElementById('loginCloseBtn').click();
+              localStorage.removeItem('newLogin');
               return this.router.navigate(['/home']);
+              // return this.router.navigate([this.returnUrl]);
             });
         }
         , () => {
@@ -104,11 +108,14 @@ export class LoginComponent implements OnInit, OnChanges {
       .subscribe(() => {
           this.userService.getByLogin(JSON.parse(sessionStorage.getItem('currentToken')).login).subscribe(
             user => {
+
               console.log("In Google Login Subscribe");
               console.log(user);
               sessionStorage.setItem('currentUser', JSON.stringify(user));
+              localStorage.setItem('newLogin',JSON.stringify(sessionStorage));
               this.loading = false;
               this.navbarService.setNavBarState(true);
+              localStorage.removeItem('newLogin');
               // history.back();
               return this.router.navigate(['/home']);
             });
