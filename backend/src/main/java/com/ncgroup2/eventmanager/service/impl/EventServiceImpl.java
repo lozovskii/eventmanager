@@ -74,13 +74,13 @@ public class EventServiceImpl implements EventService {
                     frequencyPeriod = startFrequencyPeriod;
                     List loginList = getExistingCustomers(eventDTO.getAdditionEvent().getPeople());
                     createEventInvitations(loginList, eventId);
-                    addLocation(eventDTO,eventId);
+//                    addLocation(eventDTO,eventId);
                 }
             } else {
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
                 List loginList = getExistingCustomers(eventDTO.getAdditionEvent().getPeople());
                 createEventInvitations(loginList, eventId);
-                addLocation(eventDTO,eventId);
+//                addLocation(eventDTO,eventId);
             }
         } else {
             if ((frequencyNumber != null) && (frequencyPeriod != null)) {
@@ -344,8 +344,9 @@ public class EventServiceImpl implements EventService {
                     .map(x -> {
                         if (x.getEventId().equals(id)) {
                             return x.getPriority();
+                        }else{
+                            return "";
                         }
-                        return null;
                     }).collect(Collectors.joining(""));
             AdditionalEventModelDTO additionalEventModelDTO = new AdditionalEventModelDTO();
             additionalEventModelDTO.setPriority(priority);
@@ -353,6 +354,7 @@ public class EventServiceImpl implements EventService {
             eventDTO.setAdditionEvent(additionalEventModelDTO);
             eventsDTO.add(eventDTO);
         });
+        System.out.println("eventsDTO = " + eventsDTO);
         return eventsDTO;
     }
 

@@ -46,6 +46,7 @@ export class EditFolderComponent implements OnInit {
     console.log(JSON.stringify(folder));
     this.folderService.updateFolderName(folder.id, folder.name).subscribe(()=>{
       this.alertService.info('Folder name successfully updated!',true);
+      this.router.navigate(['../folder-list','all']);
       });
   }
 
