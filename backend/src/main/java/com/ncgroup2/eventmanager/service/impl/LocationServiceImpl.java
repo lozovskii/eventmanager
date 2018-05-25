@@ -26,7 +26,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public Location getByEventId(String eventId) {
 
-        return locationDao.getEntityByField("event_id", eventId);
+        return locationDao.getByEventId(eventId);
     }
 
     @Override

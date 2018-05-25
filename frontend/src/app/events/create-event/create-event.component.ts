@@ -177,6 +177,7 @@ export class CreateEventComponent implements OnInit {
     }
     eventDTO.event.status = 'DRAFT';
     eventDTO.additionEvent.people = this.selectedPeople;
+    eventDTO.additionEvent.location = this.eventLocation;
     let customerId = this.userService.getCurrentId();
     eventDTO.event.creatorId = customerId;
     this.eventService.create(eventDTO).subscribe(data => {

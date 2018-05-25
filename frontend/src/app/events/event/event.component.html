@@ -21,6 +21,8 @@
   </div>
   <p>Start time: {{eventDTO.event.startTime}}</p>
   <p>End time: {{eventDTO.event.endTime}}</p>
+  <p>Location: {{eventDTO.additionEvent.location.country}}, {{eventDTO.additionEvent.location.city}},
+    {{eventDTO.additionEvent.location.street}}, {{eventDTO.additionEvent.location.house}}</p>
   <p>Visibility: {{eventDTO.event.visibility}}</p>
 
   <div *ngIf="isParticipant || isCreator">

@@ -5,4 +5,6 @@ export class Location {
   house: string;
   city: string;
   country: string;
+  latitude: number;
+  longitude: number;
 }
