@@ -1,4 +1,4 @@
-<div [ngClass]="{'col-md-12' : !isModal}">
+<div [ngClass]="{'col-md-12 centerred container' : !isModal}">
   <div [ngClass]="{'col-md-6': !isModal}" style="margin:0 auto">
     <h2 *ngIf="!isModal" class="text-center">Login</h2>
     <div class="modal-body">
@@ -14,11 +14,11 @@
           <input id="password" type="password" class="form-control" name="password" [(ngModel)]="model.password"
                  #password="ngModel" required/>
           <div *ngIf="f.submitted && !password.valid" class="alert alert-danger">Password is required</div>
-          <a [routerLink]="['/send-reset-link']" class="btn btn-link text-muted">Forgot password?</a>
+          <a style="cursor: pointer" data-toggle="modal" data-target="#resetPasModal"
+             class="btn btn-link text-muted">Forgot password?</a>
         </div>
         <div class="form-group">
         </div>
-
         <div class="modal-footer">
           <img *ngIf="loading"
                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
@@ -28,9 +28,24 @@
           </button>
           <a id="loginCloseBtn" data-dismiss="modal" aria-label="Close" class="btn btn-link">Cancel</a>
         </div>
+        <h3>Or...</h3>
+        <div id="googleBtn"></div>
       </form>
-      <h3>Or...</h3>
-      <div id="googleBtn"></div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="resetPasModal" tabindex="-1" role="dialog" aria-labelledby="resetPasModalTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="resetPasModalTitle">Reset Password</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <app-send-link [modal]="true"></app-send-link>
     </div>
   </div>
 </div>

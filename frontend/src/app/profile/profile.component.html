@@ -1,60 +1,63 @@
 <sidebar></sidebar>
 
-  <main role="main">
-    <h2 class="text-center">Profile</h2>
+<main role="main">
+  <h2 class="text-center">Profile</h2>
+  <div class="row">
+    <div class="col-auto">
+      <form method="post">
+        <label>
+          <h6>Search users: </h6>
+          <input type="text" class="form-control" (keyup)="onKeyUp($event)">
+        </label>
+      </form>
+      <h3>{{currentUser.name}} {{currentUser.secondName}}</h3>
+      <img src={{currentUser.avatar}} height="300" width="250"/>
+      <br>
+      <br>
+      <p> Username: {{currentUser.login}}</p>
+      <p> E-mail: {{currentUser.email}}</p>
+      <p> Phone: {{currentUser.phone}}</p>
 
-    <h3>{{currentUser.name}} {{currentUser.secondName}}</h3>
-    <img src={{currentUser.avatar}} height="300" width="250" />
-    <br>
-    <br>
-    <p> Username: {{currentUser.login}}</p>
-    <p> E-mail: {{currentUser.email}}</p>
-    <p> Phone: {{currentUser.phone}}</p>
-
-    <div>
       <div>
-        <a [routerLink]="['/edit-profile']" class="navbar-brand">Edit</a>
-        <a [routerLink]="['/profile/friends']" class="navbar-brand">Friends</a>
+        <div>
+          <a [routerLink]="['/edit-profile']" class="navbar-brand">Edit</a>
+          <a [routerLink]="['/profile/friends']" class="navbar-brand">Friends</a>
+        </div>
       </div>
     </div>
-    <form method="post">
-      <label>
-        <h6>Search users: </h6>
-        <input type="text" class="form-control" (keyup)="onKeyUp($event)">
-      </label>
-    </form>
-  </main>
-  <div *ngIf="isSearchUser" role="main" class="col-md-7">
-    <table class="table table-striped" style = "overflow-x: auto; display: block;">
-      <h4>Users:</h4>
-      <button class="btn btn-outline-success" (click)="closeUsers()">Close</button>
-      <thead>
-      <tr>
-        <th scope="col">FirstName</th>
-        <th scope="col">SecondName</th>
-        <th scope="col">Login</th>
-        <th scope="col">Phone</th>
-        <th scope="col">Avatar</th>
-        <th scope="col">Action</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let user of users">
-        <td>{{user.name}}</td>
-        <td>{{user.secondName}}</td>
-        <td>{{user.login}}</td>
-        <td>{{user.phone}}</td>
-        <img src={{user.avatar}} height="55" width="50" class="center-img">
-        <td>
-          <button class="btn btn-outline-success" (click)="addFriend(user.login)">Add</button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-    <hr>
-    <ul class="nav nav-pills">
-      <li class="nav-item" *ngFor="let page of pages; let i = index">
-        <a class="nav-link" href="" (click)="setPage(i+1,$event)">{{i+1}}</a>
-      </li>
-    </ul>
+    <div *ngIf="isSearchUser" role="main" class="col-md-8">
+      <table class="table table-striped" style="overflow-x: auto; display: block;">
+        <h4>Users:</h4>
+        <button class="btn btn-outline-success" (click)="closeUsers()">Close</button>
+        <thead>
+        <tr>
+          <th scope="col">FirstName</th>
+          <th scope="col">SecondName</th>
+          <th scope="col">Login</th>
+          <th scope="col">Phone</th>
+          <th scope="col">Avatar</th>
+          <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{user.name}}</td>
+          <td>{{user.secondName}}</td>
+          <td>{{user.login}}</td>
+          <td>{{user.phone}}</td>
+          <img src={{user.avatar}} height="55" width="50" class="center-img">
+          <td>
+            <button class="btn btn-outline-success" (click)="addFriend(user.login)">Add</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <hr>
+      <ul class="nav nav-pills">
+        <li class="nav-item" *ngFor="let page of pages; let i = index">
+          <a class="nav-link" href="" (click)="setPage(i+1,$event)">{{i+1}}</a>
+        </li>
+      </ul>
+    </div>
   </div>
+</main>
