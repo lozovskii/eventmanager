@@ -52,14 +52,13 @@
         <br>
         <div class="form-group">
           <label>Visibility</label>
-          <select *ngIf = "isDraft" value = "{{eventDTO.event.visibility}}" formControlName="visibility" type="text" class="form-control"
+          <select *ngIf = "isDraft" value = "{{eventDTO.event.visibility}}" [(ngModel)]="visibility" formControlName="visibility" type="text" class="form-control"
                   name="visibility">
             <option *ngFor="let vision of visibilityList" [ngValue]="vision">
               {{vision}}
             </option>
           </select>
-          <select *ngIf = "!isDraft" formControlName="visibility" type="text" class="form-control"
-                  name="visibility">
+          <select *ngIf = "!isDraft" formControlName="visibility" [(ngModel)]="visibility" type="text" class="form-control" name="visibility">
             <option *ngFor="let vision of visibilityList" [ngValue]="vision">
               {{vision}}
             </option>
@@ -71,7 +70,9 @@
             <div class="col-md-1"></div>
             <input class="form-control col-md-9" #manLogin id="people" type="text"
                    name="people"/>
-            <button class="col-md-2" type="button" class="btn btn-primary" (click)="addUserToEvent(manLogin.value)">+</button>
+            <div class="col-md-2">
+            <button type="button" class="btn btn-primary" (click)="addUserToEvent(manLogin.value)">+</button>
+            </div>
           </div>
         </div>
       </form>
@@ -93,7 +94,8 @@
         </table>
         <div class="form-group">
           <label>Priority</label>
-          <select *ngIf = "isDraft" value = "{{eventDTO.additionEvent.priority}}" formControlName="priority" type="text" class="form-control">
+          <select *ngIf = "isDraft" value = "{{eventDTO.additionEvent.priority}}" formControlName="priority" type="text"
+                  class="form-control">
             <option value="LOW">Low</option>
             <option value="AVERAGE">Average</option>
             <option value="HIGH">High</option>

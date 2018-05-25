@@ -18,7 +18,7 @@ public class AdditionalEventModelDTO {
     private LocalDateTime startTimeNotification;
     private Location location;
 
-    AdditionalEventModelDTO(){
+    public AdditionalEventModelDTO(){
     }
 
     public AdditionalEventModelDTO(List<String> people, Long frequencyNumber, String frequencyPeriod, String priority,

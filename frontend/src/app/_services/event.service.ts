@@ -21,10 +21,16 @@ export class EventService {
     return this.http.post<Event>(url, event, {headers: AuthenticationService.getAuthHeader()});
   }
 
-  getAllEvents(): Observable<Event[]> {
+  getAllEvents(): Observable<EventDTOModel[]> {
     let customerId = this.userService.getCurrentId();
     const url = `${this.eventsUrl}/public_and_friends?customerId=${customerId}`;
-    return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()});
+    return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
+      .map(events => events.map(event => {
+          let dto = new EventDTOModel();
+          dto.event = event;
+          return dto;
+        })
+      );
   }
 
   getEventsByCustId(): Observable<EventDTOModel[]> {
