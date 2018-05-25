@@ -6,6 +6,7 @@ import com.ncgroup2.eventmanager.dao.LocationDao;
 import com.ncgroup2.eventmanager.dto.*;
 import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.entity.Event;
+import com.ncgroup2.eventmanager.entity.Location;
 import com.ncgroup2.eventmanager.service.EventService;
 import com.ncgroup2.eventmanager.service.sender.MyMailSender;
 import com.ncgroup2.eventmanager.util.GoogleCalendarService;
@@ -29,16 +30,17 @@ public class EventServiceImpl implements EventService {
     private final EventDao eventDao;
     private final CustomerDao customerDao;
     private final GoogleCalendarService googleCalendarService;
-    private final LocationDao locationDao;
+    private  final LocationServiceImpl locationService;
 
     @Autowired
     public EventServiceImpl(MyMailSender mailSender, EventDao eventDao, CustomerDao customerDao,
-                            GoogleCalendarService googleCalendarService, LocationDao locationDao) {
+                            GoogleCalendarService googleCalendarService, LocationServiceImpl locationService) {
         this.mailSender = mailSender;
         this.eventDao = eventDao;
         this.customerDao = customerDao;
         this.googleCalendarService = googleCalendarService;
-        this.locationDao = locationDao;
+        this.locationService = locationService;
+
     }
 
     @Override
@@ -63,6 +65,7 @@ public class EventServiceImpl implements EventService {
 
         UUID groupId = UUID.randomUUID();
         UUID eventId = UUID.randomUUID();
+        UUID locationId = UUID.randomUUID();
 
         if (status.equals(EVENT_STATUS_EVENT)) {
             if ((frequencyNumber != null) && (frequencyPeriod != null)) {
@@ -70,30 +73,41 @@ public class EventServiceImpl implements EventService {
                     String startFrequencyPeriod = frequencyPeriod;
                     frequencyPeriod = i * frequencyNumber + " " + frequencyPeriod;
                     eventId = UUID.randomUUID();
+                    locationId = UUID.randomUUID();
                     createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
                     frequencyPeriod = startFrequencyPeriod;
                     List loginList = getExistingCustomers(eventDTO.getAdditionEvent().getPeople());
                     createEventInvitations(loginList, eventId);
-//                    addLocation(eventDTO,eventId);
+                    System.out.println("In createEventByTime 1");
+                    addLocation(eventDTO, eventId, locationId);
                 }
             } else {
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
                 List loginList = getExistingCustomers(eventDTO.getAdditionEvent().getPeople());
                 createEventInvitations(loginList, eventId);
-//                addLocation(eventDTO,eventId);
+                System.out.println("In createEventByTime 2");
+                addLocation(eventDTO, eventId, locationId);
             }
         } else {
             if ((frequencyNumber != null) && (frequencyPeriod != null)) {
                 frequencyPeriod = frequencyNumber + " " + frequencyPeriod;
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
-//                addLocation(eventDTO,eventId);
+                System.out.println("In createEventByTime 3");
+                addLocation(eventDTO, eventId, locationId);
 
             } else {
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
-//                addLocation(eventDTO,eventId);
+                System.out.println("In createEventByTime 4");
+                addLocation(eventDTO, eventId, locationId);
 
             }
         }
+    }
+
+    private void addLocation(EventDTO eventDTO, UUID eventId, UUID locationId) {
+        eventDTO.getAdditionEvent().getLocation().setEvent_id(eventId.toString());
+        eventDTO.getAdditionEvent().getLocation().setId(locationId.toString());
+        locationService.create(eventDTO.getAdditionEvent().getLocation());
     }
 
     @Override
@@ -133,10 +147,16 @@ public class EventServiceImpl implements EventService {
         Event event = eventDao.getEventById(eventId);
         AdditionalEventModelDTO additionalEventModelDTO = eventDao.getAdditionById(eventId);
         List<String> listParticipants = eventDao.getParticipants(eventId);
+        Location location = locationService.getByEventId(eventId);
+        System.out.println("In EventService: "+eventId);
+        System.out.println("In EventService: "+location);
         EventDTO eventDTO = new EventDTO();
         eventDTO.setEvent(event);
         if (listParticipants != null) {
             additionalEventModelDTO.setPeople(listParticipants);
+        }
+        if (location != null) {
+            additionalEventModelDTO.setLocation(location);
         }
         eventDTO.setAdditionEvent(additionalEventModelDTO);
         return eventDTO;
@@ -242,11 +262,6 @@ public class EventServiceImpl implements EventService {
     @Override
     public void updatePriority(String customerId, String eventId, String priority) {
         eventDao.updatePriority(customerId, eventId, priority);
-    }
-
-    private void addLocation(EventDTO eventDTO, UUID eventId) {
-        eventDTO.getAdditionEvent().getLocation().setEvent_id(eventId.toString());
-        locationDao.create(eventDTO.getAdditionEvent().getLocation());
     }
 
     private List<String> getExistingCustomers(List<String> logins) {

@@ -15,6 +15,8 @@ public class Location extends Entity {
     private String city;
     private String street;
     private String house;
+    private Double latitude;
+    private Double longitude;
 
     public Location() {
         UUID uuid = UUID.randomUUID();
@@ -29,7 +31,9 @@ public class Location extends Entity {
                 getCountry(),
                 getCity(),
                 getStreet(),
-                getHouse()
+                getHouse(),
+                getLatitude(),
+                getLongitude()
         };
     }
 
@@ -42,6 +46,8 @@ public class Location extends Entity {
                 ", city='" + city + '\'' +
                 ", street='" + street + '\'' +
                 ", house='" + house + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
                 '}';
     }
 }

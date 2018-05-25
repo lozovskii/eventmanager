@@ -33,11 +33,20 @@ public class LocationDaoImpl extends JdbcDaoSupport implements LocationDao {
 
     @Override
     public Location getById(Object id) {
-        String getSqlLoc = BASE_SQL + "WHERE id = CAST (" + id + " AS uuid)";
+        String getSqlLoc = BASE_SQL + "WHERE id = CAST (? AS UUID)";
 
         Object[] params = new Object[] {id};
         return this.getJdbcTemplate().queryForObject(getSqlLoc, params, new LocationMapper());
     }
+
+    @Override
+    public Location getByEventId(String event_id) {
+        String getSqlLoc = BASE_SQL + "WHERE event_id = CAST (? AS UUID)";
+        System.out.println("LocDaoImpl: "+event_id);
+        Object[] params = new Object[] {event_id};
+        return this.getJdbcTemplate().queryForObject(getSqlLoc, params, new LocationMapper());
+    }
+
 
     @Override
     public Location getEntityByField(String fieldName, Object fieldValue) {
@@ -63,6 +72,8 @@ public class LocationDaoImpl extends JdbcDaoSupport implements LocationDao {
                 "city = ?, " +
                 "street = ?, " +
                 "house = ? "+
+                "latitude = ? "+
+                "longitude = ? "+
                 "WHERE id = CAST (? AS UUID)";
 
         Object[] params = new Object[] {
@@ -70,6 +81,8 @@ public class LocationDaoImpl extends JdbcDaoSupport implements LocationDao {
                 location.getCity(),
                 location.getStreet(),
                 location.getHouse(),
+                location.getLatitude(),
+                location.getLongitude(),
                 location.getId()
         };
 
@@ -100,9 +113,12 @@ public class LocationDaoImpl extends JdbcDaoSupport implements LocationDao {
     public void create(Location location) {
         String insertSqlLoc =
                 "INSERT INTO \"Location\"" +
-        "(id, event_id, country, city, street, house) " +
-                "VALUES (CAST(? AS UUID),CAST(? AS UUID),?,?,?,?)";
+                        "(id, event_id, country, city, street, house, latitude, longitude) " +
+                        "VALUES (CAST(? AS UUID),CAST(? AS UUID),?,?,?,?,?,?)";
 
         this.getJdbcTemplate().update(insertSqlLoc, location.getParams());
     }
+
+
+
 }

@@ -21,7 +21,8 @@ export class GoogleMapsComponent implements OnInit {
   public city: string = '';
   public country: string = '';
 
-  @Output() onAddLocation = new EventEmitter<{country: string, city: string, street: string, house: string}>();
+  @Output() onAddLocation = new EventEmitter<{country: string, city: string, street: string, house: string,
+    latitude: number, longitude: number}>();
 
   public searchElementRef: ElementRef;
 
@@ -83,7 +84,9 @@ export class GoogleMapsComponent implements OnInit {
             country: this.country,
             city: this.city,
             street: this.street,
-            house: this.house
+            house: this.house,
+            latitude: this.latitude,
+            longitude: this.longitude
           })
 
           this.street= '';

@@ -190,5 +190,7 @@ CREATE TABLE "Location"
   country			varchar(30),
   city			varchar(30),
   street			varchar(35),
-  house			varchar(10)
+  house			varchar(10),
+  latitude numeric,
+  longitude numeric
 );
