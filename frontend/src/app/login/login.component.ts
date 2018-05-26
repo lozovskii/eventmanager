@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, NgZone, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, NgZone, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AlertService, AuthenticationService, UserService} from "../_services";
 import {NavbarService} from "../_services/navbar.service";
@@ -16,17 +16,19 @@ export class LoginComponent implements OnInit, AfterViewInit {
   model: any = {};
   loading = false;
   returnUrl: string;
+  public auth2: any;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
               private authenticationService: AuthenticationService,
               private alertService: AlertService,
               private navbarService: NavbarService,
-              private userService: UserService) {
+              private userService: UserService,
+              private zone: NgZone) {
   }
 
   ngOnInit() {
-    if(sessionStorage.getItem('currentToken')) {
+    if (sessionStorage.getItem('currentToken')) {
       this.authenticationService.logout();
     }
 
@@ -35,19 +37,9 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-
     this.googleInit();
-    // gapi.auth2.render('my-signin2', {
-    //   'scope': 'profile email',
-    //   'width': 240,
-    //   'height': 50,
-    //   'longtitle': false,
-    //   'theme': 'light',
-    //   'onsuccess': param => this.onSignIn(param)
-    // });
   }
 
-  public auth2: any;
   public googleInit() {
     gapi.load('auth2', () => {
       this.auth2 = gapi.auth2.init({
@@ -78,15 +70,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       .subscribe(() => {
           this.userService.getByLogin(JSON.parse(sessionStorage.getItem('currentToken')).login).subscribe(
             user => {
-
-
-              sessionStorage.setItem('currentUser', JSON.stringify(user));
-              localStorage.setItem('newLogin',JSON.stringify(sessionStorage));
-              this.loading = false;
-              this.navbarService.setNavBarState(true);
-              localStorage.removeItem('newLogin');
-              return this.router.navigate([this.returnUrl]);
-              // return this.router.navigate([this.returnUrl]);
+              return this.processResult(user);
             });
         }
         , () => {
@@ -101,16 +85,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       .subscribe(() => {
           this.userService.getByLogin(JSON.parse(sessionStorage.getItem('currentToken')).login).subscribe(
             user => {
-
-              console.log("In Google Login Subscribe");
-              console.log(user);
-              sessionStorage.setItem('currentUser', JSON.stringify(user));
-              localStorage.setItem('newLogin',JSON.stringify(sessionStorage));
-              this.loading = false;
-              this.navbarService.setNavBarState(true);
-              localStorage.removeItem('newLogin');
-              // history.back();
-              return this.router.navigate(['/home']);
+              return this.processResult(user);
             });
         }
         , () => {
@@ -118,5 +93,17 @@ export class LoginComponent implements OnInit, AfterViewInit {
           this.loading = false;
           return this.router.navigate(['/login']);
         });
+  }
+
+  processResult(user) {
+    console.log("In Google Login Subscribe");
+    console.log(user);
+    sessionStorage.setItem('currentUser', JSON.stringify(user));
+    localStorage.setItem('newLogin', JSON.stringify(sessionStorage));
+    this.loading = false;
+    this.navbarService.setNavBarState(true);
+    console.log('Changed navbar state');
+    localStorage.removeItem('newLogin');
+    this.zone.run(() => this.router.navigate([this.returnUrl]));
   }
 }

@@ -4,6 +4,7 @@ import 'rxjs/add/operator/map';
 import {UserAuthParam} from "../_models/userAuthParam.model";
 import {JwtHelper} from "angular2-jwt";
 import {User} from "../_models";
+import {NavbarService} from "./navbar.service";
 import GoogleUser = gapi.auth2.GoogleUser;
 
 declare const gapi: any;
@@ -11,7 +12,8 @@ declare const gapi: any;
 export class AuthenticationService {
   url = '/api/auth';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private navbarService: NavbarService) {
   }
 
   login(userAuthParam: UserAuthParam) {
@@ -48,14 +50,13 @@ export class AuthenticationService {
 
   logout() {
     localStorage.setItem('clearSessionStorage', '');
-    console.log('In Logout');
     sessionStorage.clear();
-
+    this.navbarService.setNavBarState(false);
+    localStorage.removeItem('clearSessionStorage');
     if(gapi.auth2 != undefined) {
       gapi.auth2.getAuthInstance().disconnect();
     }
 
-    localStorage.removeItem('clearSessionStorage');
   }
 
   checkingLog() {
