@@ -40,9 +40,13 @@
       </div>
     </div>
     <div class="row">
-      <p class="col-md-2">People:</p>
-      <div class="col-md-10" *ngFor="let login of eventDTO.additionEvent.people">
-        <p _nglogin>{{login}}</p>
+      <p class="col-md-1">People:</p>
+      <div class="row" *ngFor="let login of eventDTO.additionEvent.people">
+        <div class = "col-md-2">
+        <span class = "badge badge-secondary" _nglogin><h6>{{login}}</h6></span>
+        </div>
+        <div class = "col-md-1">
+        </div>
       </div>
     </div>
     <app-event-notification></app-event-notification>
