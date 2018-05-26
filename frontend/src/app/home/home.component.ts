@@ -11,17 +11,17 @@ import {Router} from "@angular/router";
 })
 
 export class HomeComponent implements OnInit {
-  currentUser: User;
+  currentUser: User = new User();
 
   constructor(private userService: UserService,
               private router: Router) {
-    console.log('Home constructor');
+    this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
   }
 
+
+
   ngOnInit() {
-    console.log('Home on init');
     this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
-    console.log(this.currentUser);
   }
 
   event() {

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, NgZone, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AlertService, AuthenticationService, RegistrationService, UserService} from "../_services";
 import {FormBuilder, Validators} from "@angular/forms";
@@ -14,7 +14,7 @@ declare const gapi: any;
   styleUrls: ['../login/login.component.css']
 })
 
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, AfterViewInit {
 
   user: User;
   registerForm = this.formBuilder.group({
@@ -35,8 +35,9 @@ export class RegisterComponent implements OnInit {
               private formBuilder: FormBuilder,
               private userService: UserService,
               private navbarService: NavbarService,
-              private activatedRoute : ActivatedRoute,
-              private authService: AuthenticationService) {
+              private activatedRoute: ActivatedRoute,
+              private authService: AuthenticationService,
+              private zone: NgZone) {
   }
 
   get name() {
@@ -123,10 +124,10 @@ export class RegisterComponent implements OnInit {
               console.log(user);
               this.navbarService.setNavBarState(true);
               sessionStorage.setItem('currentUser', JSON.stringify(user));
-              localStorage.setItem('newLogin',JSON.stringify(sessionStorage));
+              localStorage.setItem('newLogin', JSON.stringify(sessionStorage));
               this.loading = false;
               localStorage.removeItem('newLogin');
-              return this.router.navigate(['/home']);
+              this.zone.run(() => this.router.navigate(['/home']));
             });
         }
         , () => {
