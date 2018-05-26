@@ -89,6 +89,10 @@ export class CalendarComponent {
   @ViewChild('modalContent') modalContent: TemplateRef<any>;
   viewDate = new Date();
 
+    privates: boolean = true;
+    publics: boolean = true;
+    friends: boolean = true;
+
   modalData: {
     action: string;
     event: CalendarEvent;
@@ -132,10 +136,32 @@ export class CalendarComponent {
 
   queryEvents(){
     if(this.isMy) {
+      if(this.publics){
+
+      }
+      if(this.friends){
+
+      }
+      if(this.privates){
+
+      }
       return this.eventService.getEventsByCustId();
     } else {
       return this.eventService.getTimeline(JSON.parse(sessionStorage.getItem('currentUser')).login);
     }
+  }
+
+  onChangePrivate(flag : boolean):void{
+    this.privates = flag;
+    console.log(this.privates + ', ' + this.publics + ', ' + this.friends);
+  }
+  onChangePublic(flag : boolean):void{
+    this.publics = flag;
+    console.log(this.privates + ', ' + this.publics + ', ' + this.friends);
+  }
+  onChangeFriends(flag : boolean):void{
+    this.friends = flag;
+    console.log(this.privates + ', ' + this.publics + ', ' + this.friends);
   }
 
   getEvents(): void {

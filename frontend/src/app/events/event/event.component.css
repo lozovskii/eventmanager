@@ -1,5 +1,6 @@
 [_nglogin]{
-  color: #4183c4;
+  color: white;
+  background-color: steelblue;
 }
 .dot {
   width: 25px;
@@ -24,4 +25,8 @@
 .priority-label {
   margin-right: 25px;
   margin-left: 15px;
+}
+
+agm-map {
+  height: 350px;
 }

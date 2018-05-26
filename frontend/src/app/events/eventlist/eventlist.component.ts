@@ -5,6 +5,7 @@ import {ActivatedRoute} from "@angular/router";
 import {AlertService} from "../../_services/alert.service";
 import {VISIBILITY} from "../../event-visibility";
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-eventlist',
@@ -20,6 +21,10 @@ export class EventlistComponent implements OnInit {
   from = '';
   to = '';
   isEmpty:boolean = false;
+  pdfForm = new FormGroup({
+    startDate:  new FormControl(),
+    endDate:  new FormControl()
+  });
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute,
               private alertService: AlertService) {
