@@ -55,6 +55,7 @@ export class EventComponent implements OnInit {
     this.eventService.addParticipant(this.eventDTO.event.id).subscribe(() => {
       this.isParticipant = true;
       this.eventDTO.additionEvent.people.push(JSON.parse(sessionStorage.getItem('currentUser')).id);
+      this.router.navigate(['/eventlist','my']);
     });
   }
 
