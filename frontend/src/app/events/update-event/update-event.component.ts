@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {AlertService} from "../../_services/alert.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {EventService} from "../../_services/event.service";
@@ -50,8 +50,8 @@ export class UpdateEventComponent implements OnInit {
 
   initEventForm(): FormGroup {
     return this.formBuilder.group({
-      name: new FormControl(),
-      description: new FormControl(),
+      name : ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
+      description: ['', [Validators.maxLength(2048)]],
       day: new FormControl(),
       startTime: new FormControl(),
       endTime: new FormControl(),
@@ -61,8 +61,6 @@ export class UpdateEventComponent implements OnInit {
 
   initAdditionEventForm(): FormGroup {
     return this.formBuilder.group({
-      frequencyNumber: new FormControl(),
-      frequencyPeriod: new FormControl(),
       priority: new FormControl(),
       people: new FormControl()
     })
@@ -115,6 +113,14 @@ export class UpdateEventComponent implements OnInit {
     if (index > -1) {
       array.splice(index, 1);
     }
+  }
+
+  get name() {
+    return this.eventForm.get('name');
+  }
+
+  get description() {
+    return this.eventForm.get('description');
   }
 
 }
