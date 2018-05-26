@@ -4,6 +4,7 @@ import com.ncgroup2.eventmanager.dao.LocationDao;
 import com.ncgroup2.eventmanager.entity.Location;
 import com.ncgroup2.eventmanager.mapper.LocationMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,12 +42,16 @@ public class LocationDaoImpl extends JdbcDaoSupport implements LocationDao {
 
     @Override
     public Location getByEventId(String event_id) {
+        Location location;
         String getSqlLoc = BASE_SQL + "WHERE event_id = CAST (? AS UUID)";
-        System.out.println("LocDaoImpl: "+event_id);
-        Object[] params = new Object[] {event_id};
-        return this.getJdbcTemplate().queryForObject(getSqlLoc, params, new LocationMapper());
+        Object[] params = new Object[]{event_id};
+        try {
+            location = this.getJdbcTemplate().queryForObject(getSqlLoc, params, new LocationMapper());
+        }catch(EmptyResultDataAccessException e){
+            location = null;
+        }
+        return location;
     }
-
 
     @Override
     public Location getEntityByField(String fieldName, Object fieldValue) {
