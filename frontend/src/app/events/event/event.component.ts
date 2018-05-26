@@ -1,9 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, NgZone, OnInit} from '@angular/core';
 import {EventService} from "../../_services";
 import {ActivatedRoute, Router} from "@angular/router";
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
 import {AlertService} from "../../_services/alert.service";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {MapsAPILoader} from "@agm/core";
 
 @Component({
   selector: 'app-event',
@@ -18,6 +19,9 @@ export class EventComponent implements OnInit {
   isParticipant: boolean = false;
   additionEventForm: FormGroup;
   priority: string;
+  zoom: number = 16;
+
+
 
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute,
@@ -51,6 +55,7 @@ export class EventComponent implements OnInit {
     this.eventService.addParticipant(this.eventDTO.event.id).subscribe(() => {
       this.isParticipant = true;
       this.eventDTO.additionEvent.people.push(JSON.parse(sessionStorage.getItem('currentUser')).id);
+      this.router.navigate(['/eventlist','my']);
     });
   }
 
