@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AlertService, AuthenticationService, RegistrationService, UserService} from "../_services";
 import {FormBuilder, Validators} from "@angular/forms";
@@ -17,10 +17,9 @@ declare const gapi: any;
 export class RegisterComponent implements OnInit {
 
   user: User;
-  // loading = false;
   registerForm = this.formBuilder.group({
-    name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
-    secondName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+    name: ['', [Validators.minLength(3), Validators.maxLength(20)]],
+    secondName: ['', [Validators.minLength(3), Validators.maxLength(20)]],
     login: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]],
     email: ['', [Validators.email]],
     password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]]
@@ -64,7 +63,6 @@ export class RegisterComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-
     this.googleInit();
   }
 
@@ -96,6 +94,7 @@ export class RegisterComponent implements OnInit {
     this.isValidFormSubmitted = false;
 
     if (this.registerForm.invalid) {
+      console.log('invalid');
       return;
     }
     this.isValidFormSubmitted = true;
