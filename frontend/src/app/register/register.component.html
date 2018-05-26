@@ -5,13 +5,10 @@
 
       <div class="form-group">
         <label for="name">First Name</label>
-        <input formControlName="name" id="name" type="text" class="form-control" name="name" required/>
-        <div *ngIf="name.invalid && (name.dirty || name.touched)"
+        <input formControlName="name" id="name" type="text" class="form-control" name="name"/>
+        <div *ngIf="name.value!='' && name.invalid && (name.dirty || name.touched)"
              class="alert alert-danger">
 
-          <div *ngIf="name?.errors?.required">
-            First name is required.
-          </div>
           <div *ngIf="name?.errors?.minlength">
             First name must be at least 3 characters long.
           </div>
@@ -23,13 +20,9 @@
 
       <div class="form-group">
         <label for="secondName">Last Name</label>
-        <input formControlName="secondName" id="secondName" type="text" class="form-control" name="lastName" required/>
-        <div *ngIf="secondName.invalid && (secondName.dirty || secondName.touched)"
+        <input formControlName="secondName" id="secondName" type="text" class="form-control" name="lastName" />
+        <div *ngIf="secondName.value!='' && secondName.invalid && (secondName.dirty || secondName.touched)"
              class="alert alert-danger">
-
-          <div *ngIf="secondName?.errors?.required">
-            Second name is required.
-          </div>
           <div *ngIf="secondName?.errors?.minlength">
             Second name must be at least 3 characters long.
           </div>
@@ -40,7 +33,7 @@
       </div>
 
       <div class="form-group">
-        <label for="login">Username</label>
+        <label for="login">Username<span style="color: red;">*</span></label>
         <input formControlName="login" id="login" type="text" class="form-control" name="username" required/>
         <div *ngIf="login.invalid && (login.dirty || login.touched)"
              class="alert alert-danger">
@@ -58,7 +51,7 @@
       </div>
 
       <div class="form-group">
-        <label for="email">E-mail</label>
+        <label for="email">E-mail<span style="color: red;">*</span></label>
         <input formControlName="email" id="email" type="text" class="form-control" name="email" required/>
         <div *ngIf="email.invalid && (email.dirty || email.touched)"
              class="alert alert-danger">
@@ -70,7 +63,7 @@
       </div>
 
       <div class="form-group">
-        <label for="password">Password</label>
+        <label for="password">Password<span style="color: red;">*</span></label>
         <input formControlName="password" id="password" type="password" class="form-control" name="password" required/>
         <div *ngIf="password.invalid && (password.dirty || password.touched)"
              class="alert alert-danger">
