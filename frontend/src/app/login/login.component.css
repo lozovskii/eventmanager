@@ -13,3 +13,8 @@ background: url("../../assets/img/google-button/btn_google_signin_light_normal_w
 #googleBtn:disabled {
   background-image: url("../../assets/img/google-button/btn_google_signin_light_disabled_web.png");
 }
+
+.centerred{
+  position: absolute;
+  left:0;
+}

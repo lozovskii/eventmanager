@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {ResetPasswordService} from "../../_services/reset-password.service";
 import {AlertService} from "../../_services";
 
@@ -7,9 +7,12 @@ import {AlertService} from "../../_services";
   templateUrl: './send-link.component.html',
   styleUrls: ['./send-link.component.css']
 })
-export class SendLinkComponent implements OnInit {
+export class SendLinkComponent implements OnInit, OnChanges {
   model: any = {};
   loading = false;
+
+  @Input('modal') inModal;
+  isModal: boolean = false;
 
   constructor(private alertService: AlertService,
               private resetService: ResetPasswordService) { }
@@ -17,15 +20,18 @@ export class SendLinkComponent implements OnInit {
   ngOnInit() {
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.isModal = changes['inModal'].currentValue;
+  }
+
   sendLink() {
     this.loading=true;
     this.resetService.sendEmail(this.model.email)
       .subscribe(() => {
-        console.log('success');
         this.alertService.success("Email with link for resetting password sent.");
+          document.getElementById('resetPasCloseBtn').click();
         },
         (error) => {
-        console.log(error.error);
         this.alertService.error(error.error);
       });
     this.loading=false;

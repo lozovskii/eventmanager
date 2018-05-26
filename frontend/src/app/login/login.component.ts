@@ -1,4 +1,4 @@
-import {Component, Input, NgZone, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, Input, NgZone, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AlertService, AuthenticationService, UserService} from "../_services";
 import {NavbarService} from "../_services/navbar.service";
@@ -11,7 +11,7 @@ declare const gapi: any;
   styleUrls: ['./login.component.css']
 })
 
-export class LoginComponent implements OnInit, OnChanges {
+export class LoginComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Input('modal') inModal;
   model: any = {};
@@ -116,6 +116,7 @@ export class LoginComponent implements OnInit, OnChanges {
               this.loading = false;
               this.navbarService.setNavBarState(true);
               localStorage.removeItem('newLogin');
+              document.getElementById('loginCloseBtn').click();
               // history.back();
               return this.router.navigate(['/home']);
             });

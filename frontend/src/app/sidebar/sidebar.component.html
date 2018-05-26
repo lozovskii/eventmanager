@@ -4,51 +4,51 @@
   <div id="sidebar-wrapper">
     <ul class="sidebar-nav">
       <li class="nav-item">
-        <a [routerLink]="['/profile']">My Profile</a>
+        <a [routerLink]="['/profile']"  class="navbar-brand" routerLinkActive="active">My Profile</a>
       </li>
       <li>
-        <a [routerLink]="['/home']">Calendar</a>
+        <a [routerLink]="['/home']"  class="navbar-brand" routerLinkActive="active">Calendar</a>
       </li>
       <li class="nav-item">
-        <a [routerLink]="['/notifications']">Notifications</a>
+        <a [routerLink]="['/notifications']"  class="navbar-brand" routerLinkActive="active">Notifications</a>
       </li>
       <li class="nav-item">
-        <a data-toggle="collapse" href="#collapseEventsGroup">Events</a>
+        <a data-toggle="collapse" href="#collapseEventsGroup" routerLinkActive="active">Events</a>
         <div id="collapseEventsGroup" class="collapse">
           <span>
-              <a class="dropdown-item" [routerLink]="['/eventlist','my']">My Events</a>
+              <a class="dropdown-item navbar-brand" [routerLink]="['/eventlist','my']"  routerLinkActive="active">My Events</a>
             </span>
           <span>
-              <a class="dropdown-item" [routerLink]="['/eventlist','all']">All Events</a>
+              <a class="dropdown-item navbar-brand" [routerLink]="['/eventlist','all']" routerLinkActive="active">All Events</a>
           </span>
+          <!--<span>-->
+              <!--<a class="dropdown-item navbar-brand disabled" routerLinkActive="active">Friends Events</a>-->
+          <!--</span>-->
           <span>
-              <a class="dropdown-item disabled">Friends Events</a>
-          </span>
-          <span>
-              <a class="dropdown-item" [routerLink]="['/create-event']">Create Event</a>
+              <a class="dropdown-item  navbar-brand" [routerLink]="['/create-event']" routerLinkActive="active">Create Event</a>
           </span>
         </div>
       </li>
       <li class="nav-item">
-        <a [routerLink]="['/folder-list','all']">Folders</a>
+        <a [routerLink]="['/folder-list','all']"  class="navbar-brand" routerLinkActive="active">Folders</a>
       </li>
       <li class="nav-item">
-        <a [routerLink]="['/draft-list']">Drafts</a>
+        <a [routerLink]="['/draft-list']"  class="navbar-brand" routerLinkActive="active">Drafts</a>
       </li>
       <li class="nav-item">
         <a data-toggle="collapse" href="#collapseItemsGroup">Items</a>
         <div id="collapseItemsGroup" class="collapse">
           <span>
-              <a class="dropdown-item" [routerLink]="['/items/all']">All Items</a>
+              <a class="dropdown-item  navbar-brand" [routerLink]="['/items/all']" routerLinkActive="active">All Items</a>
             </span>
           <span>
-              <a class="dropdown-item" [routerLink]="['/items/booked']">Booked Items</a>
+              <a class="dropdown-item navbar-brand" [routerLink]="['/items/booked']" routerLinkActive="active">Booked Items</a>
           </span>
           <span>
-              <a class="dropdown-item" [routerLink]="['/items/collection']">Items Collection</a>
+              <a class="dropdown-item navbar-brand" [routerLink]="['/items/collection']" routerLinkActive="active">Items Collection</a>
           </span>
           <span>
-              <a class="dropdown-item" [routerLink]="['/items/create']">Create Item</a>
+              <a class="dropdown-item navbar-brand" [routerLink]="['/items/create']" routerLinkActive="active">Create Item</a>
           </span>
         </div>
       </li>

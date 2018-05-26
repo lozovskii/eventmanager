@@ -111,6 +111,7 @@ export class RegisterComponent implements OnInit, OnChanges {
     this.registrationService.create(userFromForm)
       .subscribe(() => {
           this.alertService.success('Registration successful! Please, check your email for confirmation link.', true);
+          document.getElementById('regCloseBtn').click();
           setTimeout(() => this.router.navigate(["/"]), 5000);
           this.loading = false;
         },
@@ -126,6 +127,7 @@ export class RegisterComponent implements OnInit, OnChanges {
           this.userService.getByLogin(JSON.parse(sessionStorage.getItem('currentToken')).login).subscribe(
             user => {
               this.alertService.success('Registration successful!', true);
+              document.getElementById('regCloseBtn').click();
               console.log(user);
               this.navbarService.setNavBarState(true);
               sessionStorage.setItem('currentUser', JSON.stringify(user));
