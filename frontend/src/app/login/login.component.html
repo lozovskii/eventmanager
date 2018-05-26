@@ -1,5 +1,5 @@
-<div class="col-md-12 centerred container">
-  <div class="col-md-6" style="margin:0 auto">
+<div class="col-md-12 centerred ">
+  <div class="col-md-6 card" style="margin:0 auto">
     <h2 class="text-center">Login</h2>
       <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
         <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
@@ -27,7 +27,7 @@
           </button>
           <a id="loginCloseBtn" routerLink="/" class="btn btn-link">Cancel</a>
         </div>
-        <h3>Or...</h3>
+        <h4 class="text-muted">Or...</h4>
         <div id="googleBtn"></div>
       </form>
   </div>
