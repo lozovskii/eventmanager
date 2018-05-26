@@ -2,48 +2,76 @@
 
 <main role="main">
   <h2 class="text-center">Edit profile</h2>
-  <form (ngSubmit)="submitForm(form)" #form="ngForm">
+  <form [formGroup]="profileForm">
 
     <div class="col-md-4">
-      <div class="form-group" [ngClass]="{'has-error': name.invalid && name.touched}">
+      <div class="form-group" [ngClass]="{'has-error': profileForm.get('name').invalid &&
+       profileForm.get('name').touched}">
         <label>First Name</label>
         <input
           type="text"
           class="form-control"
+          formControlName="name"
           [(ngModel)]="currentUser.name"
-          name="name"
-          required
-          #name="ngModel"
         >
-        <p *ngIf="name.invalid && name.touched">Write first name</p>
+
+        <p *ngIf="profileForm.get('name').invalid && profileForm.get('name').touched">
+          <span *ngIf="profileForm.get('name').errors['required']">
+            First name does not exist!</span>
+          <span *ngIf="profileForm.get('name').errors['minLengthError'] &&
+          !profileForm.get('name').errors['required']">
+            First name must be at least 3 characters long!</span>
+          <span *ngIf="profileForm.get('name').errors['maxLengthError'] &&
+          !profileForm.get('name').errors['required']">
+            First name must be less than 20 characters long!</span>
+        </p>
       </div>
-      <div class="form-group" [ngClass]="{'has-error': lastName.invalid && lastName.touched}">
+
+      <div class="form-group" [ngClass]="{'has-error': profileForm.get('lastName').invalid &&
+       profileForm.get('lastName').touched}">
         <label>Last Name</label>
         <input
           type="text"
           class="form-control"
+          formControlName="lastName"
           [(ngModel)]="currentUser.secondName"
-          name="lastName"
-          required
-          #lastName="ngModel"
         >
-        <p *ngIf="lastName.invalid && lastName.touched">Write last name</p>
+
+        <p *ngIf="profileForm.get('lastName').invalid && profileForm.get('lastName').touched">
+          <span *ngIf="profileForm.get('lastName').errors['required']">
+            Last name does not exist!</span>
+          <span *ngIf="profileForm.get('lastName').errors['minLengthError'] &&
+           !profileForm.get('lastName').errors['required']">
+            Last name must be at least 3 characters long!</span>
+          <span *ngIf="profileForm.get('lastName').errors['maxLengthError'] &&
+          !profileForm.get('lastName').errors['required']">
+            Last name must be less than 20 characters long!</span>
+         </p>
       </div>
-      <div class="form-group" [ngClass]="{'has-error': phone.invalid && phone.touched}">
+
+      <div class="form-group" [ngClass]="{'has-error': profileForm.get('phone').invalid &&
+       profileForm.get('phone').touched}">
         <label>Phone</label>
         <input
           type="text"
           class="form-control"
+          formControlName="phone"
           [(ngModel)]="currentUser.phone"
-          name="phone"
-          required
-          #phone="ngModel"
         >
-        <p *ngIf="phone.invalid && phone.touched">Write phone number</p>
+
+        <p *ngIf="profileForm.get('phone').invalid && profileForm.get('phone').touched">
+          <span *ngIf="profileForm.get('phone').errors['required']">
+            Phone number does not exist!</span>
+          <span *ngIf="profileForm.get('phone').errors['minPhoneLengthError'] &&
+          !profileForm.get('phone').errors['required']">
+            Phone number must be at least 4 characters long!</span>
+          <span *ngIf="profileForm.get('phone').errors['maxPhoneLengthError'] &&
+          !profileForm.get('phone').errors['required']">
+            Phone number must be less than 13 characters long!</span>
+          </p>
       </div>
-          <button class="btn btn-success"
-                  type="submit"
-                  [disabled]="!form.valid"
+
+          <button class="btn btn-success" type="submit" [disabled]="profileForm.invalid"
                   (click)="updateUser(currentUser)">Save</button>
       <br>
       <div>
