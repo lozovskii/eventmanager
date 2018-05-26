@@ -4,7 +4,6 @@ export class Event {
   groupId: string;
   folderId: string;
   creatorId: string;
-  day: string;
   startTime: string;
   endTime: string;
   visibility: string;
