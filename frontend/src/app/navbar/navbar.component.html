@@ -31,45 +31,15 @@
 
     <ul class="nav navbar-nav navbar-right" *ngIf="!navbar">
       <li class="nav-item">
-        <a class="nav-link"  style="cursor: pointer" data-toggle="modal" data-target="#registerModal">
+        <a class="nav-link"  style="cursor: pointer" routerLink="/register">
           <i class="far fa-plus-square"></i> Sign Up
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" style="cursor: pointer" data-toggle="modal" data-target="#loginModal">
+        <a class="nav-link" style="cursor: pointer" routerLink="/login">
           <i class="fas fa-sign-in-alt"></i> Sign In
         </a>
       </li>
     </ul>
   </div>
 </nav>
-
-
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="loginModalTitle">Sign In</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <login [modal]="true"></login>
-    </div>
-  </div>
-</div>
-
-
-<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalTitle" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="registerModalTitle">Sign Up</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <registration [modal]="true"></registration>
-    </div>
-  </div>
-</div>
