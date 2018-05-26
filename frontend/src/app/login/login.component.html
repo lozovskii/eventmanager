@@ -1,7 +1,6 @@
-<div [ngClass]="{'col-md-12 centerred container' : !isModal}">
-  <div [ngClass]="{'col-md-6': !isModal}" style="margin:0 auto">
-    <h2 *ngIf="!isModal" class="text-center">Login</h2>
-    <div class="modal-body">
+<div class="col-md-12 centerred container">
+  <div class="col-md-6" style="margin:0 auto">
+    <h2 class="text-center">Login</h2>
       <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
         <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
           <label for="username">Username</label>
@@ -26,12 +25,11 @@
           <button id ="loginBtn" [disabled]="loading" class="btn btn-primary">
             Login
           </button>
-          <a id="loginCloseBtn" data-dismiss="modal" aria-label="Close" class="btn btn-link">Cancel</a>
+          <a id="loginCloseBtn" routerLink="/" class="btn btn-link">Cancel</a>
         </div>
         <h3>Or...</h3>
         <div id="googleBtn"></div>
       </form>
-    </div>
   </div>
 </div>
 
