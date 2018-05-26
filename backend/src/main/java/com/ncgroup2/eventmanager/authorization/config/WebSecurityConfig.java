@@ -45,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
 
-                .authorizeRequests().antMatchers("/","/api/reset/**","/api/auth","/api/register", "/api/registrationConfirm").permitAll().and()
+                .authorizeRequests().antMatchers("/","/api/reset/**","/api/auth/**","/api/register", "/api/registrationConfirm","/api/googleRegister").permitAll().and()
 
                 .authorizeRequests().antMatchers("/api/**").authenticated().and()
 

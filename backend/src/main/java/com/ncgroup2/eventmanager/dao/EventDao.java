@@ -35,7 +35,7 @@ public interface EventDao {
 
     Event getNoteById(String noteId);
 
-    AdditionalEventModelDTO getAdditionById(String id);
+    AdditionalEventModelDTO getAdditionById(String eventId, String custId);
 
     List getPriotityByCustId(String custId);
 

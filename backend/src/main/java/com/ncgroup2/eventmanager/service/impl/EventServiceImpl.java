@@ -2,7 +2,6 @@ package com.ncgroup2.eventmanager.service.impl;
 
 import com.ncgroup2.eventmanager.dao.CustomerDao;
 import com.ncgroup2.eventmanager.dao.EventDao;
-import com.ncgroup2.eventmanager.dao.LocationDao;
 import com.ncgroup2.eventmanager.dto.*;
 import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.entity.Event;
@@ -46,8 +45,6 @@ public class EventServiceImpl implements EventService {
     @Override
     public void createEvent(EventDTO eventDTO) {
         Event event = eventDTO.getEvent();
-//        System.out.println("Loc in createEvent 1: " + eventDTO.getAdditionEvent().getLocation());
-//        System.out.println("Id event: " + eventDTO.getEvent().getId());
         Object[] frequancy = checkDefaultCustEventFrequency(eventDTO);
         Long frequencyNumber = (Long) frequancy[0];
         String frequencyPeriod = (String) frequancy[1];
@@ -75,26 +72,22 @@ public class EventServiceImpl implements EventService {
                     frequencyPeriod = startFrequencyPeriod;
                     List loginList = getExistingCustomers(eventDTO.getAdditionEvent().getPeople());
                     createEventInvitations(loginList, eventId);
-//                    System.out.println("In createEventByTime 1");
                     addLocation(eventDTO, eventId, locationId);
                 }
             } else {
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
                 List loginList = getExistingCustomers(eventDTO.getAdditionEvent().getPeople());
                 createEventInvitations(loginList, eventId);
-//                System.out.println("In createEventByTime 2");
                 addLocation(eventDTO, eventId, locationId);
             }
         } else {
             if ((frequencyNumber != null) && (frequencyPeriod != null)) {
                 frequencyPeriod = frequencyNumber + " " + frequencyPeriod;
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
-//                System.out.println("In createEventByTime 3");
                 addLocation(eventDTO, eventId, locationId);
 
             } else {
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
-//                System.out.println("In createEventByTime 4");
                 addLocation(eventDTO, eventId, locationId);
 
             }
@@ -158,13 +151,11 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventDTO getEventById(String eventId) {
+    public EventDTO getEventById(String eventId, String custId) {
         Event event = eventDao.getEventById(eventId);
-        AdditionalEventModelDTO additionalEventModelDTO = eventDao.getAdditionById(eventId);
+        AdditionalEventModelDTO additionalEventModelDTO = eventDao.getAdditionById(eventId,custId);
         List<String> listParticipants = eventDao.getParticipants(eventId);
         Location location = locationService.getByEventId(eventId);
-//        System.out.println("In EventService: "+eventId);
-//        System.out.println("In EventService: "+location);
         EventDTO eventDTO = new EventDTO();
         eventDTO.setEvent(event);
         if (listParticipants != null) {
@@ -178,9 +169,9 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventDTO getNoteById(String noteId) {
+    public EventDTO getNoteById(String noteId,String custId) {
         Event event = eventDao.getNoteById(noteId);
-        AdditionalEventModelDTO additionalEventModelDTO = eventDao.getAdditionById(noteId);
+        AdditionalEventModelDTO additionalEventModelDTO = eventDao.getAdditionById(noteId,custId);
         EventDTO eventDTO = new EventDTO();
         eventDTO.setEvent(event);
         eventDTO.setAdditionEvent(additionalEventModelDTO);

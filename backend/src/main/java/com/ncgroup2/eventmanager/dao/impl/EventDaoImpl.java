@@ -307,10 +307,11 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     }
 
     @Override
-    public AdditionalEventModelDTO getAdditionById(String eventId) {
+    public AdditionalEventModelDTO getAdditionById(String eventId, String custId) {
         String query = queryService.getQuery("event.getAdditionById");
         Object[] params = new Object[]{
-                eventId
+                eventId,
+                custId
         };
         List<AdditionalEventModelDTO> listAddition = this.getJdbcTemplate().query(query, params,
                 new BeanPropertyRowMapper(AdditionalEventModelDTO.class));

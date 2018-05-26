@@ -37,6 +37,7 @@ export class EventComponent implements OnInit {
     const id = this.eventId;
     this.eventService.getEventById(id).subscribe((eventDTO: EventDTOModel) => {
       this.eventDTO = eventDTO;
+      console.log('eventDTO = ' + this.eventDTO);
       let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
       let currentUserLogin = JSON.parse(sessionStorage.getItem('currentUser')).login;
       this.isCreator = currentUserId == this.eventDTO.event.creatorId;

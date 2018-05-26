@@ -11,13 +11,11 @@ declare const gapi: any;
   styleUrls: ['./login.component.css']
 })
 
-export class LoginComponent implements OnInit, OnChanges, AfterViewInit {
+export class LoginComponent implements OnInit, AfterViewInit {
 
-  @Input('modal') inModal;
   model: any = {};
   loading = false;
   returnUrl: string;
-  isModal: boolean = false;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -34,10 +32,6 @@ export class LoginComponent implements OnInit, OnChanges, AfterViewInit {
 
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
     console.log(this.returnUrl);
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-      this.isModal = changes['inModal'].currentValue;
   }
 
   ngAfterViewInit() {
@@ -90,9 +84,8 @@ export class LoginComponent implements OnInit, OnChanges, AfterViewInit {
               localStorage.setItem('newLogin',JSON.stringify(sessionStorage));
               this.loading = false;
               this.navbarService.setNavBarState(true);
-              document.getElementById('loginCloseBtn').click();
               localStorage.removeItem('newLogin');
-              return this.router.navigate(['/home']);
+              return this.router.navigate([this.returnUrl]);
               // return this.router.navigate([this.returnUrl]);
             });
         }
@@ -116,7 +109,6 @@ export class LoginComponent implements OnInit, OnChanges, AfterViewInit {
               this.loading = false;
               this.navbarService.setNavBarState(true);
               localStorage.removeItem('newLogin');
-              document.getElementById('loginCloseBtn').click();
               // history.back();
               return this.router.navigate(['/home']);
             });
