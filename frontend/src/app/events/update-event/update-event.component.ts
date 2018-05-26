@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {EventService} from "../../_services/event.service";
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
 import {UpdateEventDTO} from "../../_models/dto/UpdateEventDTO";
+import {Location} from "../../_models/location";
 
 @Component({
   selector: 'app-update-event',
@@ -18,6 +19,8 @@ export class UpdateEventComponent implements OnInit {
   people: string[] = [];
   newPeople: string[] = [];
   removedPeople: string[] = [];
+  eventLocation: Location;
+
 
   canEdit: boolean;
   currentEventId: string;
@@ -40,7 +43,6 @@ export class UpdateEventComponent implements OnInit {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     this.eventService.getEventById(id).subscribe((eventDTO) => {
       this.eventDTO = eventDTO;
-      console.log(this.eventDTO);
       if (this.eventDTO.additionEvent.people != null) {
         this.people = eventDTO.additionEvent.people;
       }
@@ -56,6 +58,7 @@ export class UpdateEventComponent implements OnInit {
       startTime: new FormControl(),
       endTime: new FormControl(),
       visibility: new FormControl(),
+      eventLocation: new FormControl()
     })
   }
 
@@ -64,7 +67,8 @@ export class UpdateEventComponent implements OnInit {
       frequencyNumber: new FormControl(),
       frequencyPeriod: new FormControl(),
       priority: new FormControl(),
-      people: new FormControl()
+      people: new FormControl(),
+      eventLocation: new FormControl()
     })
   }
 
@@ -90,6 +94,8 @@ export class UpdateEventComponent implements OnInit {
 
     this.updateEventDTO.newPeople = this.newPeople;
     this.updateEventDTO.removedPeople = this.removedPeople;
+    this.eventLocation.event_id = this.updateEventDTO.event.id;
+    this.updateEventDTO.location =  this.eventLocation;
     this.eventService.updateEvent(this.updateEventDTO)
       .subscribe(() => {
         this.alertService.info('Event successfully updated!', true);
@@ -115,6 +121,10 @@ export class UpdateEventComponent implements OnInit {
     if (index > -1) {
       array.splice(index, 1);
     }
+  }
+
+  addLocation(location: Location) {
+    this.eventLocation = location;
   }
 
 }

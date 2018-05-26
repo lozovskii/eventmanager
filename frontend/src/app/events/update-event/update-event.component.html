@@ -79,6 +79,16 @@
             </select>
           </div>
         </div>
+        <div>
+          <label>Location</label>
+          <p> {{eventDTO.additionEvent.location.country}}, {{eventDTO.additionEvent.location.city}},
+            {{eventDTO.additionEvent.location.street}}, {{eventDTO.additionEvent.location.house}}</p>
+          <br>
+
+          <app-google-maps (onAddLocation)="addLocation($event)"></app-google-maps>
+
+          <br>
+          </div>
       </form>
       <br>
       <div class="form-group">

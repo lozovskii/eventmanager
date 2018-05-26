@@ -75,26 +75,22 @@ public class EventServiceImpl implements EventService {
                     frequencyPeriod = startFrequencyPeriod;
                     List loginList = getExistingCustomers(eventDTO.getAdditionEvent().getPeople());
                     createEventInvitations(loginList, eventId);
-//                    System.out.println("In createEventByTime 1");
                     addLocation(eventDTO, eventId, locationId);
                 }
             } else {
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
                 List loginList = getExistingCustomers(eventDTO.getAdditionEvent().getPeople());
                 createEventInvitations(loginList, eventId);
-//                System.out.println("In createEventByTime 2");
                 addLocation(eventDTO, eventId, locationId);
             }
         } else {
             if ((frequencyNumber != null) && (frequencyPeriod != null)) {
                 frequencyPeriod = frequencyNumber + " " + frequencyPeriod;
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
-//                System.out.println("In createEventByTime 3");
                 addLocation(eventDTO, eventId, locationId);
 
             } else {
                 createEventByTime(event, visibilityId, statusId, frequencyPeriod, groupId, priorityId, eventId);
-//                System.out.println("In createEventByTime 4");
                 addLocation(eventDTO, eventId, locationId);
 
             }
@@ -145,8 +141,6 @@ public class EventServiceImpl implements EventService {
         AdditionalEventModelDTO additionalEventModelDTO = eventDao.getAdditionById(eventId);
         List<String> listParticipants = eventDao.getParticipants(eventId);
         Location location = locationService.getByEventId(eventId);
-//        System.out.println("In EventService: "+eventId);
-//        System.out.println("In EventService: "+location);
         EventDTO eventDTO = new EventDTO();
         eventDTO.setEvent(event);
         if (listParticipants != null) {
@@ -194,6 +188,8 @@ public class EventServiceImpl implements EventService {
         Event event = updateEventDTO.getEvent();
         String priority = updateEventDTO.getPriority();
         eventDao.updateEvent(event, priority);
+        Location location = updateEventDTO.getLocation();
+        locationService.update(location);
         getExistingCustomers(updateEventDTO.getNewPeople()).
                 forEach(login -> eventDao.createEventInvitation(login, UUID.fromString(event.getId())));
 

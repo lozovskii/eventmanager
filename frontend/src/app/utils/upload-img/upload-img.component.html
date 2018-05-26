@@ -12,10 +12,12 @@
   </div>
 
   <img *ngIf="base64Image" [src]="domSanitizer.bypassSecurityTrustUrl(base64Image)" height="300" width="250"/>
-
+  <br>
   <form method="post">
     <div class="form-group">
-      <button type="submit" [disabled]="loading" class="btn btn-primary" (click)="updateUser(currentUser)">Save</button>
+      <br>
+      <button type="submit" [disabled]="loading" class="btn btn-outline-info" (click)="updateUser(currentUser)">Save</button>
+
     </div>
   </form>
 </main>

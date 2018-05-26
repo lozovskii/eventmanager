@@ -76,10 +76,10 @@ public class LocationDaoImpl extends JdbcDaoSupport implements LocationDao {
                 "country = ?, " +
                 "city = ?, " +
                 "street = ?, " +
-                "house = ? "+
-                "latitude = ? "+
+                "house = ?, "+
+                "latitude = ?, "+
                 "longitude = ? "+
-                "WHERE id = CAST (? AS UUID)";
+                "WHERE event_id = CAST (? AS UUID)";
 
         Object[] params = new Object[] {
                 location.getCountry(),
@@ -88,7 +88,7 @@ public class LocationDaoImpl extends JdbcDaoSupport implements LocationDao {
                 location.getHouse(),
                 location.getLatitude(),
                 location.getLongitude(),
-                location.getId()
+                location.getEvent_id()
         };
 
         this.getJdbcTemplate().update(sql, params);
