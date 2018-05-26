@@ -21,8 +21,6 @@
   </div>
   <p>Start time: {{eventDTO.event.startTime}}</p>
   <p>End time: {{eventDTO.event.endTime}}</p>
-  <p>Location: {{eventDTO.additionEvent.location.country}}, {{eventDTO.additionEvent.location.city}},
-    {{eventDTO.additionEvent.location.street}}, {{eventDTO.additionEvent.location.house}}</p>
   <p>Visibility: {{eventDTO.event.visibility}}</p>
 
   <div *ngIf="isParticipant || isCreator">
@@ -45,6 +43,18 @@
         <p _nglogin>{{login}}</p>
       </div>
     </div>
+    <p>Location: {{eventDTO.additionEvent.location.country}}, {{eventDTO.additionEvent.location.city}},
+      {{eventDTO.additionEvent.location.street}}, {{eventDTO.additionEvent.location.house}}</p>
+
+
+    <agm-map [latitude]="eventDTO.additionEvent.location.latitude"
+             [longitude]="eventDTO.additionEvent.location.longitude" [zoom]="zoom">
+      <agm-marker [latitude]="eventDTO.additionEvent.location.latitude"
+                  [longitude]="eventDTO.additionEvent.location.longitude"></agm-marker>
+    </agm-map>
+    <br>
     <app-event-notification></app-event-notification>
   </div>
+
+
 </div>
