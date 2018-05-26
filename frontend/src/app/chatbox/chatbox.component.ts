@@ -33,7 +33,7 @@ export class ChatboxComponent implements OnInit {
   }
 
   initializeWebSocketConnection() {
-    let ws = new SockJS("http://localhost:8080/socket");
+    let ws = new SockJS("https://pre-release.herokuapp.com/socket");
     this.stompClient = Stomp.over(ws);
     let that = this;
 
