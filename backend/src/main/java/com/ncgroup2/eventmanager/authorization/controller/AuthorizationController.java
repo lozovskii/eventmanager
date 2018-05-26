@@ -48,8 +48,8 @@ public class AuthorizationController {
 
     @PostMapping("/auth")
     public AuthResponse login(@RequestBody UserAuthParam userAuthParam) throws AuthenticationException {
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userAuthParam.getLogin(), userAuthParam.getPassword());
-        Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userAuthParam.getLogin(), userAuthParam.getPassword());
+        Authentication authentication = authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         Customer customer = customerService.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
         String token = tokenGenerator.generateToken(customer);
@@ -64,8 +64,6 @@ public class AuthorizationController {
             return new ResponseEntity("Invalid user", HttpStatus.BAD_REQUEST);
         }
         System.out.println("User ID: " + googleId);
-        System.out.println("Hey");
-
 
         Customer authCustomer = customerService.getByGoogleId(googleId);
         if (authCustomer != null) {

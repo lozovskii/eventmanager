@@ -72,8 +72,8 @@ export class CreateEventComponent implements OnInit {
 
   initEventForm(): FormGroup {
     return this.formBuilder.group({
-      name : new FormControl(),
-      description: new FormControl(),
+      name : ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
+      description: ['', [Validators.maxLength(2048)]],
       day: new FormControl(),
       startTime: new FormControl(),
       endTime: new FormControl(),
@@ -189,6 +189,9 @@ export class CreateEventComponent implements OnInit {
     return this.eventForm.get('name');
   }
 
+  get description() {
+    return this.eventForm.get('description');
+  }
   get frequencyNumber() {
     return this.additionEventForm.get('frequencyNumber');
   }

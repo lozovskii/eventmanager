@@ -17,4 +17,5 @@ background: url("../../assets/img/google-button/btn_google_signin_light_normal_w
 .centerred{
   position: absolute;
   left:0;
+  top:10%;
 }

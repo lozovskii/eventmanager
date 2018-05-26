@@ -14,6 +14,7 @@ export class DraftContentComponent implements OnInit {
 
   eventDTO: EventDTOModel;
   isCreator: boolean;
+  zoom: number = 16;
 
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute,

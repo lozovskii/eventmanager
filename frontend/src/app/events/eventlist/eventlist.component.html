@@ -4,17 +4,17 @@
 
 <main role="main">
   <h2 class="text-center">Events</h2>
-  <form class="row">
+  <form class="row" [formGroup]="pdfForm" *ngIf="isMy">
     <div class="form-group col-md-4">
       <label>From</label>
-      <input type="date" formControlName="day" class="dateTimeInput">
+      <input type="date" formControlName="startDate" class="dateTimeInput">
     </div>
     <div class="form-group col-md-4">
       <label>To</label>
-      <input type="date" formControlName="day" class="dateTimeInput">
+      <input type="date" formControlName="endDate" class="dateTimeInput">
     </div>
     <div class="col-md-4">
-      <button class="btn btn-outline-success" (click)="importToPDF()">Import to PDF</button>
+      <button class="btn btn-outline-success" (click)="importToPDF()">Export to PDF</button>
     </div>
   </form>
   <div class="col-auto" *ngIf="isMy" style="margin: 16px">
