@@ -1,5 +1,5 @@
 
-import {Component, ElementRef, EventEmitter, NgZone, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, NgZone, OnInit, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {MapsAPILoader} from '@agm/core';
 import {} from '@types/googlemaps';
@@ -23,6 +23,7 @@ export class GoogleMapsComponent implements OnInit {
 
   @Output() onAddLocation = new EventEmitter<{country: string, city: string, street: string, house: string,
     latitude: number, longitude: number}>();
+
 
   public searchElementRef: ElementRef;
 
