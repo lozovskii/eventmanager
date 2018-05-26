@@ -26,7 +26,7 @@ public class Mapper {
     }
 
     public static List<ExtendedTag> getTags(Object[] array) {
-        System.out.println(Arrays.toString(array));
+
         return Stream.of(array)
                 .map(t -> {
                     String[] tagData = String.valueOf(t)
@@ -61,12 +61,12 @@ public class Mapper {
                 .collect(Collectors.toList());
     }
 
-    public static String[] getStringArray(Object[] array) {
-
-        return Arrays.toString(array)
-                .replaceAll("[\\[|\\]]", "")
-                .split(", ");
-    }
+//    public static String[] getStringArray(Object[] array) {
+//
+//        return Arrays.toString(array)
+//                .replaceAll("[\\[|\\]]", "")
+//                .split(", ");
+//    }
 
 //    public static Collection<Item> mapDtoItemToItemCollection(List<ItemWishListDto> itemWishListDtos ){
 //
