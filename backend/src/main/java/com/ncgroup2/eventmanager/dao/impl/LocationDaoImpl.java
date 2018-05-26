@@ -106,7 +106,7 @@ public class LocationDaoImpl extends JdbcDaoSupport implements LocationDao {
 
     @Override
     public void delete(Object id) {
-        String sql = "DELETE EROM \"Location\" WHERE id = CAST (? AS uuid)";
+        String sql = "DELETE FROM \"Location\" WHERE event_id = CAST (? AS uuid)";
 
         Object[] params = new Object[] {id};
 

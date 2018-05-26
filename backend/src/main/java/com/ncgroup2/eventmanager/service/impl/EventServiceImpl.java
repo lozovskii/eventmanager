@@ -180,6 +180,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public void deleteEventById(String eventId) {
+        locationService.delete(eventId);
         eventDao.deleteEventById(eventId);
     }
 
