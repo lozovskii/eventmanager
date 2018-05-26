@@ -24,9 +24,9 @@ public interface EventService {
 
     List<EventDTO> getEventsByCustIdFilterByType(String custId, String type);
 
-    EventDTO getEventById(String eventId);
+    EventDTO getEventById(String eventId, String custId);
 
-    EventDTO getNoteById(String noteId);
+    EventDTO getNoteById(String noteId, String custId);
 
     void deleteEventById(String eventId);
 
