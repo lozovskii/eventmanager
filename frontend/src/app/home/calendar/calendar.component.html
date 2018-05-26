@@ -10,12 +10,16 @@
     <button type="submit" class="btn btn-outline-info">Show</button>
   </div>
 </form>
+  <div>
+    <div class="btn-group col-md-12" role="group" *ngIf="isMy" style="padding: 10px">
+      <button class="btn btn-outline-info col-md-4" (click)="onChangePrivate('PRIVATE')">PRIVATE</button>
+      <button class="btn btn-outline-info col-md-4" (click)="onChangePublic('PUBLIC')">PUBLIC</button>
+      <button class="btn btn-outline-info col-md-4" (click)="onChangeFriends('FRIENDS')">FRIENDS</button>
+      <button class="btn btn-outline-info col-md-4" (click)="onChangeAll('ALL')">ALL</button>
+  </div>
 </div>
-<div>
-  <input type="checkbox" #ca [checked]=true ng-model="PRIVATE" (change)="onChangePrivate(ca.checked)">PRIVATE
-  <input type="checkbox" #cb [checked]=true ng-model="PUBLIC" (change)="onChangePublic(cb.checked)">PUBLIC
-  <input type="checkbox" #cd [checked]=true ng-model="FRIENDS" (change)="onChangeFriends(cd.checked)">FRIENDS
 </div>
+
 <ng-template #modalContent let-close="close">
   <div class="modal-header">
     <h5 class="modal-title">Event action occurred</h5>
