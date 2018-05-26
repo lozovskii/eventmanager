@@ -94,15 +94,17 @@ public class EventController {
         return new ResponseEntity<>(invitesByCustId, HttpStatus.OK);
     }
 
-    @GetMapping("")
-    public ResponseEntity<EventDTO> getEventById(@RequestParam String eventId){
-        EventDTO eventById = eventService.getEventById(eventId);
+    @GetMapping("/event/{eventId}/{custId}")
+    public ResponseEntity<EventDTO> getEventById(@PathVariable("eventId") String eventId,
+                                                 @PathVariable("custId") String custId){
+        EventDTO eventById = eventService.getEventById(eventId,custId);
         return new ResponseEntity<>(eventById, HttpStatus.OK);
     }
 
-    @GetMapping("/note")
-    public ResponseEntity<EventDTO> getNoteById(@RequestParam String noteId){
-        EventDTO eventById = eventService.getNoteById(noteId);
+    @GetMapping("/note/{noteId}/{custId}")
+    public ResponseEntity<EventDTO> getNoteById(@PathVariable("noteId") String noteId,
+                                                @PathVariable("custId") String custId){
+        EventDTO eventById = eventService.getNoteById(noteId,custId);
         return new ResponseEntity<>(eventById, HttpStatus.OK);
     }
 

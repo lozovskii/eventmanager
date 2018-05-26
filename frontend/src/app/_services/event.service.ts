@@ -76,12 +76,14 @@ export class EventService {
   }
 
   getEventById(eventId: string) {
-    const url = `${this.eventsUrl}?eventId=${eventId}`;
+    let custId = this.userService.getCurrentId();
+    const url = `${this.eventsUrl}/event/${eventId}/${custId}`;
     return this.http.get<EventDTOModel>(url, {headers: AuthenticationService.getAuthHeader()});
   }
 
   getNoteById(eventId: string) {
-    const url = `${this.eventsUrl}/note?noteId=${eventId}`;
+    let custId = this.userService.getCurrentId();
+    const url = `${this.eventsUrl}/note/${eventId}/${custId}`;
     return this.http.get<EventDTOModel>(url, {headers: AuthenticationService.getAuthHeader()});
   }
 

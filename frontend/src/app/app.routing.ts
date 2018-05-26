@@ -49,7 +49,7 @@ const appRoutes: Routes = [
   { path: 'send-reset-link', component: SendLinkComponent},
   { path: 'reset-password', component: ResetComponent},
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
-  { path: 'vnavbar', component: SidebarComponent, canActivate: [AuthGuard]},
+  // { path: 'vnavbar', component: SidebarComponent, canActivate: [AuthGuard]},
   { path: 'folder-list/:type', component: FolderListComponent, canActivate: [AuthGuard]},
   { path: 'folder-list', component: FolderListComponent, canActivate: [AuthGuard]},
   { path: 'wishlist', component: WishListComponent, canActivate: [AuthGuard]},

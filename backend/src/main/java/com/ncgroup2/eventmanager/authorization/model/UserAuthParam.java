@@ -1,8 +1,8 @@
 package com.ncgroup2.eventmanager.authorization.model;
 
 public class UserAuthParam {
-    String login;
-    String password;
+    private String login;
+    private String password;
 
     public UserAuthParam() {
     }

@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AlertService, AuthenticationService, RegistrationService, UserService} from "../_services";
 import {FormBuilder, Validators} from "@angular/forms";
@@ -14,14 +14,12 @@ declare const gapi: any;
   styleUrls: ['../login/login.component.css']
 })
 
-export class RegisterComponent implements OnInit, OnChanges {
-  @Input('modal') inModal : boolean = false;
+export class RegisterComponent implements OnInit {
 
   user: User;
-  // loading = false;
   registerForm = this.formBuilder.group({
-    name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
-    secondName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+    name: ['', [Validators.minLength(3), Validators.maxLength(20)]],
+    secondName: ['', [Validators.minLength(3), Validators.maxLength(20)]],
     login: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]],
     email: ['', [Validators.email]],
     password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]]
@@ -29,7 +27,6 @@ export class RegisterComponent implements OnInit, OnChanges {
 
   isValidFormSubmitted = null;
   loading = false;
-  isModal: boolean = false;
   public auth2: any;
 
   constructor(private router: Router,
@@ -40,10 +37,6 @@ export class RegisterComponent implements OnInit, OnChanges {
               private navbarService: NavbarService,
               private activatedRoute : ActivatedRoute,
               private authService: AuthenticationService) {
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.isModal = changes['inModal'].currentValue;
   }
 
   get name() {
@@ -70,7 +63,6 @@ export class RegisterComponent implements OnInit, OnChanges {
   }
 
   ngAfterViewInit() {
-
     this.googleInit();
   }
 
@@ -102,6 +94,7 @@ export class RegisterComponent implements OnInit, OnChanges {
     this.isValidFormSubmitted = false;
 
     if (this.registerForm.invalid) {
+      console.log('invalid');
       return;
     }
     this.isValidFormSubmitted = true;
@@ -127,7 +120,6 @@ export class RegisterComponent implements OnInit, OnChanges {
           this.userService.getByLogin(JSON.parse(sessionStorage.getItem('currentToken')).login).subscribe(
             user => {
               this.alertService.success('Registration successful!', true);
-              document.getElementById('regCloseBtn').click();
               console.log(user);
               this.navbarService.setNavBarState(true);
               sessionStorage.setItem('currentUser', JSON.stringify(user));
