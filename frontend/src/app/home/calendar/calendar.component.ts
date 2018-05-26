@@ -4,7 +4,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {EventService} from "../../_services"
 import {Event} from "../../_models";
 import {ActivatedRoute, Router} from '@angular/router';
-
+import {FormsModule} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {CalendarEvent, DAYS_OF_WEEK} from 'angular-calendar';
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
@@ -83,15 +83,17 @@ export class CalendarComponent {
 
   constructor(private eventService: EventService,
               private router: Router,
+              private forms: FormsModule,
               private activatedRoute: ActivatedRoute,
               private modal: NgbModal) {}
 
   @ViewChild('modalContent') modalContent: TemplateRef<any>;
   viewDate = new Date();
 
-    privates: boolean = true;
-    publics: boolean = true;
-    friends: boolean = true;
+    privates: boolean = false;
+    publics: boolean = false;
+    friends: boolean = false;
+    allevents: boolean =true;
 
   modalData: {
     action: string;
@@ -112,7 +114,7 @@ export class CalendarComponent {
     } else if(this.type == 'timeline') {
       this.isMy=false;
     }
-    this.getEvents()
+    this.getEvents('ALL')
 
   }
 
@@ -134,15 +136,15 @@ export class CalendarComponent {
     this.router.navigate(['/event-container', event.id]);
   }
 
-  queryEvents(){
+  queryEvents(eventType: string){
     if(this.isMy) {
-      if(this.publics){
+      if(eventType == 'PUBLIC'){
         return this.eventService.getAllPublicEventsInMonth()
       }else {
-        if (this.friends) {
+        if (eventType == 'PRIVATE') {
           return this.eventService.getAllPrivateEventsInMonth()
         }else {
-          if (this.privates) {
+          if (eventType == 'FRIENDS') {
             return this.eventService.getAllFriendsEventsInMonth()
           }else {
             return this.eventService.getEventsByCustId();
@@ -154,24 +156,25 @@ export class CalendarComponent {
     }
   }
 
-  onChangePrivate(flag : boolean):void{
-    this.privates = flag;
-    console.log('private : ' + this.privates + ', public : ' + this.publics + ', friends : ' + this.friends);
-    this.getEvents();
+  onChangePrivate(type: string):void{
+    console.log(type);
+    this.getEvents(type);
   }
-  onChangePublic(flag : boolean):void{
-    this.publics = flag;
-    console.log('private : ' + this.privates + ', public : ' + this.publics + ', friends : ' + this.friends);
-    this.getEvents();
+  onChangePublic(type: string):void{
+    console.log(type);
+    this.getEvents(type);
   }
-  onChangeFriends(flag : boolean):void{
-    this.friends = flag;
-    console.log('private : ' + this.privates + ', public : ' + this.publics + ', friends : ' + this.friends);
-    this.getEvents();
+  onChangeFriends(type: string):void{
+    console.log(type);
+    this.getEvents(type);
+  }
+  onChangeAll(type: string):void{
+    console.log(type);
+    this.getEvents(type);
   }
 
-  getEvents(): void {
-    this.queryEvents()
+  getEvents(type: string): void {
+    this.queryEvents(type)
       .subscribe((events) => {
         this.events = events;
         this.calendarEvents = [];
