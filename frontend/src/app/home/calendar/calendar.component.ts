@@ -137,15 +137,18 @@ export class CalendarComponent {
   queryEvents(){
     if(this.isMy) {
       if(this.publics){
-
+        return this.eventService.getAllPublicEventsInMonth()
+      }else {
+        if (this.friends) {
+          return this.eventService.getAllPrivateEventsInMonth()
+        }else {
+          if (this.privates) {
+            return this.eventService.getAllFriendsEventsInMonth()
+          }else {
+            return this.eventService.getEventsByCustId();
+          }
+        }
       }
-      if(this.friends){
-
-      }
-      if(this.privates){
-
-      }
-      return this.eventService.getEventsByCustId();
     } else {
       return this.eventService.getTimeline(JSON.parse(sessionStorage.getItem('currentUser')).login);
     }
@@ -153,21 +156,25 @@ export class CalendarComponent {
 
   onChangePrivate(flag : boolean):void{
     this.privates = flag;
-    console.log(this.privates + ', ' + this.publics + ', ' + this.friends);
+    console.log('private : ' + this.privates + ', public : ' + this.publics + ', friends : ' + this.friends);
+    this.getEvents();
   }
   onChangePublic(flag : boolean):void{
     this.publics = flag;
-    console.log(this.privates + ', ' + this.publics + ', ' + this.friends);
+    console.log('private : ' + this.privates + ', public : ' + this.publics + ', friends : ' + this.friends);
+    this.getEvents();
   }
   onChangeFriends(flag : boolean):void{
     this.friends = flag;
-    console.log(this.privates + ', ' + this.publics + ', ' + this.friends);
+    console.log('private : ' + this.privates + ', public : ' + this.publics + ', friends : ' + this.friends);
+    this.getEvents();
   }
 
   getEvents(): void {
     this.queryEvents()
       .subscribe((events) => {
         this.events = events;
+        this.calendarEvents = [];
         for (let i = 0; i < events.length; i++) {
           console.log(this.events[i].event.visibility);
           console.log(this.events[i].event.startTime + ' ' + this.events[i].event.endTime);

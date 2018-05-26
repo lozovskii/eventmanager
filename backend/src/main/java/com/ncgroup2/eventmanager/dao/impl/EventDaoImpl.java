@@ -161,6 +161,33 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     }
 
     @Override
+    public List getAllPublicEventsInMonth(String custId) {
+        String query = queryService.getQuery("event.getAllPublicEventsInMonth");
+        Object[] params = new Object[]{
+        };
+        String orderBy = " ORDER BY start_time";
+        return this.getJdbcTemplate().query(query + orderBy, params, new BeanPropertyRowMapper(Event.class));
+    }
+
+    @Override
+    public List getAllPrivateEventsInMonth(String custId) {
+        String query = queryService.getQuery("event.getAllPrivateEventsInMonth");
+        Object[] params = new Object[]{
+        };
+        String orderBy = " ORDER BY start_time";
+        return this.getJdbcTemplate().query(query + orderBy, params, new BeanPropertyRowMapper(Event.class));
+    }
+
+    @Override
+    public List getAllFriendsEventsInMonth(String custId) {
+        String query = queryService.getQuery("event.getAllFriendsEventsInMonth");
+        Object[] params = new Object[]{
+        };
+        String orderBy = " ORDER BY start_time";
+        return this.getJdbcTemplate().query(query + orderBy, params, new BeanPropertyRowMapper(Event.class));
+    }
+
+    @Override
     public List getEventsByCustIdSorted(String custId) {
         String query = queryService.getQuery("event.getByCustIdSort");
         Object[] params = new Object[]{

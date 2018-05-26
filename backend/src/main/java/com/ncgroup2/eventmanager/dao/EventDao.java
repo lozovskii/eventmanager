@@ -59,6 +59,10 @@ public interface EventDao {
 
     List getEventsByCustId(String custId);
 
+    List getAllPublicEventsInMonth(String custId);
+    List getAllPrivateEventsInMonth(String custId);
+    List getAllFriendsEventsInMonth(String custId);
+
     List getEventsByCustIdSorted(String custId);
 
     List getEventsByCustIdSortedByType(String custId);
