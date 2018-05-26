@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {EventService} from "../../_services/event.service";
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
 import {UpdateEventDTO} from "../../_models/dto/UpdateEventDTO";
+import {Location} from "../../_models/location";
 
 @Component({
   selector: 'app-update-event',
@@ -18,6 +19,8 @@ export class UpdateEventComponent implements OnInit {
   people: string[] = [];
   newPeople: string[] = [];
   removedPeople: string[] = [];
+  eventLocation: Location;
+
 
   canEdit: boolean;
   currentEventId: string;
@@ -40,7 +43,6 @@ export class UpdateEventComponent implements OnInit {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     this.eventService.getEventById(id).subscribe((eventDTO) => {
       this.eventDTO = eventDTO;
-      console.log(this.eventDTO);
       if (this.eventDTO.additionEvent.people != null) {
         this.people = eventDTO.additionEvent.people;
       }
@@ -56,13 +58,15 @@ export class UpdateEventComponent implements OnInit {
       startTime: new FormControl(),
       endTime: new FormControl(),
       visibility: new FormControl(),
+      eventLocation: new FormControl()
     })
   }
 
   initAdditionEventForm(): FormGroup {
     return this.formBuilder.group({
       priority: new FormControl(),
-      people: new FormControl()
+      people: new FormControl(),
+      eventLocation: new FormControl()
     })
   }
 
@@ -76,18 +80,23 @@ export class UpdateEventComponent implements OnInit {
     if (eventDTO.event.endTime != null) {
       this.updateEventDTO.event.endTime = (eventDTO.event.endTime).slice(0, 10) + ' ' + (eventDTO.event.endTime).slice(11, 16) + ':00';
     }
-    if (eventDTO.event.name != null) {
+    if (eventDTO.event.name == ""){
+      this.updateEventDTO.event.name = this.eventDTO.event.name;
+    }else{
       this.updateEventDTO.event.name = eventDTO.event.name;
     }
-    if (eventDTO.event.description != null) {
+    if (eventDTO.event.description == ""){
+      this.updateEventDTO.event.description = this.eventDTO.event.description;
+    }else{
       this.updateEventDTO.event.description = eventDTO.event.description;
     }
     if (eventDTO.additionEvent.priority != null) {
       this.updateEventDTO.priority = eventDTO.additionEvent.priority;
     }
-
     this.updateEventDTO.newPeople = this.newPeople;
     this.updateEventDTO.removedPeople = this.removedPeople;
+    this.eventLocation.event_id = this.updateEventDTO.event.id;
+    this.updateEventDTO.location =  this.eventLocation;
     this.eventService.updateEvent(this.updateEventDTO)
       .subscribe(() => {
         this.alertService.info('Event successfully updated!', true);
@@ -113,6 +122,10 @@ export class UpdateEventComponent implements OnInit {
     if (index > -1) {
       array.splice(index, 1);
     }
+  }
+
+  addLocation(location: Location) {
+    this.eventLocation = location;
   }
 
   get name() {

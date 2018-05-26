@@ -180,6 +180,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public void deleteEventById(String eventId) {
+        locationService.delete(eventId);
         eventDao.deleteEventById(eventId);
     }
 
@@ -203,6 +204,8 @@ public class EventServiceImpl implements EventService {
         Event event = updateEventDTO.getEvent();
         String priority = updateEventDTO.getPriority();
         eventDao.updateEvent(event, priority);
+        Location location = updateEventDTO.getLocation();
+        locationService.update(location);
         getExistingCustomers(updateEventDTO.getNewPeople()).
                 forEach(login -> eventDao.createEventInvitation(login, UUID.fromString(event.getId())));
 

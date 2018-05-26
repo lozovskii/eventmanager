@@ -1,6 +1,7 @@
 package com.ncgroup2.eventmanager.dto;
 
 import com.ncgroup2.eventmanager.entity.Event;
+import com.ncgroup2.eventmanager.entity.Location;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,4 +17,6 @@ public class UpdateEventDTO {
     private Long frequencyNumber;
     private String frequencyPeriod;
     private String priority;
+    private Location location;
+
 }

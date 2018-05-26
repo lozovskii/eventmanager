@@ -112,6 +112,7 @@ export class EventService {
 
   updateEvent(updatEventDTO: UpdateEventDTO) {
     const url = `${this.eventsUrl}/update`;
+    console.log('Service EV '+JSON.stringify(updatEventDTO))
     return this.http.put<UpdateEventDTO>(url, updatEventDTO, {headers: AuthenticationService.getAuthHeader()});
   }
 
