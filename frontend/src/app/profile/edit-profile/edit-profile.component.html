@@ -2,36 +2,57 @@
 
 <main role="main">
   <h2 class="text-center">Edit profile</h2>
-  <form [formGroup]="profileForm" (ngSubmit)="(currentUser)">
+  <form (ngSubmit)="submitForm(form)" #form="ngForm">
 
     <div class="col-md-4">
-      <div class="form-group">
+      <div class="form-group" [ngClass]="{'has-error': name.invalid && name.touched}">
         <label>First Name</label>
-        <input formControlName="name" type="text" class="form-control" required minlength="3" maxlength="15"
-               [(ngModel)]="currentUser.name"/>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="currentUser.name"
+          name="name"
+          required
+          #name="ngModel"
+        >
+        <p *ngIf="name.invalid && name.touched">Write first name</p>
       </div>
-      <div class="form-group">
+      <div class="form-group" [ngClass]="{'has-error': lastName.invalid && lastName.touched}">
         <label>Last Name</label>
-        <input formControlName="lastName" id="lastName" type="text" class="form-control"
-               [(ngModel)]="currentUser.secondName" required/>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="currentUser.secondName"
+          name="lastName"
+          required
+          #lastName="ngModel"
+        >
+        <p *ngIf="lastName.invalid && lastName.touched">Write last name</p>
       </div>
-      <div class="form-group">
+      <div class="form-group" [ngClass]="{'has-error': phone.invalid && phone.touched}">
         <label>Phone</label>
-        <input formControlName="phone" id="phone" type="text" class="form-control" [(ngModel)]="currentUser.phone"
-               required/>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="currentUser.phone"
+          name="phone"
+          required
+          #phone="ngModel"
+        >
+        <p *ngIf="phone.invalid && phone.touched">Write phone number</p>
       </div>
-
-      <form method="post">
-        <div class="form-group">
-          <button class="btn btn-outline-info" (click)="updateUser(currentUser)">Save</button>
-          <!--<a [routerLink]="['/content']" class="btn btn-link">Cancel</a>-->
-        </div>
-      </form>
+          <button class="btn btn-success"
+                  type="submit"
+                  [disabled]="!form.valid"
+                  (click)="updateUser(currentUser)">Save</button>
+      <br>
       <div>
+        <br>
         <a [routerLink]="['/upload-img']" class="btn btn-outline-info">Upload Avatar</a>
       </div>
     </div>
   </form>
+
 </main>
 
 
