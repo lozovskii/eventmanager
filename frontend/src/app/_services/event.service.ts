@@ -39,6 +39,24 @@ export class EventService {
     return this.http.get<EventDTOModel[]>(url, {headers: AuthenticationService.getAuthHeader()})
   }
 
+  getAllPublicEventsInMonth(): Observable<EventDTOModel[]> {
+    let custId = this.userService.getCurrentId();
+    const url = `${this.eventsUrl}/allPublic${custId}`;
+    return this.http.get<EventDTOModel[]>(url, {headers: AuthenticationService.getAuthHeader()})
+  }
+
+  getAllPrivateEventsInMonth(): Observable<EventDTOModel[]> {
+    let custId = this.userService.getCurrentId();
+    const url = `${this.eventsUrl}/allPrivate${custId}`;
+    return this.http.get<EventDTOModel[]>(url, {headers: AuthenticationService.getAuthHeader()})
+  }
+
+  getAllFriendsEventsInMonth(): Observable<EventDTOModel[]> {
+    let custId = this.userService.getCurrentId();
+    const url = `${this.eventsUrl}/allFriends${custId}`;
+    return this.http.get<EventDTOModel[]>(url, {headers: AuthenticationService.getAuthHeader()})
+  }
+
   getEventsByCustIdSorted(): Observable<EventDTOModel[]> {
     let custId = this.userService.getCurrentId();
     const url = `${this.eventsUrl}/my/sorted${custId}`;

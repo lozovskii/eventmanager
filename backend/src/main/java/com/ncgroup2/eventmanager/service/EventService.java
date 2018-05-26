@@ -16,6 +16,10 @@ public interface EventService {
 
     void createEventInvitations(List<String> login, UUID eventId);
 
+    List<EventDTO> getAllPublicEventsInMonth(String custId);
+    List<EventDTO> getAllPrivateEventsInMonth(String custId);
+    List<EventDTO> getAllFriendsEventsInMonth(String custId);
+
     List<EventDTO> getEventsByCustId(String custId);
 
     List<EventDTO> getEventsByCustIdSorted(String custId);

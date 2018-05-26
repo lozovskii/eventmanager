@@ -115,6 +115,24 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public List<EventDTO> getAllPublicEventsInMonth(String custId) {
+        List<Event> events =  eventDao.getAllPublicEventsInMonth(custId);
+        return setAdditionForEachEvent(events, custId);
+    }
+
+    @Override
+    public List<EventDTO> getAllPrivateEventsInMonth(String custId) {
+        List<Event> events =  eventDao.getAllPrivateEventsInMonth(custId);
+        return setAdditionForEachEvent(events, custId);
+    }
+
+    @Override
+    public List<EventDTO> getAllFriendsEventsInMonth(String custId) {
+        List<Event> events =  eventDao.getAllFriendsEventsInMonth(custId);
+        return setAdditionForEachEvent(events, custId);
+    }
+
+    @Override
     public List<EventDTO> getEventsByCustIdSorted(String custId) {
         List<Event> events =  eventDao.getEventsByCustIdSorted(custId);
         return setAdditionForEachEvent(events,custId);

@@ -57,6 +57,24 @@ public class EventController {
         return new ResponseEntity<>(eventsByCustId, HttpStatus.OK);
     }
 
+    @GetMapping("/allPublic{custId}")
+    public ResponseEntity<List<EventDTO>> getAllPublicEventsInMonth(@PathVariable String custId){
+        List<EventDTO> eventsByCustId = eventService.getAllPublicEventsInMonth(custId);
+        return new ResponseEntity<>(eventsByCustId, HttpStatus.OK);
+    }
+
+    @GetMapping("/allPrivate{custId}")
+    public ResponseEntity<List<EventDTO>> getAllPrivateEventsInMonth(@PathVariable String custId){
+        List<EventDTO> eventsByCustId = eventService.getAllPrivateEventsInMonth(custId);
+        return new ResponseEntity<>(eventsByCustId, HttpStatus.OK);
+    }
+
+    @GetMapping("/allFriends{custId}")
+    public ResponseEntity<List<EventDTO>> getAllFriendsEventsInMonth(@PathVariable String custId){
+        List<EventDTO> eventsByCustId = eventService.getAllFriendsEventsInMonth(custId);
+        return new ResponseEntity<>(eventsByCustId, HttpStatus.OK);
+    }
+
     @GetMapping("/my/sorted{custId}")
     public ResponseEntity<List<EventDTO>> getEventsByCustIdSorted(@PathVariable String custId){
         List<EventDTO> eventsByCustId = eventService.getEventsByCustIdSorted(custId);

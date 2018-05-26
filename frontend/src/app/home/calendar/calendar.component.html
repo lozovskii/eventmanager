@@ -12,9 +12,9 @@
 </form>
 </div>
 <div>
-  <input type="checkbox" #ca [checked]=true ng-model="PRIVATE" (change)="onChangePrivate(ca.checked)">
-  <input type="checkbox" #cb [checked]=true ng-model="PUBLIC" (change)="onChangePublic(cb.checked)">
-  <input type="checkbox" #cd [checked]=true ng-model="FRIENDS" (change)="onChangeFriends(cd.checked)">
+  <input type="checkbox" #ca [checked]=true ng-model="PRIVATE" (change)="onChangePrivate(ca.checked)">PRIVATE
+  <input type="checkbox" #cb [checked]=true ng-model="PUBLIC" (change)="onChangePublic(cb.checked)">PUBLIC
+  <input type="checkbox" #cd [checked]=true ng-model="FRIENDS" (change)="onChangeFriends(cd.checked)">FRIENDS
 </div>
 <ng-template #modalContent let-close="close">
   <div class="modal-header">

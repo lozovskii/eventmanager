@@ -74,7 +74,6 @@ export class CreateEventComponent implements OnInit {
     return this.formBuilder.group({
       name : ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
       description: ['', [Validators.maxLength(2048)]],
-      day: new FormControl(),
       startTime: new FormControl(),
       endTime: new FormControl(),
       visibility: new FormControl()
@@ -115,10 +114,11 @@ export class CreateEventComponent implements OnInit {
     //   return;
     // }
     // this.isValidFormSubmitted = true;
-
-    if ((eventDTO.event.day != null) && (eventDTO.event.day != '')) {
-      eventDTO.event.startTime = eventDTO.event.day + ' ' + eventDTO.event.startTime + ':00';
-      eventDTO.event.endTime = eventDTO.event.day + ' ' + eventDTO.event.endTime + ':00';
+    if (eventDTO.event.startTime != null) {
+      eventDTO.event.startTime = (eventDTO.event.startTime).slice(0, 10) + ' ' + (eventDTO.event.startTime).slice(11, 16) + ':00';
+    }
+    if (eventDTO.event.endTime != null) {
+      eventDTO.event.endTime = (eventDTO.event.endTime).slice(0, 10) + ' ' + (eventDTO.event.endTime).slice(11, 16) + ':00';
     }else{
       eventDTO.event.startTime = this.startDateDraft;
       eventDTO.event.endTime = this.endDateDraft;
@@ -164,12 +164,16 @@ export class CreateEventComponent implements OnInit {
       eventDTO.event.description = this.eventDTO.event.description;
     }
     this.isValidFormSubmitted = true;
-    if ((eventDTO.event.day != null) && (eventDTO.event.day != '')) {
-      eventDTO.event.startTime = eventDTO.event.day + ' ' + eventDTO.event.startTime + ':00';
-      eventDTO.event.endTime = eventDTO.event.day + ' ' + eventDTO.event.endTime + ':00';
+    if (eventDTO.event.startTime != null) {
+      this.eventDTO.event.startTime = (eventDTO.event.startTime).slice(0, 10) + ' ' +
+        (eventDTO.event.startTime).slice(11, 16) + ':00';
+    }
+    if (eventDTO.event.endTime != null) {
+      this.eventDTO.event.endTime = (eventDTO.event.endTime).slice(0, 10) + ' ' +
+        (eventDTO.event.endTime).slice(11, 16) + ':00';
     }else{
-      eventDTO.event.startTime = null;
-      eventDTO.event.endTime = null;
+      eventDTO.event.startTime = this.startDateDraft;
+      eventDTO.event.endTime = this.endDateDraft;
     }
     eventDTO.event.status = 'DRAFT';
     eventDTO.additionEvent.people = this.selectedPeople;
