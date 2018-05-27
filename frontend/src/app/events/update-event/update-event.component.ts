@@ -187,18 +187,7 @@ export class UpdateEventComponent implements OnInit {
       array.splice(index, 1);
     }
   }
-
-  addLocation(location: Location) {
-    this.eventLocation = location;
-  }
-
-  get name() {
-    return this.eventForm.get('name');
-  }
-
-  get description() {
-    return this.eventForm.get('description');
-  }
+    
 
   checkLocationUpdate() {
     console.log('in ngInin is Locatoin: '+this.eventDTO.additionEvent.location);
