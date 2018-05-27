@@ -100,11 +100,13 @@
           </div>
         </div>
         <div>
-          <label>Location</label>
-          <p> {{eventDTO.additionEvent.location.country}}, {{eventDTO.additionEvent.location.city}},
-            {{eventDTO.additionEvent.location.street}}, {{eventDTO.additionEvent.location.house}}</p>
+          <div *ngIf="isLocationExist">
+            <label>Location</label>
+            <p> {{eventDTO.additionEvent.location.country}}, {{eventDTO.additionEvent.location.city}},
+              {{eventDTO.additionEvent.location.street}}, {{eventDTO.additionEvent.location.house}}</p>
+          </div>
           <br>
-
+          <label>Select a location:</label>
           <app-google-maps (onAddLocation)="addLocation($event)"></app-google-maps>
 
           <br>

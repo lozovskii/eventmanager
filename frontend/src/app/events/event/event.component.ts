@@ -39,7 +39,7 @@ export class EventComponent implements OnInit {
     this.eventService.getEventById(id).subscribe((eventDTO: EventDTOModel) => {
       this.eventDTO = eventDTO;
       console.log('eventDTO = ' + this.eventDTO);
-      this.checkLocations();
+      this.checkLocation();
       let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
       let currentUserLogin = JSON.parse(sessionStorage.getItem('currentUser')).login;
       this.isCreator = currentUserId == this.eventDTO.event.creatorId;
@@ -93,7 +93,7 @@ export class EventComponent implements OnInit {
     );
   }
 
-  checkLocations() {
+  checkLocation() {
     console.log('in ngInin is Locatoin: '+this.eventDTO.additionEvent.location);
     if(this.eventDTO.additionEvent.location !== null) {
       this.isLocationExist = true;

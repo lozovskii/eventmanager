@@ -20,6 +20,7 @@ export class UpdateEventComponent implements OnInit {
   newPeople: string[] = [];
   removedPeople: string[] = [];
   eventLocation: Location;
+  isLocationExist = false;
 
 
   canEdit: boolean;
@@ -46,7 +47,7 @@ export class UpdateEventComponent implements OnInit {
       if (this.eventDTO.additionEvent.people != null) {
         this.people = eventDTO.additionEvent.people;
       }
-
+      this.checkLocationUpdate();
     });
   }
 
@@ -134,6 +135,13 @@ export class UpdateEventComponent implements OnInit {
 
   get description() {
     return this.eventForm.get('description');
+  }
+
+  checkLocationUpdate() {
+    console.log('in ngInin is Locatoin: '+this.eventDTO.additionEvent.location);
+    if(this.eventDTO.additionEvent.location !== null) {
+      this.isLocationExist = true;
+    }
   }
 
 }
