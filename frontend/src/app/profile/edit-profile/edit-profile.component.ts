@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ProfileService} from "../../_services/profile.service";
 import {AlertService, UserService} from "../../_services/index";
 import {Router} from "@angular/router";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
 import {User} from "../../_models/index";
 
 
@@ -14,13 +14,11 @@ import {User} from "../../_models/index";
 export class EditProfileComponent implements OnInit {
   profileForm: FormGroup;
   currentUser: User;
-  name = ''
-  lastName = ''
-  phone = ''
-  login = ''
+  name = '';
+  lastName = '';
+  phone = '';
 
-
-  constructor(private profileService: ProfileService,
+    constructor(private profileService: ProfileService,
               private userService: UserService,
               private alertService: AlertService,
               private router: Router,) {
@@ -31,52 +29,15 @@ export class EditProfileComponent implements OnInit {
         sessionStorage.setItem('currentUserObject', JSON.stringify(this.currentUser));
       }
     );
-    // if(sessionStorage.getItem('currentUser')==null) {
-    //   let login = JSON.parse(sessionStorage.getItem('currentToken')).login;
-    //   this.userService.getByLogin(login).subscribe(
-    //     user => {
-    //       console.log(user.name);
-    //       this.currentUser = user;
-    //       sessionStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-    //       console.log(this.currentUser.name);
-    //     }
-    //   );
-    // } else {
-    //   this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
-    // }
   }
 
-
-
-  // constructor(private profileService: ProfileService,
-  //             private userService: UserService,
-  //             private alertService: AlertService,
-  //             private router: Router,
-  // ) {
-  //   let login = JSON.parse(sessionStorage.getItem('currentUser')).login;
-  //   this.userService.getByLogin(login).subscribe(
-  //     user => {
-  //       console.log(user.name);
-  //       this.currentUser = user;
-  //       localStorage.setItem('currentUserObject', JSON.stringify(this.currentUser));
-  //       console.log(this.currentUser.name);
-  //
-  //       this.name = this.currentUser.name;
-  //       this.lastName = this.currentUser.secondName;
-  //       this.phone = this.currentUser.phone;
-  //       this.login = this.currentUser.login;
-  //       console.log(this.currentUser.id);
-  //     }
-  //   );
-  // }
 
   ngOnInit() {
 
     this.profileForm = new FormGroup({
-      name: new FormControl(),
-      lastName: new FormControl(),
-      phone: new FormControl(),
-      login: new FormControl(),
+      name: new FormControl('', [Validators.required, this.checkForLength]),
+      lastName: new FormControl('', [Validators.required, this.checkForLength]),
+      phone: new FormControl('', [Validators.required, this.checkForPhoneNumber])
     });
 
   }
@@ -92,5 +53,37 @@ export class EditProfileComponent implements OnInit {
           this.alertService.error(error.message);
         })
   }
+
+
+  checkForLength(control: FormControl) {
+    if(control.value.length <= 2) {
+      return {
+        'minLengthError': true
+      };
+    }
+    if(control.value.length >= 19) {
+      return {
+        'maxLengthError': true
+      };
+    }
+  }
+
+  checkForPhoneNumber(control: FormControl) {
+    if(control.value.length <= 3) {
+      return {
+        'minPhoneLengthError': true
+      };
+    }
+      if(control.value.length >= 13) {
+      return {
+        'maxPhoneLengthError': true
+      };
+    }
+    return null;
+  }
+
+
+
+
 
 }

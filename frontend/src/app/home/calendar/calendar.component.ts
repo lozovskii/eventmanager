@@ -20,7 +20,7 @@ const colors: any = {
   },
   pink: {
     primary: "#9b16dd",
-      secondary: "#e6bdf9"
+    secondary: "#e6bdf9"
   },
   green: {
     primary: '#86af49',
@@ -35,7 +35,7 @@ const colors: any = {
 export class CalendarComponent {
   @Input() type: string;
 
-  isMy:boolean;
+  isMy: boolean;
 
   holidays_list = [
     ['Australian Holidays', 'en.australian#holiday@group.v.calendar.google.com'],
@@ -80,21 +80,12 @@ export class CalendarComponent {
     ['US Holidays', 'en.usa#holiday@group.v.calendar.google.com']];
 
   selectedHoliday: string;
-
-  constructor(private eventService: EventService,
-              private router: Router,
-              private forms: FormsModule,
-              private activatedRoute: ActivatedRoute,
-              private modal: NgbModal) {}
-
   @ViewChild('modalContent') modalContent: TemplateRef<any>;
   viewDate = new Date();
-
-    privates: boolean = false;
-    publics: boolean = false;
-    friends: boolean = false;
-    allevents: boolean =true;
-
+  privates: boolean = false;
+  publics: boolean = false;
+  friends: boolean = false;
+  allevents: boolean = true;
   modalData: {
     action: string;
     event: CalendarEvent;
@@ -107,18 +98,24 @@ export class CalendarComponent {
   calendarEvents: CalendarEvent[] = [];
   refresh: Subject<any> = new Subject();
 
+  constructor(private eventService: EventService,
+              private router: Router,
+              private forms: FormsModule,
+              private activatedRoute: ActivatedRoute,
+              private modal: NgbModal) {
+  }
 
   ngOnInit(): void {
     if (this.type == 'my') {
-      this.isMy=true;
-    } else if(this.type == 'timeline') {
-      this.isMy=false;
+      this.isMy = true;
+    } else if (this.type == 'timeline') {
+      this.isMy = false;
     }
     this.getEvents('ALL')
 
   }
 
-  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+  dayClicked({date, events}: { date: Date; events: CalendarEvent[] }): void {
     if (this.isMy && isSameMonth(date, this.viewDate)) {
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
@@ -136,17 +133,17 @@ export class CalendarComponent {
     this.router.navigate(['/event-container', event.id]);
   }
 
-  queryEvents(eventType: string){
-    if(this.isMy) {
-      if(eventType == 'PUBLIC'){
+  queryEvents(eventType: string) {
+    if (this.isMy) {
+      if (eventType == 'PUBLIC') {
         return this.eventService.getAllPublicEventsInMonth()
-      }else {
+      } else {
         if (eventType == 'PRIVATE') {
           return this.eventService.getAllPrivateEventsInMonth()
-        }else {
+        } else {
           if (eventType == 'FRIENDS') {
             return this.eventService.getAllFriendsEventsInMonth()
-          }else {
+          } else {
             return this.eventService.getEventsByCustId();
           }
         }
@@ -156,19 +153,22 @@ export class CalendarComponent {
     }
   }
 
-  onChangePrivate(type: string):void{
+  onChangePrivate(type: string): void {
     console.log(type);
     this.getEvents(type);
   }
-  onChangePublic(type: string):void{
+
+  onChangePublic(type: string): void {
     console.log(type);
     this.getEvents(type);
   }
-  onChangeFriends(type: string):void{
+
+  onChangeFriends(type: string): void {
     console.log(type);
     this.getEvents(type);
   }
-  onChangeAll(type: string):void{
+
+  onChangeAll(type: string): void {
     console.log(type);
     this.getEvents(type);
   }
@@ -186,7 +186,7 @@ export class CalendarComponent {
             title: this.events[i].event.name,
             start: new Date(this.events[i].event.startTime),
             end: new Date(this.events[i].event.endTime),
-            color: this.events[i].event.visibility == "PUBLIC" ? colors.red : this.events[i].event.visibility ==  "FRIENDS" ? colors.blue : colors.pink
+            color: this.events[i].event.visibility == "PUBLIC" ? colors.red : this.events[i].event.visibility == "FRIENDS" ? colors.blue : colors.pink
           })
         }
         this.refresh.next();
@@ -195,22 +195,30 @@ export class CalendarComponent {
 
 
   showHolidays() {
-    this.calendarEvents = this.calendarEvents.slice(0, this.events.length);
+    this.calendarEvents = [];
+    this.events.forEach((event) => {
+      this.calendarEvents.push({
+        id: event.event.id,
+        title: event.event.name,
+        start: new Date(event.event.startTime),
+        end: new Date(event.event.endTime),
+        color: event.event.visibility == "PUBLIC" ? colors.red : event.event.visibility == "FRIENDS" ? colors.blue : colors.pink
+      })
+    });
     this.refresh.next();
     console.log(this.selectedHoliday);
     this.eventService.getNationalEvents(this.selectedHoliday)
       .subscribe((events) => {
         this.nationalEvents = events;
-        for (let i = 0; i < events.length; i++) {
-          console.log(this.nationalEvents[i].visibility);
-          console.log(this.nationalEvents[i].startTime + ' ' + this.nationalEvents[i].endTime);
+        events.forEach((event) => {
           this.calendarEvents.push({
-            title: this.nationalEvents[i].name,
-            start: new Date(this.nationalEvents[i].startTime),
-            end: new Date(this.nationalEvents[i].endTime),
+            id: event.id,
+            title: event.name,
+            start: new Date(event.startTime),
+            end: new Date(event.endTime),
             color: colors.green
           })
-        }
+        });
         this.refresh.next();
       });
   }

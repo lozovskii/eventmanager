@@ -1,15 +1,13 @@
 <div *ngIf="isMy">
-<form (submit)="showHolidays()">
-  <div class="form-group">
-    <label for="holidays">You can see additional events:   </label>
-    <select class="mat-select-content" [(ngModel)]="selectedHoliday" id="holidays" name="holidays">
+  <div class="input-group mb-1">
+    <label class="input-group-text" for="holidays">You can see additional events:   </label>
+    <select class="custom-select" [(ngModel)]="selectedHoliday" id="holidays" name="holidays">
       <option *ngFor="let holiday of holidays_list" [value]="holiday[1]">
         {{holiday[0]}}
       </option>
     </select>
-    <button type="submit" class="btn btn-outline-info">Show</button>
+    <button class="btn btn-outline-secondary" (click)="showHolidays()">Show</button>
   </div>
-</form>
   <div>
     <div class="btn-group col-md-12" role="group" *ngIf="isMy" style="padding: 10px">
       <button class="btn btn-outline-info col-md-4" (click)="onChangePrivate('PRIVATE')">PRIVATE</button>
