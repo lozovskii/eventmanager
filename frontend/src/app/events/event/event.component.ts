@@ -20,6 +20,7 @@ export class EventComponent implements OnInit {
   additionEventForm: FormGroup;
   priority: string;
   zoom: number = 16;
+  isLocationExist = false;
 
 
 
@@ -38,11 +39,13 @@ export class EventComponent implements OnInit {
     this.eventService.getEventById(id).subscribe((eventDTO: EventDTOModel) => {
       this.eventDTO = eventDTO;
       console.log('eventDTO = ' + this.eventDTO);
+      this.checkLocations();
       let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
       let currentUserLogin = JSON.parse(sessionStorage.getItem('currentUser')).login;
       this.isCreator = currentUserId == this.eventDTO.event.creatorId;
       let isCurrentParticipant = this.eventDTO.additionEvent.people.find(x => x.valueOf() == currentUserLogin);
       this.isParticipant = isCurrentParticipant != undefined;
+
     });
   }
 
@@ -86,6 +89,13 @@ export class EventComponent implements OnInit {
       () => this.eventDTO.additionEvent.priority = this.priority,
       () => this.alertService.error('Something went wrong while updating priority', false)
     );
+  }
+
+  checkLocations() {
+    console.log('in ngInin is Locatoin: '+this.eventDTO.additionEvent.location);
+    if(this.eventDTO.additionEvent.location !== null) {
+      this.isLocationExist = true;
+    }
   }
 
 

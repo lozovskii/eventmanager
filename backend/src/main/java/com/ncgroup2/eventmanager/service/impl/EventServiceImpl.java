@@ -95,9 +95,11 @@ public class EventServiceImpl implements EventService {
     }
 
     private void addLocation(EventDTO eventDTO, UUID eventId, UUID locationId) {
-        eventDTO.getAdditionEvent().getLocation().setEvent_id(eventId.toString());
-        eventDTO.getAdditionEvent().getLocation().setId(locationId.toString());
-        locationService.create(eventDTO.getAdditionEvent().getLocation());
+        if(eventDTO.getAdditionEvent().getLocation() != null) {
+            eventDTO.getAdditionEvent().getLocation().setEvent_id(eventId.toString());
+            eventDTO.getAdditionEvent().getLocation().setId(locationId.toString());
+            locationService.create(eventDTO.getAdditionEvent().getLocation());
+        }
     }
 
     @Override
