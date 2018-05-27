@@ -34,6 +34,7 @@ const colors: any = {
 })
 export class CalendarComponent {
   @Input() type: string;
+  @Input() login: string;
 
   isMy: boolean;
 
@@ -149,7 +150,7 @@ export class CalendarComponent {
         }
       }
     } else {
-      return this.eventService.getTimeline(JSON.parse(sessionStorage.getItem('currentUser')).login);
+      return this.eventService.getTimeline(this.login);
     }
   }
 
