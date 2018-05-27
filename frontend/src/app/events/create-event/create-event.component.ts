@@ -19,16 +19,16 @@ export class CreateEventComponent implements OnInit {
   eventForm: FormGroup;
   additionEventForm: FormGroup;
   eventDTOForm: FormGroup;
-  isNote:boolean = false;
-  isDraft:boolean = false;
+  isNote: boolean = false;
+  isDraft: boolean = false;
 
   nameNote: string;
-  descriptionNote:string;
-  startDateDraft:string;
-  endDateDraft:string;
-  visibilityDraft:string;
-  priorityDraft:string;
-  peopleDraft:string[];
+  descriptionNote: string;
+  startDateDraft: string;
+  endDateDraft: string;
+  visibilityDraft: string;
+  priorityDraft: string;
+  peopleDraft: string[];
 
   isValidFormSubmitted = null;
 
@@ -36,6 +36,7 @@ export class CreateEventComponent implements OnInit {
   visibility: string;
   selectedPeople: string[] = [];
   eventLocation: Location;
+  date;
 
   constructor(private router: Router,
               private eventService: EventService,
@@ -43,6 +44,26 @@ export class CreateEventComponent implements OnInit {
               private alertService: AlertService,
               private formBuilder: FormBuilder,
               private userService: UserService) {
+  }
+
+  get name() {
+    return this.eventForm.get('name');
+  }
+
+  get description() {
+    return this.eventForm.get('description');
+  }
+
+  get startTime() {
+    return this.eventForm.get('startTime');
+  }
+
+  get endTime() {
+    return this.eventForm.get('endTime');
+  }
+
+  get frequencyNumber() {
+    return this.additionEventForm.get('frequencyNumber');
   }
 
   ngOnInit(): void {
@@ -72,12 +93,12 @@ export class CreateEventComponent implements OnInit {
 
   initEventForm(): FormGroup {
     return this.formBuilder.group({
-      name : ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
       description: ['', [Validators.maxLength(2048)]],
       startTime: new FormControl(),
       endTime: new FormControl(),
       visibility: new FormControl()
-    })
+    }, {validator: [this.dateLessThan('startTime', 'endTime'), this.bothOrNone('startTime', 'endTime'), this.dateBeforeNow('startTime')]})
   }
 
   initAdditionEventForm(): FormGroup {
@@ -103,33 +124,34 @@ export class CreateEventComponent implements OnInit {
   }
 
   createEventForm(eventDTO: EventDTOModel) {
-    if(eventDTO.event.name == null){
+    if (eventDTO.event.name == null) {
       eventDTO.event.name = this.eventDTO.event.name;
     }
-    if(eventDTO.event.description == null){
+    if (eventDTO.event.description == null) {
       eventDTO.event.description = this.eventDTO.event.description;
     }
-    // this.isValidFormSubmitted = false;
-    // if (this.eventForm.invalid || this.additionEventForm.invalid) {
-    //   return;
-    // }
-    // this.isValidFormSubmitted = true;
+    this.isValidFormSubmitted = false;
+    if (this.eventForm.invalid || this.additionEventForm.invalid) {
+      this.alertService.error("You input is wrong. Please, check and try again", false);
+      return;
+    }
+    this.isValidFormSubmitted = true;
     if (eventDTO.event.startTime != null) {
       eventDTO.event.startTime = (eventDTO.event.startTime).slice(0, 10) + ' ' + (eventDTO.event.startTime).slice(11, 16) + ':00';
     }
     if (eventDTO.event.endTime != null) {
       eventDTO.event.endTime = (eventDTO.event.endTime).slice(0, 10) + ' ' + (eventDTO.event.endTime).slice(11, 16) + ':00';
-    }else{
+    } else {
       eventDTO.event.startTime = this.startDateDraft;
       eventDTO.event.endTime = this.endDateDraft;
     }
-    if((eventDTO.event.visibility ==null) && (this.visibilityDraft !=null)){
+    if ((eventDTO.event.visibility == null) && (this.visibilityDraft != null)) {
       eventDTO.event.visibility = this.visibilityDraft;
     }
-    if((eventDTO.additionEvent.priority ==null) && (this.priorityDraft !=null)){
+    if ((eventDTO.additionEvent.priority == null) && (this.priorityDraft != null)) {
       eventDTO.additionEvent.priority = this.priorityDraft;
     }
-    if((eventDTO.additionEvent.people ==null) && (this.peopleDraft !=null)){
+    if ((eventDTO.additionEvent.people == null) && (this.peopleDraft != null)) {
       eventDTO.additionEvent.people = this.peopleDraft;
     }
     eventDTO.additionEvent.people = this.selectedPeople;
@@ -156,11 +178,11 @@ export class CreateEventComponent implements OnInit {
       });
   }
 
-  saveAsADraft(eventDTO: EventDTOModel){
-    if(eventDTO.event.name == null){
+  saveAsADraft(eventDTO: EventDTOModel) {
+    if (eventDTO.event.name == null) {
       eventDTO.event.name = this.eventDTO.event.name;
     }
-    if(eventDTO.event.description == null){
+    if (eventDTO.event.description == null) {
       eventDTO.event.description = this.eventDTO.event.description;
     }
     this.isValidFormSubmitted = true;
@@ -171,7 +193,7 @@ export class CreateEventComponent implements OnInit {
     if (eventDTO.event.endTime != null) {
       this.eventDTO.event.endTime = (eventDTO.event.endTime).slice(0, 10) + ' ' +
         (eventDTO.event.endTime).slice(11, 16) + ':00';
-    }else{
+    } else {
       eventDTO.event.startTime = this.startDateDraft;
       eventDTO.event.endTime = this.endDateDraft;
     }
@@ -189,15 +211,35 @@ export class CreateEventComponent implements OnInit {
       });
   }
 
-  get name() {
-    return this.eventForm.get('name');
+  dateBeforeNow(start: string) {
+    return (group: FormGroup): {
+      [key: string]: any} => {
+      let startTime = group.controls[start].value;
+      return Date.parse(startTime) < Date.now()  ? {dateBeforeNow:"Event cannot starts in the past"} : {}
+    }
   }
 
-  get description() {
-    return this.eventForm.get('description');
+  bothOrNone(start: string, end: string) {
+    return (group: FormGroup): {
+      [key: string]: any} => {
+      let startTime = group.controls[start].value;
+      let endTime = group.controls[end].value;
+      return Boolean(startTime) !== Boolean(endTime) ? {onlyOne:"You must specify both dates or none of them (for note)"} : {}
+    }
+
   }
-  get frequencyNumber() {
-    return this.additionEventForm.get('frequencyNumber');
+
+  dateLessThan(from: string, to: string) {
+    return (group: FormGroup): { [key: string]: any } => {
+      let startTime = group.controls[from].value;
+      let endTime = group.controls[to].value;
+      if (Boolean(startTime) && Boolean(endTime) && startTime >= endTime) {
+        return {
+          endLessThanStart: "Start time should be less than end time"
+        };
+      }
+      return {};
+    }
   }
 
   getNoteById(): void {
@@ -212,7 +254,7 @@ export class CreateEventComponent implements OnInit {
   getDraftById(): void {
     this.eventId = this.activatedRoute.snapshot.paramMap.get('id');
     const id = this.eventId;
-    this.eventService.getEventById(id).subscribe((eventDTO : EventDTOModel) => {
+    this.eventService.getEventById(id).subscribe((eventDTO: EventDTOModel) => {
       this.eventDTO = eventDTO;
       this.isNote = true;
       this.startDateDraft = this.eventDTO.event.startTime;

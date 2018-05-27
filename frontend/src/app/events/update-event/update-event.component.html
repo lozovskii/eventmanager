@@ -5,15 +5,15 @@
 
     <h2>Edit Event</h2>
     <br>
-    <form [formGroup]="eventDTOForm" (ngSubmit)="update(eventDTOForm.value)" novalidate>
+    <form *ngIf="eventDTO; else loading" [formGroup]="eventDTOForm" (ngSubmit)="update(eventDTOForm.value)" novalidate>
       <!--[hidden]="!canEdit"-->
       <form [formGroup]="eventForm">
         <div class="form-group">
           <div class="form-group">
-            <label>Title</label>
+            <label>Title<span style="color: red;">*</span></label>
             <input value="{{eventDTO.event.name}}" formControlName="name" id="name" type="text" class="form-control"
                    name="name" required/>
-            <div *ngIf="name.invalid && (name.dirty || name.touched)"
+            <div *ngIf="name.invalid && (name.dirty)"
                  class="alert alert-danger">
 
               <div *ngIf="name?.errors?.required">
@@ -31,7 +31,7 @@
             <label>Description</label>
             <editor initialValue="{{eventDTO.event.description}}" [formControlName]='["description"]'
                     apiKey="h4g5a6vds8edp6kti3ahmikjin0r9usoqh99fs5l8xymelf5" [init]="{plugins: 'link'}"></editor>
-            <div *ngIf="description.value!=null && description.invalid && (description.dirty || description.touched)"
+            <div *ngIf="description.value!=null && description.invalid && (description.dirty)"
                  class="alert alert-danger">
 
               <div *ngIf="description?.errors?.maxlength">
@@ -58,6 +58,11 @@
               formControlName="endTime"
               type="datetime-local"
               class="form-control" name="endTime"/>
+          </div>
+          <div *ngIf="eventForm?.errors" class="alert-danger">
+            <div *ngIf="eventForm?.errors?.endLessThanStart">Start time should be less than end time.</div>
+            <div *ngIf="eventForm?.errors?.onlyOne">You must specify both dates or none of them (for note).</div>
+            <div *ngIf="eventForm?.errors?.dateBeforeNow">Event cannot starts in the past.</div>
           </div>
         </div>
         <div *ngIf="(eventDTO.event.visibility == 'PUBLIC')" class="form-group">
@@ -120,4 +125,9 @@
   </div>
 
 </main>
+
+
+<ng-template #loading>
+  Loading Event...
+</ng-template>
 
