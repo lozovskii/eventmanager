@@ -284,7 +284,6 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
     @Override
     public List<Customer> getFriends(String login) {
         Object[] params = new Object[]{login, 3, login, 3};
-
         return this.getJdbcTemplate().query(getFriends, params, new CustomerMapper());
     }
 
