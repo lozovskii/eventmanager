@@ -20,6 +20,7 @@ export class EventComponent implements OnInit {
   priority: string;
   isHided: boolean;
   zoom: number = 16;
+  isLocationExist = false;
 
 
 
@@ -37,7 +38,8 @@ export class EventComponent implements OnInit {
     const id = this.eventId;
     this.eventService.getEventById(id).subscribe((eventDTO: EventDTOModel) => {
       this.eventDTO = eventDTO;
-      console.log(this.eventDTO);
+      console.log('eventDTO = ' + this.eventDTO);
+      this.checkLocation();
       let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
       let currentUserLogin = JSON.parse(sessionStorage.getItem('currentUser')).login;
       this.isCreator = currentUserId == this.eventDTO.event.creatorId;
@@ -89,6 +91,13 @@ export class EventComponent implements OnInit {
       () => this.eventDTO.additionEvent.priority = this.priority,
       () => this.alertService.error('Something went wrong while updating priority', false)
     );
+  }
+
+  checkLocation() {
+    console.log('in ngInin is Locatoin: '+this.eventDTO.additionEvent.location);
+    if(this.eventDTO.additionEvent.location !== null) {
+      this.isLocationExist = true;
+    }
   }
 
 

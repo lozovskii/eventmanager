@@ -1,140 +1,152 @@
 <script src="../update-event/update-event.component.ts"></script>
 <sidebar></sidebar>
 
-  <main role="main">
-    <h2 class="text-center">Create event</h2>
-    <form [formGroup]="eventDTOForm">
+<main role="main">
+  <h2 class="text-center">Create event</h2>
+  <form [formGroup]="eventDTOForm">
 
-      <form [formGroup]="eventForm">
-        <div class="form-group">
-          <label>Title</label>
-          <input *ngIf = "isNote || isDraft" value="{{eventDTO.event.name}}" formControlName="name" type="text" class="form-control" required/>
-          <input *ngIf = "!isDraft && !isNote" formControlName="name" type="text" class="form-control" required/>
-          <div *ngIf="name.invalid && (name.dirty || name.touched)"
-               class="alert alert-danger">
+    <form [formGroup]="eventForm">
+      <div class="form-group">
+        <label>Title<span style="color: red;">*</span></label>
+        <input *ngIf="isNote || isDraft" value="{{eventDTO.event.name}}" formControlName="name" type="text"
+               class="form-control" required/>
+        <input *ngIf="!isDraft && !isNote" formControlName="name" type="text" class="form-control" required/>
+        <div *ngIf="name.invalid && (name.dirty || name.touched)"
+             class="alert alert-danger">
 
-            <div *ngIf="name?.errors?.required">
-              Title is required.
-            </div>
-            <div *ngIf="name?.errors?.minlength">
-              Title must be at least 3 characters long.
-            </div>
-            <div *ngIf="name?.errors?.maxlength">
-              Title must be less than 40 characters long.
-            </div>
+          <div *ngIf="name?.errors?.required">
+            Title is required.
+          </div>
+          <div *ngIf="name?.errors?.minlength">
+            Title must be at least 3 characters long.
+          </div>
+          <div *ngIf="name?.errors?.maxlength">
+            Title must be less than 40 characters long.
           </div>
         </div>
-        <div class="form-group">
-          <label>Description</label>
-          <editor *ngIf = "isNote || isDraft" [initialValue]="eventDTO.event.description" [formControlName]='["description"]' apiKey="h4g5a6vds8edp6kti3ahmikjin0r9usoqh99fs5l8xymelf5"  [init]="{plugins: 'link'}"></editor>
-          <editor *ngIf = "!isDraft && !isNote" [formControlName]='["description"]' apiKey="h4g5a6vds8edp6kti3ahmikjin0r9usoqh99fs5l8xymelf5"  [init]="{plugins: 'link'}"></editor>
-          <div *ngIf="description.value!=null && description.invalid && (description.dirty || description.touched)"
-               class="alert alert-danger">
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <editor *ngIf="isNote || isDraft" [initialValue]="eventDTO.event.description"
+                [formControlName]='["description"]' apiKey="h4g5a6vds8edp6kti3ahmikjin0r9usoqh99fs5l8xymelf5"
+                [init]="{plugins: 'link'}"></editor>
+        <editor *ngIf="!isDraft && !isNote" [formControlName]='["description"]'
+                apiKey="h4g5a6vds8edp6kti3ahmikjin0r9usoqh99fs5l8xymelf5" [init]="{plugins: 'link'}"></editor>
+        <div *ngIf="description.value!=null && description.invalid && (description.dirty || description.touched)"
+             class="alert alert-danger">
 
-            <div *ngIf="description?.errors?.maxlength">
-              Description must be less than 2048 characters long.
-            </div>
+          <div *ngIf="description?.errors?.maxlength">
+            Description must be less than 2048 characters long.
           </div>
         </div>
-        <br>
-        <div class="form-group">
-          <label>Start time</label>
-          <input *ngIf = "isDraft"
-                 value="{{eventDTO.event.endTime | slice : 0 : 4}}-{{eventDTO.event.endTime | slice : 5 : 7}}-{{eventDTO.event.endTime |slice : 8 : 10}}T{{eventDTO.event.endTime | slice : 11 : 16}}"
-                 formControlName="startTime" type="datetime-local" class="form-control"/>
-          <input *ngIf = "!isDraft" formControlName="startTime" type="datetime-local" class="form-control"/>
-        </div>
-        <div class="form-group">
-          <label>End time</label>
-          <input *ngIf = "isDraft"
-                 value="{{eventDTO.event.endTime | slice : 0 : 4}}-{{eventDTO.event.endTime | slice : 5 : 7}}-{{eventDTO.event.endTime |slice : 8 : 10}}T{{eventDTO.event.endTime | slice : 11 : 16}}"
-                 formControlName="startTime" type="datetime-local" class="form-control"/>
-          <input *ngIf = "!isDraft" formControlName="endTime" type="datetime-local" class="form-control"/>
-        </div>
-        <br>
-        <div class="form-group">
-          <label>Visibility</label>
-          <select *ngIf = "isDraft" value = "{{eventDTO.event.visibility}}" [(ngModel)]="visibility" formControlName="visibility" type="text" class="form-control"
-                  name="visibility">
-            <option *ngFor="let vision of visibilityList" [ngValue]="vision">
-              {{vision}}
-            </option>
-          </select>
-          <select *ngIf = "!isDraft" formControlName="visibility" [(ngModel)]="visibility" type="text" class="form-control" name="visibility">
-            <option *ngFor="let vision of visibilityList" [ngValue]="vision">
-              {{vision}}
-            </option>
-          </select>
-        </div>
-        <div *ngIf="(visibility == 'PUBLIC')" class="form-group">
-          <label>Invite people</label>
-          <div class="row">
-            <div class="col-md-1"></div>
-            <input class="form-control col-md-9" #manLogin id="people" type="text"
-                   name="people"/>
-            <div class="col-md-2">
-            <button type="button" class="btn btn-primary" (click)="addUserToEvent(manLogin.value)">+</button>
-            </div>
-          </div>
-        </div>
-      </form>
-
-      <form [formGroup]="additionEventForm">
-        <table *ngIf="(visibility == 'PUBLIC')" class="table table-striped" style="overflow-x: auto; display: block;">
-          <thead>
-          <tr>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let login of selectedPeople">
-            <td>{{login}}</td>
-            <td>
-              <button type="button" class="btn btn-primary" (click)="deleteUserFromEvent(login)">remove</button>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-        <div class="form-group">
-          <label>Priority</label>
-          <select *ngIf = "isDraft" value = "{{eventDTO.additionEvent.priority}}" formControlName="priority" type="text"
-                  class="form-control">
-            <option value="LOW">Low</option>
-            <option value="AVERAGE">Average</option>
-            <option value="HIGH">High</option>
-          </select>
-          <select *ngIf = "!isDraft" formControlName="priority" type="text" class="form-control">
-            <option value="LOW">Low</option>
-            <option value="AVERAGE">Average</option>
-            <option value="HIGH">High</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Frequency: </label>
-          <input formControlName="frequencyNumber" type="number" class="form-control"/>
-          <select formControlName="frequencyPeriod" type="text" class="form-control">
-            <option value="day">day</option>
-            <option value="week">week</option>
-            <option value="month">month</option>
-            <option value="year">year</option>
-          </select>
-          <div *ngIf="frequencyNumber.value!=null && frequencyNumber.invalid && (frequencyNumber.dirty || frequencyNumber.touched)"
-               class="alert alert-danger">
-
-            <div *ngIf="frequencyNumber?.errors?.min">
-              Frequency number cannot be negative.
-            </div>
-          </div>
-        </div>
-      </form>
-      <br>
-
-      <app-google-maps (onAddLocation)="addLocation($event)"></app-google-maps>
-
+      </div>
       <br>
       <div class="form-group">
-        <button class="btn btn-primary" (click)="createEventForm(eventDTOForm.value)">Create</button>
-        <button class="btn btn-primary" (click)="saveAsADraft(eventDTOForm.value)">Draft</button>
-        <a [routerLink]="['../home']" class="btn btn-link">Cancel</a>
+        <label>Start time</label>
+        <input *ngIf="isDraft"
+               value="{{eventDTO.event.endTime | slice : 0 : 4}}-{{eventDTO.event.endTime | slice : 5 : 7}}-{{eventDTO.event.endTime |slice : 8 : 10}}T{{eventDTO.event.endTime | slice : 11 : 16}}"
+               formControlName="startTime" type="datetime-local" class="form-control"/>
+        <input *ngIf="!isDraft" formControlName="startTime" type="datetime-local" class="form-control"/>
+      </div>
+      <div class="form-group">
+        <label>End time</label>
+        <input *ngIf="isDraft"
+               value="{{eventDTO.event.endTime | slice : 0 : 4}}-{{eventDTO.event.endTime | slice : 5 : 7}}-{{eventDTO.event.endTime |slice : 8 : 10}}T{{eventDTO.event.endTime | slice : 11 : 16}}"
+               formControlName="startTime" type="datetime-local" class="form-control"/>
+        <input *ngIf="!isDraft" formControlName="endTime" type="datetime-local" class="form-control"/>
+        <div *ngIf="eventForm?.errors" class="alert-danger">
+          <div *ngIf="eventForm?.errors?.endLessThanStart">Start time should be less than end time.</div>
+          <div *ngIf="eventForm?.errors?.onlyOne">You must specify both dates or none of them (for note).</div>
+          <div *ngIf="eventForm?.errors?.dateBeforeNow">Event cannot starts in the past.</div>
+        </div>
+      </div>
+      <br>
+      <div class="form-group">
+        <label>Visibility</label>
+        <select *ngIf="isDraft" value="{{eventDTO.event.visibility}}" [(ngModel)]="visibility"
+                formControlName="visibility" type="text" class="form-control"
+                name="visibility">
+          <option *ngFor="let vision of visibilityList" [ngValue]="vision">
+            {{vision}}
+          </option>
+        </select>
+        <select *ngIf="!isDraft" formControlName="visibility" [(ngModel)]="visibility" type="text" class="form-control"
+                name="visibility">
+          <option *ngFor="let vision of visibilityList" [ngValue]="vision">
+            {{vision}}
+          </option>
+        </select>
+      </div>
+      <div *ngIf="(visibility == 'PUBLIC')" class="form-group">
+        <label>Invite people</label>
+        <div class="row">
+          <div class="col-md-1"></div>
+          <input class="form-control col-md-9" #manLogin id="people" type="text"
+                 name="people"/>
+          <div class="col-md-2">
+            <button type="button" class="btn btn-primary" (click)="addUserToEvent(manLogin.value)">+</button>
+          </div>
+        </div>
       </div>
     </form>
-  </main>
+
+    <form [formGroup]="additionEventForm">
+      <table *ngIf="(visibility == 'PUBLIC')" class="table table-striped" style="overflow-x: auto; display: block;">
+        <thead>
+        <tr>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let login of selectedPeople">
+          <td>{{login}}</td>
+          <td>
+            <button type="button" class="btn btn-primary" (click)="deleteUserFromEvent(login)">remove</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="form-group">
+        <label>Priority</label>
+        <select *ngIf="isDraft" value="{{eventDTO.additionEvent.priority}}" formControlName="priority" type="text"
+                class="form-control">
+          <option value="LOW">Low</option>
+          <option value="AVERAGE">Average</option>
+          <option value="HIGH">High</option>
+        </select>
+        <select *ngIf="!isDraft" formControlName="priority" type="text" class="form-control">
+          <option value="LOW">Low</option>
+          <option value="AVERAGE">Average</option>
+          <option value="HIGH">High</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Frequency: </label>
+        <input formControlName="frequencyNumber" type="number" class="form-control"/>
+        <select formControlName="frequencyPeriod" type="text" class="form-control">
+          <option value="day">day</option>
+          <option value="week">week</option>
+          <option value="month">month</option>
+          <option value="year">year</option>
+        </select>
+        <div
+          *ngIf="frequencyNumber.value!=null && frequencyNumber.invalid && (frequencyNumber.dirty || frequencyNumber.touched)"
+          class="alert alert-danger">
+
+          <div *ngIf="frequencyNumber?.errors?.min">
+            Frequency number cannot be negative.
+          </div>
+        </div>
+      </div>
+    </form>
+    <br>
+
+    <app-google-maps (onAddLocation)="addLocation($event)"></app-google-maps>
+
+    <br>
+    <div class="form-group">
+      <button class="btn btn-primary" (click)="createEventForm(eventDTOForm.value)">Create</button>
+      <button class="btn btn-primary" (click)="saveAsADraft(eventDTOForm.value)">Draft</button>
+      <a [routerLink]="['../home']" class="btn btn-link">Cancel</a>
+    </div>
+  </form>
+</main>
