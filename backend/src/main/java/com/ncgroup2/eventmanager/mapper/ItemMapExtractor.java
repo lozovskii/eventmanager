@@ -26,6 +26,7 @@ public class ItemMapExtractor implements ResultSetExtractor<Collection<Item>> {
 
             if (tagsSql != null) {
                 Object[] tagsSqlArray = (Object[]) tagsSql.getArray();
+                assert item != null;
                 item.setTags(getExtTags(tagsSqlArray));
             }
 
@@ -33,6 +34,7 @@ public class ItemMapExtractor implements ResultSetExtractor<Collection<Item>> {
 
             if (ratingSql != null){
                 Object[] itemRatersArray = (Object[]) ratingSql.getArray();
+                assert item != null;
                 item.setRaters(getRaters(itemRatersArray));
             }
             items.add(item);

@@ -35,6 +35,7 @@ import {DeleteFolderComponent} from "./folders/delete-folder/delete-folder.compo
 import {DraftListComponent} from "./events/drafts/draft-list/draft-list.component";
 import {DraftContentComponent} from "./events/drafts/draft-content/draft-content.component";
 import {EditFolderComponent} from "./folders/edit-folder/edit-folder.component";
+import {CustomerProfileComponent} from "./profile/customer-profile/customer-profile.component";
 
 const appRoutes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full'},
@@ -49,6 +50,7 @@ const appRoutes: Routes = [
   { path: 'send-reset-link', component: SendLinkComponent},
   { path: 'reset-password', component: ResetComponent},
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
+  { path: 'customer/:login', component: CustomerProfileComponent, canActivate: [AuthGuard]},
   // { path: 'vnavbar', component: SidebarComponent, canActivate: [AuthGuard]},
   { path: 'folder-list/:type', component: FolderListComponent, canActivate: [AuthGuard]},
   { path: 'folder-list', component: FolderListComponent, canActivate: [AuthGuard]},

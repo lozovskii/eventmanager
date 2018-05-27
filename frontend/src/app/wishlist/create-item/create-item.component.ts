@@ -24,7 +24,7 @@ export class CreateItemComponent implements OnInit {
 
   additionalForm = this.formBuilder.group({
     image: [''],
-    imageUrl: ['']
+    imageUrl: ['', [Validators.minLength(4), Validators.maxLength(128), Validators.pattern("https:\\+")]]
   });
 
   mainForm: FormGroup = this.formBuilder.group({
@@ -101,6 +101,10 @@ export class CreateItemComponent implements OnInit {
 
   get link() {
     return this.itemForm.get('link');
+  }
+
+  get imageUrl(){
+    return this.additionalForm.get('imageUrl');
   }
 
 

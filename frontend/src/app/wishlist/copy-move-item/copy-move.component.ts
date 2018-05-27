@@ -23,7 +23,9 @@ export class CopyMoveComponent implements OnChanges {
   wishList: WishList;
   eventsDTO: EventDTOModel[];
 
-  constructor(private eventService: EventService) { }
+  constructor(private eventService: EventService,
+              private wishListService: WishListService,
+              private alertService: AlertService) { }
 
   ngOnChanges(changes: SimpleChanges) {
     for (let prop in changes) {
@@ -51,37 +53,35 @@ export class CopyMoveComponent implements OnChanges {
   }
 
   copyToEventWishList(event: Event): void {
-    console.log(this.copiedItem);
-    console.log(this.movableItem);
-    // let wishList = new WishList();
-    // let wishListItem: WishListItem = new WishListItem();
-    // wishListItem.item = new Item();
-    // wishListItem.item = this.movableItem ? this.movableItem.item : this.copiedItem;
-    // console.log(wishListItem.item);
-    // wishListItem.event_id = event.id;
-    // wishListItem.priority = 3;
-    // wishList.id = event.id;
-    // wishList.items = [wishListItem];
-    //
-    // this.wishListService.addItems(wishList)
-    //   .subscribe(() => {
-    //     if (this.copiedItem)
-    //       this.alertService.success('Item successfully copied to wishlist!');
-    //     else if (this.movableItem) {
-    //       this.wishListService.removeItems([this.movableItem])
-    //         .subscribe(() => {
-    //           let s: Subscription = this.wishListService.wishList$.subscribe((wishList) => {
-    //             this.wishList = wishList;
-    //             let index = this.wishList.items.indexOf(this.movableItem);
-    //             this.wishList.items.splice(index, 1);
-    //           });
-    //           s.unsubscribe();
-    //           this.alertService.success('Item successfully moved to wishlist!')
-    //         });
-    //     }
-    //   }, () => {
-    //     this.alertService.error('Something wrong')
-    //   });
+    let wishList = new WishList();
+    let wishListItem: WishListItem = new WishListItem();
+    wishListItem.item = new Item();
+    wishListItem.item = this.movableItem ? this.movableItem.item : this.copiedItem;
+    console.log(wishListItem.item);
+    wishListItem.event_id = event.id;
+    wishListItem.priority = 3;
+    wishList.id = event.id;
+    wishList.items = [wishListItem];
+
+    this.wishListService.addItems(wishList)
+      .subscribe(() => {
+        if (this.copiedItem)
+          this.alertService.success('Item successfully copied to wishlist!');
+        else if (this.movableItem) {
+          this.wishListService.removeItems([this.movableItem])
+            .subscribe(() => {
+              let s: Subscription = this.wishListService.wishList$.subscribe((wishList) => {
+                this.wishList = wishList;
+                let index = this.wishList.items.indexOf(this.movableItem);
+                this.wishList.items.splice(index, 1);
+              });
+              s.unsubscribe();
+              this.alertService.success('Item successfully moved to wishlist!')
+            });
+        }
+      }, () => {
+        this.alertService.error('Something wrong')
+      });
   }
 
 }

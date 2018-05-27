@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="!isHided">
   <div class="btn-group" role="group" *ngIf="isCreator">
     <button class="btn btn-outline-info" [routerLink]="['/update-event',eventDTO.event.id]">Edit</button>
     <button class="btn btn-outline-danger" (click)="delete()">Delete</button>

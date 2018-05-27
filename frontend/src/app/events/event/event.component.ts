@@ -1,10 +1,9 @@
-import {Component, ElementRef, Input, NgZone, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {EventService} from "../../_services";
 import {ActivatedRoute, Router} from "@angular/router";
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
 import {AlertService} from "../../_services/alert.service";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
-import {MapsAPILoader} from "@agm/core";
 
 @Component({
   selector: 'app-event',
@@ -19,6 +18,7 @@ export class EventComponent implements OnInit {
   isParticipant: boolean = false;
   additionEventForm: FormGroup;
   priority: string;
+  isHided: boolean;
   zoom: number = 16;
   isLocationExist = false;
 
@@ -43,9 +43,11 @@ export class EventComponent implements OnInit {
       let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
       let currentUserLogin = JSON.parse(sessionStorage.getItem('currentUser')).login;
       this.isCreator = currentUserId == this.eventDTO.event.creatorId;
+      if(this.eventDTO.event.visibility=='PRIVATE' && !this.isCreator) {
+        this.isHided = true;
+      }
       let isCurrentParticipant = this.eventDTO.additionEvent.people.find(x => x.valueOf() == currentUserLogin);
       this.isParticipant = isCurrentParticipant != undefined;
-
     });
   }
 
