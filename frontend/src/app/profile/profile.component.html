@@ -47,6 +47,7 @@
         <img src={{user.avatar}} height="55" width="50" class="center-img">
         <td>
           <button class="btn btn-outline-success" (click)="addFriend(user.login)">Add</button>
+          <button class="btn btn-outline-success" routerLink="/customer/{{user.login}}">Show</button>
         </td>
       </tr>
       </tbody>

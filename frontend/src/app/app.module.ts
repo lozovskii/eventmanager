@@ -73,6 +73,7 @@ import {ChatboxComponent} from "./chatbox/chatbox.component";
 import {MessageService} from "./_services/message.service";
 import { EditFolderComponent } from './folders/edit-folder/edit-folder.component';
 import {CopyMoveComponent} from "./wishlist/copy-move-item/copy-move.component";
+import {CustomerProfileComponent} from "./profile/customer-profile/customer-profile.component";
 
 
 @NgModule({
@@ -147,7 +148,8 @@ import {CopyMoveComponent} from "./wishlist/copy-move-item/copy-move.component";
     AdditionalComponentsContainerComponent,
     ChatboxComponent,
     EditFolderComponent,
-    CopyMoveComponent
+    CopyMoveComponent,
+    CustomerProfileComponent
   ],
   providers: [
     AuthGuard,
