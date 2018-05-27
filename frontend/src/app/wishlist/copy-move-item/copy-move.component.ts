@@ -53,8 +53,6 @@ export class CopyMoveComponent implements OnChanges {
   }
 
   copyToEventWishList(event: Event): void {
-    console.log(this.copiedItem);
-    console.log(this.movableItem);
     let wishList = new WishList();
     let wishListItem: WishListItem = new WishListItem();
     wishListItem.item = new Item();

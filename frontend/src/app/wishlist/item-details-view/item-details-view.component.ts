@@ -18,6 +18,7 @@ export class ItemDetailsViewComponent implements OnInit, OnChanges {
   @Output('updatedItem') updatedItem = new EventEmitter<WishListItem>();
   @Output('cancelledItem') cancelledItem = new EventEmitter<WishListItem>();
   @Output('bookedItem') bookedItem = new EventEmitter<WishListItem>();
+
   advancedMode: boolean = false;
   item: Item;
   wishListItem: WishListItem;
@@ -29,6 +30,7 @@ export class ItemDetailsViewComponent implements OnInit, OnChanges {
   constructor(private wishListService: WishListService) {
     this.item = new Item();
     this.wishListItem = new WishListItem();
+    this.wishListItem.item = new Item();
   }
 
   ngOnInit(): void {
@@ -39,6 +41,7 @@ export class ItemDetailsViewComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.item = new Item();
     this.wishListItem = new WishListItem();
+    this.wishListItem.item = new Item();
     this.advancedMode = false;
     this.isBooker = false;
     this.rated = false;

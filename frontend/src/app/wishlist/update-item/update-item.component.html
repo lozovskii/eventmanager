@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="item">
   <form [formGroup]="mainForm" (ngSubmit)="updateItem(itemForm.value)">
 
     <form [formGroup]="itemForm">

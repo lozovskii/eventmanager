@@ -13,6 +13,11 @@
   margin-right: 4px;
   margin-left: 4px;
 }
+
+.zeropadding{
+  padding:0;
+}
+
 .select-style {
   width: 20px;
   height: 20px;
