@@ -158,6 +158,7 @@ export class CreateEventComponent implements OnInit {
     eventDTO.additionEvent.location = this.eventLocation;
     let customerId = this.userService.getCurrentId();
     eventDTO.event.creatorId = customerId;
+    console.log('createEventForm value: '+this.eventDTOForm.value);
     this.eventService.create(eventDTO).subscribe(
       data => {
         if ((eventDTO.event.startTime != null) && (eventDTO.event.startTime != '')) {
@@ -179,6 +180,7 @@ export class CreateEventComponent implements OnInit {
   }
 
   saveAsADraft(eventDTO: EventDTOModel) {
+    console.log('In create-ivent/ saveAsDraft 1: ' + JSON.stringify(eventDTO));
     if (eventDTO.event.name == null) {
       eventDTO.event.name = this.eventDTO.event.name;
     }
@@ -202,6 +204,7 @@ export class CreateEventComponent implements OnInit {
     eventDTO.additionEvent.location = this.eventLocation;
     let customerId = this.userService.getCurrentId();
     eventDTO.event.creatorId = customerId;
+    console.log('In create-ivent/ saveAsDraft 2: ' + JSON.stringify(eventDTO));
     this.eventService.create(eventDTO).subscribe(data => {
         this.alertService.success('Draft successfully saved!', true);
         this.router.navigate(['../home']);
