@@ -131,7 +131,9 @@ export class CalendarComponent {
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
-    this.router.navigate(['/event-container', event.id]);
+    if(this.isMy) {
+      this.router.navigate(['/event-container', event.id]);
+    }
   }
 
   queryEvents(eventType: string) {
