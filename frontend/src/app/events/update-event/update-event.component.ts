@@ -20,7 +20,8 @@ export class UpdateEventComponent implements OnInit {
   people: string[] = [];
   newPeople: string[] = [];
   removedPeople: string[] = [];
-  eventLocation: Location = new Location();
+  eventLocation: Location;
+  isLocationExist = false;
 
   isValidFormSubmitted: boolean;
 
@@ -62,12 +63,12 @@ export class UpdateEventComponent implements OnInit {
     this.eventService.getEventById(id)
       .pipe(tap(eventDTO => this.eventDTOForm.patchValue(eventDTO)))
       .subscribe((eventDTO) => {
-        this.eventDTO = eventDTO;
-        if (this.eventDTO.additionEvent.people != null) {
-          this.people = eventDTO.additionEvent.people;
-        }
-
-      });
+      this.eventDTO = eventDTO;
+      if (this.eventDTO.additionEvent.people != null) {
+        this.people = eventDTO.additionEvent.people;
+      }
+      this.checkLocationUpdate();
+    });
   }
 
   initEventForm(): FormGroup {
@@ -184,6 +185,25 @@ export class UpdateEventComponent implements OnInit {
     let index = this.people.indexOf(value, 0);
     if (index > -1) {
       array.splice(index, 1);
+    }
+  }
+
+  addLocation(location: Location) {
+    this.eventLocation = location;
+  }
+
+  get name() {
+    return this.eventForm.get('name');
+  }
+
+  get description() {
+    return this.eventForm.get('description');
+  }
+
+  checkLocationUpdate() {
+    console.log('in ngInin is Locatoin: '+this.eventDTO.additionEvent.location);
+    if(this.eventDTO.additionEvent.location !== null) {
+      this.isLocationExist = true;
     }
   }
 
