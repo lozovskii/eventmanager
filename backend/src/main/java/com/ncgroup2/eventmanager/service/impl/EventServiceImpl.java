@@ -207,7 +207,9 @@ public class EventServiceImpl implements EventService {
         String priority = updateEventDTO.getPriority();
         eventDao.updateEvent(event, priority);
         Location location = updateEventDTO.getLocation();
-        locationService.update(location);
+            if (location != null) {
+            locationService.update(location);
+            }
         getExistingCustomers(updateEventDTO.getNewPeople()).
                 forEach(login -> eventDao.createEventInvitation(login, UUID.fromString(event.getId())));
 
