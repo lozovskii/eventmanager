@@ -67,7 +67,7 @@ export class UpdateEventComponent implements OnInit {
       if (this.eventDTO.additionEvent.people != null) {
         this.people = eventDTO.additionEvent.people;
       }
-      this.checkLocationUpdate();
+        this.checkLocationUpdate();
     });
   }
 
@@ -79,7 +79,7 @@ export class UpdateEventComponent implements OnInit {
       startTime: new FormControl(),
       endTime: new FormControl(),
       visibility: new FormControl(),
-      eventLocation: new FormControl()
+      // eventLocation: new FormControl()
     }, {validator: [this.dateLessThan('startTime', 'endTime'), this.bothOrNone('startTime', 'endTime'), this.dateBeforeNow('startTime')]})
   }
 
@@ -87,7 +87,7 @@ export class UpdateEventComponent implements OnInit {
     return this.formBuilder.group({
       priority: new FormControl(),
       people: new FormControl(),
-      eventLocation: new FormControl()
+      // eventLocation: new FormControl()
     })
   }
 
@@ -122,8 +122,10 @@ export class UpdateEventComponent implements OnInit {
     }
     this.updateEventDTO.newPeople = this.newPeople;
     this.updateEventDTO.removedPeople = this.removedPeople;
-    this.eventLocation.event_id = this.eventDTO.event.id;
-    this.updateEventDTO.location = this.eventLocation;
+       if (this.eventLocation !== undefined) {
+      this.eventLocation.event_id = this.eventDTO.event.id;
+      this.updateEventDTO.location = this.eventLocation;
+    }
     this.eventService.updateEvent(this.updateEventDTO)
       .subscribe(() => {
         this.alertService.info('Event successfully updated!', true);
@@ -187,7 +189,7 @@ export class UpdateEventComponent implements OnInit {
       array.splice(index, 1);
     }
   }
-    
+
 
   checkLocationUpdate() {
     console.log('in ngInin is Locatoin: '+this.eventDTO.additionEvent.location);

@@ -72,26 +72,30 @@ public class LocationDaoImpl extends JdbcDaoSupport implements LocationDao {
 
     @Override
     public void update(Location location) {
-        String sql = "UPDATE \"Location\" SET " +
-                "country = ?, " +
-                "city = ?, " +
-                "street = ?, " +
-                "house = ?, "+
-                "latitude = ?, "+
-                "longitude = ? "+
-                "WHERE event_id = CAST (? AS UUID)";
+        if(getByEventId(location.getEvent_id()) != null) {
+            String sql = "UPDATE \"Location\" SET " +
+                    "country = ?, " +
+                    "city = ?, " +
+                    "street = ?, " +
+                    "house = ?, " +
+                    "latitude = ?, " +
+                    "longitude = ? " +
+                    "WHERE event_id = CAST (? AS UUID)";
 
-        Object[] params = new Object[] {
-                location.getCountry(),
-                location.getCity(),
-                location.getStreet(),
-                location.getHouse(),
-                location.getLatitude(),
-                location.getLongitude(),
-                location.getEvent_id()
-        };
+            Object[] params = new Object[]{
+                    location.getCountry(),
+                    location.getCity(),
+                    location.getStreet(),
+                    location.getHouse(),
+                    location.getLatitude(),
+                    location.getLongitude(),
+                    location.getEvent_id()
+            };
 
-        this.getJdbcTemplate().update(sql, params);
+            this.getJdbcTemplate().update(sql, params);
+        } else {
+            create(location);
+        }
     }
 
     @Override
