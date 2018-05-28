@@ -305,7 +305,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
     @Override
     public boolean isCustomerExist(String login) {
         Long countOfCustomers;
-        
+
         Object[] params = new Object[]{
                 login
         };
