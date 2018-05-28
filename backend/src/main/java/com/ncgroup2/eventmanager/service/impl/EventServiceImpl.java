@@ -47,9 +47,9 @@ public class EventServiceImpl implements EventService {
     @Override
     public void createEvent(EventDTO eventDTO) {
         Event event = eventDTO.getEvent();
-        Object[] frequancy = checkDefaultCustEventFrequency(eventDTO);
-        Long frequencyNumber = (Long) frequancy[0];
-        String frequencyPeriod = (String) frequancy[1];
+        Object[] frequency = checkDefaultCustEventFrequency(eventDTO);
+        Long frequencyNumber = (Long) frequency[0];
+        String frequencyPeriod = (String) frequency[1];
 
         String priority = checkDefaultCustEventPriority(eventDTO);
         String status = checkDefaultEventStatus(eventDTO);
