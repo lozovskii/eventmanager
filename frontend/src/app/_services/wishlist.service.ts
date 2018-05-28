@@ -123,4 +123,9 @@ export class WishListService {
       .pipe(
         catchError(this.handleError));
   }
+
+  getPageAllItems(page: number, size: number) {
+    const url = `${this.itemsUrl}/pageAll`;
+    return this.http.get(url, {headers: AuthenticationService.getAuthHeader()});
+  }
 }

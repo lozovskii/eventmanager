@@ -1,5 +1,6 @@
 package com.ncgroup2.eventmanager.controller;
 
+import com.ncgroup2.eventmanager.entity.Page;
 import com.ncgroup2.eventmanager.objects.ExtendedTag;
 import com.ncgroup2.eventmanager.entity.Item;
 import com.ncgroup2.eventmanager.service.ItemService;
@@ -67,6 +68,11 @@ public class ItemController {
         }
 
         return new ResponseEntity<>(items, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/pageAll")
+    public Page<Item> getAllItems(@RequestParam int pageNo, @RequestParam int pageSize) {
+        return itemService.getAllItems(pageNo, pageSize);
     }
 
     @PutMapping(value = "/update-rating")

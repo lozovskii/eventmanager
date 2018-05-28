@@ -29,6 +29,8 @@ export class AllItemsComponent implements OnInit {
   order: number = 1;
   currentLogin: string;
   queryString: string;
+  page: number = 1;
+  pages: Number[];
 
   constructor(private wishListService: WishListService,
               private userService: UserService,
@@ -148,6 +150,20 @@ export class AllItemsComponent implements OnInit {
       }, () => {
         this.alertService.info('Items not found');
       });
+  }
+
+  getPageAllItems(): void {
+    this.wishListService.getPageAllItems(this.page, 6)
+      .subscribe(data => {
+        this.items = data['pageItems'];
+        this.pages = new Array(data['pagesAvailable']);
+      })
+  }
+
+  setPage(i,event:any) {
+    event.preventDefault();
+    this.page=i;
+    this.getPageAllItems();
   }
 
   sortItems(prop: string) {
