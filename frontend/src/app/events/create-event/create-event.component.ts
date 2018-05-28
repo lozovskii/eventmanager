@@ -103,7 +103,7 @@ export class CreateEventComponent implements OnInit {
 
   initAdditionEventForm(): FormGroup {
     return this.formBuilder.group({
-      frequencyNumber: ['', [Validators.min(0)]],
+      frequencyNumber: ['', [Validators.min(1)]],
       frequencyPeriod: new FormControl(''),
       priority: new FormControl(''),
       people: new FormControl('')
