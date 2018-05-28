@@ -167,4 +167,9 @@ public class CustomerServiceImpl implements CustomerService {
     public void addGoogleId(String email, String googleId) {
         customerDao.addGoogleId(email, googleId);
     }
+
+    @Override
+    public boolean isFriends(String currentCustomerId, String customerId) {
+        return customerDao.isFriends(currentCustomerId, customerId);
+    }
 }

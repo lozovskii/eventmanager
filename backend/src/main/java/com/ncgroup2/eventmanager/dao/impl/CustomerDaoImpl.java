@@ -395,4 +395,15 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
         this.getJdbcTemplate().update(sql, params);
     }
 
+    @Override
+    public boolean isFriends(String currentCustomerId, String customerId) {
+        String sql = "SELECT \"isFriends\"(cast(? as uuid), cast(? as uuid))";
+        Object[] params = new Object[] {
+                currentCustomerId,
+                customerId
+        };
+        boolean isFriends = this.getJdbcTemplate().query(sql,params,(resultSet, i) -> resultSet.getBoolean("isFriends")).get(0);
+        return isFriends;
+    }
+
 }

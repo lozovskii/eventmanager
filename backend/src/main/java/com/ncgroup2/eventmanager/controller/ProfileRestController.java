@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -192,5 +193,12 @@ public class ProfileRestController {
 
             return new ResponseEntity<>(notifications, HttpStatus.OK);
         }
+    }
+
+    @GetMapping("isFriends")
+    public ResponseEntity isFriends(@RequestParam String currentCustomerId, @RequestParam String customerId) {
+        return customerService.isFriends(currentCustomerId,customerId) ?
+                new ResponseEntity(HttpStatus.OK) :
+                new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 }

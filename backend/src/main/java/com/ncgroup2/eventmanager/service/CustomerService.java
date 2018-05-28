@@ -37,4 +37,6 @@ public interface CustomerService {
     Customer getByGoogleId(String googleId);
 
     void addGoogleId(String email, String googleId);
+
+    boolean isFriends (String currentCustomerId, String customerId);
 }
