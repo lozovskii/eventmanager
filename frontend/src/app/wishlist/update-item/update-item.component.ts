@@ -14,7 +14,7 @@ import {ALLOWED_IMG_FORMATS} from "../../app.config";
 })
 export class UpdateItemComponent implements OnInit, OnChanges {
 
-  allowedFormats: string[] =  ALLOWED_IMG_FORMATS;
+  allowedFormats: string[] = ALLOWED_IMG_FORMATS;
   maxImageSize = MAX_IMG_SIZE;
   base64Image: string;
   loading = true;
@@ -22,14 +22,16 @@ export class UpdateItemComponent implements OnInit, OnChanges {
   itemForm = this.formBuilder.group({
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
     description: ['', [Validators.maxLength(2048)]],
-    link: ['', [Validators.minLength(4), Validators.maxLength(128)]],
+    link: ['', [Validators.minLength(4), Validators.maxLength(128),
+      Validators.pattern("^(ftp|http|https):\\/\\/[^ \"]+$")]],
     dueDate: [''],
     tags: ['']
   });
 
   additionalForm = this.formBuilder.group({
     image: [''],
-    imageUrl: ['']
+    imageUrl: ['', [Validators.minLength(4), Validators.maxLength(128),
+      Validators.pattern("(http(s?):)([/|.|\\w|\\s|-])*\\.(?:jpg|gif|png)")]]
   });
 
   mainForm: FormGroup = this.formBuilder.group({
@@ -49,17 +51,19 @@ export class UpdateItemComponent implements OnInit, OnChanges {
     this.trash = [];
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   ngOnChanges(changes: SimpleChanges) {
-      this.item = changes['editableItem'].currentValue;
-      this.itemForm.controls['name'].setValue(this.item.name);
-      this.itemForm.controls['description'].setValue(this.item.description);
-      this.itemForm.controls['link'].setValue(this.item.link);
-      this.itemForm.controls['dueDate'].setValue(this.item.dueDate);
-      this.itemForm.controls['tags'].reset();
-      this.additionalForm.controls['imageUrl'].setValue(this.item.image);
+    this.item = changes['editableItem'].currentValue;
+    this.itemForm.controls['name'].setValue(this.item.name);
+    this.itemForm.controls['description'].setValue(this.item.description);
+    this.itemForm.controls['link'].setValue(this.item.link);
+    this.itemForm.controls['dueDate'].setValue(this.item.dueDate);
+    this.itemForm.controls['tags'].reset();
+    this.additionalForm.controls['imageUrl'].setValue(this.item.image);
+
+    let today = new Date().toISOString().split('T')[0];
+    document.getElementById("dueDate").setAttribute('min', today);
   }
 
   updateItem(item: Item) {
@@ -71,6 +75,7 @@ export class UpdateItemComponent implements OnInit, OnChanges {
       this.item.image = this.base64Image;
     else
       this.item.image = this.additionalForm.get('imageUrl').value;
+
     this.wishListService.updateItem(this.item)
       .subscribe(() => {
           this.alertService.success('Item successfully updated');
@@ -84,7 +89,6 @@ export class UpdateItemComponent implements OnInit, OnChanges {
     if (this.trash.length > 0) {
       this.wishListService.deleteTags(this.trash)
         .subscribe(() => {
-            this.alertService.success('Tags successfully updated');
           },
           () => {
             this.alertService.error("Something wrong");
@@ -99,17 +103,22 @@ export class UpdateItemComponent implements OnInit, OnChanges {
   }
 
   addTags() {
-    if (this.item.tags == null)
+    if (!this.item.tags)
       this.item.tags = [];
-    let tagsString = this.itemForm.get('tags').value;
-    let tagsArray = tagsString.split(',');
 
-    for (let tagString of tagsArray) {
-      let tag = new Tag();
-      tag.name = tagString;
-      let tagDto = new ExtendedTag();
-      tagDto.tag = tag;
-      this.item.tags.push(tagDto);
+    let tagsString = this.itemForm.get('tags').value;
+
+    if (tagsString) {
+      let tagsArray = tagsString.split(',');
+
+      if (tagsArray.length > 0)
+        for (let tagString of tagsArray) {
+          let tag = new Tag();
+          tag.name = tagString;
+          let tagDto = new ExtendedTag();
+          tagDto.tag = tag;
+          this.item.tags.push(tagDto);
+        }
     }
   }
 
@@ -124,8 +133,6 @@ export class UpdateItemComponent implements OnInit, OnChanges {
   get link() {
     return this.itemForm.get('link');
   }
-
-
 
 
   changeListener($event): void {
@@ -150,9 +157,8 @@ export class UpdateItemComponent implements OnInit, OnChanges {
     return file.size <= this.maxImageSize;
   }
 
-  validImg(file: File){
+  validImg(file: File) {
     let format = UpdateItemComponent.getFileExtension(file.name);
-    console.log(file.size);
     this.loading = !(this.validFormat(format) && this.validSize(file));
   }
 
