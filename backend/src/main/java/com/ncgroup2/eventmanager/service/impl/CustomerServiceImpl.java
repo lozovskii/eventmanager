@@ -127,7 +127,7 @@ public class CustomerServiceImpl implements CustomerService {
         String template = "%s sent you friend request. \n See profile: ";
         String message = String.format(template, sender.getLogin());
 
-        String link = "/customer/" + login;
+        String link = "/customer/" + SecurityContextHolder.getContext().getAuthentication().getName();
 
         mailSender.sendBasicEmailWithLink(sendTo, subject, message, link);
 
