@@ -1,6 +1,7 @@
 package com.ncgroup2.eventmanager.service.impl;
 
 import com.ncgroup2.eventmanager.dao.ItemDao;
+import com.ncgroup2.eventmanager.entity.Page;
 import com.ncgroup2.eventmanager.objects.ExtendedTag;
 import com.ncgroup2.eventmanager.entity.Item;
 import com.ncgroup2.eventmanager.service.ItemService;
@@ -25,6 +26,9 @@ public class ItemServiceImpl implements ItemService {
     public Collection<Item> getAllItems(){
         return itemDao.getAll();
     }
+
+    @Override
+    public Page<Item> getAllItems(int pageNo, int pageSize) { return itemDao.getAll(pageNo, pageSize); }
     public void createItem(Item item){
         itemDao.create(item);
     }

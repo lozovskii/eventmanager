@@ -67,7 +67,11 @@
       </tr>
       </tbody>
     </table>
-
+    <ul class="nav nav-pills">
+      <li class="nav-item" *ngFor="let page of pages; let i = index">
+        <a class="nav-link" href="" (click)="setPage(i+1,$event)">{{i+1}}</a>
+      </li>
+    </ul>
     <div class="modal fade" id="AllItemViewForm" tabindex="-1" role="dialog"
          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">

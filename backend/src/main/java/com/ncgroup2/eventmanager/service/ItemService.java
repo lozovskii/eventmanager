@@ -1,5 +1,6 @@
 package com.ncgroup2.eventmanager.service;
 
+import com.ncgroup2.eventmanager.entity.Page;
 import com.ncgroup2.eventmanager.objects.ExtendedTag;
 import com.ncgroup2.eventmanager.entity.Item;
 
@@ -12,6 +13,8 @@ public interface ItemService {
     Collection<Item> getCreatedItems(String creatorId);
 
     Collection<Item> getAllItems();
+
+    Page<Item> getAllItems(int pageNo, int pageSize);
 
     void createItem(Item item);
 
