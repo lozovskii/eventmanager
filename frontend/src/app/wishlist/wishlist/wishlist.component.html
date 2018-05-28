@@ -66,7 +66,7 @@
                 (click)="cancelBooking(wishListItem)">
           <i class="fas fa-ban"></i>
         </button>
-        <span *ngIf="!isBooker(wishListItem.booker_customer_login)">
+        <span *ngIf="wishListItem.booker_customer_login && !isBooker(wishListItem.booker_customer_login)">
           <a [routerLink]="['/customer',wishListItem.booker_customer_login]">
             {{wishListItem.booker_customer_login}}
           </a>
@@ -90,10 +90,6 @@
                 class="btn-sm button btn-outline-danger" title="Remove item from wishlist">
           <i class="far fa-trash-alt"></i>
         </button>
-        <!--<button *ngIf="isCreator(wishListItem.item)" (click)="editItem(wishListItem.item)" data-toggle="modal" data-target="#edit"-->
-        <!--class="btn-sm btn-outline-secondary" title="Edit item">-->
-        <!--<i class="far fa-edit"></i>-->
-        <!--</button>-->
         <button class="btn btn-sm btn-outline-info" (click)="copyItem(wishListItem.item)"
                 data-toggle="modal" data-target="#copyTo" title="Copy item to wishlist">
           <i class="far fa-copy"></i>
@@ -121,7 +117,6 @@
 
   <additional-components-container
     *ngIf="!editMode"
-  <!--[editableItem]="editableItem"-->
   [copiedItem]="copiedItem"
   [movableItem]="movableItem"
   (createdItem)="addCreatedItem($event)">
