@@ -288,7 +288,7 @@ public class EventServiceImpl implements EventService {
 
     private List<String> getExistingCustomers(List<String> logins) {
         return logins.stream()
-                .filter(login -> customerDao.isCustomerExist(login))
+                .filter(customerDao::isCustomerExist)
                 .collect(Collectors.toList());
     }
 
