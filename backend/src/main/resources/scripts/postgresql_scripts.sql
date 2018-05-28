@@ -1,7 +1,9 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 DROP TABLE IF EXISTS
+"Rating_Item",
 "Message",
 "Chat",
-"Customer_WishList",
 "Event_WishList",
 "Customer_Item_Priority",
 "Item_WishList",
@@ -40,7 +42,8 @@ CREATE TABLE "Customer"
   isVerified 		boolean,
   token 		text,
   avatar		text,
-  registration_date 	TIMESTAMP WITHOUT TIME ZONE
+  registration_date 	TIMESTAMP WITHOUT TIME ZONE,
+  google_id		text
 );
 
 CREATE TABLE "Relationship"
@@ -83,7 +86,8 @@ CREATE TABLE "Event"
   creator_id 		uuid REFERENCES "Customer" (id) ON DELETE CASCADE,
   start_time		TIMESTAMP WITHOUT TIME ZONE,
   end_time		TIMESTAMP WITHOUT TIME ZONE,
-  description   varchar(1024),
+  description   varchar(2048),
+  image			text,
   visibility		smallserial REFERENCES "Event_Visibility" (id) ON DELETE CASCADE,
   status		smallserial REFERENCES "Event_Status" (id) ON DELETE CASCADE
 );
@@ -117,30 +121,34 @@ CREATE TABLE "Customer_Event"
 CREATE TABLE "Tag"
 (
   id 			uuid PRIMARY KEY DEFAULT uuid_generate_v1(),
-  name			varchar(30) NOT NULL,
-  count 		integer
+  name			varchar(30) NOT NULL UNIQUE,
+  count 		integer NOT NULL DEFAULT 1
 );
 
 CREATE TABLE "Item"
 (
   id			uuid PRIMARY KEY DEFAULT uuid_generate_v1(),
   name			varchar(40) NOT NULL,
-  description		varchar(1024),
+  description		varchar(2048),
   image			text,
-  link			varchar(128)
+  link			varchar(128),
+  due_date		date,
+  creator_customer_login varchar(40) NOT NULL REFERENCES "Customer" (login) ON DELETE CASCADE
 );
+
+CREATE TABLE "Rating_Item"
+(
+  id 			uuid PRIMARY KEY DEFAULT uuid_generate_v1(),
+  customer_login			varchar(20) REFERENCES "Customer" (login) ON DELETE CASCADE,
+  item_id		uuid REFERENCES "Item" (id) ON DELETE CASCADE
+);
+
 
 CREATE TABLE "Item_Tag"
 (
   id			uuid PRIMARY KEY DEFAULT uuid_generate_v1(),
   tag_id		uuid NOT NULL REFERENCES "Tag" (id) ON DELETE CASCADE,
   item_id		uuid NOT NULL REFERENCES "Item" (id) ON DELETE CASCADE
-);
-
-CREATE TABLE "Customer_WishList"
-(
-  id			uuid PRIMARY KEY DEFAULT uuid_generate_v1(),
-  customer_id   uuid NOT NULL UNIQUE REFERENCES "Customer" (id) ON DELETE CASCADE
 );
 
 CREATE TABLE "Customer_Item_Priority"
@@ -154,8 +162,8 @@ CREATE TABLE "Item_WishList"
 (
   id			uuid PRIMARY KEY DEFAULT uuid_generate_v1(),
   item_id		uuid REFERENCES "Item" (id) ON DELETE CASCADE,
-  booker_customer_id	uuid REFERENCES "Customer_WishList" (customer_id) ON DELETE CASCADE,
-  priority 		smallserial NOT NULL REFERENCES "Customer_Item_Priority" (id) ON DELETE CASCADE
+  priority 		smallserial NOT NULL REFERENCES "Customer_Item_Priority" (id) ON DELETE CASCADE,
+  booker_customer_login	varchar(20) DEFAULT NULL REFERENCES "Customer" (login) ON DELETE CASCADE
 );
 
 

@@ -124,10 +124,10 @@ public class CustomerServiceImpl implements CustomerService {
 
         String subject = "Friend request";
 
-        String template = "%s %s sent you friend request. \n See profile: ";
-        String message = String.format(template, sender.getName(), sender.getSecondName());
+        String template = "%s sent you friend request. \n See profile: ";
+        String message = String.format(template, sender.getLogin());
 
-        String link = "/profile/" + login;
+        String link = "/customer/" + login;
 
         mailSender.sendBasicEmailWithLink(sendTo, subject, message, link);
 
@@ -166,5 +166,10 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void addGoogleId(String email, String googleId) {
         customerDao.addGoogleId(email, googleId);
+    }
+
+    @Override
+    public boolean isFriends(String currentCustomerId, String customerId) {
+        return customerDao.isFriends(currentCustomerId, customerId);
     }
 }

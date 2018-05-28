@@ -50,4 +50,6 @@ public interface CustomerDao extends DAO<Customer, Object> {
     boolean isCustomerExist(String login);
 
     void addGoogleId(String email, String id);
+
+    boolean isFriends (String currentCustomerId, String customerId);
 }
