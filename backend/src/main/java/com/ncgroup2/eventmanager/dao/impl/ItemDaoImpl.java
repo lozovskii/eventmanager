@@ -200,11 +200,10 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
         if (tags != null && (!tags.isEmpty())) {
 
             String tagsInsertSql =
-                    "INSERT INTO \"Tag\"" +
-                            " (id, name) " +
-                            "VALUES (?::UUID, ?)" +
-                            "ON CONFLICT (name) DO UPDATE SET count = \"Tag\".count + 1 " +
-                            "RETURNING id;";
+                    "INSERT INTO \"Tag\"\n" +
+                            " (id, name)\n" +
+                            "VALUES (?::UUID, ?)\n" +
+                            "ON CONFLICT (name) DO UPDATE SET count = \"Tag\".count + 1\n";
 
             this.getJdbcTemplate().batchUpdate(
                     tagsInsertSql, tags, tags.size(),
@@ -217,7 +216,8 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
             String itemTagInsertSql =
                     "INSERT INTO \"Item_Tag\"" +
                             "(tag_id, item_id) " +
-                            "VALUES ((SELECT id FROM \"Tag\" WHERE name = ?)::uuid, '" + item_id + "'::uuid);";
+                            "VALUES ((SELECT id FROM \"Tag\" WHERE name = ?)::uuid, '" + item_id + "'::uuid)\n" +
+                            "ON CONFLICT (tag_id, item_id) DO NOTHING;";
 
 
             this.getJdbcTemplate().batchUpdate(
