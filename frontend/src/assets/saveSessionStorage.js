@@ -1,4 +1,3 @@
-
 (function () {
 
   if (!sessionStorage.length) {
@@ -8,8 +7,6 @@
 
 
   window.addEventListener('storage', function (event) {
-
-    //console.log('storage event', event);
 
     if (event.key == 'getSessionStorage') {
       // Some tab asked for the sessionStorage -> send it
@@ -39,22 +36,9 @@
     }
   });
 
-  window.addEventListener('storage', function () {
-
-    if (event.key == 'clearSessionStorage') {
-      // Some tab asked for the sessionStorage -> send it
-      sessionStorage.clear();
-    }
-  });
-
 
   window.addEventListener('storage', function (event) {
-
-    //console.log('storage event', event);
-
     if (event.key == 'newLogin') {
-
-
       var data = JSON.parse(event.newValue),
         value;
 

@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {AdditionEventModel} from "../../_models/additionEvent.model";
-import {AlertService} from "../../_services/alert.service";
+import {AlertService, EventService} from "../../_services";
 import {ActivatedRoute, Router} from "@angular/router";
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
-import {EventService} from "../../_services";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 
 @Component({
@@ -66,7 +65,7 @@ export class EventNotificationComponent implements OnInit {
     }
     this.eventService.updateEventNotif(this.eventDTO).subscribe(() => {
       this.alertService.info('Notification time successfully set!', true);
-      this.router.navigate(['eventlist', 'my'])
+      return this.router.navigate(['eventlist', 'my'])
     });
   }
 

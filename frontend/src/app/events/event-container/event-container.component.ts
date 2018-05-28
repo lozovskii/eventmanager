@@ -1,8 +1,7 @@
-import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {EventService} from "../../_services";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {EventComponent} from "../event/event.component";
-import {WishListComponent} from "../../wishlist/wishlist/wishlist.component";
 
 @Component({
   selector: 'app-event-container',
