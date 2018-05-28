@@ -131,7 +131,7 @@ export class CalendarComponent {
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
-    if(this.isMy) {
+    if(this.isMy && event.color!=colors.green) {
       this.router.navigate(['/event-container', event.id]);
     }
   }
