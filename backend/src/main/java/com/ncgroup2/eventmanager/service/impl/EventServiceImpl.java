@@ -393,12 +393,4 @@ public class EventServiceImpl implements EventService {
         });
         return eventsDTO;
     }
-
-    //    private boolean isOverlaped(Event first, Event second) {
-//        return first.getEndTime().isAfter(second.getStartTime());
-//    }
-//    private boolean isFirstEndsEarlier(Event first, Event second) {
-//        return first.getEndTime().isBefore(second.getEndTime());
-//    }
-
 }
