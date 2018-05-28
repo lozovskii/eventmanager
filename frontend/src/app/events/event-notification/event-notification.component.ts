@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AdditionEventModel} from "../../_models/additionEvent.model";
 import {AlertService} from "../../_services/alert.service";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -16,11 +16,12 @@ export class EventNotificationComponent implements OnInit {
   isCreator: boolean;
   isParticipant: boolean;
   additionEventForm: FormGroup;
+  isValidFormSubmitted: boolean;
 
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
-              private alertService : AlertService,
+              private alertService: AlertService,
               private formBuilder: FormBuilder) {
   }
 
@@ -32,24 +33,62 @@ export class EventNotificationComponent implements OnInit {
       this.eventDTO = eventDTO;
       let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
       this.isCreator = currentUserId == this.eventDTO.event.creatorId;
-      this.eventService.isParticipant(currentUserId,this.eventDTO.event.id).subscribe(()=>{this.isParticipant=true}, ()=>{this.isParticipant=false})
+      this.eventService.isParticipant(currentUserId, this.eventDTO.event.id).subscribe(() => {
+        this.isParticipant = true
+      }, () => {
+        this.isParticipant = false
+      })
 
     });
   }
 
   initAdditionEventForm(): FormGroup {
     return this.additionEventForm = this.formBuilder.group({
-      startTimeNotification: new FormControl()
-    });
+        startTimeNotification: new FormControl()
+      }
+      , {
+        validator: [this.dateBeforeNow('startTimeNotification')
+          , this.dateAfterEventStart('startTimeNotification')
+        ]
+      }
+    );
   }
 
-  changeNotStartTime(additionEvent:AdditionEventModel){
+  changeNotStartTime(additionEvent: AdditionEventModel) {
+    this.isValidFormSubmitted = false;
+    if (this.additionEventForm.invalid) {
+      this.alertService.error("You input is wrong. Please, check and try again", false);
+      return;
+    }
+    this.isValidFormSubmitted = true;
     if (additionEvent.startTimeNotification != null) {
       this.eventDTO.additionEvent.startTimeNotification = (additionEvent.startTimeNotification).slice(0, 10) + ' ' + (additionEvent.startTimeNotification).slice(11, 16) + ':00';
     }
     this.eventService.updateEventNotif(this.eventDTO).subscribe(() => {
-      this.alertService.info('Notification time successfully set!',true);
-      this.router.navigate(['eventlist','my'])
+      this.alertService.info('Notification time successfully set!', true);
+      this.router.navigate(['eventlist', 'my'])
     });
+  }
+
+  dateBeforeNow(date: string) {
+    return (group: FormGroup): {
+      [key: string]: any
+    } => {
+      let notificationDate = group.controls[date].value;
+      return Date.parse(notificationDate) < Date.now() ? {dateBeforeNow: "Notifications cannot start in the past"} : {}
     }
+  }
+
+  dateAfterEventStart(date: string) {
+    return (group: FormGroup): {
+      [key: string]: any
+    } => {
+      let notificationDate = group.controls[date].value;
+      return this.eventDTO
+        ? Date.parse(notificationDate) > Date.parse(this.eventDTO.event.startTime)
+          ? {dateAfterEventStart: "Notifications cannot begin after event start"}
+          : {}
+        : {}
+    }
+  }
 }
