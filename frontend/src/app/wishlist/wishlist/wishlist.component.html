@@ -66,7 +66,11 @@
                 (click)="cancelBooking(wishListItem)">
           <i class="fas fa-ban"></i>
         </button>
-        <span *ngIf="!isBooker(wishListItem.booker_customer_login)">{{wishListItem.booker_customer_login}}</span>
+        <span *ngIf="!isBooker(wishListItem.booker_customer_login)">
+          <a [routerLink]="['/customer',wishListItem.booker_customer_login]">
+            {{wishListItem.booker_customer_login}}
+          </a>
+        </span>
       </td>
       <td *ngIf="wishListItem.item.dueDate" class="text-center">{{wishListItem.item.dueDate}}</td>
       <td class="text-center">
@@ -82,15 +86,19 @@
         </div>
       </td>
       <td class="text-center">
-        <button *ngIf="editMode" (click)="removeItem(wishListItem)"
+        <button *ngIf="isEventCreator || editMode" (click)="removeItem(wishListItem)"
                 class="btn-sm button btn-outline-danger" title="Remove item from wishlist">
           <i class="far fa-trash-alt"></i>
         </button>
+        <!--<button *ngIf="isCreator(wishListItem.item)" (click)="editItem(wishListItem.item)" data-toggle="modal" data-target="#edit"-->
+        <!--class="btn-sm btn-outline-secondary" title="Edit item">-->
+        <!--<i class="far fa-edit"></i>-->
+        <!--</button>-->
         <button class="btn btn-sm btn-outline-info" (click)="copyItem(wishListItem.item)"
                 data-toggle="modal" data-target="#copyTo" title="Copy item to wishlist">
           <i class="far fa-copy"></i>
         </button>
-        <button *ngIf="isCreator || editMode" class="btn btn-sm btn-outline-info" (click)="moveItem(wishListItem)"
+        <button *ngIf="isEventCreator || editMode" class="btn btn-sm btn-outline-info" (click)="moveItem(wishListItem)"
                 data-toggle="modal" data-target="#copyTo" title="Move item to wishlist">
           <i class="fas fa-angle-double-left"></i>
         </button>
@@ -113,8 +121,9 @@
 
   <additional-components-container
     *ngIf="!editMode"
-    [editableItem]="editableItem"
-    [copiedItem]="copiedItem"
-    [movableItem]="movableItem">
+  <!--[editableItem]="editableItem"-->
+  [copiedItem]="copiedItem"
+  [movableItem]="movableItem"
+  (createdItem)="addCreatedItem($event)">
   </additional-components-container>
 </div>

@@ -92,6 +92,8 @@
     <additional-components-container
       *ngIf="!isIncluded"
       [editableItem]="editableItem"
-      [copiedItem]="copiedItem">
+      [copiedItem]="copiedItem"
+      (createdItem)="addCreatedItem($event)"
+      (updatedItem)="updateEditedItem($event)">
     </additional-components-container>
   </main>

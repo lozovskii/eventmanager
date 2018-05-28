@@ -5,9 +5,6 @@ import {Item} from "../../_models/wishList/item";
 import {UserService} from "../../_services/user.service";
 import {WishList} from "../../_models/wishList/wishList";
 import {WishListItem} from "../../_models/wishList/wishListItem";
-import {EventService} from "../../_services/event.service";
-import {EventDTOModel} from "../../_models/dto/eventDTOModel";
-import {Event} from "../../_models/event";
 
 @Component({
   selector: 'app-all-items',
@@ -20,26 +17,29 @@ export class AllItemsComponent implements OnInit {
   @Output('editableItem') outEditableItem = new EventEmitter<Item>();
   @Output('copiedItem') outCopiedItem = new EventEmitter<Item>();
 
+  hasChanges: boolean = false;
   itemView: Item;
   editableItem: Item;
   copiedItem: Item;
   wishList: WishList;
   item: Item;
   items: Item[];
+  trash: Item[];
   path: string[] = ['name'];
   order: number = 1;
-  customerLogin: string;
+  currentLogin: string;
   queryString: string;
 
   constructor(private wishListService: WishListService,
               private userService: UserService,
-              private alertService: AlertService,
-              private eventService: EventService) {
+              private alertService: AlertService) {
     this.items = [];
+    this.trash = [];
     this.item = new Item();
     this.item.tags = [];
     this.itemView = new Item();
     this.editableItem = new Item();
+    this.copiedItem = new Item();
     this.queryString = '';
   }
 
@@ -49,7 +49,7 @@ export class AllItemsComponent implements OnInit {
         this.wishList = wishList;
       });
 
-    this.customerLogin = JSON.parse(sessionStorage.getItem('currentUser')).login;
+    this.currentLogin = this.userService.getCurrentLogin();
 
     this.getAllItems();
   }
@@ -61,7 +61,7 @@ export class AllItemsComponent implements OnInit {
   }
 
   isCreator(item: Item): boolean {
-    return item.creator_customer_login == this.customerLogin;
+    return item.creator_customer_login == this.currentLogin;
   }
 
   editItem(item: Item): void {
@@ -86,28 +86,55 @@ export class AllItemsComponent implements OnInit {
 
   addItem(item: Item): void {
     let wishListItem: WishListItem = new WishListItem();
+
+    // if (item.creator_customer_login != this.currentLogin) {
+    //   item.creator_customer_login = this.currentLogin;
+    //   this.addToCollection(item);
+    // }
+
     wishListItem.item = item;
+
     wishListItem.event_id = this.wishList.id;
     wishListItem.priority = 3;
     this.wishList.items.push(wishListItem);
   }
+  //
+  // deleteItem(item: Item): void {
+  //   let index = this.items.indexOf(item);
+  //   this.items.splice(index, 1);
+  //   let trash: Item[] = [];
+  //   trash.push(item);
+  //   this.wishListService.deleteItems(trash).subscribe(() =>
+  //       this.alertService.success('Item successfully deleted!'),
+  //     () => this.alertService.error('Something wrong'));
+  // }
+
 
   deleteItem(item: Item): void {
     let index = this.items.indexOf(item);
     this.items.splice(index, 1);
-    let trash: Item[] = [];
-    trash.push(item);
-    this.wishListService.deleteItems(trash).subscribe(() =>
-        this.alertService.success('Item successfully deleted!'),
-      () => this.alertService.error('Something wrong'));
+    this.trash.push(item);
+    this.hasChanges = true;
+  }
+
+  executeDelete(): void {
+    if (this.trash.length > 0) {
+      this.wishListService.deleteItems(this.trash).subscribe(() =>
+          this.alertService.success('Items successfully deleted!'),
+        () => this.alertService.error('Something wrong'));
+    }
+    this.hasChanges = false;
   }
 
   addToCollection(item: Item): void {
-    delete item.id;
-    item.creator_customer_login = this.userService.getCurrentLogin();
-    this.wishListService.createItem(item)
+    this.item = item;
+    delete this.item.id;
+    this.item.creator_customer_login = this.currentLogin;
+
+    this.wishListService.createItem(this.item)
       .subscribe(() => {
           this.alertService.success('Item added to you Collection.');
+          this.items.push(this.item);
         },
         () => {
           this.alertService.error("Something wrong");
@@ -125,7 +152,7 @@ export class AllItemsComponent implements OnInit {
 
   sortItems(prop: string) {
     this.path = prop.split('.');
-    this.order = this.order * (-1); // change order
-    return false; // do not reload
+    this.order = this.order * (-1);
+    return false;
   }
 }
