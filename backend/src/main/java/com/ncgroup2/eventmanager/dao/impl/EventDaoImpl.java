@@ -149,8 +149,15 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         return this.getJdbcTemplate().queryForObject(query, params, int.class);
     }
 
+//    @Cacheable("events")
     @Override
     public List getEventsByCustId(String custId) {
+//        try {
+//            long time = 3000L;
+//            Thread.sleep(time);
+//        } catch (InterruptedException e) {
+//            throw new IllegalStateException(e);
+//        }
         String query = queryService.getQuery("event.getByCustIdSort");
         Object[] params = new Object[]{
                 custId,
@@ -368,7 +375,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
             InviteNotificationDTO notification = new InviteNotificationDTO();
             notification.setEventId(resultSet.getString("event_id"));
             notification.setEventName(resultSet.getString("event_name"));
-            notification.setInviter(resultSet.getString("name") + " " + resultSet.getString("second_name"));
+            notification.setInviter(resultSet.getString("login"));
             return notification;
         });
     }

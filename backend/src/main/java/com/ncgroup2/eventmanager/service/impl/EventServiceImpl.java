@@ -14,7 +14,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -267,9 +269,16 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> getTimeline(String login, LocalDateTime from, LocalDateTime to) {
+    public List<EventDTO> getTimeline(String login, LocalDateTime from, LocalDateTime to) {
         String customerId = customerDao.getEntityByField("login", login).getId();
-        return eventDao.getTimelineEvents(customerId, from, to);
+        List<Event> list =  eventDao.getTimelineEvents(customerId, from, to);
+        List<EventDTO> dtoList = new ArrayList<>();
+        list.forEach((event) -> {
+            EventDTO dto = new EventDTO();
+            dto.setEvent(event);
+            dtoList.add(dto);
+        });
+        return dtoList;
     }
 
     @Override
