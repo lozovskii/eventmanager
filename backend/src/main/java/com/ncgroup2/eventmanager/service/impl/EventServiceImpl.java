@@ -299,8 +299,8 @@ public class EventServiceImpl implements EventService {
 
         String subject = "New invite";
 
-        String template = "%s %s invited you to '%s' event.\n See more: ";
-        String message = String.format(template, inviter.getName(), inviter.getSecondName(), event.getName());
+        String template = "%s invited you to '%s' event.\n See more: ";
+        String message = String.format(template, inviter.getLogin(), event.getName());
 
         String url = "/event-container/" + eventId.toString();
         mailSender.sendBasicEmailWithLink(sendTo, subject, message, url);
