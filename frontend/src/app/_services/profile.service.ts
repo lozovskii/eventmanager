@@ -3,13 +3,15 @@ import {HttpClient} from "@angular/common/http";
 import {User} from "../_models";
 import {Observable} from "rxjs";
 import {AuthenticationService} from "./authentication.service";
+import {UserService} from "./user.service";
 
 @Injectable()
 export class ProfileService {
 
   private url = '/api/profile';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private userService: UserService) {
   }
 
   getByLogin(login: string): Observable<any> {
@@ -77,6 +79,12 @@ export class ProfileService {
   deleteFriend(login) {
     return this.http.delete(
       `${this.url}/delete/${login}`,
+      {headers: AuthenticationService.getAuthHeader()});
+  }
+
+  isFriend (customerId) {
+    return this.http.get(
+      `${this.url}/isFriends?currentCustomerId=${this.userService.getCurrentId()}&customerId=${customerId}`,
       {headers: AuthenticationService.getAuthHeader()});
   }
 }

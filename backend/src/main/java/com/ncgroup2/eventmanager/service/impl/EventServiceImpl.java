@@ -47,9 +47,9 @@ public class EventServiceImpl implements EventService {
     @Override
     public void createEvent(EventDTO eventDTO) {
         Event event = eventDTO.getEvent();
-        Object[] frequancy = checkDefaultCustEventFrequency(eventDTO);
-        Long frequencyNumber = (Long) frequancy[0];
-        String frequencyPeriod = (String) frequancy[1];
+        Object[] frequency = checkDefaultCustEventFrequency(eventDTO);
+        Long frequencyNumber = (Long) frequency[0];
+        String frequencyPeriod = (String) frequency[1];
 
         String priority = checkDefaultCustEventPriority(eventDTO);
         String status = checkDefaultEventStatus(eventDTO);
@@ -288,7 +288,7 @@ public class EventServiceImpl implements EventService {
 
     private List<String> getExistingCustomers(List<String> logins) {
         return logins.stream()
-                .filter(login -> customerDao.isCustomerExist(login))
+                .filter(customerDao::isCustomerExist)
                 .collect(Collectors.toList());
     }
 
@@ -299,8 +299,8 @@ public class EventServiceImpl implements EventService {
 
         String subject = "New invite";
 
-        String template = "%s %s invited you to '%s' event.\n See more: ";
-        String message = String.format(template, inviter.getName(), inviter.getSecondName(), event.getName());
+        String template = "%s invited you to '%s' event.\n See more: ";
+        String message = String.format(template, inviter.getLogin(), event.getName());
 
         String url = "/event-container/" + eventId.toString();
         mailSender.sendBasicEmailWithLink(sendTo, subject, message, url);
@@ -393,12 +393,4 @@ public class EventServiceImpl implements EventService {
         });
         return eventsDTO;
     }
-
-    //    private boolean isOverlaped(Event first, Event second) {
-//        return first.getEndTime().isAfter(second.getStartTime());
-//    }
-//    private boolean isFirstEndsEarlier(Event first, Event second) {
-//        return first.getEndTime().isBefore(second.getEndTime());
-//    }
-
 }

@@ -1,4 +1,3 @@
-
 (function () {
 
   if (!sessionStorage.length) {
@@ -9,15 +8,13 @@
 
   window.addEventListener('storage', function (event) {
 
-    //console.log('storage event', event);
-
-    if (event.key == 'getSessionStorage') {
+    if (event.key === 'getSessionStorage') {
       // Some tab asked for the sessionStorage -> send it
 
       localStorage.setItem('sessionStorage', JSON.stringify(sessionStorage));
       localStorage.removeItem('sessionStorage');
 
-    } else if (event.key == 'sessionStorage' && !sessionStorage.length) {
+    } else if (event.key === 'sessionStorage' && !sessionStorage.length) {
       // sessionStorage is empty -> fill it
 
       var data = JSON.parse(event.newValue),
@@ -33,15 +30,7 @@
 
   window.addEventListener('storage', function () {
 
-    if (event.key == 'clearSessionStorage') {
-      // Some tab asked for the sessionStorage -> send it
-      sessionStorage.clear();
-    }
-  });
-
-  window.addEventListener('storage', function () {
-
-    if (event.key == 'clearSessionStorage') {
+    if (event.key === 'clearSessionStorage') {
       // Some tab asked for the sessionStorage -> send it
       sessionStorage.clear();
     }
@@ -49,12 +38,7 @@
 
 
   window.addEventListener('storage', function (event) {
-
-    //console.log('storage event', event);
-
-    if (event.key == 'newLogin') {
-
-
+    if (event.key === 'newLogin') {
       var data = JSON.parse(event.newValue),
         value;
 

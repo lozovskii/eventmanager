@@ -65,7 +65,11 @@
 
       <div class="form-group">
         <label for="dueDate">Due date <span style="color: red;">*</span></label>
-        <input formControlName="dueDate" id="dueDate" type="date" class="form-control" name="dueDate" required/>
+        <input formControlName="dueDate" id="dueDate" type="date"
+               class="form-control" name="dueDate" required/>
+        <small class="text-muted">
+          Not earlier than today
+        </small>
       </div>
 
 

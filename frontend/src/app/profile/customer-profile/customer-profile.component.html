@@ -12,7 +12,7 @@
       <p> E-mail: {{customer.email}}</p>
       <p> Phone: {{customer.phone}}</p>
     </div>
-    <div class="col-8">
+    <div class="col-8" *ngIf="isFriend">
       <h1>Timeline</h1>
       <div class="col-auto" style="margin: 16px">
         <div class="row">
@@ -26,7 +26,7 @@
           </div>
         </div>
       </div>
-      <calendar-component [type]="'timeline'" [login]="customer.login"></calendar-component>
+      <calendar-component  [type]="'timeline'" [login]="customer.login"></calendar-component>
     </div>
   </div>
 </main>

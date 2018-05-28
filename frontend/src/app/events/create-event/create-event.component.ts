@@ -103,7 +103,7 @@ export class CreateEventComponent implements OnInit {
 
   initAdditionEventForm(): FormGroup {
     return this.formBuilder.group({
-      frequencyNumber: ['', [Validators.min(0)]],
+      frequencyNumber: ['', [Validators.min(1)]],
       frequencyPeriod: new FormControl(''),
       priority: new FormControl(''),
       people: new FormControl('')
@@ -189,12 +189,10 @@ export class CreateEventComponent implements OnInit {
     }
     this.isValidFormSubmitted = true;
     if (eventDTO.event.startTime != null) {
-      this.eventDTO.event.startTime = (eventDTO.event.startTime).slice(0, 10) + ' ' +
-        (eventDTO.event.startTime).slice(11, 16) + ':00';
+      eventDTO.event.startTime = (eventDTO.event.startTime).slice(0, 10) + ' ' + (eventDTO.event.startTime).slice(11, 16) + ':00';
     }
     if (eventDTO.event.endTime != null) {
-      this.eventDTO.event.endTime = (eventDTO.event.endTime).slice(0, 10) + ' ' +
-        (eventDTO.event.endTime).slice(11, 16) + ':00';
+      eventDTO.event.endTime = (eventDTO.event.endTime).slice(0, 10) + ' ' + (eventDTO.event.endTime).slice(11, 16) + ':00';
     } else {
       eventDTO.event.startTime = this.startDateDraft;
       eventDTO.event.endTime = this.endDateDraft;

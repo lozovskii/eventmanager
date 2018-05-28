@@ -52,7 +52,6 @@ public class PasswordResetController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    //    @RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
     @GetMapping(value = "/resetPassword")
     public ResponseEntity displayResetPasswordPage(@RequestParam("token") String token) {
 
@@ -71,14 +70,9 @@ public class PasswordResetController {
 
         Customer customer = customerService.getCustomerByToken(passwordDTO.getToken());
 
-//        System.out.println(token);
-//
-//        System.out.println(customer.getEmail());
 
         if (customer == null) {
-
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
-
         }
 
         customer.setPassword(passwordEncoder.encode(passwordDTO.getPassword()));

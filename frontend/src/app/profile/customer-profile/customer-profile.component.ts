@@ -12,8 +12,10 @@ import {ProfileService} from "../../_services/profile.service";
 export class CustomerProfileComponent implements OnInit {
 
   customer: User;
+  isFriend: boolean = false;
 
-  constructor(private user: ProfileService, private route: ActivatedRoute) {}
+  constructor(private profileService: ProfileService, private route: ActivatedRoute) {
+  }
 
   ngOnInit() {
     this.getCustomerDetails();
@@ -21,8 +23,11 @@ export class CustomerProfileComponent implements OnInit {
 
   getCustomerDetails(): void {
     const login = this.route.snapshot.paramMap.get("login");
-    this.user.getCustomer(login).subscribe(data => {
+    this.profileService.getCustomer(login).subscribe(data => {
       this.customer = data;
+      this.profileService.isFriend(this.customer.id).subscribe(
+        () => this.isFriend = true,
+        () => this.isFriend = false)
     });
   }
 }

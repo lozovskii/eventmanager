@@ -1,12 +1,16 @@
 package com.ncgroup2.eventmanager.dao.impl;
 
 import com.ncgroup2.eventmanager.dao.ItemDao;
+import com.ncgroup2.eventmanager.entity.Page;
+import com.ncgroup2.eventmanager.mapper.ItemMapper;
 import com.ncgroup2.eventmanager.objects.ExtendedTag;
 import com.ncgroup2.eventmanager.entity.Item;
 import com.ncgroup2.eventmanager.entity.Tag;
 import com.ncgroup2.eventmanager.mapper.ItemMapExtractor;
 import com.ncgroup2.eventmanager.util.Mapper;
+import com.ncgroup2.eventmanager.util.PaginationHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +46,35 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
                         " GROUP BY i.id;";
 
         return this.getJdbcTemplate().query(sql, new ItemMapExtractor());
+    }
+
+    @Override
+    public Page<Item> getAll(int pageNo, int pageSize) {
+        String countRows = "SELECT count(*) FROM (" +
+                "SELECT i.*,array_agg(DISTINCT row(itag.id, t.*)) FILTER (WHERE itag.id IS NOT NULL) as tags," +
+                "array_agg(DISTINCT r.*) FILTER (WHERE r.id IS NOT NULL) as rating " +
+                "FROM \"Item\" i " +
+                "LEFT JOIN \"Item_Tag\" itag ON (itag.item_id = i.id) " +
+                "LEFT JOIN \"Tag\" t ON (itag.tag_id = t.id) " +
+                "LEFT JOIN \"Rating_Item\" r ON (r.item_id = i.id) " +
+                "GROUP BY i.id) AS T";
+
+        String getRows = "SELECT i.*, array_agg(DISTINCT row(itag.id, t.*)) FILTER (WHERE itag.id IS NOT NULL) as tags, " +
+                "array_agg(DISTINCT r.*) FILTER (WHERE r.id IS NOT NULL) as rating FROM \"Item\" i " +
+                "LEFT JOIN \"Item_Tag\" itag ON (itag.item_id = i.id) " +
+                "LEFT JOIN \"Tag\" t ON (itag.tag_id = t.id) " +
+                "LEFT JOIN \"Rating_Item\" r ON (r.item_id = i.id) " +
+                "GROUP BY i.id;";
+
+        return new PaginationHelper<Item>().getPage(
+                this.getJdbcTemplate(),
+                countRows,
+                getRows,
+                new Object[] {},
+                pageNo,
+                pageSize,
+                new ItemMapper()
+        );
     }
 
     @Override
@@ -200,11 +233,10 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
         if (tags != null && (!tags.isEmpty())) {
 
             String tagsInsertSql =
-                    "INSERT INTO \"Tag\"" +
-                            " (id, name) " +
-                            "VALUES (?::UUID, ?)" +
-                            "ON CONFLICT (name) DO UPDATE SET count = \"Tag\".count + 1 " +
-                            "RETURNING id;";
+                    "INSERT INTO \"Tag\"\n" +
+                            " (id, name)\n" +
+                            "VALUES (?::UUID, ?)\n" +
+                            "ON CONFLICT (name) DO UPDATE SET count = \"Tag\".count + 1\n";
 
             this.getJdbcTemplate().batchUpdate(
                     tagsInsertSql, tags, tags.size(),
@@ -217,7 +249,8 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
             String itemTagInsertSql =
                     "INSERT INTO \"Item_Tag\"" +
                             "(tag_id, item_id) " +
-                            "VALUES ((SELECT id FROM \"Tag\" WHERE name = ?)::uuid, '" + item_id + "'::uuid);";
+                            "VALUES ((SELECT id FROM \"Tag\" WHERE name = ?)::uuid, '" + item_id + "'::uuid)\n" +
+                            "ON CONFLICT (tag_id, item_id) DO NOTHING;";
 
 
             this.getJdbcTemplate().batchUpdate(
