@@ -95,5 +95,6 @@ export class BookedItemsComponent implements OnInit {
     }, () => {
       this.alertService.error('Something wrong');
     });
+    this.hasChanges = false;
   }
 }

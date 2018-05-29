@@ -1,4 +1,7 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output,
+  SimpleChanges
+} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AlertService} from "../../_services";
 import {WishListService} from "../../_services/wishlist.service";
@@ -10,6 +13,7 @@ import {ALLOWED_IMG_FORMATS} from "../../app.config";
 
 @Component({
   selector: 'app-update-item',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './update-item.component.html'
 })
 export class UpdateItemComponent implements OnInit, OnChanges {

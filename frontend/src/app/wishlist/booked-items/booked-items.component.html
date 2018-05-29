@@ -25,7 +25,8 @@
       </div>
       <div class="col-auto">
         <button type="button" class="btn btn-outline-primary"
-                [disabled]="!hasChanges" (click)="update()">
+                [ngClass]="{ 'pulse-button': hasChanges }" [disabled]="!hasChanges"
+                (click)="update()">
           <i class="fas fa-save"></i> Save changes
         </button>
       </div>
@@ -79,11 +80,6 @@
                   (click)="cancelBooking(wishListItem)">
             <i class="fas fa-ban"></i>
           </button>
-          <!--<button *ngIf="isCreator(wishListItem.item)" (click)="editItem(item)"-->
-                  <!--data-toggle="modal" data-target="#edit"-->
-                  <!--class="btn-sm btn-outline-secondary" title="Edit item">-->
-            <!--<i class="far fa-edit"></i>-->
-          <!--</button>-->
           <button class="btn btn-sm btn-outline-success" title="Copy item to wishlist"
                   (click)="copyItem(item)"
                   data-toggle="modal" data-target="#copyTo">
@@ -103,7 +99,6 @@
     </div>
 
     <additional-components-container
-      <!--[editableItem]="editableItem"-->
       [copiedItem]="copiedItem">
     </additional-components-container>
 

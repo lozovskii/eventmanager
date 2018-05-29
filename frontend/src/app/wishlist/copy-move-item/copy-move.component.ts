@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {AlertService} from "../../_services/alert.service";
 import {WishListService} from "../../_services/wishlist.service";
 import {Item} from "../../_models/wishList/item";
@@ -12,6 +12,7 @@ import {UserService} from "../../_services/user.service";
 
 @Component({
   selector: 'feature-copy-move',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './copy-move.component.html',
   styleUrls: ['../wishlist/wishlist.component.css']
 })
@@ -24,7 +25,7 @@ export class CopyMoveComponent implements OnChanges, OnInit {
   movableItem: WishListItem;
   wishList: WishList;
   eventsDTO: EventDTOModel[];
-  currentLogin: string;
+  currentId: string;
 
   constructor(private eventService: EventService,
               private wishListService: WishListService,
@@ -33,7 +34,7 @@ export class CopyMoveComponent implements OnChanges, OnInit {
   }
 
   ngOnInit(): void {
-    this.currentLogin = this.userService.getCurrentLogin();
+    this.currentId = this.userService.getCurrentId();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -57,9 +58,12 @@ export class CopyMoveComponent implements OnChanges, OnInit {
   getMyEvents(): void {
     this.eventService.getEventsByCustId()
       .subscribe((eventsDTO) => {
-        this.eventsDTO = eventsDTO.filter(event => {
-          event.event.creatorId = this.currentLogin;
-        });
+        this.eventsDTO = eventsDTO;
+        this.eventsDTO.filter(event =>{
+          event.event.creatorId == this.currentId;
+          console.log(event.event);
+        }
+        )
       });
   }
 
