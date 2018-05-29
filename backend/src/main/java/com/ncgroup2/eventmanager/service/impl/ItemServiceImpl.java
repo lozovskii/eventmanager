@@ -4,6 +4,8 @@ import com.ncgroup2.eventmanager.dao.ItemDao;
 import com.ncgroup2.eventmanager.entity.Page;
 import com.ncgroup2.eventmanager.objects.ExtendedTag;
 import com.ncgroup2.eventmanager.entity.Item;
+import com.ncgroup2.eventmanager.util.sort.Direction;
+import com.ncgroup2.eventmanager.util.sort.Sort;
 import com.ncgroup2.eventmanager.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,10 +27,16 @@ public class ItemServiceImpl implements ItemService {
     }
     public Collection<Item> getAllItems(){
         return itemDao.getAll();
+//        return itemDao.getOrderedAll(new Sort(Direction.ASC,"i.name"));
     }
 
     @Override
-    public Page<Item> getAllItems(int pageNo, int pageSize) { return itemDao.getAll(pageNo, pageSize); }
+    public Collection<Item> getPopularItems() {
+        return itemDao.getPopularItems();
+    }
+
+    @Override
+    public Page<Item> getAllItems(int pageNo, int pageSize) { return itemDao.getAll(pageNo, pageSize, new Sort("i.name")); }
     public void createItem(Item item){
         itemDao.create(item);
     }
@@ -45,7 +53,7 @@ public class ItemServiceImpl implements ItemService {
         itemDao.deleteTags(trash);
     }
     public void addTags(Collection<ExtendedTag> tags, String itemId){
-        itemDao.addTags((List<ExtendedTag>)tags, itemId);
+        itemDao.addTags(tags, itemId);
     }
     public void deleteItems(Collection<Item> trash){
         itemDao.deleteItems(trash);

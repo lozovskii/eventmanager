@@ -7,10 +7,9 @@ import com.ncgroup2.eventmanager.objects.ExtendedTag;
 import com.ncgroup2.eventmanager.entity.Item;
 import com.ncgroup2.eventmanager.entity.Tag;
 import com.ncgroup2.eventmanager.mapper.ItemMapExtractor;
-import com.ncgroup2.eventmanager.util.Mapper;
+import com.ncgroup2.eventmanager.util.sort.Sort;
 import com.ncgroup2.eventmanager.util.PaginationHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,23 +47,35 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
         return this.getJdbcTemplate().query(sql, new ItemMapExtractor());
     }
 
-    @Override
-    public Page<Item> getAll(int pageNo, int pageSize) {
-        String countRows = "SELECT count(*) FROM (" +
-                "SELECT i.*,array_agg(DISTINCT row(itag.id, t.*)) FILTER (WHERE itag.id IS NOT NULL) as tags," +
-                "array_agg(DISTINCT r.*) FILTER (WHERE r.id IS NOT NULL) as rating " +
-                "FROM \"Item\" i " +
-                "LEFT JOIN \"Item_Tag\" itag ON (itag.item_id = i.id) " +
-                "LEFT JOIN \"Tag\" t ON (itag.tag_id = t.id) " +
-                "LEFT JOIN \"Rating_Item\" r ON (r.item_id = i.id) " +
-                "GROUP BY i.id) AS T";
+//    public Collection<Item> getOrderedAll(Sort sort) {
+//        String sql =
+//                "SELECT   i.*,\n" +
+//                        " array_agg(DISTINCT row(itag.id, t.*)) FILTER (WHERE itag.id IS NOT NULL) as tags,\n" +
+//                        " array_agg(DISTINCT r.*) FILTER (WHERE r.id IS NOT NULL) as rating\n" +
+//                        " FROM \"Item\" i\n" +
+//                        " LEFT JOIN \"Item_Tag\" itag ON (itag.item_id = i.id)\t\n" +
+//                        " LEFT JOIN \"Tag\" t ON (itag.tag_id = t.id)\n" +
+//                        " LEFT JOIN \"Rating_Item\" r ON (r.item_id = i.id)\n" +
+//                        " GROUP BY i.id"+
+//                        " ORDER BY" + sort.getOrder();
+//
+//        return this.getJdbcTemplate().query(sql, new ItemMapExtractor());
+//    }
 
-        String getRows = "SELECT i.*, array_agg(DISTINCT row(itag.id, t.*)) FILTER (WHERE itag.id IS NOT NULL) as tags, " +
+    @Override
+    public Page<Item> getAll(int pageNo, int pageSize, Sort sort) {
+        String countRows = "SELECT count(*) FROM \"Item\"";
+
+        String getRows =
+                "SELECT " +
+                "i.*, " +
+                "array_agg(DISTINCT row(itag.id, t.*)) FILTER (WHERE itag.id IS NOT NULL) as tags, " +
                 "array_agg(DISTINCT r.*) FILTER (WHERE r.id IS NOT NULL) as rating FROM \"Item\" i " +
                 "LEFT JOIN \"Item_Tag\" itag ON (itag.item_id = i.id) " +
                 "LEFT JOIN \"Tag\" t ON (itag.tag_id = t.id) " +
                 "LEFT JOIN \"Rating_Item\" r ON (r.item_id = i.id) " +
-                "GROUP BY i.id;";
+                "GROUP BY i.id"+
+                "ORDER BY" + sort.getOrder();
 
         return new PaginationHelper<Item>().getPage(
                 this.getJdbcTemplate(),
@@ -75,6 +86,23 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
                 pageSize,
                 new ItemMapper()
         );
+    }
+
+    @Override
+    public Collection<Item> getPopularItems() {
+        String sql =
+                "\tSELECT COUNT(DISTINCT iw.id), i.*,\n" +
+                        "\tarray_agg(DISTINCT row(itag.id,t.*)) filter (where itag.id is not null) as tags,\n" +
+                        "\tarray_agg(DISTINCT r.*) FILTER (WHERE r.id IS NOT NULL) as rating\n" +
+                        "\tFROM public.\"Item_WishList\" iw\n" +
+                        "\tLEFT JOIN \"Item\" i ON (item_id = i.id)\t\n" +
+                        "\tLEFT JOIN \"Item_Tag\" itag ON (itag.item_id = i.id)\t\n" +
+                        "\tLEFT JOIN \"Tag\" t ON (itag.tag_id = t.id)\n" +
+                        "\tLEFT JOIN \"Rating_Item\" r ON (r.item_id = i.id)\n" +
+                        "\tGROUP BY iw.item_id,i.id\n" +
+                        "\tORDER BY COUNT(iw.id) DESC;";
+
+        return this.getJdbcTemplate().query(sql, new ItemMapExtractor());
     }
 
     @Override

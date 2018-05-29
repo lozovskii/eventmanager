@@ -124,6 +124,13 @@ export class WishListService {
         catchError(this.handleError));
   }
 
+  getPopularItems(): Observable<Item[]> {
+    const url = `${this.itemsUrl}/popular`;
+    return this.http.get<Item[]>(url,{headers: AuthenticationService.getAuthHeader()})
+      .pipe(
+        catchError(this.handleError));
+  }
+
   getPageAllItems(page: number, size: number) {
     const url = `${this.itemsUrl}/pageAll`;
     return this.http.get(url, {headers: AuthenticationService.getAuthHeader()});

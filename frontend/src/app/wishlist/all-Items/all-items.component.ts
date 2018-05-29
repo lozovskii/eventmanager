@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AlertService} from "../../_services/alert.service";
 import {WishListService} from "../../_services/wishlist.service";
 import {Item} from "../../_models/wishList/item";
@@ -9,7 +9,7 @@ import {WishListItem} from "../../_models/wishList/wishListItem";
 @Component({
   selector: 'app-all-items',
   templateUrl: './all-items.component.html',
-  styleUrls: ['../wishlist/wishlist.component.css']
+  styleUrls: ['../wishlist/wishlist.component.css','./all-items.component.css']
 })
 export class AllItemsComponent implements OnInit {
   @Input('included') isIncluded: boolean = false;
@@ -21,11 +21,13 @@ export class AllItemsComponent implements OnInit {
   itemView: Item;
   editableItem: Item;
   copiedItem: Item;
+  favoriteItem: Item;
   wishList: WishList;
   item: Item;
   items: Item[];
   trash: Item[];
-  path: string[] = ['name'];
+  path: string[] = ['item'];
+  checkBoxOrder: number = 1;
   order: number = 1;
   currentLogin: string;
   queryString: string;
@@ -38,6 +40,7 @@ export class AllItemsComponent implements OnInit {
     this.items = [];
     this.trash = [];
     this.item = new Item();
+    this.favoriteItem = new Item();
     this.item.tags = [];
     this.itemView = new Item();
     this.editableItem = new Item();
@@ -60,6 +63,11 @@ export class AllItemsComponent implements OnInit {
     this.isIncluded ?
       this.outCopiedItem.emit(item) :
       this.copiedItem = item;
+  }
+
+  chooseArray(){
+    this.checkBoxOrder == 1 ? this.getPopularItems() : this.getAllItems();
+    this.checkBoxOrder = this.checkBoxOrder * (-1);
   }
 
   isCreator(item: Item): boolean {
@@ -129,14 +137,14 @@ export class AllItemsComponent implements OnInit {
   }
 
   addToCollection(item: Item): void {
-    this.item = item;
-    delete this.item.id;
-    this.item.creator_customer_login = this.currentLogin;
+    Object.assign(this.favoriteItem, item);
+    delete this.favoriteItem.id;
+    this.favoriteItem.creator_customer_login = this.currentLogin;
 
-    this.wishListService.createItem(this.item)
+    this.wishListService.createItem(this.favoriteItem)
       .subscribe(() => {
           this.alertService.success('Item added to you Collection.');
-          this.items.push(this.item);
+          this.items.push(this.favoriteItem);
         },
         () => {
           this.alertService.error("Something wrong");
@@ -151,6 +159,18 @@ export class AllItemsComponent implements OnInit {
         this.alertService.info('Items not found');
       });
   }
+
+  getPopularItems(): void {
+    this.sortItems('');
+    
+    this.wishListService.getPopularItems()
+      .subscribe((items) => {
+        this.items = items;
+      }, () => {
+        this.alertService.info('Items not found');
+      });
+  }
+
 
   getPageAllItems(): void {
     this.wishListService.getPageAllItems(this.page, 6)
