@@ -64,7 +64,17 @@
       <br>
       <div>
         <br>
-        <a [routerLink]="['/upload-img']" class="btn btn-outline-info">Upload Avatar</a>
+        <a [routerLink]="['/upload-img']" class="btn btn-outline-info">Add Avatar</a>
+        <button class="btn btn-outline-info" type="submit"
+                (click)="isDeleteChange()">Delete Avatar</button>
+        <div *ngIf="isDelete">
+          <p>Are you sure?</p>
+          <button class="btn btn-outline-success" type="submit"
+                  (click)="deleteAvatar(currentUser)">Yes</button>
+          <button class="btn btn-outline-danger" type="submit"
+                  (click)="isDeleteChange()">No</button>
+        </div>
+
       </div>
     </div>
   </form>
