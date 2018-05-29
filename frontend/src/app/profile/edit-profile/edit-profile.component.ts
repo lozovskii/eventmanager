@@ -17,6 +17,7 @@ export class EditProfileComponent implements OnInit {
   name = '';
   lastName = '';
   phone = '';
+  isDelete = false;
 
     constructor(private profileService: ProfileService,
               private userService: UserService,
@@ -86,7 +87,19 @@ export class EditProfileComponent implements OnInit {
     return null;
   }
 
+  deleteAvatar(user : User) {
+      user.avatar = '';
+    this.updateUser(user);
+  }
 
+  isDeleteChange() {
+      if (this.isDelete == false){
+        this.isDelete = true;
+      } else {
+        this.isDelete = false;
+      }
+
+  }
 
 
 

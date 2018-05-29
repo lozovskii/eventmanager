@@ -69,6 +69,15 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
     @Value("${searchCustomerEmptyField}")
     private String searchCustomerEmptyField;
 
+    @Value("${create}")
+    private String create;
+    @Value("${update}")
+    private String update;
+    @Value("${delete}")
+    private String delete;
+    @Value("$isExist")
+    private String isExist;
+
     @PostConstruct
     private void initialize() {
         setDataSource(dataSource);
@@ -76,20 +85,16 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
     @Override
     public void create(Customer customer) {
-
-        String sql = "INSERT INTO \"Customer\" " +
-                "(name,second_name,phone,login,email,password,isverified,token,avatar,registration_date)" +
-                " values(?,?,?,?,?,?,?,?,?,?)";
-
         Object[] params = customer.getParams();
 
         params[params.length - 1] = new Timestamp(Instant.now().toEpochMilli());
 
-        this.getJdbcTemplate().update(sql, params);
+        this.getJdbcTemplate().update(create, params);
     }
 
     @Override
     public Customer getById(Object id) {
+
         String sql = BASE_SQL + "WHERE id = CAST (? AS uuid) ";
 
         Object[] params = new Object[]{id};
@@ -133,18 +138,6 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
     @Override
     public void update(Customer customer) {
 
-        String sql = "UPDATE \"Customer\" SET " +
-                "name = ?, " +
-                "second_name = ?, " +
-                "phone = ?, " +
-                "login = ?, " +
-                "email = ?, " +
-                "password = ?, " +
-                "isverified = ?, " +
-                "token = ?, " +
-                "avatar = ? " +
-                " WHERE id = CAST (? AS UUID)";
-
         Object[] params = new Object[]{
                 customer.getName(),
                 customer.getSecondName(),
@@ -158,16 +151,15 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
                 customer.getId()
         };
 
-        this.getJdbcTemplate().update(sql, params);
+        this.getJdbcTemplate().update(update, params);
     }
 
     @Transactional
     public void delete(Object id) {
-        String sqlCustomer = "DELETE FROM \"Customer\" WHERE id = CAST (? AS uuid)";
 
         Object[] params = new Object[]{id};
 
-        this.getJdbcTemplate().update(sqlCustomer, params);
+        this.getJdbcTemplate().update(delete, params);
     }
 
     @Override
@@ -312,19 +304,17 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
     @Override
     public boolean isCustomerExist(String login) {
-        Long countOfCustomers = Long.valueOf(0);
-        String sql = "SELECT count(login)" +
-                "FROM \"Customer\" " +
-                "WHERE \"Customer\".login = ?";
+        Long countOfCustomers;
+
         Object[] params = new Object[]{
                 login
         };
         try {
-            countOfCustomers = this.getJdbcTemplate().queryForObject(sql, params, Long.class);
+            countOfCustomers = this.getJdbcTemplate().queryForObject(isExist, params, Long.class);
         } catch (NullPointerException e) {
             return false;
         }
-        return countOfCustomers > 0 ? true : false;
+        return countOfCustomers > 0;
     }
 
     @Override
@@ -343,8 +333,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
                 currentCustomerId,
                 customerId
         };
-        boolean isFriends = this.getJdbcTemplate().query(sql,params,(resultSet, i) -> resultSet.getBoolean("isFriends")).get(0);
-        return isFriends;
+        return this.getJdbcTemplate().query(sql,params,(resultSet, i) -> resultSet.getBoolean("isFriends")).get(0);
     }
 
 }
