@@ -12,8 +12,8 @@
           <i class="fas fa-home"></i> Home
         </a>
       </li>
-      <li>
-        <a onclick="history.back()" class="nav-link" style="cursor: pointer">
+      <li class="nav-item" *ngIf="navbar">
+        <a onclick="history.back()" class="nav-link">
           <i class="fas fa-arrow-circle-left"></i> Back
         </a>
       </li>
