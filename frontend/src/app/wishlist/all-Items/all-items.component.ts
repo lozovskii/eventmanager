@@ -9,7 +9,7 @@ import {WishListItem} from "../../_models/wishList/wishListItem";
 @Component({
   selector: 'app-all-items',
   templateUrl: './all-items.component.html',
-  styleUrls: ['../wishlist/wishlist.component.css','./all-items.component.css']
+  styleUrls: ['../wishlist/wishlist.component.css', './all-items.component.css']
 })
 export class AllItemsComponent implements OnInit {
   @Input('included') isIncluded: boolean = false;
@@ -23,6 +23,8 @@ export class AllItemsComponent implements OnInit {
   copiedItem: Item;
   favoriteItem: Item;
   wishList: WishList;
+  backupItems: Item[];
+  popularItems: Item[];
   item: Item;
   items: Item[];
   trash: Item[];
@@ -46,6 +48,8 @@ export class AllItemsComponent implements OnInit {
     this.editableItem = new Item();
     this.copiedItem = new Item();
     this.queryString = '';
+    this.backupItems = [];
+    this.popularItems = [];
   }
 
   ngOnInit() {
@@ -59,14 +63,23 @@ export class AllItemsComponent implements OnInit {
     this.getAllItems();
   }
 
-  copyItem(item: Item){
+  copyItem(item: Item) {
     this.isIncluded ?
       this.outCopiedItem.emit(item) :
       this.copiedItem = item;
   }
 
-  chooseArray(){
-    this.checkBoxOrder == 1 ? this.getPopularItems() : this.getAllItems();
+  chooseArray() {
+    if (this.checkBoxOrder == 1) {
+      if (this.popularItems.length > 0)
+        this.items = this.popularItems;
+      else {
+        this.getPopularItems();
+      }
+    }
+    else {
+      this.items = this.backupItems;
+    }
     this.checkBoxOrder = this.checkBoxOrder * (-1);
   }
 
@@ -108,6 +121,7 @@ export class AllItemsComponent implements OnInit {
     wishListItem.priority = 3;
     this.wishList.items.push(wishListItem);
   }
+
   //
   // deleteItem(item: Item): void {
   //   let index = this.items.indexOf(item);
@@ -155,17 +169,19 @@ export class AllItemsComponent implements OnInit {
     this.wishListService.getAllItems()
       .subscribe((items) => {
         this.items = items;
+        Object.assign(this.backupItems, items);
       }, () => {
         this.alertService.info('Items not found');
       });
   }
 
   getPopularItems(): void {
-    this.sortItems('');
-    
+    this.path = [];
+
     this.wishListService.getPopularItems()
       .subscribe((items) => {
         this.items = items;
+        Object.assign(this.popularItems, items);
       }, () => {
         this.alertService.info('Items not found');
       });
@@ -180,9 +196,9 @@ export class AllItemsComponent implements OnInit {
       })
   }
 
-  setPage(i,event:any) {
+  setPage(i, event: any) {
     event.preventDefault();
-    this.page=i;
+    this.page = i;
     this.getPageAllItems();
   }
 
