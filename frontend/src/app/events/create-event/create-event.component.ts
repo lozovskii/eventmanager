@@ -93,7 +93,7 @@ export class CreateEventComponent implements OnInit {
 
   initEventForm(): FormGroup {
     return this.formBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40), Validators.pattern("^[a-zA-Zа-яА-ЯієїґІЄЇҐ]*$")]],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40), Validators.pattern("^[ a-zA-Zа-яА-ЯієїґІЄЇҐ]*$")]],
       description: ['', [Validators.maxLength(2048)]],
       startTime: new FormControl(),
       endTime: new FormControl(),

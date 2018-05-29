@@ -28,7 +28,7 @@ export class EditFolderComponent implements OnInit {
   initFolderForm(): FormGroup {
     return this.formBuilder.group({
       id : new FormControl(),
-      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20), Validators.pattern("^[a-zA-Zа-яА-ЯієїґІЄЇҐ]*$")]]
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20), Validators.pattern("^[ a-zA-Zа-яА-ЯієїґІЄЇҐ]*$")]]
     })
   }
 

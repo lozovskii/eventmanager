@@ -73,7 +73,7 @@ export class UpdateEventComponent implements OnInit {
 
   initEventForm(): FormGroup {
     return this.formBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40), Validators.pattern("^[a-zA-Zа-яА-ЯієїґІЄЇҐ]*$")]],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40), Validators.pattern("^[ a-zA-Zа-яА-ЯієїґІЄЇҐ]*$")]],
       description: ['', [Validators.maxLength(2048)]],
       day: new FormControl(),
       startTime: new FormControl(),
