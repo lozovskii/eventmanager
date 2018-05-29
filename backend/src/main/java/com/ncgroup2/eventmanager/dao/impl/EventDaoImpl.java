@@ -209,6 +209,17 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     }
 
     @Override
+    public List getAllByCustId(String custId) {
+        String query = queryService.getQuery("event.getAllByCustId");
+        Object[] params = new Object[]{
+                custId,
+                custId
+        };
+        String orderBy = " ORDER BY name";
+        return this.getJdbcTemplate().query(query + orderBy, params, new BeanPropertyRowMapper(Event.class));
+    }
+
+    @Override
     public List getEventsByCustIdSortedByType(String custId) {
         String query = queryService.getQuery("event.getByCustIdSort");
         Object[] params = new Object[]{

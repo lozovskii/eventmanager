@@ -19,6 +19,7 @@ public interface EventService {
     List<EventDTO> getAllPublicEventsInMonth(String custId);
     List<EventDTO> getAllPrivateEventsInMonth(String custId);
     List<EventDTO> getAllFriendsEventsInMonth(String custId);
+    List<EventDTO> getAllEventsByCustId(String custId);
 
     List<EventDTO> getEventsByCustId(String custId);
 

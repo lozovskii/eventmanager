@@ -58,6 +58,12 @@ export class EventService {
     return this.http.get<EventDTOModel[]>(url, {headers: AuthenticationService.getAuthHeader()})
   }
 
+  getAllByCustId(): Observable<EventDTOModel[]> {
+    let custId = this.userService.getCurrentId();
+    const url = `${this.eventsUrl}/allEvents${custId}`;
+    return this.http.get<EventDTOModel[]>(url, {headers: AuthenticationService.getAuthHeader()})
+  }
+
   getEventsByCustIdSorted(): Observable<EventDTOModel[]> {
     let custId = this.userService.getCurrentId();
     const url = `${this.eventsUrl}/my/sorted${custId}`;
