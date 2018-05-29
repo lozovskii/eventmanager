@@ -15,6 +15,8 @@ export class DraftContentComponent implements OnInit {
   eventDTO: EventDTOModel;
   isCreator: boolean;
   zoom: number = 16;
+  isLocationExist = false;
+
 
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute,
@@ -30,6 +32,7 @@ export class DraftContentComponent implements OnInit {
       this.eventDTO = eventDTO;
       let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
       this.isCreator = currentUserId == this.eventDTO.event.creatorId;
+      this.checkLocation();
     });
   }
 
@@ -38,6 +41,13 @@ export class DraftContentComponent implements OnInit {
       this.alertService.info('Draft successfully deleted!', true);
       this.router.navigate(['../draft-list']);
     });
+  }
+
+  checkLocation() {
+    console.log('in ngOnInit is Locatoin: '+this.eventDTO.additionEvent.location);
+    if(this.eventDTO.additionEvent.location !== null) {
+      this.isLocationExist = true;
+    }
   }
 
 }

@@ -47,12 +47,14 @@ public class WishListMapExtractor implements ResultSetExtractor<Collection<WishL
             Array tagsSql = rs.getArray("tags");
             if (tagsSql != null) {
                 Object[] tagsSqlArray = (Object[]) tagsSql.getArray();
+                assert item != null;
                 item.setTags(new ItemMapExtractor().getExtTags(tagsSqlArray));
             }
 
             Array ratingSql = rs.getArray("rating");
             if (ratingSql != null) {
                 Object[] itemRatersArray = (Object[]) ratingSql.getArray();
+                assert item != null;
                 item.setRaters(new ItemMapExtractor().getRaters(itemRatersArray));
             }
 

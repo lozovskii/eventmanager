@@ -1,12 +1,17 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output,
+  SimpleChanges
+} from '@angular/core';
 import {Item} from "../../_models/wishList/item";
 import {WishListItem} from "../../_models/wishList/wishListItem";
 import {WishList} from "../../_models/wishList/wishList";
 import {WishListService} from "../../_services/wishlist.service";
 import {ItemRater} from "../../_models/wishList/itemRater";
+import {UserService} from "../../_services/user.service";
 
 @Component({
   selector: 'app-item-details-view',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './item-details-view.component.html',
   styleUrls: ['./item-details-view.component.css']
 })
@@ -18,6 +23,7 @@ export class ItemDetailsViewComponent implements OnInit, OnChanges {
   @Output('updatedItem') updatedItem = new EventEmitter<WishListItem>();
   @Output('cancelledItem') cancelledItem = new EventEmitter<WishListItem>();
   @Output('bookedItem') bookedItem = new EventEmitter<WishListItem>();
+
   advancedMode: boolean = false;
   item: Item;
   wishListItem: WishListItem;
@@ -26,19 +32,22 @@ export class ItemDetailsViewComponent implements OnInit, OnChanges {
   rated: boolean;
   rating: ItemRater;
 
-  constructor(private wishListService: WishListService) {
+  constructor(private wishListService: WishListService,
+              private userService: UserService) {
     this.item = new Item();
     this.wishListItem = new WishListItem();
+    this.wishListItem.item = new Item();
   }
 
   ngOnInit(): void {
-    this.customerLogin = JSON.parse(sessionStorage.getItem('currentUser')).login;
+    this.customerLogin = this.userService.getCurrentLogin();
     this.advancedMode = false;
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.item = new Item();
     this.wishListItem = new WishListItem();
+    this.wishListItem.item = new Item();
     this.advancedMode = false;
     this.isBooker = false;
     this.rated = false;
@@ -97,6 +106,8 @@ export class ItemDetailsViewComponent implements OnInit, OnChanges {
   }
 
   updateRating(): void {
+    this.checkRater();
+
     let value;
     let raterLogin = this.customerLogin;
     if (this.rated) {
@@ -109,19 +120,19 @@ export class ItemDetailsViewComponent implements OnInit, OnChanges {
         this.wishListItem.item.raters.splice(index, 1) :
         this.item.raters.splice(index, 1);
     } else {
-      let r = new ItemRater();
-      r.customer_login = this.customerLogin;
+      let rating = new ItemRater();
+      rating.customer_login = this.customerLogin;
       value = this.advancedMode ?
         this.wishListItem.item.id :
         this.item.id;
       this.advancedMode ?
-        this.wishListItem.item.raters.push(r) :
-        this.item.raters.push(r);
+        this.wishListItem.item.raters.push(rating) :
+        this.item.raters.push(rating);
     }
+
     this.wishListService.updateRating(value, raterLogin)
       .subscribe(() => {
-      }, () => {
-      });
+      }, () => {});
   }
 
 }

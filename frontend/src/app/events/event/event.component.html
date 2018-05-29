@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="!isHided">
   <div class="btn-group" role="group" *ngIf="isCreator">
     <button class="btn btn-outline-info" [routerLink]="['/update-event',eventDTO.event.id]">Edit</button>
     <button class="btn btn-outline-danger" (click)="delete()">Delete</button>
@@ -47,16 +47,20 @@
         </div>
       </div>
     </div>
-    <p>Location: {{eventDTO.additionEvent.location.country}}, {{eventDTO.additionEvent.location.city}},
-      {{eventDTO.additionEvent.location.street}}, {{eventDTO.additionEvent.location.house}}</p>
+
+    <div *ngIf="isLocationExist">
+      <p>Location: {{eventDTO.additionEvent.location.country}}, {{eventDTO.additionEvent.location.city}},
+        {{eventDTO.additionEvent.location.street}}, {{eventDTO.additionEvent.location.house}}</p>
 
 
-    <agm-map [latitude]="eventDTO.additionEvent.location.latitude"
-             [longitude]="eventDTO.additionEvent.location.longitude" [zoom]="zoom">
-      <agm-marker [latitude]="eventDTO.additionEvent.location.latitude"
-                  [longitude]="eventDTO.additionEvent.location.longitude"></agm-marker>
-    </agm-map>
-    <br>
+      <agm-map [latitude]="eventDTO.additionEvent.location.latitude"
+               [longitude]="eventDTO.additionEvent.location.longitude" [zoom]="zoom">
+        <agm-marker [latitude]="eventDTO.additionEvent.location.latitude"
+                    [longitude]="eventDTO.additionEvent.location.longitude"></agm-marker>
+      </agm-map>
+      <br>
+    </div>
+
     <app-event-notification></app-event-notification>
   </div>
 

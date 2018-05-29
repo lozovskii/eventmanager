@@ -1,6 +1,6 @@
 <div class="list-group-item">
   <div>
-    {{data.inviter}} invited you to event <span class="btn btn-outline-dark" style="border: 0; padding: 0" [routerLink]="['/event-container',data.eventId]">'<b>{{data.eventName}}'</b></span>
+    <span class="btn btn-outline-dark" style="border: 0; padding: 0" [routerLink]="['/customer',data.inviter]"><b>{{data.inviter}}</b></span> invited you to event <span class="btn btn-outline-dark" style="border: 0; padding: 0" [routerLink]="['/event-container',data.eventId]">'<b>{{data.eventName}}'</b></span>
   </div>
   <div class="btn-group-sm">
 

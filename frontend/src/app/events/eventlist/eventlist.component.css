@@ -4,3 +4,8 @@
   border-radius: 50%;
   display: inline-block;
 }
+
+.row > .dot{
+  margin-right: 4px;
+  margin-left: 4px;
+}

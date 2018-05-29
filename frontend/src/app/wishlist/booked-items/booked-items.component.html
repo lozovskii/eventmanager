@@ -2,12 +2,10 @@
 
   <main role="main">
     <h2 class="text-center">Booked Items</h2>
-    <br>
     <div class="row justify-content-between">
       <div class="col-auto">
-        <button class="btn btn-outline-info" data-toggle="modal" data-target="#create">
-          <i class="fas fa-plus"></i> Create new item
-        </button>
+        <button class="btn btn-outline-info"
+                data-toggle="modal" data-target="#create">Create new item</button>
       </div>
       <div class="col-auto">
         <div class="row">
@@ -26,17 +24,20 @@
         </div>
       </div>
       <div class="col-auto">
-        <button type="button" class="btn btn-outline-primary" [disabled]="!hasChanges" (click)="update()">
+        <button type="button" class="btn btn-outline-primary"
+                [ngClass]="{ 'pulse-button': hasChanges }" [disabled]="!hasChanges"
+                (click)="update()">
           <i class="fas fa-save"></i> Save changes
         </button>
       </div>
     </div>
+
     <button class="btn btn-sm btn-outline-info" data-toggle="collapse" data-target="#filter"><i
       class="fas fa-filter"></i> Filter
     </button>
     <div class="collapse" id="filter">
       <input class="form-control" type="text" [(ngModel)]="queryString"
-             placeholder="You can filter values by name, description, due date and creator login"/>
+             placeholder="You can filter values by name, description, due date, priority and creator login"/>
     </div>
     <table class="table table-hover">
       <thead>
@@ -46,7 +47,7 @@
         <th scope="col">Link</th>
         <th scope="col" (click)="sortItems('dueDate')" class="text-center">Due date <i class="fas fa-sort"></i></th>
         <th scope="col" (click)="sortItems('priority')" class="text-center">Priority <i class="fas fa-sort"></i></th>
-        <th scope="col" class="text-center">Cancel Booking</th>
+        <th scope="col" class="text-center">Actions</th>
       </tr>
       </thead>
       <tbody>
@@ -79,6 +80,11 @@
                   (click)="cancelBooking(wishListItem)">
             <i class="fas fa-ban"></i>
           </button>
+          <button class="btn btn-sm btn-outline-success" title="Copy item to wishlist"
+                  (click)="copyItem(item)"
+                  data-toggle="modal" data-target="#copyTo">
+            <i class="far fa-copy"></i>
+          </button>
         </td>
       </tr>
       </tbody>
@@ -92,21 +98,8 @@
       </div>
     </div>
 
-    <div class="modal fade" id="create" tabindex="-1" role="dialog"
-         aria-labelledby="modalCreateTitle" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Create item</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <app-create-item [included]="true"></app-create-item>
-          </div>
-        </div>
-      </div>
-    </div>
+    <additional-components-container
+      [copiedItem]="copiedItem">
+    </additional-components-container>
 
   </main>

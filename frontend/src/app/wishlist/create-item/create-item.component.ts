@@ -10,21 +10,24 @@ import {ALLOWED_IMG_FORMATS} from "../../app.config";
 
 @Component({
   selector: 'app-create-item',
-  templateUrl: './create-item.component.html'
+  templateUrl: './create-item.component.html',
+  styleUrls: ['../wishlist/wishlist.component.css']
 })
 export class CreateItemComponent implements OnInit {
 
   itemForm = this.formBuilder.group({
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
     description: ['', [Validators.maxLength(2048)]],
-    link: ['', [Validators.minLength(4), Validators.maxLength(128)]],
+    link: ['', [Validators.minLength(4), Validators.maxLength(128),
+      Validators.pattern("^(ftp|http|https):\\/\\/[^ \"]+$")]],
     dueDate: [''],
     tags: ['']
   });
 
   additionalForm = this.formBuilder.group({
     image: [''],
-    imageUrl: ['']
+    imageUrl: ['', [Validators.minLength(4), Validators.maxLength(128),
+      Validators.pattern("(http(s?):)([/|.|\\w|\\s|-])*\\.(?:jpg|gif|png)")]]
   });
 
   mainForm: FormGroup = this.formBuilder.group({
@@ -51,11 +54,14 @@ export class CreateItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let today = new Date().toISOString().split('T')[0];
+    document.getElementById("dueDate").setAttribute('min', today);
   }
 
   createItem(item: Item) {
     item.creator_customer_login = this.userService.getCurrentLogin();
     item.tags = this.item.tags;
+
     if (this.base64Image)
       item.image = this.base64Image;
     else
@@ -76,11 +82,12 @@ export class CreateItemComponent implements OnInit {
   }
 
   addTags() {
-    if (this.item.tags == null)
-      this.item.tags = [];
     let tagsString = this.itemForm.get('tags').value;
-    if (tagsString != null) {
+
+    if (tagsString) {
       let tagsArray = tagsString.split(',');
+
+      if (tagsArray && tagsArray.length > 0)
       for (let tagString of tagsArray) {
         let tagDto = new ExtendedTag();
         let tag = new Tag();
@@ -103,6 +110,9 @@ export class CreateItemComponent implements OnInit {
     return this.itemForm.get('link');
   }
 
+  get imageUrl(){
+    return this.additionalForm.get('imageUrl');
+  }
 
 
   changeListener($event): void {
@@ -129,7 +139,6 @@ export class CreateItemComponent implements OnInit {
 
   validImg(file: File){
     let format = this.getFileExtension(file.name);
-    console.log(file.size);
     this.loading = !(this.validFormat(format) && this.validSize(file));
   }
 

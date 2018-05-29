@@ -17,6 +17,7 @@ export class EventService {
   }
 
   create(event: EventDTOModel) {
+    console.log('event service: ' + JSON.stringify(event));
     const url = this.eventsUrl;
     return this.http.post<Event>(url, event, {headers: AuthenticationService.getAuthHeader()});
   }

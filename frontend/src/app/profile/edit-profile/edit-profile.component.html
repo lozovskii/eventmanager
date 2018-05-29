@@ -2,36 +2,83 @@
 
 <main role="main">
   <h2 class="text-center">Edit profile</h2>
-  <form [formGroup]="profileForm" (ngSubmit)="(currentUser)">
-
+  <form [formGroup]="profileForm">
     <div class="col-md-4">
       <div class="form-group">
-        <label>First Name</label>
-        <input formControlName="name" type="text" class="form-control" required minlength="3" maxlength="15"
-               [(ngModel)]="currentUser.name"/>
-      </div>
-      <div class="form-group">
-        <label>Last Name</label>
-        <input formControlName="lastName" id="lastName" type="text" class="form-control"
-               [(ngModel)]="currentUser.secondName" required/>
-      </div>
-      <div class="form-group">
-        <label>Phone</label>
-        <input formControlName="phone" id="phone" type="text" class="form-control" [(ngModel)]="currentUser.phone"
-               required/>
+        <label>First Name<span style="color: red;">*</span></label>
+        <input type="text" class="form-control" formControlName="name"
+          [(ngModel)]="currentUser.name" required/>
+        <div *ngIf="profileForm.get('name').invalid && (profileForm.get('name').dirty || profileForm.get('name').touched)"
+             class="alert alert-danger">
+          <div *ngIf="profileForm.get('name')?.errors?.required">
+            First Name is required.
+          </div>
+          <div *ngIf="profileForm.get('name')?.errors?.minlength">
+            First Name must be at least 3 characters long.
+          </div>
+          <div *ngIf="profileForm.get('name')?.errors?.maxlength">
+            First Name must be less than 40 characters long.
+          </div>
+        </div>
       </div>
 
-      <form method="post">
-        <div class="form-group">
-          <button class="btn btn-outline-info" (click)="updateUser(currentUser)">Save</button>
-          <!--<a [routerLink]="['/content']" class="btn btn-link">Cancel</a>-->
+
+      <div class="form-group">
+        <label>Last Name<span style="color: red;">*</span></label>
+        <input type="text" class="form-control" formControlName="lastName"
+               [(ngModel)]="currentUser.secondName" required/>
+        <div *ngIf="profileForm.get('lastName').invalid && (profileForm.get('lastName').dirty ||
+         profileForm.get('lastName').touched)"
+             class="alert alert-danger">
+          <div *ngIf="profileForm.get('lastName')?.errors?.required">
+            Last Name is required.
+          </div>
+          <div *ngIf="profileForm.get('lastName')?.errors?.minlength">
+            Last Name must be at least 3 characters long.
+          </div>
+          <div *ngIf="profileForm.get('lastName')?.errors?.maxlength">
+            Last Name must be less than 40 characters long.
+          </div>
         </div>
-      </form>
+      </div>
+
+
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="text" class="form-control" formControlName="phone"
+               [(ngModel)]="currentUser.phone" >
+        <div *ngIf="profileForm.get('phone').invalid && (profileForm.get('phone').dirty ||
+         profileForm.get('phone').touched)"
+             class="alert alert-danger">
+          <div *ngIf="profileForm.get('phone').invalid && profileForm.get('phone').touched">
+            Incorrect number.
+          </div>
+          <div *ngIf="profileForm.get('phone')?.errors?.maxlength">
+            Phone must be less than 20 characters long.
+          </div>
+        </div>
+      </div>
+
+          <button class="btn btn-success" type="submit" [disabled]="profileForm.invalid"
+                  (click)="updateUser(currentUser)">Save</button>
+      <br>
       <div>
-        <a [routerLink]="['/upload-img']" class="btn btn-outline-info">Upload Avatar</a>
+        <br>
+        <a [routerLink]="['/upload-img']" class="btn btn-outline-info">Add Avatar</a>
+        <button class="btn btn-outline-info" type="submit"
+                (click)="isDeleteChange()">Delete Avatar</button>
+        <div *ngIf="isDelete">
+          <p>Are you sure?</p>
+          <button class="btn btn-outline-success" type="submit"
+                  (click)="deleteAvatar(currentUser)">Yes</button>
+          <button class="btn btn-outline-danger" type="submit"
+                  (click)="isDeleteChange()">No</button>
+        </div>
+
       </div>
     </div>
   </form>
+
 </main>
 
 
