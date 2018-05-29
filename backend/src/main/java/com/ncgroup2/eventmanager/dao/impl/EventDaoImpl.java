@@ -328,7 +328,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         if (!listAddition.isEmpty()) {
             return listAddition.iterator().next();
         } else {
-            return null;
+            return new AdditionalEventModelDTO();
         }
     }
 
