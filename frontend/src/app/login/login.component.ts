@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
             });
         }
         , () => {
-          this.alertService.error('Invalid credentials');
+          this.alertService.error('Invalid credentials',true);
           this.loading = false;
           return this.router.navigate(['/login']);
         });
@@ -89,7 +89,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
             });
         }
         , () => {
-          this.alertService.error('Something wrong during signing in with your Google account');
+          this.alertService.error('Something wrong during signing in with your Google account',true);
           this.loading = false;
           return this.router.navigate(['/login']);
         });

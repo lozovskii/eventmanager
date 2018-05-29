@@ -28,7 +28,7 @@ export class SendLinkComponent implements OnInit, OnChanges {
     this.loading=true;
     this.resetService.sendEmail(this.model.email)
       .subscribe(() => {
-        this.alertService.success("Email with link for resetting password sent.");
+        this.alertService.success("Email with link for resetting password sent.",true);
           document.getElementById('resetPasCloseBtn').click();
         },
         (error) => {
