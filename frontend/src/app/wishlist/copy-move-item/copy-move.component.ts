@@ -58,11 +58,8 @@ export class CopyMoveComponent implements OnChanges, OnInit {
   getMyEvents(): void {
     this.eventService.getEventsByCustId()
       .subscribe((eventsDTO) => {
-        this.eventsDTO = eventsDTO;
-        this.eventsDTO.filter(event =>{
-          event.event.creatorId == this.currentId;
-          console.log(event.event);
-        }
+        this.eventsDTO = eventsDTO.filter(event =>
+          event.event.creatorId === this.currentId
         )
       });
   }
