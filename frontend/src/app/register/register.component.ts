@@ -18,11 +18,11 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
   user: User;
   registerForm = this.formBuilder.group({
-    name: ['', [Validators.minLength(3), Validators.maxLength(20)]],
-    secondName: ['', [Validators.minLength(3), Validators.maxLength(20)]],
-    login: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]],
+    name: ['', [Validators.minLength(3), Validators.maxLength(20), Validators.pattern("[a-zA-Zа-яА-Я]")]],
+    secondName: ['', [Validators.minLength(3), Validators.maxLength(20), Validators.pattern("[a-zA-Z]")]],
+    login: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20), Validators.pattern("[a-zA-Z\d]")]],
     email: ['', [Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]]
+    password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20), Validators.pattern("[a-zA-Z\d]")]]
   });
 
   isValidFormSubmitted = null;
@@ -35,7 +35,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
               private formBuilder: FormBuilder,
               private userService: UserService,
               private navbarService: NavbarService,
-              private activatedRoute: ActivatedRoute,
               private authService: AuthenticationService,
               private zone: NgZone) {
   }

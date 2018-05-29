@@ -2,13 +2,17 @@
   <div class="col-md-6 card" style="margin:0 auto">
     <h2 class="text-center">Register</h2>
     <form [formGroup]="registerForm" (ngSubmit)="register(registerForm.value)">
-
+      <p class="text-sm-right text-muted">
+        Required <span style="color: red;">*</span>
+      </p>
       <div class="form-group">
         <label for="name">First Name</label>
         <input formControlName="name" id="name" type="text" class="form-control" name="name"/>
         <div *ngIf="name.value!='' && name.invalid && (name.dirty || name.touched)"
              class="alert alert-danger">
-
+          <div *ngIf="name?.errors?.pattern">
+            First name must consist only of letters.
+          </div>
           <div *ngIf="name?.errors?.minlength">
             First name must be at least 3 characters long.
           </div>
@@ -23,6 +27,9 @@
         <input formControlName="secondName" id="secondName" type="text" class="form-control" name="lastName" />
         <div *ngIf="secondName.value!='' && secondName.invalid && (secondName.dirty || secondName.touched)"
              class="alert alert-danger">
+          <div *ngIf="secondName?.errors?.pattern">
+            Second name must consist only of letters.
+          </div>
           <div *ngIf="secondName?.errors?.minlength">
             Second name must be at least 3 characters long.
           </div>
@@ -37,7 +44,9 @@
         <input formControlName="login" id="login" type="text" class="form-control" name="username" required/>
         <div *ngIf="login.invalid && (login.dirty || login.touched)"
              class="alert alert-danger">
-
+          <div *ngIf="login?.errors?.pattern">
+            Login can consist only of letters and numbers.
+          </div>
           <div *ngIf="login?.errors?.required">
             Login is required.
           </div>
@@ -67,7 +76,9 @@
         <input formControlName="password" id="password" type="password" class="form-control" name="password" required/>
         <div *ngIf="password.invalid && (password.dirty || password.touched)"
              class="alert alert-danger">
-
+          <div *ngIf="password?.errors?.pattern">
+            Password can consist only of letters and numbers.
+          </div>
           <div *ngIf="password?.errors?.required">
             Password is required.
           </div>
