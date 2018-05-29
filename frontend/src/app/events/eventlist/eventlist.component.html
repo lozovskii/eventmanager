@@ -5,21 +5,37 @@
 <main role="main">
   <h2 class="text-center">Events</h2>
   <form [formGroup]="pdfForm" *ngIf="isMy">
-    <button data-toggle="collapse" data-target="#export" class="btn btn-outline-info">Export to PDF</button>
+    <div class="row justify-content-between">
+      <div class="col-3">
+        <div class="input-group input-group-sm bg-light">
+          <div class="input-group-prepend">
+            <div class="input-group-text press">
+              <input type="checkbox" id="unchecked" class="cbx hidden" (click)="chooseCreatedCheckBox()"/>
+              <label for="unchecked" class="lbl"></label>
+            </div>
+          </div>
+          <input type="text" class="form-control" aria-label="Only popular" placeholder="Only my created events"
+                 readonly>
+        </div>
+      </div>
+      <div class="col-2">
+        <button data-toggle="collapse" data-target="#export" class="btn btn-outline-info">Export to PDF</button>
+      </div>
+    </div>
     <div class="collapse" id="export">
       <span>Please select the date range for export</span>
       <div class="form-row">
         <div class="col-2">
-        <label>From</label>
-        <input type="date" formControlName="startDate" class="dateTimeInput">
+          <label>From</label>
+          <input type="date" formControlName="startDate" class="dateTimeInput">
         </div>
-      <div class="col-2">
-        <label>To</label>
-        <input type="date" formControlName="endDate" class="dateTimeInput">
-      </div>
-      <div class="col-2">
-        <button class="btn btn-outline-success" (click)="importToPDF()">Export</button>
-      </div>
+        <div class="col-2">
+          <label>To</label>
+          <input type="date" formControlName="endDate" class="dateTimeInput">
+        </div>
+        <div class="col-2">
+          <button class="btn btn-outline-success" (click)="importToPDF()">Export</button>
+        </div>
       </div>
     </div>
   </form>
