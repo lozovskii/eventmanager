@@ -74,6 +74,12 @@ public class EventController {
         return new ResponseEntity<>(eventsByCustId, HttpStatus.OK);
     }
 
+    @GetMapping("/allEvents{custId}")
+    public ResponseEntity<List<EventDTO>> getAllEventsByCustId(@PathVariable String custId){
+        List<EventDTO> eventsByCustId = eventService.getAllEventsByCustId(custId);
+        return new ResponseEntity<>(eventsByCustId, HttpStatus.OK);
+    }
+
     @GetMapping("/my/sorted{custId}")
     public ResponseEntity<List<EventDTO>> getEventsByCustIdSorted(@PathVariable String custId){
         List<EventDTO> eventsByCustId = eventService.getEventsByCustIdSorted(custId);
