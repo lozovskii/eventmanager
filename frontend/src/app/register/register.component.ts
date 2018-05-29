@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, NgZone, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {AlertService, AuthenticationService, RegistrationService, UserService} from "../_services";
 import {FormBuilder, Validators} from "@angular/forms";
 import {User} from "../_models";
@@ -18,10 +18,10 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
   user: User;
   registerForm = this.formBuilder.group({
-    name: ['', [Validators.minLength(3), Validators.maxLength(20), Validators.pattern("[a-zA-Zа-яА-Я]")]],
-    secondName: ['', [Validators.minLength(3), Validators.maxLength(20), Validators.pattern("[a-zA-Z]")]],
-    login: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20), Validators.pattern("[a-zA-Z\d]")]],
-    email: ['', [Validators.email]],
+    name: ['', [Validators.minLength(3), Validators.maxLength(20), Validators.pattern("^[a-zA-Zа-яА-ЯієїґІЄЇҐ]*$")]],
+    secondName: ['', [Validators.minLength(3), Validators.maxLength(20), Validators.pattern("^[a-zA-Zа-яА-ЯієїґІЄЇҐ]*$")]],
+    login: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20), Validators.pattern("^[a-zA-Z0-9_.-]*$")]],
+    email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20), Validators.pattern("[a-zA-Z\d]")]]
   });
 
