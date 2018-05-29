@@ -26,7 +26,7 @@ export class CreateFolderComponent implements OnInit {
 
   initFolderForm(): FormGroup {
     return this.formBuilder.group({
-      name : ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+      name : ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20), Validators.pattern("^[a-zA-Zа-яА-ЯієїґІЄЇҐ]*$")]],
       customerId:new FormControl(''),
       isshared: new FormControl('')
     })
@@ -42,4 +42,9 @@ export class CreateFolderComponent implements OnInit {
         this.alertService.error('Not saved! We working.. please try again');
       });
   }
+
+  get name() {
+    return this.folderForm.get('name');
+  }
+
 }

@@ -13,7 +13,9 @@
         <input *ngIf="!isDraft && !isNote" formControlName="name" type="text" class="form-control" required/>
         <div *ngIf="name.invalid && (name.dirty || name.touched)"
              class="alert alert-danger">
-
+          <div *ngIf="name?.errors?.pattern">
+            First name must consist only of latin or cyrillic letters.
+          </div>
           <div *ngIf="name?.errors?.required">
             Title is required.
           </div>

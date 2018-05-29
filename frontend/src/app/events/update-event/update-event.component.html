@@ -3,7 +3,7 @@
 <main role="main">
   <div class="col-md-12" style="margin:0 auto">
 
-    <h2>Edit Event</h2>
+    <h2 class="text-center">Edit Event</h2>
     <br>
     <form *ngIf="eventDTO; else loading" [formGroup]="eventDTOForm" (ngSubmit)="update(eventDTOForm.value)" novalidate>
       <!--[hidden]="!canEdit"-->
@@ -15,7 +15,9 @@
                    name="name" required/>
             <div *ngIf="name.invalid && (name.dirty)"
                  class="alert alert-danger">
-
+              <div *ngIf="name?.errors?.pattern">
+                First name must consist only of latin or cyrillic letters.
+              </div>
               <div *ngIf="name?.errors?.required">
                 Title is required.
               </div>
