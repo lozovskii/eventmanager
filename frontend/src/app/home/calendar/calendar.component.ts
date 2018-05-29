@@ -147,7 +147,7 @@ export class CalendarComponent {
           if (eventType == 'FRIENDS') {
             return this.eventService.getAllFriendsEventsInMonth()
           } else {
-            return this.eventService.getEventsByCustId();
+            return this.eventService.getAllByCustId();
           }
         }
       }
@@ -156,22 +156,7 @@ export class CalendarComponent {
     }
   }
 
-  onChangePrivate(type: string): void {
-    console.log(type);
-    this.getEvents(type);
-  }
-
-  onChangePublic(type: string): void {
-    console.log(type);
-    this.getEvents(type);
-  }
-
-  onChangeFriends(type: string): void {
-    console.log(type);
-    this.getEvents(type);
-  }
-
-  onChangeAll(type: string): void {
+  onChangeSort(type: string): void {
     console.log(type);
     this.getEvents(type);
   }

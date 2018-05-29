@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, NgZone, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {AlertService, AuthenticationService, RegistrationService, UserService} from "../_services";
 import {FormBuilder, Validators} from "@angular/forms";
 import {User} from "../_models";
@@ -18,10 +18,10 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
   user: User;
   registerForm = this.formBuilder.group({
-    name: ['', [Validators.minLength(3), Validators.maxLength(20)]],
-    secondName: ['', [Validators.minLength(3), Validators.maxLength(20)]],
-    login: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]],
-    email: ['', [Validators.email]],
+    name: ['', [Validators.minLength(3), Validators.maxLength(20), Validators.pattern("^[a-zA-Zа-яА-ЯієїґІЄЇҐ]*$")]],
+    secondName: ['', [Validators.minLength(3), Validators.maxLength(20), Validators.pattern("^[a-zA-Zа-яА-ЯієїґІЄЇҐ]*$")]],
+    login: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20), Validators.pattern("^[a-zA-Z0-9_.-]*$")]],
+    email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]]
   });
 
@@ -35,7 +35,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
               private formBuilder: FormBuilder,
               private userService: UserService,
               private navbarService: NavbarService,
-              private activatedRoute: ActivatedRoute,
               private authService: AuthenticationService,
               private zone: NgZone) {
   }
@@ -104,10 +103,10 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     // this.loading = true;
     this.registrationService.create(userFromForm)
       .subscribe(() => {
-          this.alertService.success('Registration successful! Please, check your email for confirmation link.',true);
-          document.getElementById('regCloseBtn').click();
-          setTimeout(() => this.router.navigate(["/"]), 5000);
+          this.alertService.success('Registration successful! Please, check your email for confirmation link.', true);
           this.loading = false;
+          return this.router.navigate(["/"]);
+
         },
         (error) => {
           this.alertService.error(error.error);
@@ -120,7 +119,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       .subscribe(() => {
           this.userService.getByLogin(JSON.parse(sessionStorage.getItem('currentToken')).login).subscribe(
             user => {
-              this.alertService.success('Registration successful!');
+              this.alertService.success('Registration successful!', true);
               console.log(user);
               this.navbarService.setNavBarState(true);
               sessionStorage.setItem('currentUser', JSON.stringify(user));
@@ -131,7 +130,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
             });
         }
         , () => {
-          this.alertService.error('Something wrong during signing in with your Google account',true);
+          this.alertService.error('Something wrong during signing in with your Google account');
           this.loading = false;
           return this.router.navigate(['/register']);
         });

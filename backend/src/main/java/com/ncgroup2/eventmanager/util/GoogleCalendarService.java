@@ -37,9 +37,6 @@ public class GoogleCalendarService {
     private static final String APPLICATION_NAME = "EventManager";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final String CREDENTIALS_FOLDER = "./backend/src/main/resources/credentials";
-    private static com.google.api.services.calendar.Calendar client;
-    GoogleAuthorizationCodeFlow flow;
-    Credential credential;
 
     @Value("${google.client.client-id}")
     private String clientId;
@@ -50,14 +47,10 @@ public class GoogleCalendarService {
 
     private Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         // Load client secrets.
-//        InputStream in = CalendarQuickStart.class.getResourceAsStream(CLIENT_SECRET_DIR);
-//        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
         Details web = new Details();
         web.setClientId(clientId);
-        System.out.println(clientId);
         web.setClientSecret(clientSecret);
 
-        System.out.println(clientSecret);
         GoogleClientSecrets clientSecrets = new GoogleClientSecrets().setWeb(web);
 
         // Build flow and trigger user authorization request.
@@ -73,16 +66,15 @@ public class GoogleCalendarService {
     }
 
 
-
     public List<com.ncgroup2.eventmanager.entity.Event> getEvents(String calendarId, LocalDateTime from, LocalDateTime to) throws Exception {
         NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
         Calendar service = new Calendar.Builder(httpTransport, JSON_FACTORY, getCredentials(httpTransport))
                 .setApplicationName(APPLICATION_NAME)
                 .build();
-        DateTime min = new DateTime(from.toEpochSecond(ZoneOffset.UTC)*1000);
-        DateTime max = new DateTime(to.toEpochSecond(ZoneOffset.UTC)*1000);
+        DateTime min = new DateTime(from.toEpochSecond(ZoneOffset.UTC) * 1000);
+        DateTime max = new DateTime(to.toEpochSecond(ZoneOffset.UTC) * 1000);
         System.out.println(calendarId);
-        Events events = service.events().list(calendarId+"#holiday@group.v.calendar.google.com")
+        Events events = service.events().list(calendarId + "#holiday@group.v.calendar.google.com")
                 .setTimeMin(min)
                 .setTimeMax(max)
                 .setOrderBy("startTime")
@@ -95,22 +87,19 @@ public class GoogleCalendarService {
             return parseEvents(items);
         }
 
-
         return null;
     }
 
     private List<com.ncgroup2.eventmanager.entity.Event> parseEvents(List<Event> googleEvents) {
         List<com.ncgroup2.eventmanager.entity.Event> events = new LinkedList<>();
         googleEvents.forEach(googleEvent -> {
-            System.out.println(googleEvent);
             com.ncgroup2.eventmanager.entity.Event event = new com.ncgroup2.eventmanager.entity.Event();
             event.setId(googleEvent.getId());
             event.setName(googleEvent.getSummary());
             event.setDescription(googleEvent.getDescription());
-            parseDates(googleEvent,event);
+            parseDates(googleEvent, event);
             event.setVisibility("PUBLIC");
-            System.out.println(event);
-            ((LinkedList<com.ncgroup2.eventmanager.entity.Event>) events).push(event);
+            events.add(event);
         });
         return events;
     }
