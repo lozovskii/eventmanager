@@ -34,6 +34,7 @@ const colors: any = {
 })
 export class CalendarComponent {
   @Input() type: string;
+  @Input() login: string;
 
   isMy: boolean;
 
@@ -130,7 +131,9 @@ export class CalendarComponent {
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
-    this.router.navigate(['/event-container', event.id]);
+    if(this.isMy && event.color!=colors.green) {
+      this.router.navigate(['/event-container', event.id]);
+    }
   }
 
   queryEvents(eventType: string) {
@@ -149,7 +152,7 @@ export class CalendarComponent {
         }
       }
     } else {
-      return this.eventService.getTimeline(JSON.parse(sessionStorage.getItem('currentUser')).login);
+      return this.eventService.getTimeline(this.login);
     }
   }
 

@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -38,95 +39,16 @@ public class ProfileRestController {
         }
     }
 
-//    @PostMapping(value = "update", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public ResponseEntity update(@RequestBody Customer customer) {
-//
-//        //If you use POST, it's work
-//
-//        return new ResponseEntity(HttpStatus.OK);
-//
-//    }
-
     @RequestMapping(value = "update", method = RequestMethod.PUT)
-    @ResponseStatus( HttpStatus.OK )
+    @ResponseStatus(HttpStatus.OK)
     public void edit(@RequestBody Customer customer) {
         customerService.edit(customer);
     }
-
-
-//    @RequestMapping(value = "edit/upload", method = RequestMethod.PUT)
-//    @ResponseStatus( HttpStatus.OK )
-//    public ResponseEntity avatarUpload(MultipartFile file) {
-//        if (file.isEmpty()) {
-//                return new ResponseEntity(HttpStatus.BAD_REQUEST);
-//            }
-//
-//            customer.setAvatar(encodeToString(file.getBytes()));
-//            customerService.uploadAvatar(customer);
-//
-//        return ResponseEntity(HttpStatus.OK);
-//    }
-//
-//    @PostMapping(value = "edit/upload", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public String avatarUploadPost(@RequestParam("file") MultipartFile file, @ModelAttribute("customer") Customer customer,
-//                                   RedirectAttributes attributes) {
-//        if (file.isEmpty()) {
-//            attributes.addFlashAttribute("message", "Please select a file");
-//            return "redirect:/profile/edit/upload/status";
-//        }
-//
-//        try {
-//            customer.setAvatar(Base64Utils.encodeToString(file.getBytes()));
-//            customerService.uploadAvatar(customer);
-//            attributes.addFlashAttribute("message", "Successfully!");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return "redirect:/profile/edit/upload/status";
-//    }
-//
-//    @GetMapping(value = "edit/upload/status", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public String uploadStatus(Principal principal, Model model) {
-//        model.addAttribute("name", principal.getName());
-//        return "/profile/status";
-//    }
-
-
-//    @GetMapping(value = "edit", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public ResponseEntity<Customer> editGet(@RequestParam String login) {
-//        if (!login.equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        } else {
-//            Customer customer = customerService.getByLogin(login);
-//
-//            return new ResponseEntity<>(customer, HttpStatus.OK);
-//        }
-//    }
-
-//    @PostMapping(value = "edit", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public ResponseEntity<Customer> editPost(@RequestBody Customer customer) {
-//        if (customer == null) {
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        } else {
-//            customerService.edit(customer);
-//
-//            return new ResponseEntity<>(customer, HttpStatus.OK);
-//        }
-//    }
-
-//    @GetMapping(value = "search", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public ResponseEntity<List<Customer>> search(@RequestParam String search) {
-//        List<Customer> customers = customerService.search(search);
-//
-//        return new ResponseEntity<>(customers, HttpStatus.OK);
-//    }
 
     @GetMapping(value = "search", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Page<Customer> search(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
         return customerService.search(page, size, search);
     }
-
 
     @GetMapping(value = "friends", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<Customer>> friends(@RequestParam String login) {
@@ -192,5 +114,12 @@ public class ProfileRestController {
 
             return new ResponseEntity<>(notifications, HttpStatus.OK);
         }
+    }
+
+    @GetMapping("isFriends")
+    public ResponseEntity isFriends(@RequestParam String currentCustomerId, @RequestParam String customerId) {
+        return customerService.isFriends(currentCustomerId,customerId) ?
+                new ResponseEntity(HttpStatus.OK) :
+                new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 }

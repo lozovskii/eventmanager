@@ -4,6 +4,7 @@ import {AlertService} from "../../_services/alert.service";
 import {WishListService} from "../../_services/wishlist.service";
 import {Item} from "../../_models/wishList/item";
 import {WishListItem} from "../../_models/wishList/wishListItem";
+import {UserService} from "../../_services/user.service";
 
 @Component({
   selector: 'app-bookeditems',
@@ -15,24 +16,32 @@ export class BookedItemsComponent implements OnInit {
   wishList: WishList;
   updatableWishList: WishList;
   hasChanges: boolean = false;
+  editableItem: Item;
+  copiedItem: Item;
   items: Item[];
   wishListItemView: WishListItem;
   value : number;
   path: string[] = ['item'];
   order: number = 1;
   queryString: string;
+  customerLogin: string;
 
   constructor(private wishListService: WishListService,
-              private alertService: AlertService) {
+              private alertService: AlertService,
+              private userService: UserService) {
     this.wishList = new WishList();
     this.updatableWishList = new WishList();
     this.updatableWishList.items = [];
     this.wishListItemView = new WishListItem();
     this.queryString = '';
+    this.editableItem = new Item();
+    this.copiedItem = new Item();
   }
 
   ngOnInit() {
     this.getBookedItems();
+
+    this.customerLogin = this.userService.getCurrentLogin();
   }
 
   getBookedItems(): void {
@@ -67,6 +76,18 @@ export class BookedItemsComponent implements OnInit {
     return false;
   }
 
+  editItem(item: Item): void {
+      this.editableItem = item;
+  }
+
+  isCreator(item: Item): boolean {
+    return item.creator_customer_login == this.customerLogin;
+  }
+
+  copyItem(item: Item){
+      this.copiedItem = item;
+  }
+
   update(): void {
     if (this.updatableWishList.items != null)
     this.wishListService.update(this.updatableWishList).subscribe(() => {
@@ -74,5 +95,6 @@ export class BookedItemsComponent implements OnInit {
     }, () => {
       this.alertService.error('Something wrong');
     });
+    this.hasChanges = false;
   }
 }

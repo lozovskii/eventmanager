@@ -1,8 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {EventService} from "../../_services";
+import {AlertService, EventService} from "../../_services";
 import {ActivatedRoute, Router} from "@angular/router";
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
-import {AlertService} from "../../_services/alert.service";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 
 @Component({
@@ -61,7 +60,7 @@ export class EventComponent implements OnInit {
     this.eventService.addParticipant(this.eventDTO.event.id).subscribe(() => {
       this.isParticipant = true;
       this.eventDTO.additionEvent.people.push(JSON.parse(sessionStorage.getItem('currentUser')).id);
-      this.router.navigate(['/eventlist','my']);
+      return this.router.navigate(['/eventlist','my']);
     });
   }
 
@@ -82,7 +81,7 @@ export class EventComponent implements OnInit {
   delete() {
     this.eventService.deleteEvent(this.eventDTO.event.id).subscribe(() => {
       this.alertService.info('Event successfully deleted!', true);
-      this.router.navigate(['../home']);
+      return this.router.navigate(['../home']);
     });
   }
 

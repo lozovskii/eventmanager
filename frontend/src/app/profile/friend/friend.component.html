@@ -14,7 +14,7 @@
       </thead>
       <tbody>
       <tr *ngFor="let friend of friends">
-        <td>{{friend.name}} {{friend.secondName}}</td>
+        <td routerLink="/customer/{{friend.login}}">{{friend.name}} {{friend.secondName}}</td>
         <td>{{friend.phone}}</td>
         <td>{{friend.login}}</td>
         <img src={{friend.avatar}} height="55" width="50" class="center-img">

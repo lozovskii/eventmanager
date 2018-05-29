@@ -46,8 +46,10 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
     private String acceptFriend;
     @Value("${rejectFriend}")
     private String rejectFriend;
-    @Value("${getNotifications}")
+    @Value("${notifications}")
     private String getNotifications;
+    @Value("${countNotifications}")
+    private String countNotifications;
     @Value("${uploadAvatar}")
     private String uploadAvatar;
     @Value("${deleteFriend}")
@@ -67,6 +69,15 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
     @Value("${searchCustomerEmptyField}")
     private String searchCustomerEmptyField;
 
+    @Value("${create}")
+    private String create;
+    @Value("${update}")
+    private String update;
+    @Value("${delete}")
+    private String delete;
+    @Value("$isExist")
+    private String isExist;
+
     @PostConstruct
     private void initialize() {
         setDataSource(dataSource);
@@ -74,20 +85,16 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
     @Override
     public void create(Customer customer) {
-
-        String sql = "INSERT INTO \"Customer\" " +
-                "(name,second_name,phone,login,email,password,isverified,token,avatar,registration_date)" +
-                " values(?,?,?,?,?,?,?,?,?,?)";
-
         Object[] params = customer.getParams();
 
         params[params.length - 1] = new Timestamp(Instant.now().toEpochMilli());
 
-        this.getJdbcTemplate().update(sql, params);
+        this.getJdbcTemplate().update(create, params);
     }
 
     @Override
     public Customer getById(Object id) {
+
         String sql = BASE_SQL + "WHERE id = CAST (? AS uuid) ";
 
         Object[] params = new Object[]{id};
@@ -131,18 +138,6 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
     @Override
     public void update(Customer customer) {
 
-        String sql = "UPDATE \"Customer\" SET " +
-                "name = ?, " +
-                "second_name = ?, " +
-                "phone = ?, " +
-                "login = ?, " +
-                "email = ?, " +
-                "password = ?, " +
-                "isverified = ?, " +
-                "token = ?, " +
-                "avatar = ? " +
-                " WHERE id = CAST (? AS UUID)";
-
         Object[] params = new Object[]{
                 customer.getName(),
                 customer.getSecondName(),
@@ -156,16 +151,15 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
                 customer.getId()
         };
 
-        this.getJdbcTemplate().update(sql, params);
+        this.getJdbcTemplate().update(update, params);
     }
 
     @Transactional
     public void delete(Object id) {
-        String sqlCustomer = "DELETE FROM \"Customer\" WHERE id = CAST (? AS uuid)";
 
         Object[] params = new Object[]{id};
 
-        this.getJdbcTemplate().update(sqlCustomer, params);
+        this.getJdbcTemplate().update(delete, params);
     }
 
     @Override
@@ -177,8 +171,6 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
         this.getJdbcTemplate().update(sqlUnverified);
     }
-
-    // PROFILE METHODS IMPLEMENTATION
 
     @Override
     public Customer getByLogin(String login) {
@@ -195,50 +187,13 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
         this.getJdbcTemplate().update(editCustomer, params);
     }
 
-//    @Override
-//    public List<Customer> search(String search) {
-//
-//        if (search != null && search.trim().length() > 0) {
-//
-//            String[] subStr = search.toLowerCase().split(" ");
-//
-//            if (subStr.length == 1) {
-//                String query = "SELECT * FROM \"Customer\" WHERE LOWER(login) LIKE '" + subStr[0] + "%' " +
-//                        "AND login != '" + SecurityContextHolder.getContext().getAuthentication().getName() + "'";
-//                return this.getJdbcTemplate().query(query, new CustomerMapper());
-//            } else if (subStr.length == 2) {
-//                String query1 = "SELECT * FROM \"Customer\" WHERE LOWER(name) LIKE '"
-//                        + subStr[0] + "%' AND LOWER(second_name) LIKE '" + subStr[1] + "%' AND login != '" +
-//                        SecurityContextHolder.getContext().getAuthentication().getName() + "'";
-//                String query2 = "SELECT * FROM \"Customer\" WHERE LOWER(second_name) LIKE '"
-//                        + subStr[0] + "%' AND LOWER(name) LIKE '" + subStr[1] + "%' AND login != '" +
-//                        SecurityContextHolder.getContext().getAuthentication().getName() + "'";
-//                String result = query1 + " UNION " + query2;
-//
-//                return this.getJdbcTemplate().query(result, new CustomerMapper());
-//            } else {
-//                return null;
-//            }
-//        } else if (search.equals("")) {
-//            String query = "SELECT * FROM \"Customer\" WHERE login != '" +
-//                    SecurityContextHolder.getContext().getAuthentication().getName() + "'";
-//
-//            return this.getJdbcTemplate().query(query, new CustomerMapper());
-//        } else {
-//            return null;
-//        }
-//    }
-
     @Override
     public Page<Customer> search(int pageNo, int pageSize, String search) {
-
         String newSearch = search.trim();
         String[] subStr = newSearch.toLowerCase().split(" ");
 
         if (subStr.length > 0) {
             if (subStr.length == 1) {
-                System.out.println("length = 1");
-
                 return new PaginationHelper<Customer>().getPage(
                         this.getJdbcTemplate(),
                         countCustomerByLogin,
@@ -249,23 +204,6 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
                         pageNo,
                         pageSize,
                         new CustomerMapper());
-//            } else if (subStr.length == 2) {
-//                System.out.println("length = 2");
-//
-//                return new PaginationHelper<Customer>().getPage(
-//                        this.getJdbcTemplate(),
-//                        countCustomerByNameAndLastname,
-//                        searchCustomerByNameAndLastname,
-//                        new Object[] {
-//                                subStr[0] + "%",
-//                                subStr[1] + "%",
-//                                SecurityContextHolder.getContext().getAuthentication().getName(),
-//                                subStr[0] + "%",
-//                                subStr[1] + "%",
-//                                SecurityContextHolder.getContext().getAuthentication().getName()},
-//                        pageNo,
-//                        pageSize,
-//                        new CustomerMapper());
             } else {
                 return null;
             }
@@ -283,14 +221,15 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
     @Override
     public List<Customer> getFriends(String login) {
-        Object[] params = new Object[]{login, 3, login, 3};
+        Object[] params = new Object[] {login, login};
+
         return this.getJdbcTemplate().query(getFriends, params, new CustomerMapper());
     }
 
     @Override
     public void delete(String login) {
-        Object[] params1 = new Object[]{SecurityContextHolder.getContext().getAuthentication().getName(), login};
-        Object[] params2 = new Object[]{login, SecurityContextHolder.getContext().getAuthentication().getName()};
+        Object[] params1 = new Object[] {SecurityContextHolder.getContext().getAuthentication().getName(), login};
+        Object[] params2 = new Object[] {login, SecurityContextHolder.getContext().getAuthentication().getName()};
 
         this.getJdbcTemplate().update(deleteFriend, params1);
         this.getJdbcTemplate().update(deleteFriend, params2);
@@ -300,7 +239,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
     public synchronized void addFriend(String login) {
         try {
             if (!checkAddFriend(login)) {
-                Object[] params = new Object[]{SecurityContextHolder.getContext().getAuthentication().getName(), login, 1};
+                Object[] params = new Object[] {SecurityContextHolder.getContext().getAuthentication().getName(), login};
 
                 this.getJdbcTemplate().update(addFriend, params);
             }
@@ -311,22 +250,21 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
     @Override
     public void acceptFriend(String token) {
-        Object[] params = new Object[]{3, UUID.fromString(token),
-                SecurityContextHolder.getContext().getAuthentication().getName()};
+        Object[] params = new Object[] {UUID.fromString(token)};
 
         this.getJdbcTemplate().update(acceptFriend, params);
     }
 
     @Override
     public void rejectFriend(String token) {
-        Object[] params = new Object[]{2, UUID.fromString(token)};
+        Object[] params = new Object[]{UUID.fromString(token)};
 
         this.getJdbcTemplate().update(rejectFriend, params);
     }
 
     @Override
     public List<Relationship> getNotifications(String login) {
-        Object[] params = new Object[]{login, 1, login};
+        Object[] params = new Object[]{login, login};
 
         return this.getJdbcTemplate().query(getNotifications, params, new RelationshipMapper());
     }
@@ -343,18 +281,14 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
         boolean isExist = false;
 
-        Object[] params = new Object[]{SecurityContextHolder.getContext().getAuthentication().getName(), login, 1, 3};
+        Object[] params = new Object[] {SecurityContextHolder.getContext().getAuthentication().getName(), login};
 
         try (PreparedStatement ps = dataSource.getConnection().prepareStatement(checkAddFriend)) {
 
             ps.setString(1, (String) params[0]);
             ps.setString(2, (String) params[1]);
-            ps.setInt(3, (Integer) params[2]);
-            ps.setInt(4, (Integer) params[3]);
-            ps.setString(5, (String) params[0]);
-            ps.setString(6, (String) params[1]);
-            ps.setInt(7, (Integer) params[2]);
-            ps.setInt(8, (Integer) params[3]);
+            ps.setString(3, (String) params[0]);
+            ps.setString(4, (String) params[1]);
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -370,19 +304,17 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
     @Override
     public boolean isCustomerExist(String login) {
-        Long countOfCustomers = Long.valueOf(0);
-        String sql = "SELECT count(login)" +
-                "FROM \"Customer\" " +
-                "WHERE \"Customer\".login = ?";
+        Long countOfCustomers;
+
         Object[] params = new Object[]{
                 login
         };
         try {
-            countOfCustomers = this.getJdbcTemplate().queryForObject(sql, params, Long.class);
+            countOfCustomers = this.getJdbcTemplate().queryForObject(isExist, params, Long.class);
         } catch (NullPointerException e) {
             return false;
         }
-        return countOfCustomers > 0 ? true : false;
+        return countOfCustomers > 0;
     }
 
     @Override
@@ -392,6 +324,16 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
                 id, email
         };
         this.getJdbcTemplate().update(sql, params);
+    }
+
+    @Override
+    public boolean isFriends(String currentCustomerId, String customerId) {
+        String sql = "SELECT \"isFriends\"(cast(? as uuid), cast(? as uuid))";
+        Object[] params = new Object[] {
+                currentCustomerId,
+                customerId
+        };
+        return this.getJdbcTemplate().query(sql,params,(resultSet, i) -> resultSet.getBoolean("isFriends")).get(0);
     }
 
 }

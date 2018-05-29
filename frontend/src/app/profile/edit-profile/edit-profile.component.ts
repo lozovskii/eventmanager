@@ -17,6 +17,7 @@ export class EditProfileComponent implements OnInit {
   name = '';
   lastName = '';
   phone = '';
+  isDelete = false;
 
     constructor(private profileService: ProfileService,
               private userService: UserService,
@@ -35,9 +36,13 @@ export class EditProfileComponent implements OnInit {
   ngOnInit() {
 
     this.profileForm = new FormGroup({
-      name: new FormControl('', [Validators.required, this.checkForLength]),
-      lastName: new FormControl('', [Validators.required, this.checkForLength]),
-      phone: new FormControl('', [Validators.required, this.checkForPhoneNumber])
+      name: new FormControl('', [Validators.required, Validators.minLength(3),
+        Validators.maxLength(40)]),
+      lastName: new FormControl('', [Validators.required, Validators.minLength(3),
+        Validators.maxLength(40)]),
+      phone: new FormControl('', [ Validators.maxLength(20),
+        Validators.pattern("\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}")]
+        )
     });
 
   }
@@ -82,7 +87,19 @@ export class EditProfileComponent implements OnInit {
     return null;
   }
 
+  deleteAvatar(user : User) {
+      user.avatar = '';
+    this.updateUser(user);
+  }
 
+  isDeleteChange() {
+      if (this.isDelete == false){
+        this.isDelete = true;
+      } else {
+        this.isDelete = false;
+      }
+
+  }
 
 
 

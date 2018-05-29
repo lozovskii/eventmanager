@@ -1,14 +1,54 @@
-<div class="chatbox">
-  <div class="messages">
+<div class="chat" xmlns="">
+  <div class="chat-header clearfix">
+  </div> <!-- end chat-header -->
+  <div class="chat-history">
+    <ul>
+      <li *ngFor="let message of messages" class="clearfix">
+        <div [class.align-right]="message.authorId == currentUser.id" class="message-data">
+          <span class="message-data-time">{{message.date}}</span> &nbsp; &nbsp;
+          <span class="message-data-name">{{message.authorName}}</span>
 
-    <div *ngFor="let message of messages" [class.right]="message.authorId == currentUser.id" onload="scrollTop = 9999;">
-      <div><b>{{message.authorName}}</b></div>
-      <div>{{message.content}}</div>
-    </div>
+        </div>
+        <div [class.other-message]="message.authorId == currentUser.id"
+             [class.float-right]="message.authorId == currentUser.id"
+             [class.my-message]="message.authorId != currentUser.id" class="message">
+          {{message.content}}
+        </div>
+      </li>
+    </ul>
+  </div> <!-- end chat-history -->
+  <div class="chat-message clearfix">
+    <textarea name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3"
+              [(ngModel)]="addingMessage"></textarea>
+    <button (click)="addMessage(addingMessage)">Send</button>
+  </div> <!-- end chat-message -->
+</div> <!-- end chat -->
 
-  </div>
-  <div class="input-container">
-    <input type="text" class="inputtext" [(ngModel)]="addingMessage">
-    <button class="replyBtn" (click)="addMessage(addingMessage)">Send</button>
-  </div>
-</div>
+<script>
+  (function(){
+
+    var chat = {
+      init: function() {
+        this.cacheDOM();
+        this.render();
+      },
+      cacheDOM: function() {
+        this.$chatHistory = $('.chat-history');
+      },
+      render: function() {
+        this.scrollToBottom();
+        if (this.addingMessage.trim() !== '') {
+          this.scrollToBottom();
+        }
+      },
+      scrollToBottom: function() {
+        this.$chatHistory.scrollTo(0, this.$chatHistory[0].scrollHeight);
+      }
+    };
+
+    chat.init();
+
+  })();
+
+
+</script>

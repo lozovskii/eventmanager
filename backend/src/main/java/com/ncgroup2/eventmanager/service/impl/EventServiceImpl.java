@@ -14,7 +14,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -45,9 +47,9 @@ public class EventServiceImpl implements EventService {
     @Override
     public void createEvent(EventDTO eventDTO) {
         Event event = eventDTO.getEvent();
-        Object[] frequancy = checkDefaultCustEventFrequency(eventDTO);
-        Long frequencyNumber = (Long) frequancy[0];
-        String frequencyPeriod = (String) frequancy[1];
+        Object[] frequency = checkDefaultCustEventFrequency(eventDTO);
+        Long frequencyNumber = (Long) frequency[0];
+        String frequencyPeriod = (String) frequency[1];
 
         String priority = checkDefaultCustEventPriority(eventDTO);
         String status = checkDefaultEventStatus(eventDTO);
@@ -207,7 +209,9 @@ public class EventServiceImpl implements EventService {
         String priority = updateEventDTO.getPriority();
         eventDao.updateEvent(event, priority);
         Location location = updateEventDTO.getLocation();
-        locationService.update(location);
+            if (location != null) {
+            locationService.update(location);
+            }
         getExistingCustomers(updateEventDTO.getNewPeople()).
                 forEach(login -> eventDao.createEventInvitation(login, UUID.fromString(event.getId())));
 
@@ -265,9 +269,16 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> getTimeline(String login, LocalDateTime from, LocalDateTime to) {
+    public List<EventDTO> getTimeline(String login, LocalDateTime from, LocalDateTime to) {
         String customerId = customerDao.getEntityByField("login", login).getId();
-        return eventDao.getTimelineEvents(customerId, from, to);
+        List<Event> list =  eventDao.getTimelineEvents(customerId, from, to);
+        List<EventDTO> dtoList = new ArrayList<>();
+        list.forEach((event) -> {
+            EventDTO dto = new EventDTO();
+            dto.setEvent(event);
+            dtoList.add(dto);
+        });
+        return dtoList;
     }
 
     @Override
@@ -277,7 +288,7 @@ public class EventServiceImpl implements EventService {
 
     private List<String> getExistingCustomers(List<String> logins) {
         return logins.stream()
-                .filter(login -> customerDao.isCustomerExist(login))
+                .filter(customerDao::isCustomerExist)
                 .collect(Collectors.toList());
     }
 
@@ -288,8 +299,8 @@ public class EventServiceImpl implements EventService {
 
         String subject = "New invite";
 
-        String template = "%s %s invited you to '%s' event.\n See more: ";
-        String message = String.format(template, inviter.getName(), inviter.getSecondName(), event.getName());
+        String template = "%s invited you to '%s' event.\n See more: ";
+        String message = String.format(template, inviter.getLogin(), event.getName());
 
         String url = "/event-container/" + eventId.toString();
         mailSender.sendBasicEmailWithLink(sendTo, subject, message, url);
@@ -382,12 +393,4 @@ public class EventServiceImpl implements EventService {
         });
         return eventsDTO;
     }
-
-    //    private boolean isOverlaped(Event first, Event second) {
-//        return first.getEndTime().isAfter(second.getStartTime());
-//    }
-//    private boolean isFirstEndsEarlier(Event first, Event second) {
-//        return first.getEndTime().isBefore(second.getEndTime());
-//    }
-
 }

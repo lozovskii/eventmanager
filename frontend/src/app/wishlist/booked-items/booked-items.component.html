@@ -25,7 +25,8 @@
       </div>
       <div class="col-auto">
         <button type="button" class="btn btn-outline-primary"
-                [disabled]="!hasChanges" (click)="update()">
+                [ngClass]="{ 'pulse-button': hasChanges }" [disabled]="!hasChanges"
+                (click)="update()">
           <i class="fas fa-save"></i> Save changes
         </button>
       </div>
@@ -46,7 +47,7 @@
         <th scope="col">Link</th>
         <th scope="col" (click)="sortItems('dueDate')" class="text-center">Due date <i class="fas fa-sort"></i></th>
         <th scope="col" (click)="sortItems('priority')" class="text-center">Priority <i class="fas fa-sort"></i></th>
-        <th scope="col" class="text-center">Cancel Booking</th>
+        <th scope="col" class="text-center">Actions</th>
       </tr>
       </thead>
       <tbody>
@@ -79,6 +80,11 @@
                   (click)="cancelBooking(wishListItem)">
             <i class="fas fa-ban"></i>
           </button>
+          <button class="btn btn-sm btn-outline-success" title="Copy item to wishlist"
+                  (click)="copyItem(item)"
+                  data-toggle="modal" data-target="#copyTo">
+            <i class="far fa-copy"></i>
+          </button>
         </td>
       </tr>
       </tbody>
@@ -91,5 +97,9 @@
                                (updatedItem)="updatedPriority($event)"></app-item-details-view>
       </div>
     </div>
+
+    <additional-components-container
+      [copiedItem]="copiedItem">
+    </additional-components-container>
 
   </main>

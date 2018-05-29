@@ -6,6 +6,7 @@ import {AlertService} from "../../_services/alert.service";
 import {VISIBILITY} from "../../event-visibility";
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
 import {FormControl, FormGroup} from "@angular/forms";
+import {UserService} from "../../_services/user.service";
 
 @Component({
   selector: 'app-eventlist',
@@ -25,9 +26,17 @@ export class EventlistComponent implements OnInit {
     startDate:  new FormControl(),
     endDate:  new FormControl()
   });
+  checkBoxOrder: number = 1;
+  filteredEventsDTO: EventDTOModel[];
+  backupEventsDTO: EventDTOModel[];
+  currentId: string;
+
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute,
+              private userService: UserService,
               private alertService: AlertService) {
+    this.backupEventsDTO = [];
+    this.filteredEventsDTO = [];
   }
 
   ngOnInit(): void {
@@ -76,6 +85,7 @@ export class EventlistComponent implements OnInit {
         }
       }
     });
+    this.currentId = this.userService.getCurrentId();
   }
 
   getEvents(): void {
@@ -152,5 +162,22 @@ export class EventlistComponent implements OnInit {
       .subscribe(() => {
         this.alertService.info('You imported your events.', true);
       })
+  }
+
+  getCreatedEvents(): void {
+    Object.assign(this.backupEventsDTO, this.eventsDTO);
+    this.filteredEventsDTO = this.eventsDTO.filter(event =>
+      event.event.creatorId === this.currentId
+    );
+    this.eventsDTO = this.filteredEventsDTO;
+  }
+
+  chooseCreatedCheckBox(){
+    if (this.checkBoxOrder == 1)
+      this.getCreatedEvents();
+    else {
+      this.eventsDTO = this.backupEventsDTO;
+    }
+    this.checkBoxOrder = this.checkBoxOrder * (-1);
   }
 }

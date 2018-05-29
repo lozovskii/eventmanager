@@ -149,8 +149,15 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
         return this.getJdbcTemplate().queryForObject(query, params, int.class);
     }
 
+//    @Cacheable("events")
     @Override
     public List getEventsByCustId(String custId) {
+//        try {
+//            long time = 3000L;
+//            Thread.sleep(time);
+//        } catch (InterruptedException e) {
+//            throw new IllegalStateException(e);
+//        }
         String query = queryService.getQuery("event.getByCustIdSort");
         Object[] params = new Object[]{
                 custId,
@@ -173,6 +180,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     public List getAllPrivateEventsInMonth(String custId) {
         String query = queryService.getQuery("event.getAllPrivateEventsInMonth");
         Object[] params = new Object[]{
+                custId
         };
         String orderBy = " ORDER BY start_time";
         return this.getJdbcTemplate().query(query + orderBy, params, new BeanPropertyRowMapper(Event.class));
@@ -182,6 +190,8 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     public List getAllFriendsEventsInMonth(String custId) {
         String query = queryService.getQuery("event.getAllFriendsEventsInMonth");
         Object[] params = new Object[]{
+                custId,
+                custId
         };
         String orderBy = " ORDER BY start_time";
         return this.getJdbcTemplate().query(query + orderBy, params, new BeanPropertyRowMapper(Event.class));
@@ -368,7 +378,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
             InviteNotificationDTO notification = new InviteNotificationDTO();
             notification.setEventId(resultSet.getString("event_id"));
             notification.setEventName(resultSet.getString("event_name"));
-            notification.setInviter(resultSet.getString("name") + " " + resultSet.getString("second_name"));
+            notification.setInviter(resultSet.getString("login"));
             return notification;
         });
     }

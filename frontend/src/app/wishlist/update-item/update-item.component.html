@@ -29,7 +29,7 @@
 
       <div class="form-group">
         <label>Description</label>
-        <editor [formControlName]='["description"]'
+        <editor formControlName="description"
                 apiKey="h4g5a6vds8edp6kti3ahmikjin0r9usoqh99fs5l8xymelf5" [init]="{plugins: 'link'}">
         </editor>
         <small id="passwordHelpInline" class="text-muted">
@@ -53,7 +53,9 @@
 
         <div *ngIf="link.invalid && (link.dirty || link.touched)"
              class="alert alert-danger">
-
+          <div *ngIf="link?.errors?.pattern">
+            Write valid URL
+          </div>
           <div *ngIf="link?.errors?.minlength">
             Link must be at least 4 characters long.
           </div>
@@ -65,7 +67,11 @@
 
       <div class="form-group">
         <label for="dueDate">Due date <span style="color: red;">*</span></label>
-        <input formControlName="dueDate" id="dueDate" type="date" class="form-control" name="dueDate" required/>
+        <input formControlName="dueDate" id="dueDate" type="date"
+               class="form-control" name="dueDate" required/>
+        <small class="text-muted">
+          Not earlier than today
+        </small>
       </div>
 
 

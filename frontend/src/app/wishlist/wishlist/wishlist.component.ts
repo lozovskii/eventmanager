@@ -13,7 +13,7 @@ import {Item} from "../../_models/wishList/item";
 })
 export class WishListComponent implements OnInit {
   @Input('eventId') eventId: string;
-  @Input('isCreator') isCreator: boolean = false;
+  @Input('isCreator') isEventCreator: boolean = false;
   @Input('editMode') editMode: boolean = false;
   @Output('wishListItemView') outWishListItemView = new EventEmitter<WishListItem>();
   @Output('editableItem') outEditableItem = new EventEmitter<Item>();
@@ -62,9 +62,9 @@ export class WishListComponent implements OnInit {
       this.movableItem = wishListItem;
   }
 
-  editItem(item: Item): void {
-    this.outEditableItem.emit(item);
-  }
+  // editItem(item: Item): void {
+  //   this.outEditableItem.emit(item);
+  // }
 
   showItemDetails(item: WishListItem): void {
       this.wishListItemView = item;
@@ -131,6 +131,10 @@ export class WishListComponent implements OnInit {
     wishListItem.event_id = this.wishList.id;
     wishListItem.priority = 3;
     this.wishList.items.push(wishListItem);
+  }
+
+  isCreator(item: Item): boolean {
+    return item.creator_customer_login == this.currentLogin;
   }
 
   sortItems(prop: string) {

@@ -11,7 +11,6 @@ import java.util.List;
 @Setter
 public class UpdateEventDTO {
     private Event event;
-    private EventDTO eventDTO;
     private List<String> newPeople;
     private List<String> removedPeople;
     private Long frequencyNumber;

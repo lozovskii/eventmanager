@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {AlertService} from "../../_services/alert.service";
 import {WishListService} from "../../_services/wishlist.service";
 import {Item} from "../../_models/wishList/item";
@@ -8,13 +8,16 @@ import {EventService} from "../../_services/event.service";
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
 import {Event} from "../../_models/event";
 import {Subscription} from "rxjs/Rx";
+import {UserService} from "../../_services/user.service";
 
 @Component({
   selector: 'feature-copy-move',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './copy-move.component.html',
   styleUrls: ['../wishlist/wishlist.component.css']
 })
-export class CopyMoveComponent implements OnChanges {
+export class CopyMoveComponent implements OnChanges, OnInit {
+
   @Input('copiedItem') inCopiedItem: Item;
   @Input('movableItem') inMovableItem: WishListItem;
 
@@ -22,10 +25,17 @@ export class CopyMoveComponent implements OnChanges {
   movableItem: WishListItem;
   wishList: WishList;
   eventsDTO: EventDTOModel[];
+  currentId: string;
 
   constructor(private eventService: EventService,
               private wishListService: WishListService,
-              private alertService: AlertService) { }
+              private alertService: AlertService,
+              private userService: UserService) {
+  }
+
+  ngOnInit(): void {
+    this.currentId = this.userService.getCurrentId();
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     for (let prop in changes) {
@@ -48,7 +58,9 @@ export class CopyMoveComponent implements OnChanges {
   getMyEvents(): void {
     this.eventService.getEventsByCustId()
       .subscribe((eventsDTO) => {
-          this.eventsDTO = eventsDTO;
+        this.eventsDTO = eventsDTO.filter(event =>
+          event.event.creatorId === this.currentId
+        )
       });
   }
 
@@ -57,7 +69,17 @@ export class CopyMoveComponent implements OnChanges {
     let wishListItem: WishListItem = new WishListItem();
     wishListItem.item = new Item();
     wishListItem.item = this.movableItem ? this.movableItem.item : this.copiedItem;
-    console.log(wishListItem.item);
+
+    // if (wishListItem.item.creator_customer_login != this.currentLogin) {
+    //   wishListItem.item.creator_customer_login = this.currentLogin;
+    //   delete wishListItem.item.id;
+    //   this.wishListService.createItem(wishListItem.item)
+    //     .subscribe(() => { },
+    //       () => {
+    //         this.alertService.error("Something wrong");
+    //       });
+    // }
+
     wishListItem.event_id = event.id;
     wishListItem.priority = 3;
     wishList.id = event.id;

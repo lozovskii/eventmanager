@@ -2,9 +2,13 @@
   <div class="col-md-9">
     <input  value="{{eventDTO.additionEvent.startTimeNotification | slice : 0 : 4}}-{{eventDTO.additionEvent.startTimeNotification | slice : 5 : 7}}-{{eventDTO.additionEvent.startTimeNotification |slice : 8 : 10}}T{{eventDTO.additionEvent.startTimeNotification | slice : 11 : 16}}"
             type="datetime-local" formControlName="startTimeNotification"  class="form-control">
+    <div *ngIf="additionEventForm?.invalid" class="alert-danger">
+      <div *ngIf="additionEventForm?.errors?.dateBeforeNow">Notifications cannot start in the past</div>
+      <div *ngIf="additionEventForm?.errors?.dateAfterEventStart">Notifications cannot begin after event start</div>
+    </div>
   </div>
   <div class="col-md-3">
     <button type="button" class="btn btn-primary"
-            (click)="changeNotStartTime(additionEventForm.value)">Notify me!</button>
+            (click)="changeNotStartTime(additionEventForm.value)" >Notify me!</button>
   </div>
 </form>
