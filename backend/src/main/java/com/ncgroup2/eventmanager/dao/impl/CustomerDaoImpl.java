@@ -75,7 +75,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
     private String update;
     @Value("${delete}")
     private String delete;
-    @Value("$isExist")
+    @Value("${isExist}")
     private String isExist;
 
     @PostConstruct
@@ -333,7 +333,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
                 currentCustomerId,
                 customerId
         };
-        return this.getJdbcTemplate().query(sql,params,(resultSet, i) -> resultSet.getBoolean("isFriends")).get(0);
+        return this.getJdbcTemplate().queryForObject(sql,params,Boolean.class);
     }
 
 }
