@@ -22,7 +22,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     secondName: ['', [Validators.minLength(3), Validators.maxLength(20), Validators.pattern("^[a-zA-Zа-яА-ЯієїґІЄЇҐ]*$")]],
     login: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20), Validators.pattern("^[a-zA-Z0-9_.-]*$")]],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20), Validators.pattern("[a-zA-Z\d]")]]
+    password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]]
   });
 
   isValidFormSubmitted = null;
@@ -104,9 +104,9 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     this.registrationService.create(userFromForm)
       .subscribe(() => {
           this.alertService.success('Registration successful! Please, check your email for confirmation link.', true);
-          document.getElementById('regCloseBtn').click();
-          setTimeout(() => this.router.navigate(["/"]), 5000);
           this.loading = false;
+          return this.router.navigate(["/"]);
+
         },
         (error) => {
           this.alertService.error(error.error);
