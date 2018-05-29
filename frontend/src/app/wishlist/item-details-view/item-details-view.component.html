@@ -24,7 +24,7 @@
       <div class="card-footer container">
           <div class="text-muted rating col" *ngIf="item.raters">
           <span *ngFor="let rater of item.raters; let i = index;">
-              <a *ngIf="i < 3" [routerLink]="['/customer',rater.customer_login]">{{rater.customer_login}}, </a>
+              <a *ngIf="i < 3" [routerLink]="['/customer',rater.customer_login]">{{rater.customer_login}} </a>
             <span *ngIf="i == 2" data-toggle="collapse" href="#others1" id="expandableText1" role="button"
                   aria-expanded="false" aria-controls="others">
               and {{item.raters.length-3}} others like this

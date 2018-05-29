@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AlertService} from "../../_services/alert.service";
 import {WishListService} from "../../_services/wishlist.service";
 import {Item} from "../../_models/wishList/item";
@@ -9,7 +9,7 @@ import {WishListItem} from "../../_models/wishList/wishListItem";
 @Component({
   selector: 'app-all-items',
   templateUrl: './all-items.component.html',
-  styleUrls: ['../wishlist/wishlist.component.css']
+  styleUrls: ['../wishlist/wishlist.component.css', './all-items.component.css']
 })
 export class AllItemsComponent implements OnInit {
   @Input('included') isIncluded: boolean = false;
@@ -21,11 +21,15 @@ export class AllItemsComponent implements OnInit {
   itemView: Item;
   editableItem: Item;
   copiedItem: Item;
+  favoriteItem: Item;
   wishList: WishList;
+  backupItems: Item[];
+  popularItems: Item[];
   item: Item;
   items: Item[];
   trash: Item[];
-  path: string[] = ['name'];
+  path: string[] = ['item'];
+  checkBoxOrder: number = 1;
   order: number = 1;
   currentLogin: string;
   queryString: string;
@@ -38,11 +42,14 @@ export class AllItemsComponent implements OnInit {
     this.items = [];
     this.trash = [];
     this.item = new Item();
+    this.favoriteItem = new Item();
     this.item.tags = [];
     this.itemView = new Item();
     this.editableItem = new Item();
     this.copiedItem = new Item();
     this.queryString = '';
+    this.backupItems = [];
+    this.popularItems = [];
   }
 
   ngOnInit() {
@@ -56,10 +63,24 @@ export class AllItemsComponent implements OnInit {
     this.getAllItems();
   }
 
-  copyItem(item: Item){
+  copyItem(item: Item) {
     this.isIncluded ?
       this.outCopiedItem.emit(item) :
       this.copiedItem = item;
+  }
+
+  chooseArray() {
+    if (this.checkBoxOrder == 1) {
+      if (this.popularItems.length > 0)
+        this.items = this.popularItems;
+      else {
+        this.getPopularItems();
+      }
+    }
+    else {
+      this.items = this.backupItems;
+    }
+    this.checkBoxOrder = this.checkBoxOrder * (-1);
   }
 
   isCreator(item: Item): boolean {
@@ -100,6 +121,7 @@ export class AllItemsComponent implements OnInit {
     wishListItem.priority = 3;
     this.wishList.items.push(wishListItem);
   }
+
   //
   // deleteItem(item: Item): void {
   //   let index = this.items.indexOf(item);
@@ -129,14 +151,14 @@ export class AllItemsComponent implements OnInit {
   }
 
   addToCollection(item: Item): void {
-    this.item = item;
-    delete this.item.id;
-    this.item.creator_customer_login = this.currentLogin;
+    Object.assign(this.favoriteItem, item);
+    delete this.favoriteItem.id;
+    this.favoriteItem.creator_customer_login = this.currentLogin;
 
-    this.wishListService.createItem(this.item)
+    this.wishListService.createItem(this.favoriteItem)
       .subscribe(() => {
           this.alertService.success('Item added to you Collection.');
-          this.items.push(this.item);
+          this.items.push(this.favoriteItem);
         },
         () => {
           this.alertService.error("Something wrong");
@@ -147,10 +169,24 @@ export class AllItemsComponent implements OnInit {
     this.wishListService.getAllItems()
       .subscribe((items) => {
         this.items = items;
+        Object.assign(this.backupItems, items);
       }, () => {
         this.alertService.info('Items not found');
       });
   }
+
+  getPopularItems(): void {
+    this.path = [];
+
+    this.wishListService.getPopularItems()
+      .subscribe((items) => {
+        this.items = items;
+        Object.assign(this.popularItems, items);
+      }, () => {
+        this.alertService.info('Items not found');
+      });
+  }
+
 
   getPageAllItems(): void {
     this.wishListService.getPageAllItems(this.page, 6)
@@ -160,9 +196,9 @@ export class AllItemsComponent implements OnInit {
       })
   }
 
-  setPage(i,event:any) {
+  setPage(i, event: any) {
     event.preventDefault();
-    this.page=i;
+    this.page = i;
     this.getPageAllItems();
   }
 

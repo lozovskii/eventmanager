@@ -49,7 +49,7 @@ export class BookedItemsComponent implements OnInit {
       .subscribe((wishList) => {
         this.wishList = wishList;
       }, () => {
-      this.alertService.error("Items not found")});
+      this.alertService.info("Items not found")});
   }
 
   showItemDetails(item: WishListItem): void {
@@ -95,5 +95,6 @@ export class BookedItemsComponent implements OnInit {
     }, () => {
       this.alertService.error('Something wrong');
     });
+    this.hasChanges = false;
   }
 }

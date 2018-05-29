@@ -180,6 +180,7 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     public List getAllPrivateEventsInMonth(String custId) {
         String query = queryService.getQuery("event.getAllPrivateEventsInMonth");
         Object[] params = new Object[]{
+                custId
         };
         String orderBy = " ORDER BY start_time";
         return this.getJdbcTemplate().query(query + orderBy, params, new BeanPropertyRowMapper(Event.class));
@@ -189,6 +190,8 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     public List getAllFriendsEventsInMonth(String custId) {
         String query = queryService.getQuery("event.getAllFriendsEventsInMonth");
         Object[] params = new Object[]{
+                custId,
+                custId
         };
         String orderBy = " ORDER BY start_time";
         return this.getJdbcTemplate().query(query + orderBy, params, new BeanPropertyRowMapper(Event.class));

@@ -1,4 +1,7 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output,
+  SimpleChanges
+} from '@angular/core';
 import {Item} from "../../_models/wishList/item";
 import {WishListItem} from "../../_models/wishList/wishListItem";
 import {WishList} from "../../_models/wishList/wishList";
@@ -8,6 +11,7 @@ import {UserService} from "../../_services/user.service";
 
 @Component({
   selector: 'app-item-details-view',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './item-details-view.component.html',
   styleUrls: ['./item-details-view.component.css']
 })
