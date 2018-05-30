@@ -29,7 +29,9 @@ export class DraftContentComponent implements OnInit {
     this.isCreator = false;
     const id = this.eventId;
     this.eventService.getEventById(id).subscribe((eventDTO : EventDTOModel) => {
+      console.log("here: " + JSON.stringify(eventDTO));
       this.eventDTO = eventDTO;
+      console.log("here: " + JSON.stringify(this.eventDTO));
       let currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id;
       this.isCreator = currentUserId == this.eventDTO.event.creatorId;
       this.checkLocation();

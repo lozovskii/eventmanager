@@ -121,6 +121,7 @@ public class EventController {
     public ResponseEntity<EventDTO> getEventById(@PathVariable("eventId") String eventId,
                                                  @PathVariable("custId") String custId){
         EventDTO eventById = eventService.getEventById(eventId,custId);
+        System.out.println(eventById);
         return new ResponseEntity<>(eventById, HttpStatus.OK);
     }
 

@@ -67,7 +67,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   }
 
   public googleInit() {
-    console.log('Google Inin gapi ' + gapi);
     gapi.load('auth2', () => {
       this.auth2 = gapi.auth2.init({
         client_id: '882385907365-t3b1b4nieo5c2rna6ejf862eadkho2s2.apps.googleusercontent.com',
@@ -81,11 +80,9 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   public attachSignin(element) {
     this.auth2.attachClickHandler(element, {},
       (googleUser) => {
-        console.log('Google user ' + googleUser);
         this.signInGoogle(googleUser);
 
       }, (error) => {
-        alert(JSON.stringify(error, undefined, 2));
       });
   }
 
@@ -94,13 +91,10 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     this.isValidFormSubmitted = false;
 
     if (this.registerForm.invalid) {
-      console.log('invalid');
       return;
     }
     this.isValidFormSubmitted = true;
     this.loading = true;
-    console.log('user: ' + JSON.stringify(userFromForm));
-    // this.loading = true;
     this.registrationService.create(userFromForm)
       .subscribe(() => {
           this.alertService.success('Registration successful! Please, check your email for confirmation link.', true);
@@ -120,7 +114,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
           this.userService.getByLogin(JSON.parse(sessionStorage.getItem('currentToken')).login).subscribe(
             user => {
               this.alertService.success('Registration successful!', true);
-              console.log(user);
               this.navbarService.setNavBarState(true);
               sessionStorage.setItem('currentUser', JSON.stringify(user));
               localStorage.setItem('newLogin', JSON.stringify(sessionStorage));

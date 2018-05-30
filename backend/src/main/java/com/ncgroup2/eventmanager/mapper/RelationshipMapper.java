@@ -15,6 +15,7 @@ public class RelationshipMapper implements RowMapper<Relationship> {
         relationship.setId(resultSet.getString("id"));
         relationship.setName(resultSet.getString("name"));
         relationship.setSecond_name(resultSet.getString("second_name"));
+        relationship.setLogin(resultSet.getString("login"));
 
         return relationship;
     }

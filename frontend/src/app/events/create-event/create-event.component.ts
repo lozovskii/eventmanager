@@ -5,6 +5,7 @@ import {AlertService, EventService, UserService} from "../../_services";
 import {ActivatedRoute, Router} from "@angular/router";
 import {VISIBILITY} from "../../event-visibility";
 import {Location} from "../../_models/location";
+import {tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-event-create',
@@ -184,6 +185,10 @@ export class CreateEventComponent implements OnInit {
       this.alertService.error("You input is wrong. Please, check and try again", false);
       return;
     }
+    // if(eventDTO.event.startTime==null || eventDTO.event.startTime=='' || eventDTO.event.endTime==null || eventDTO.event.endTime=='') {
+    //   this.alertService.error("Please, specify dates for draft", false);
+    //   return;
+    // }
     this.isValidFormSubmitted = true;
     console.log('In create-ivent/ saveAsDraft 1: ' + JSON.stringify(eventDTO));
     if (eventDTO.event.name == null) {
@@ -250,6 +255,7 @@ export class CreateEventComponent implements OnInit {
 
   getNoteById(): void {
     this.eventService.getNoteById(this.noteId)
+      .pipe(tap(eventDTO => this.eventDTOForm.patchValue(eventDTO)))
       .subscribe((eventDTO) => {
         this.eventDTO = eventDTO;
         this.nameNote = this.eventDTO.event.name;
@@ -260,7 +266,9 @@ export class CreateEventComponent implements OnInit {
   getDraftById(): void {
     this.eventId = this.activatedRoute.snapshot.paramMap.get('id');
     const id = this.eventId;
-    this.eventService.getEventById(id).subscribe((eventDTO: EventDTOModel) => {
+    this.eventService.getEventById(id)
+      .pipe(tap(eventDTO => this.eventDTOForm.patchValue(eventDTO)))
+      .subscribe((eventDTO: EventDTOModel) => {
       this.eventDTO = eventDTO;
       this.isNote = true;
       this.startDateDraft = this.eventDTO.event.startTime;

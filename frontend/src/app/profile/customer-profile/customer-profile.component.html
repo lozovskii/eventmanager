@@ -5,7 +5,8 @@
   <div class="row">
     <div class="col-auto">
       <h3>{{customer.name}} {{customer.secondName}}</h3>
-      <img src={{customer.avatar}} height="300" width="250"/>
+      <img *ngIf="customer.avatar" src={{customer.avatar}} height="300" width="250"/>
+      <img *ngIf="!customer.avatar" src="../../assets/img/profile-picture.png" height="300" width="250"/>
       <br>
       <br>
       <p> Username: {{customer.login}}</p>

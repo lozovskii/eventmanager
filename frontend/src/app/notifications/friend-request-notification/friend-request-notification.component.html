@@ -1,6 +1,6 @@
 <div class="list-group-item">
   <div>
-    {{data.name}} {{data.second_name}} send you friend request
+    <span class="btn btn-outline-dark" style="border: 0; padding: 0" [routerLink]="['/customer',data.login]"><b>{{data.name}} {{data.second_name}}</b></span> send you friend request
   </div>
   <div class="btn-group-sm">
 
