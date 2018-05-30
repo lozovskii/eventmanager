@@ -19,7 +19,7 @@ import java.io.IOException;
 @Component
 public class AuthenticationTokenFilter extends GenericFilterBean {
 
-    private static final Integer START_TOKEN_NUMBER = 7;
+    private static final Integer START_TOKEN_NUMBER = "Bearer ".length();
     private TokenGenerator tokenGenerator;
 
     @Autowired
