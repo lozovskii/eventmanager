@@ -3,9 +3,16 @@ package com.ncgroup2.eventmanager.service.sender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.File;
 
 @PropertySource("classpath:properties/server.properties")
 @Component
@@ -92,6 +99,25 @@ public class MyMailSender {
         mailSender.send(email);
     }
 
+    public void sendMessage(String email) {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper;
+        try {
+            helper = new MimeMessageHelper(message, true);
 
+            helper.setSubject("Your events");
+            helper.setText("All events in which you participate");
+            helper.setTo(email);
+
+            helper.addAttachment(
+                    SecurityContextHolder.getContext().getAuthentication().getName() + ".pdf",
+                    new FileSystemResource(new File(
+                            SecurityContextHolder.getContext().getAuthentication().getName() + ".pdf")));
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        mailSender.send(message);
+    }
 }
 

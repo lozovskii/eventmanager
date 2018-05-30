@@ -37,6 +37,7 @@ export class AllItemsComponent implements OnInit {
   pages: Number[];
   searchedItems: Item[];
   request = '';
+  p: number = 1;
 
   constructor(private wishListService: WishListService,
               private userService: UserService,

@@ -2,14 +2,13 @@ package com.ncgroup2.eventmanager.dao.impl;
 
 import com.ncgroup2.eventmanager.dao.ImportEventDao;
 import com.ncgroup2.eventmanager.dto.ImportEventDTO;
-import com.ncgroup2.eventmanager.service.senderWithAttachment.EmailService;
+import com.ncgroup2.eventmanager.service.sender.MyMailSender;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -28,12 +27,12 @@ public class ImportEventDaoImpl extends JdbcDaoSupport implements ImportEventDao
 
     private final DataSource dataSource;
 
-    final EmailService emailService;
+    private final MyMailSender mailMyMailSender;
 
     @Autowired
-    public ImportEventDaoImpl(DataSource dataSource, EmailService emailService) {
+    public ImportEventDaoImpl(DataSource dataSource, MyMailSender mailMyMailSender) {
         this.dataSource = dataSource;
-        this.emailService = emailService;
+        this.mailMyMailSender = mailMyMailSender;
     }
 
     @PostConstruct
@@ -111,7 +110,7 @@ public class ImportEventDaoImpl extends JdbcDaoSupport implements ImportEventDao
             setDocumentProperties(document);
 
             document.save(SecurityContextHolder.getContext().getAuthentication().getName() + ".pdf");
-            emailService.sendMessage(email);
+            mailMyMailSender.sendMessage(email);
             new File(SecurityContextHolder.getContext().getAuthentication().getName() + ".pdf").delete();
         } catch (IOException e) {
             System.out.println("Document not saved!");
