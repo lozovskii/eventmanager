@@ -157,7 +157,6 @@ export class CalendarComponent {
   }
 
   onChangeSort(type: string): void {
-    console.log(type);
     this.getEvents(type);
   }
 
@@ -167,8 +166,6 @@ export class CalendarComponent {
         this.events = events;
         this.calendarEvents = [];
         for (let i = 0; i < events.length; i++) {
-          console.log(this.events[i].event.visibility);
-          console.log(this.events[i].event.startTime + ' ' + this.events[i].event.endTime);
           this.calendarEvents.push({
             id: this.events[i].event.id,
             title: this.events[i].event.name,

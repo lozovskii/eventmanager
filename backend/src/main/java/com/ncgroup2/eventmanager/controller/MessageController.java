@@ -26,7 +26,6 @@ public class MessageController {
     @MessageMapping("/api/messages")
     @SendTo("/chat")
     public Message chat(MessageDTO messageDTO) {
-        System.out.println("Message: "+messageDTO.getMessage().getAuthorName());
 
         massageService.create(messageDTO.getMessage());
 

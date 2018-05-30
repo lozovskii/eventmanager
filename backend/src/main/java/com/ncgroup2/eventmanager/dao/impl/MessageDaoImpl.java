@@ -45,17 +45,4 @@ public class MessageDaoImpl extends JdbcDaoSupport implements MessageDao {
         };
         this.getJdbcTemplate().update(query, queryParams);
     }
-
-    @Override
-    public UUID getChatId(UUID eventId){
-        return eventId;
-    }
-//    @Override
-//    public UUID getChatId(UUID eventId){
-//        String query = queryService.getQuery("message.GetChatIdByEventId");
-//        Object[] queryParams = new Object[] {
-//                eventId
-//        };
-//        return this.getJdbcTemplate().update(query, queryParams);
-//    }
 }

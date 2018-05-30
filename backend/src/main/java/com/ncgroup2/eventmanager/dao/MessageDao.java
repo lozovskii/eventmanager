@@ -7,5 +7,4 @@ import java.util.UUID;
 public interface MessageDao {
     List<Message> getAllByChatId(String chatId);
     void create(Message message);
-    UUID getChatId(UUID eventId);
 }
