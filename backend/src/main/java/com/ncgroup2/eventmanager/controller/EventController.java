@@ -172,7 +172,7 @@ public class EventController {
 
     @GetMapping("/timeline")
     public ResponseEntity<List<EventDTO>> getTimeline(@RequestParam String  login) {
-        List<EventDTO> list = eventService.getTimeline(login, LocalDateTime.now().minusMonths(1),LocalDateTime.now().plusYears(1));
+        List<EventDTO> list = eventService.getTimeline(login, LocalDateTime.now(),LocalDateTime.now().plusYears(1));
         return new ResponseEntity<>(list,HttpStatus.OK);
     }
 
