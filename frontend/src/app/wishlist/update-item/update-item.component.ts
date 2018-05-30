@@ -24,7 +24,7 @@ export class UpdateItemComponent implements OnInit, OnChanges {
   loading = true;
 
   itemForm = this.formBuilder.group({
-    name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
+    name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40), Validators.pattern("^[ a-zA-Zа-яА-ЯієїґІЄЇҐ]*$")]],
     description: ['', [Validators.maxLength(2048)]],
     link: ['', [Validators.minLength(4), Validators.maxLength(128),
       Validators.pattern("^(ftp|http|https):\\/\\/[^ \"]+$")]],
