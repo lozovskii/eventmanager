@@ -35,7 +35,6 @@ export class AllItemsComponent implements OnInit {
   queryString: string;
   page: number = 1;
   pages: Number[];
-  searchPath: string[] = ['items'];
   searchedItems: Item[];
   request = '';
 
