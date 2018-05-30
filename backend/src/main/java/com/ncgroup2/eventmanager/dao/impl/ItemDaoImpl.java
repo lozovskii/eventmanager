@@ -199,17 +199,6 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
                     (ps, tagDto) -> {
                         ps.setString(1, tagDto.getItemTagId());
                     });
-
-            String decreaseTagCount =
-                    "UPDATE \"Tag\" " +
-                            "SET count = \"Tag\".count-1 " +
-                            "WHERE id = ?::UUID; ";
-
-            this.getJdbcTemplate().batchUpdate(
-                    decreaseTagCount, trash, trash.size(),
-                    (ps, tagDto) -> {
-                        ps.setString(1, tagDto.getTag().getId());
-                    });
         }
     }
 
