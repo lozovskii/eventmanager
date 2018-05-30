@@ -4,7 +4,9 @@
 <main role="main">
   <h2 class="text-center">Create event</h2>
   <form [formGroup]="eventDTOForm">
-
+    <p class="text-sm-right text-muted">
+      Required <span style="color: red;">*</span>
+    </p>
     <form [formGroup]="eventForm">
       <div class="form-group">
         <label>Title<span style="color: red;">*</span></label>
