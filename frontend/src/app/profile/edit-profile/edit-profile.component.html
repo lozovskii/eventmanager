@@ -8,9 +8,6 @@
         <label>First Name</label>
         <input type="text" class="form-control" formControlName="name" [(ngModel)]="currentUser.name" >
         <div *ngIf="getName.invalid && (getName.dirty || getName.touched)" class="alert alert-danger">
-          <!--<div *ngIf="getName?.errors?.required">-->
-            <!--First Name is required.-->
-          <!--</div>-->
           <div *ngIf="getName?.errors?.pattern">
             First name must consist only of latin or cyrillic letters.
           </div>
@@ -30,9 +27,6 @@
                [(ngModel)]="currentUser.secondName" >
         <div *ngIf="getLastName.invalid && (getLastName.dirty ||getLastName.touched)"
              class="alert alert-danger">
-          <!--<div *ngIf="getLastName?.errors?.required">-->
-            <!--Last Name is required.-->
-          <!--</div>-->
           <div *ngIf="getLastName?.errors?.pattern">
             Last name must consist only of latin or cyrillic letters.
           </div>
