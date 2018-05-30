@@ -63,7 +63,6 @@ public class AuthorizationController {
         if (googleId == null) {
             return new ResponseEntity("Invalid user", HttpStatus.BAD_REQUEST);
         }
-        System.out.println("User ID: " + googleId);
 
         Customer authCustomer = customerService.getByGoogleId(googleId);
         if (authCustomer != null) {

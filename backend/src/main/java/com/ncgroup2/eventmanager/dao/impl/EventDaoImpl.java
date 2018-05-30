@@ -406,10 +406,10 @@ public class EventDaoImpl extends JdbcDaoSupport implements EventDao {
     }
 
     @Override
-    public void removeParticipant(String customerId, String eventId) {
+    public void removeParticipant(String login, String eventId) {
         String sql = queryService.getQuery("customer_event.remove_participant");
         Object[] params = new Object[]{
-                customerId,
+                login,
                 eventId
         };
         this.getJdbcTemplate().update(sql, params);
