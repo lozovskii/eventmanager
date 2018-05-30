@@ -32,6 +32,12 @@ public class FolderController {
         return new ResponseEntity<>(foldersByCustId, HttpStatus.OK);
     }
 
+    @GetMapping("/shared")
+    public ResponseEntity<List<Folder>> getSharedByCustLogin(@RequestParam String customerLogin) {
+        List<Folder> foldersByCustId = folderService.getAllByCustId(customerLogin);
+        return new ResponseEntity<>(foldersByCustId, HttpStatus.OK);
+    }
+
     @GetMapping("/notes")
     public ResponseEntity<List<Event>> getNotesByCustIdByFolderId(@RequestParam String custId,
                                                                   @RequestParam String folderId){
