@@ -40,10 +40,6 @@
       </div>
     </div>
 
-    <div>
-      <app-event-notification></app-event-notification>
-    </div>
-
     <div class="row">
       <p class="col-md-1">People:</p>
       <div class="row" *ngFor="let login of eventDTO.additionEvent.people">
@@ -69,6 +65,9 @@
       </agm-map>
       <br>
     </div>
+
+
+    <app-event-notification></app-event-notification>
 
   </div>
 
