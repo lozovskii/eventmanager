@@ -41,7 +41,6 @@ export class FolderContentComponent implements OnInit {
   }
 
   getNotesByCustLoginFolderid(): void {
-    // let custLogin = this.userService.getCurrentLogin();
     this.folderService.getNotesByFolderId(this.folderId)
       .subscribe((events) => {
         this.isTitle = true;
