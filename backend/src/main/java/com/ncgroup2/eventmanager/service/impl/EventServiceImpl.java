@@ -6,7 +6,6 @@ import com.ncgroup2.eventmanager.dto.*;
 import com.ncgroup2.eventmanager.entity.Customer;
 import com.ncgroup2.eventmanager.entity.Event;
 import com.ncgroup2.eventmanager.entity.Location;
-import com.ncgroup2.eventmanager.entity.Page;
 import com.ncgroup2.eventmanager.service.EventService;
 import com.ncgroup2.eventmanager.service.sender.MyMailSender;
 import com.ncgroup2.eventmanager.util.GoogleCalendarService;
