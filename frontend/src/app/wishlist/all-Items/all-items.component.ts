@@ -182,12 +182,11 @@ export class AllItemsComponent implements OnInit {
 
   searchItems(event) {
     this.request = event.target.value;
-    this.searchPath = [];
-
-    this.wishListService.searchItems(this.request)
+    this.request.length == 0 ?
+      this.items = this.backupItems :
+      this.wishListService.searchItems(this.request)
       .subscribe((items) => {
         this.items = items;
-        Object.assign(this.searchedItems, items);
       });
   }
   //
