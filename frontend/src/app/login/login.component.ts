@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       (googleUser) => {
         this.signInGoogle(googleUser);
       }, (error) => {
-        alert(JSON.stringify(error, undefined, 2));
+        this.alertService.error(error.error);
       });
   }
 

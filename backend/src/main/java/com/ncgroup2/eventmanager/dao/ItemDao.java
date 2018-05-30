@@ -13,6 +13,8 @@ public interface ItemDao extends DAO<Item, Object>{
 
     Collection<Item> getPopularItems();
 
+    Collection<Item> searchItems(String query);
+
     void addTags(Collection<ExtendedTag> tags, Object item_id);
 
     void createItems(Collection<Item> items);

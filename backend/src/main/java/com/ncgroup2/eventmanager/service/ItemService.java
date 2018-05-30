@@ -16,6 +16,8 @@ public interface ItemService {
 
     Collection<Item> getPopularItems();
 
+    Collection<Item> searchItems(String query);
+
     Page<Item> getAllItems(int pageNo, int pageSize);
 
     void createItem(Item item);
