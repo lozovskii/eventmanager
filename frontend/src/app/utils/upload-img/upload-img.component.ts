@@ -85,7 +85,6 @@ export class UploadImgComponent implements OnInit {
   }
 
   updateUser(user: User): void {
-    // console.log(JSON.stringify(user))
     user.avatar = this.base64Image;
     this.profileService.update(user)
       .subscribe(() => {

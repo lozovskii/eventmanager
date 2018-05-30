@@ -49,14 +49,11 @@ export class ChatboxComponent implements OnInit {
     this.messageService.getAllByChatId(chatId)
       .subscribe((messages) => {
         this.messages = messages;
-        for(let m in messages) {
-          console.log(messages[m]);
-        }
       })
   }
 
   addMessage(message: string) {
-
+    let thisMoment = new Date();
     let customerId = this.userService.getCurrentId();
     let m: MessageDTOModel = new MessageDTOModel();
     m.message = {
@@ -65,9 +62,9 @@ export class ChatboxComponent implements OnInit {
       authorId: customerId,
       authorName:this.currentUser.login,
       chatId: this.eventId,
-      date: String(new Date())
+      date: thisMoment.getFullYear() + '-' + ('0' + (thisMoment.getMonth() + 1)).slice(-2) + '-' + ('0' + thisMoment.getDate()).slice(-2) + ' ' + ('0' + (thisMoment.getHours() + 1)).slice(-2) + ':' + ('0' + thisMoment.getMinutes()).slice(-2) + ':' + ('0' + thisMoment.getSeconds()).slice(-2)
+
     };
-    console.log('look at me'+' '+ this.addingMessage);
     let that = this;
 
     that.stompClient.send('/api/messages', {}, JSON.stringify(m));

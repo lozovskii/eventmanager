@@ -52,7 +52,6 @@
                [(ngModel)]="currentUser.phone" >
         <div *ngIf="getPhone.invalid && (getPhone.dirty || getPhone.touched)" class="alert alert-danger">
           <div *ngIf="getPhone.invalid && getPhone.touched">
-            <!--Incorrect number.-->
             The phone must be in one of the formats: 1234567890 / 123-456-7890 /
             (123)456-7890 / (123)456-78-90 / (123)4567890
           </div>

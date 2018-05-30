@@ -3,7 +3,6 @@ import {Component, ElementRef, EventEmitter, Input, NgZone, OnInit, Output} from
 import {FormControl} from '@angular/forms';
 import {MapsAPILoader} from '@agm/core';
 import {} from '@types/googlemaps';
-import {Location} from "../../_models/location";
 
 @Component({
   selector: 'app-google-maps',
@@ -73,14 +72,9 @@ export class GoogleMapsComponent implements OnInit {
         if (results[1]) {
           this.inputAddress = results[0].formatted_address;
           this.street = this.inputAddress.split(',')[0].trim();
-          console.log(this.street);
           this.house = this.inputAddress.split(',')[1].trim();
-          console.log(this.house);
           this.city = this.inputAddress.split(',')[2].trim();
-          console.log(this.city);
           this.country = this.inputAddress.split(',')[3].trim();
-          console.log(this.country);
-
           this.onAddLocation.emit({
             country: this.country,
             city: this.city,
