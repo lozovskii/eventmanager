@@ -127,10 +127,18 @@ public class FolderDaoImpl extends JdbcDaoSupport implements FolderDao {
     }
 
     @Override
-    public List<Event> getNotesByCustIdByFolderId(String custId, String folderId){
-        String query = queryService.getQuery("folder.getNotesByCustId");
+    public List<Folder> getSharedByCustLogin(String custLogin) {
+        String query = queryService.getQuery("folder.getSharedByCustLogin");
         Object[] params = new Object[]{
-                custId,
+                custLogin
+        };
+        return this.getJdbcTemplate().query(query, params,  new BeanPropertyRowMapper(Folder.class));
+    }
+
+    @Override
+    public List<Event> getNotesByFolderId(String folderId){
+        String query = queryService.getQuery("folder.getNotesByFolderId");
+        Object[] params = new Object[]{
                 folderId
         };
         return this.getJdbcTemplate().query(query, params,  new BeanPropertyRowMapper(Event.class));

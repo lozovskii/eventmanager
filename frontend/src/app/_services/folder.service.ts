@@ -30,8 +30,8 @@ export class FolderService {
     return this.http.get<Folder[]>(url, {headers: AuthenticationService.getAuthHeader()});
   }
 
-  getNotesByCustIdFolderId(custId: string, folderId: string):Observable<Event[]> {
-    const url = `${this.foldersUrl}/notes?custId=${custId}&folderId=${folderId}`;
+  getNotesByFolderId(folderId: string):Observable<Event[]> {
+    const url = `${this.foldersUrl}/notes?folderId=${folderId}`;
     return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()})
   }
 

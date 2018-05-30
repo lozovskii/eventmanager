@@ -11,7 +11,9 @@ public interface FolderService {
 
     List<Folder> getAllByCustId(String custId);
 
-    List<Event> getNotesByCustIdByFolderId(String custId, String folderId);
+    List<Folder> getSharedByLogin(String custLogin);
+
+    List<Event> getNotesByFolderId(String folderId);
 
     void moveNoteByNoteIdByFolderName(String noteId, String folderName);
 

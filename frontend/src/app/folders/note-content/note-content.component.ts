@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AlertService} from "../../_services/alert.service";
-import {EventService} from "../../_services";
+import {EventService, UserService} from "../../_services";
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
 import {ActivatedRoute, Router} from "@angular/router";
 
@@ -12,9 +12,11 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class NoteContentComponent implements OnInit {
   @Input('noteId') noteId: string;
   eventDTO: EventDTOModel;
+  isCreator:boolean = false;
   constructor(private alertService: AlertService,
               private eventService: EventService,
               private activatedRoute: ActivatedRoute,
+              private userService: UserService,
               private router: Router) { }
 
   ngOnInit() {
@@ -26,8 +28,14 @@ export class NoteContentComponent implements OnInit {
     this.eventService.getNoteById(this.noteId)
       .subscribe((eventDTO) => {
         this.eventDTO = eventDTO;
+        console.log('note = ' + JSON.stringify(this.eventDTO));
         if(eventDTO.toString() == ''){
           this.alertService.info('This note is empty.',true);
+        }
+        if(this.eventDTO.event.creatorId == this.userService.getCurrentId()){
+          this.isCreator = true;
+        }else{
+          this.isCreator = false;
         }
       });
   }

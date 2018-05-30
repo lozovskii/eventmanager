@@ -30,7 +30,7 @@
     </div>
   </div>
 
-  <div *ngIf="folders">
+  <div *ngIf="folders" class="row">
     <table *ngFor="let folder of folders" class="col-md-2">
       <td>
         <a [routerLink]="['/folder-content', 'folder', folder.id]">

@@ -8,7 +8,9 @@ public interface FolderDao extends DAO<Folder, Object> {
 
     List<Folder> getAllByCustId(String custId);
 
-    List<Event> getNotesByCustIdByFolderId(String cusId, String folderId);
+    List<Folder> getSharedByCustLogin(String custLogin);
+
+    List<Event> getNotesByFolderId(String folderId);
 
     void moveNoteByNoteIdByFolderName(String custId, String folderId);
 
