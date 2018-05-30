@@ -185,10 +185,10 @@ export class CreateEventComponent implements OnInit {
       this.alertService.error("You input is wrong. Please, check and try again", false);
       return;
     }
-    if(eventDTO.event.startTime==null || eventDTO.event.startTime=='' || eventDTO.event.endTime==null || eventDTO.event.endTime=='') {
-      this.alertService.error("Please, specify dates for draft", false);
-      return;
-    }
+    // if(eventDTO.event.startTime==null || eventDTO.event.startTime=='' || eventDTO.event.endTime==null || eventDTO.event.endTime=='') {
+    //   this.alertService.error("Please, specify dates for draft", false);
+    //   return;
+    // }
     this.isValidFormSubmitted = true;
     console.log('In create-ivent/ saveAsDraft 1: ' + JSON.stringify(eventDTO));
     if (eventDTO.event.name == null) {

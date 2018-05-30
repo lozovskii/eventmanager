@@ -24,6 +24,7 @@ export class DraftListComponent implements OnInit {
     this.eventService.getDraftsByCustId()
       .subscribe((events) => {
         this.events = events;
+        console.log("getDraftsByCustId(): " + JSON.stringify(events));
         if(events.toString() == ''){
           this.isEmpty = true;
           this.alertService.info('You have no drafts yet.',true);
