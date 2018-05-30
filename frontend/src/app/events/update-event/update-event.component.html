@@ -7,6 +7,9 @@
     <br>
     <form *ngIf="eventDTO; else loading" [formGroup]="eventDTOForm" (ngSubmit)="update(eventDTOForm.value)" novalidate>
       <!--[hidden]="!canEdit"-->
+      <p class="text-sm-right text-muted">
+        Required <span style="color: red;">*</span>
+      </p>
       <form [formGroup]="eventForm">
         <div class="form-group">
           <div class="form-group">
