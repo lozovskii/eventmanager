@@ -7,13 +7,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-public class AuthentificationBox implements Authentication {
+public class AuthenticationBox implements Authentication {
 
     private UserDetails userDetails;
     private boolean authenticated = true;
 
     @Autowired
-    public AuthentificationBox(UserDetails userDetails) {
+    public AuthenticationBox(UserDetails userDetails) {
         this.userDetails = userDetails;
     }
     @Override
