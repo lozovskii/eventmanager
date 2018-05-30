@@ -162,7 +162,7 @@ export class EventlistComponent implements OnInit {
   importToPDF(): void {
     this.eventService.importEventsToPDF(this.currentUser.email)
       .subscribe(() => {
-        this.alertService.info('You imported your events');
+        this.alertService.info('You exported your events');
       })
   }
 

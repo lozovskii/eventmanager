@@ -47,7 +47,7 @@ public interface EventDao {
 
     boolean isParticipant(String customerId, String eventId);
 
-    void removeParticipant(String customerId, String eventId);
+    void removeParticipant(String login, String eventId);
 
     void addParticipant(String customerId, String eventId);
 
