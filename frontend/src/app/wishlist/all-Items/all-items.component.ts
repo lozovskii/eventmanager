@@ -53,6 +53,7 @@ export class AllItemsComponent implements OnInit {
     this.queryString = '';
     this.backupItems = [];
     this.popularItems = [];
+    this.searchedItems = [];
   }
 
   ngOnInit() {
@@ -125,18 +126,6 @@ export class AllItemsComponent implements OnInit {
     this.wishList.items.push(wishListItem);
   }
 
-  //
-  // deleteItem(item: Item): void {
-  //   let index = this.items.indexOf(item);
-  //   this.items.splice(index, 1);
-  //   let trash: Item[] = [];
-  //   trash.push(item);
-  //   this.wishListService.deleteItems(trash).subscribe(() =>
-  //       this.alertService.success('Item successfully deleted!'),
-  //     () => this.alertService.error('Something wrong'));
-  // }
-
-
   deleteItem(item: Item): void {
     let index = this.items.indexOf(item);
     this.items.splice(index, 1);
@@ -192,36 +181,30 @@ export class AllItemsComponent implements OnInit {
 
 
   searchItems(event) {
-
     this.request = event.target.value;
     this.searchPath = [];
-    console.log('In search Items: '+ this.request);
 
     this.wishListService.searchItems(this.request)
       .subscribe((items) => {
         this.items = items;
-        console.log('In Subscribe: ' + items)
-        console.log(JSON.stringify(items));
         Object.assign(this.searchedItems, items);
-      }, () => {
-        this.alertService.info('Items not found');
       });
   }
-
-
-  getPageAllItems(): void {
-    this.wishListService.getPageAllItems(this.page, 6)
-      .subscribe(data => {
-        this.items = data['pageItems'];
-        this.pages = new Array(data['pagesAvailable']);
-      })
-  }
-
-  setPage(i, event: any) {
-    event.preventDefault();
-    this.page = i;
-    this.getPageAllItems();
-  }
+  //
+  //
+  // getPageAllItems(): void {
+  //   this.wishListService.getPageAllItems(this.page, 6)
+  //     .subscribe(data => {
+  //       this.items = data['pageItems'];
+  //       this.pages = new Array(data['pagesAvailable']);
+  //     })
+  // }
+  //
+  // setPage(i, event: any) {
+  //   event.preventDefault();
+  //   this.page = i;
+  //   this.getPageAllItems();
+  // }
 
   sortItems(prop: string) {
     this.path = prop.split('.');

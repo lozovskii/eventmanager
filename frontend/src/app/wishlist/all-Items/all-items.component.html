@@ -102,12 +102,10 @@
       <app-item-details-view [itemView]="itemView"></app-item-details-view>
     </div>
   </div>
-  <!--<button class="btn btn-outline-info" type="submit"-->
-          <!--(click)="searchItems('my')">Search Items </button>-->
 
   <form method="post">
     <label>
-      <input type="text" class="form-control" placeholder="Search Items by Teg: " (keyup)="searchItems($event)">
+      <input type="text" class="form-control" placeholder="Search Items by Tag: " (keyup)="searchItems($event)">
     </label>
   </form>
 

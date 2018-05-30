@@ -132,17 +132,14 @@ export class WishListService {
   }
 
   searchItems(search: string) {
-    console.log('In woshlistService/ query: ' + search )
     const url = `${this.itemsUrl}/search?search=${search}`;
-    console.log(url);
     return this.http.get<Item[]>(url,{headers: AuthenticationService.getAuthHeader()})
       .pipe(
         catchError(this.handleError));
   }
 
-
-  getPageAllItems(page: number, size: number) {
-    const url = `${this.itemsUrl}/pageAll`;
-    return this.http.get(url, {headers: AuthenticationService.getAuthHeader()});
-  }
+  // getPageAllItems(page: number, size: number) {
+  //   const url = `${this.itemsUrl}/pageAll`;
+  //   return this.http.get(url, {headers: AuthenticationService.getAuthHeader()});
+  // }
 }
