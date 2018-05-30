@@ -36,6 +36,12 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public Collection<Item> searchItems(String query) {
+        return itemDao.searchItems(query);
+    }
+
+
+    @Override
     public Page<Item> getAllItems(int pageNo, int pageSize) { return itemDao.getAll(pageNo, pageSize, new Sort("i.name")); }
     public void createItem(Item item){
         itemDao.create(item);

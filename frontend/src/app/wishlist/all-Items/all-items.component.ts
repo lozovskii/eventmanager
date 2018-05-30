@@ -35,6 +35,9 @@ export class AllItemsComponent implements OnInit {
   queryString: string;
   page: number = 1;
   pages: Number[];
+  searchPath: string[] = ['items'];
+  searchedItems: Item[];
+  request = '';
 
   constructor(private wishListService: WishListService,
               private userService: UserService,
@@ -182,6 +185,24 @@ export class AllItemsComponent implements OnInit {
       .subscribe((items) => {
         this.items = items;
         Object.assign(this.popularItems, items);
+      }, () => {
+        this.alertService.info('Items not found');
+      });
+  }
+
+
+  searchItems(event) {
+
+    this.request = event.target.value;
+    this.searchPath = [];
+    console.log('In search Items: '+ this.request);
+
+    this.wishListService.searchItems(this.request)
+      .subscribe((items) => {
+        this.items = items;
+        console.log('In Subscribe: ' + items)
+        console.log(JSON.stringify(items));
+        Object.assign(this.searchedItems, items);
       }, () => {
         this.alertService.info('Items not found');
       });
