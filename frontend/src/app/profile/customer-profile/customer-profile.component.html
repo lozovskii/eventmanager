@@ -10,7 +10,7 @@
       <br>
       <p> Username: {{customer.login}}</p>
       <p> E-mail: {{customer.email}}</p>
-      <p> Phone: {{customer.phone}}</p>
+      <p *ngIf="customer.phone"> Phone: {{customer.phone}}</p>
     </div>
     <div class="col-8" *ngIf="isFriend">
       <h1>Timeline</h1>

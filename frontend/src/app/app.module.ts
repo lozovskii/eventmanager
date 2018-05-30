@@ -18,7 +18,6 @@ import {FooterComponent} from './footer/footer.component';
 import {ReCaptchaModule} from 'angular2-recaptcha';
 import {CreateEventComponent} from './events/create-event/create-event.component';
 import {EventService} from "./_services/event.service";
-import {LocationService} from "./_services/location.service";
 import {EventlistComponent} from './events/eventlist/eventlist.component';
 import {RegistrationConfirmComponent} from './register/registration-confirm/registration-confirm.component';
 import {ProfileComponent} from './profile/profile.component';
@@ -164,10 +163,8 @@ import {CustomerProfileComponent} from "./profile/customer-profile/customer-prof
     ProfileService,
     NotificationService,
     FolderService,
-    LocationService,
     MessageService,
     // provider used to create fake backend
-    LocationService,
 
   ],
   entryComponents: [

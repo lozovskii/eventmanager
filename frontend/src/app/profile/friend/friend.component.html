@@ -17,7 +17,8 @@
         <td routerLink="/customer/{{friend.login}}">{{friend.name}} {{friend.secondName}}</td>
         <td>{{friend.phone}}</td>
         <td>{{friend.login}}</td>
-        <img src={{friend.avatar}} height="55" width="50" class="center-img">
+        <img *ngIf="friend.avatar" src={{friend.avatar}} height="55" width="50" class="center-img">
+        <img *ngIf="!friend.avatar" src="../../assets/img/profile-picture.png" height="55" width="50" class="center-img">
         <td>
           <button class="btn btn-outline-danger" (click)="deleteFriend(friend.login, friend.name, friend.secondName)">DELETE</button>
         </td>
