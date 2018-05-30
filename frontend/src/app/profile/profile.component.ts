@@ -18,15 +18,11 @@ export class ProfileComponent implements OnInit {
   isSearchUser = false;
   page: number = 1;
   pages: Number[];
-  isAvatar: boolean;
 
   constructor(private profileService: ProfileService,
               private userService: UserService,
               private alertService: AlertService) {
     this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
-    if (this.currentUser.avatar !== '') {
-      this.isAvatar = true;
-    }
   }
 
   ngOnInit() {}
