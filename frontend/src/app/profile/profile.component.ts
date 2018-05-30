@@ -2,7 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {User} from "../_models";
 import {ProfileService} from "../_services/profile.service";
 import {UserService} from "../_services";
-import {AlertService} from "../_services/alert.service";
+import {AlertService} from "../_services";
+import {Friends} from "../_models/friends";
 
 @Component({
   selector: 'app-profile',
@@ -18,6 +19,7 @@ export class ProfileComponent implements OnInit {
   isSearchUser = false;
   page: number = 1;
   pages: Number[];
+  friendsArray: Friends[];
 
   constructor(private profileService: ProfileService,
               private userService: UserService,
@@ -25,7 +27,9 @@ export class ProfileComponent implements OnInit {
     this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.friends();
+  }
 
   closeUsers() {
     this.isSearchUser = false;
@@ -54,12 +58,51 @@ export class ProfileComponent implements OnInit {
     this.isSearchUser = true;
     this.request = event.target.value;
     this.searchUser(this.request);
-
   }
 
   addFriend(login: string) {
     this.profileService.addFriend(login).subscribe(() => {
       this.alertService.info(`Friendship request sent`);
     });
+    location.reload();
+    this.searchUser(this.request);
+  }
+
+  cancelRequest(login: string) {
+    this.profileService.cancelRequest(login).subscribe(() => {
+      this.alertService.info(`Friendship request canceled`)
+    });
+    location.reload();
+    this.searchUser(this.request);
+  }
+
+  deleteFriend(login: string) {
+    this.profileService.deleteFriend(login).subscribe(() => {
+      this.alertService.info(`Friend was removed from your friends list`);
+    });
+    location.reload();
+    this.searchUser(this.request);
+  }
+
+  friends() {
+    this.profileService.friends(this.currentUser.login).subscribe((data) => {
+      this.friendsArray = data;
+    });
+  }
+
+  getIsFriends(login): boolean {
+    for (let i of this.friendsArray) {
+      if (i.another === login) {
+        return i.isfriends;
+      }
+    }
+  }
+
+  getIsRequest(login): boolean {
+    for (let i of this.friendsArray) {
+      if (i.another === login) {
+        return i.isrequest;
+      }
+    }
   }
 }

@@ -4,6 +4,7 @@ import {User} from "../_models";
 import {Observable} from "rxjs";
 import {AuthenticationService} from "./authentication.service";
 import {UserService} from "./user.service";
+import {Friends} from "../_models/friends";
 
 @Injectable()
 export class ProfileService {
@@ -12,18 +13,6 @@ export class ProfileService {
 
   constructor(private http: HttpClient,
               private userService: UserService) {
-  }
-
-  getByLogin(login: string): Observable<any> {
-    // let headers = new HttpHeaders({'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token});
-    // let params = new HttpParams();
-    // params.set('login', JSON.parse(localStorage.getItem('currentUser')).login);
-    //
-    // console.log('login parameter ' + params.get('login'));
-    return this.http.get('/profile/edit/?login=' + JSON.parse(localStorage.getItem('currentUser')).login, {
-      // headers: headers,
-      // params: params
-    })
   }
 
   getCustomer(login: string): Observable<User> {
@@ -38,13 +27,6 @@ export class ProfileService {
       {headers: AuthenticationService.getAuthHeader()});
   }
 
-
-  // search(request): Observable<User[]> {
-  //   return this.http.get<User[]>(
-  //     `${this.url}/search?request=${request}`,
-  //     {headers: AuthenticationService.getAuthHeader()});
-  // }
-
   search(page: number, size: number, search: string) {
     return this.http.get(
       `${this.url}/search?page=${page}&size=${size}&search=${search}`,
@@ -52,15 +34,18 @@ export class ProfileService {
   }
 
   update(customer: User) {
-    // work with Post
-    // return this.http.post(`${this.url}/update`, customer,{headers: AuthenticationService.getAuthHeader()});
-
     return this.http.put(`${this.url}/update`, customer,{headers: AuthenticationService.getAuthHeader()});
   }
 
   addFriend(login) {
     return this.http.get(
       `${this.url}/add?login=${login}`,
+      {headers: AuthenticationService.getAuthHeader()});
+  }
+
+  cancelRequest(login) {
+    return this.http.get(
+      `${this.url}/cancel?login=${login}`,
       {headers: AuthenticationService.getAuthHeader()});
   }
 
@@ -82,9 +67,15 @@ export class ProfileService {
       {headers: AuthenticationService.getAuthHeader()});
   }
 
-  isFriend (customerId) {
+  isFriend(customerId) {
     return this.http.get(
       `${this.url}/isFriends?currentCustomerId=${this.userService.getCurrentId()}&customerId=${customerId}`,
+      {headers: AuthenticationService.getAuthHeader()});
+  }
+
+  friends(currentUser): Observable<Friends[]> {
+    return this.http.get<Friends[]>(
+      `${this.url}/friendOrRequest?login=${currentUser}`,
       {headers: AuthenticationService.getAuthHeader()});
   }
 }

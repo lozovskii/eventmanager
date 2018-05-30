@@ -8,6 +8,5 @@ import java.util.List;
 
 public interface ImportEventService {
     List<ImportEventDTO> getCustomerEvents();
-    PDDocument createPDF(List<ImportEventDTO> data);
-    Workbook createXLS(List<ImportEventDTO> data);
+    PDDocument createPDF(List<ImportEventDTO> data, String email);
 }
