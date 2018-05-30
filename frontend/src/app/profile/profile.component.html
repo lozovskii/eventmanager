@@ -10,7 +10,12 @@
         </label>
       </form>
       <h3>{{currentUser.name}} {{currentUser.secondName}}</h3>
-      <img src={{currentUser.avatar}} height="300" width="250"/>
+      <div *ngIf="isAvatar">
+        <img src={{currentUser.avatar}} height="300" width="250"/>
+      </div>
+      <div *ngIf="!isAvatar">
+        <img src="../../assets/img/profile-picture.png" height="300" width="250"/>
+      </div>
       <br>
       <br>
       <p> Username: {{currentUser.login}}</p>

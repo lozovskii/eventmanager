@@ -60,33 +60,6 @@ export class EditProfileComponent implements OnInit {
   }
 
 
-  checkForLength(control: FormControl) {
-    if(control.value.length <= 2) {
-      return {
-        'minLengthError': true
-      };
-    }
-    if(control.value.length >= 19) {
-      return {
-        'maxLengthError': true
-      };
-    }
-  }
-
-  checkForPhoneNumber(control: FormControl) {
-    if(control.value.length <= 3) {
-      return {
-        'minPhoneLengthError': true
-      };
-    }
-      if(control.value.length >= 13) {
-      return {
-        'maxPhoneLengthError': true
-      };
-    }
-    return null;
-  }
-
   deleteAvatar(user : User) {
       user.avatar = '';
     this.updateUser(user);

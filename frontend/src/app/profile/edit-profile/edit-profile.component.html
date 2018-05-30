@@ -68,11 +68,18 @@
         <button class="btn btn-outline-info" type="submit"
                 (click)="isDeleteChange()">Delete Avatar</button>
         <div *ngIf="isDelete">
-          <p>Are you sure?</p>
-          <button class="btn btn-outline-success" type="submit"
-                  (click)="deleteAvatar(currentUser)">Yes</button>
-          <button class="btn btn-outline-danger" type="submit"
-                  (click)="isDeleteChange()">No</button>
+          <div *ngIf="currentUser.avatar">
+            <p>Are you sure?</p>
+            <button class="btn btn-outline-success" type="submit"
+                    (click)="deleteAvatar(currentUser)">Yes</button>
+            <button class="btn btn-outline-danger" type="submit"
+                    (click)="isDeleteChange()">No</button>
+          </div>
+          <div *ngIf="!currentUser.avatar">
+            <p>You do not have an avatar</p>
+
+          </div>
+
         </div>
 
       </div>
