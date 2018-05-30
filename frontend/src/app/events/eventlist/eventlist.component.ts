@@ -30,8 +30,6 @@ export class EventlistComponent implements OnInit {
   backupEventsDTO: EventDTOModel[];
   currentId: string;
   currentUser: User;
-  pager: any = {};
-  pagedItems: any[];
 
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute,
@@ -95,7 +93,6 @@ export class EventlistComponent implements OnInit {
     this.eventService.getAllEvents()
       .subscribe((events) => {
         this.eventsDTO = events;
-        this.setPage(1);
         console.log(this.events);
         console.log(events);
         if(events.toString() == ''){
@@ -183,13 +180,5 @@ export class EventlistComponent implements OnInit {
       this.eventsDTO = this.backupEventsDTO;
     }
     this.checkBoxOrder = this.checkBoxOrder * (-1);
-  }
-
-  setPage(page: number) {
-    // get pager object from service
-    this.pager = this.eventService.getPager(this.eventsDTO.length, page);
-
-    // get current page of items
-    this.pagedItems = this.eventsDTO.slice(this.pager.startIndex, this.pager.endIndex + 1);
   }
 }
