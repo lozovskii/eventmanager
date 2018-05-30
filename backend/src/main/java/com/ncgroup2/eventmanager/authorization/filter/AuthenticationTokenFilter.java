@@ -1,6 +1,6 @@
 package com.ncgroup2.eventmanager.authorization.filter;
 
-import com.ncgroup2.eventmanager.authorization.model.AuthentificationBox;
+import com.ncgroup2.eventmanager.authorization.model.AuthenticationBox;
 import com.ncgroup2.eventmanager.authorization.service.TokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -37,7 +37,7 @@ public class AuthenticationTokenFilter extends GenericFilterBean {
                 SecurityContextHolder.getContext().setAuthentication(null);
             }
             UserDetails userDetails = this.tokenGenerator.getUserDetails(jwt);
-            authentication = new AuthentificationBox(userDetails);
+            authentication = new AuthenticationBox(userDetails);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(servletRequest, servletResponse);
