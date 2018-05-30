@@ -4,6 +4,7 @@ import com.ncgroup2.eventmanager.dto.AdditionalEventModelDTO;
 import com.ncgroup2.eventmanager.dto.EventCountdownDTO;
 import com.ncgroup2.eventmanager.dto.InviteNotificationDTO;
 import com.ncgroup2.eventmanager.entity.Event;
+import com.ncgroup2.eventmanager.entity.Page;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
-import {Event} from '../_models/event';
+import {Event} from '../_models';
 import {Observable} from 'rxjs';
 import {UserService} from "./user.service";
 import {EventDTOModel} from "../_models/dto/eventDTOModel";
@@ -32,12 +32,6 @@ export class EventService {
           return dto;
         })
       );
-  }
-
-  getPageWithAllEvents(page: number, size: number): Observable<Event[]> {
-    let customerId = this.userService.getCurrentId();
-    const url = `${this.eventsUrl}/page_public_and_friends?page=${page}&size=${size}&customerId=${customerId}`;
-    return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()});
   }
 
   getEventsByCustId(): Observable<EventDTOModel[]> {
@@ -125,7 +119,7 @@ export class EventService {
 
   updateEvent(updatEventDTO: UpdateEventDTO) {
     const url = `${this.eventsUrl}/update`;
-    console.log('Service EV '+JSON.stringify(updatEventDTO))
+    console.log('Service EV '+JSON.stringify(updatEventDTO));
     return this.http.put<UpdateEventDTO>(url, updatEventDTO, {headers: AuthenticationService.getAuthHeader()});
   }
 
