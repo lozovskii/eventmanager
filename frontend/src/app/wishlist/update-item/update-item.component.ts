@@ -83,12 +83,12 @@ export class UpdateItemComponent implements OnInit, OnChanges {
     this.wishListService.updateItem(this.item)
       .subscribe(() => {
           this.alertService.success('Item successfully updated');
+          this.updatedItem.emit(this.item);
+          document.getElementById("closeUpdateModal").click();
         },
         () => {
           this.alertService.error("Something wrong");
         });
-
-    this.updatedItem.emit(this.item);
 
     if (this.trash.length > 0) {
       this.wishListService.deleteTags(this.trash)
