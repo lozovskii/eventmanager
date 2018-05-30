@@ -51,7 +51,8 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let item of items | filterItems: queryString | sortingItems:path:order">
+    <tr *ngFor="let item of items | filterItems: queryString | sortingItems:path:order
+    | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
       <td (click)="showItemDetails(item)" data-toggle="modal" data-target="#AllItemViewForm" class="tdName">
         {{item.name}}
       </td>
@@ -91,11 +92,7 @@
     </tr>
     </tbody>
   </table>
-  <ul class="nav nav-pills">
-    <li class="nav-item" *ngFor="let page of pages; let i = index">
-      <a class="nav-link" href="" (click)="setPage(i+1,$event)">{{i+1}}</a>
-    </li>
-  </ul>
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
   <div class="modal fade" id="AllItemViewForm" tabindex="-1" role="dialog"
        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

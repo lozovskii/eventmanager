@@ -73,11 +73,12 @@ import {MessageService} from "./_services/message.service";
 import { EditFolderComponent } from './folders/edit-folder/edit-folder.component';
 import {CopyMoveComponent} from "./wishlist/copy-move-item/copy-move.component";
 import {CustomerProfileComponent} from "./profile/customer-profile/customer-profile.component";
-
+import {NgxPaginationModule} from "ngx-pagination";
 
 @NgModule({
   imports: [
     BrowserModule,
+    NgxPaginationModule,
     FormsModule,
     HttpClientModule,
     routing,
