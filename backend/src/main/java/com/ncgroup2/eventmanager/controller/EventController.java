@@ -162,7 +162,7 @@ public class EventController {
     public ResponseEntity<List<Event>> getNationalEvents(@RequestParam String calendarId){
         List<Event> list = new LinkedList<>();
         try{
-            list = eventService.getNationalEvents(calendarId, LocalDateTime.now(),LocalDateTime.now().plusYears(1));
+            list = eventService.getNationalEvents(calendarId, LocalDateTime.now().minusMonths(1),LocalDateTime.now().plusYears(1));
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(list, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -172,7 +172,7 @@ public class EventController {
 
     @GetMapping("/timeline")
     public ResponseEntity<List<EventDTO>> getTimeline(@RequestParam String  login) {
-        List<EventDTO> list = eventService.getTimeline(login, LocalDateTime.now(),LocalDateTime.now().plusMonths(1));
+        List<EventDTO> list = eventService.getTimeline(login, LocalDateTime.now(),LocalDateTime.now().plusYears(1));
         return new ResponseEntity<>(list,HttpStatus.OK);
     }
 
