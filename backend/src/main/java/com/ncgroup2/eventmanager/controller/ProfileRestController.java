@@ -1,6 +1,7 @@
 package com.ncgroup2.eventmanager.controller;
 
 import com.ncgroup2.eventmanager.entity.Customer;
+import com.ncgroup2.eventmanager.entity.Friends;
 import com.ncgroup2.eventmanager.entity.Page;
 import com.ncgroup2.eventmanager.entity.Relationship;
 import com.ncgroup2.eventmanager.service.CustomerService;
@@ -83,6 +84,17 @@ public class ProfileRestController {
         }
     }
 
+    @GetMapping(value = "cancel", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public HttpStatus cancelRequest(@RequestParam String login) {
+        try {
+            customerService.cancelRequest(login);
+
+            return HttpStatus.OK;
+        } catch (Throwable e) {
+            return HttpStatus.BAD_REQUEST;
+        }
+    }
+
     @GetMapping(value = "accept", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public HttpStatus acceptFriendship(@RequestParam String token) {
         try {
@@ -121,5 +133,10 @@ public class ProfileRestController {
         return customerService.isFriends(currentCustomerId,customerId) ?
                 new ResponseEntity(HttpStatus.OK) :
                 new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping(value = "friendOrRequest")
+    public List<Friends> getFriends(@RequestParam String login) {
+        return customerService.getFriendOrRequest(login);
     }
 }

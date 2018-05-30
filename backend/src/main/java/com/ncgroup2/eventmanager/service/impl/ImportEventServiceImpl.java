@@ -26,12 +26,7 @@ public class ImportEventServiceImpl implements ImportEventService {
     }
 
     @Override
-    public PDDocument createPDF(List<ImportEventDTO> data) {
-        return ImportEventDao.createPDF(data);
-    }
-
-    @Override
-    public Workbook createXLS(List<ImportEventDTO> data) {
-        return ImportEventDao.createXLS(data);
+    public PDDocument createPDF(List<ImportEventDTO> data, String email) {
+        return ImportEventDao.createPDF(data, email);
     }
 }

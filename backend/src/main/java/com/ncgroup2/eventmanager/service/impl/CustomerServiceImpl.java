@@ -2,6 +2,7 @@ package com.ncgroup2.eventmanager.service.impl;
 
 import com.ncgroup2.eventmanager.dao.CustomerDao;
 import com.ncgroup2.eventmanager.entity.Customer;
+import com.ncgroup2.eventmanager.entity.Friends;
 import com.ncgroup2.eventmanager.entity.Page;
 import com.ncgroup2.eventmanager.entity.Relationship;
 import com.ncgroup2.eventmanager.service.CustomerService;
@@ -118,6 +119,11 @@ public class CustomerServiceImpl implements CustomerService {
         sendRequestEmail(login);
     }
 
+    @Override
+    public void cancelRequest(String login) {
+        customerDao.cancelRequest(login);
+    }
+
     private void sendRequestEmail(String login) {
         Customer sender = customerDao.getEntityByField("login", SecurityContextHolder.getContext().getAuthentication().getName());
         String sendTo = customerDao.getEntityByField("login", login).getEmail();
@@ -169,7 +175,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public boolean isFriends(String currentCustomerId, String customerId) {
+    public boolean isFriends (String currentCustomerId, String customerId) {
         return customerDao.isFriends(currentCustomerId, customerId);
+    }
+
+    @Override
+    public List<Friends> getFriendOrRequest(String login) {
+        return customerDao.getFriendOrRequest(login);
     }
 }
