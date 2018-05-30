@@ -28,15 +28,10 @@ export class NoteContentComponent implements OnInit {
     this.eventService.getNoteById(this.noteId)
       .subscribe((eventDTO) => {
         this.eventDTO = eventDTO;
-        console.log('note = ' + JSON.stringify(this.eventDTO));
         if(eventDTO.toString() == ''){
           this.alertService.info('This note is empty.',true);
         }
-        if(this.eventDTO.event.creatorId == this.userService.getCurrentId()){
-          this.isCreator = true;
-        }else{
-          this.isCreator = false;
-        }
+        this.isCreator = this.eventDTO.event.creatorId == this.userService.getCurrentId();
       });
   }
 

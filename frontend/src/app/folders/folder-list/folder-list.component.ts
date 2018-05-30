@@ -32,7 +32,7 @@ export class FolderListComponent implements OnInit {
       .subscribe((folders) => {
         this.folders = folders;
         if(folders.toString() == ''){
-          this.alertService.info('No folders exist yet.',true);
+          this.alertService.info('No folders exist yet.');
         }
       });
   }
