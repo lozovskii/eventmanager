@@ -19,6 +19,7 @@ export class FolderContentComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private alertService: AlertService,
               private userService: UserService,
+              private route: ActivatedRoute,
               private eventService: EventService) {
   }
 
@@ -32,22 +33,22 @@ export class FolderContentComponent implements OnInit {
         }
         case 'folder' : {
           this.folderId = this.activatedRoute.snapshot.paramMap.get('folderId');
-          this.getNotesByCustIdFolderid();
+          this.getNotesByCustLoginFolderid();
           break;
         }
       }
     });
   }
 
-  getNotesByCustIdFolderid(): void {
-    let custId = this.userService.getCurrentId();
-    this.folderService.getNotesByCustIdFolderId(custId, this.folderId)
+  getNotesByCustLoginFolderid(): void {
+    // let custLogin = this.userService.getCurrentLogin();
+    this.folderService.getNotesByFolderId(this.folderId)
       .subscribe((events) => {
         this.isTitle = true;
         this.events = events;
         if(events.toString() == ''){
           this.isTitle = false;
-          this.alertService.info('This folder is empty.',true);
+          this.alertService.info('This folder is empty.');
         }
       });
   }
@@ -60,7 +61,7 @@ export class FolderContentComponent implements OnInit {
         console.log(this.events);
         if(events.toString() == ''){
           this.isTitle = false;
-          this.alertService.info('You have no notes yet.',true);
+          this.alertService.info('You have no notes yet.');
         }
       });
   }

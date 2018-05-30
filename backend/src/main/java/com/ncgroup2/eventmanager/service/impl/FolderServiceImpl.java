@@ -28,8 +28,13 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public List<Event> getNotesByCustIdByFolderId(String custId, String folderId){
-        return folderDao.getNotesByCustIdByFolderId(custId,folderId);
+    public List<Folder> getSharedByLogin(String custLogin) {
+        return folderDao.getSharedByCustLogin(custLogin);
+    }
+
+    @Override
+    public List<Event> getNotesByFolderId(String folderId){
+        return folderDao.getNotesByFolderId(folderId);
     }
 
     @Override

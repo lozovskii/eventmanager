@@ -34,14 +34,13 @@ public class FolderController {
 
     @GetMapping("/shared")
     public ResponseEntity<List<Folder>> getSharedByCustLogin(@RequestParam String customerLogin) {
-        List<Folder> foldersByCustId = folderService.getAllByCustId(customerLogin);
+        List<Folder> foldersByCustId = folderService.getSharedByLogin(customerLogin);
         return new ResponseEntity<>(foldersByCustId, HttpStatus.OK);
     }
 
     @GetMapping("/notes")
-    public ResponseEntity<List<Event>> getNotesByCustIdByFolderId(@RequestParam String custId,
-                                                                  @RequestParam String folderId){
-        List<Event> notesByCustId = folderService.getNotesByCustIdByFolderId(custId,folderId);
+    public ResponseEntity<List<Event>> getNotesByCustIdByFolderId(@RequestParam String folderId){
+        List<Event> notesByCustId = folderService.getNotesByFolderId(folderId);
         return new ResponseEntity<>(notesByCustId, HttpStatus.OK);
     }
 
