@@ -42,6 +42,7 @@ export class WishListComponent implements OnInit {
   ngOnInit() {
     if (this.editMode) {
       this.wishListService.wishList$.subscribe(wishList => this.wishList = wishList);
+      this.hasChanges = true;
     } else {
       this.getWishListByEventId(this.eventId);
     }
@@ -50,13 +51,13 @@ export class WishListComponent implements OnInit {
     this.wishListItemView = new WishListItem();
   }
 
-  copyItem(item: Item){
+  copyItem(item: Item) {
     this.editMode ?
       this.outCopiedItem.emit(item) :
       this.copiedItem = item;
   }
 
-  moveItem(wishListItem: WishListItem){
+  moveItem(wishListItem: WishListItem) {
     this.editMode ?
       this.outMovableItem.emit(wishListItem) :
       this.movableItem = wishListItem;
@@ -67,7 +68,7 @@ export class WishListComponent implements OnInit {
   // }
 
   showItemDetails(item: WishListItem): void {
-      this.wishListItemView = item;
+    this.wishListItemView = item;
   }
 
   getWishListByEventId(eventId: string): void {
@@ -144,6 +145,14 @@ export class WishListComponent implements OnInit {
   }
 
   update(): void {
+    if (this.trash.length > 0) {
+      this.wishListService.removeItems(this.trash).subscribe(() => {
+          this.alertService.success('Wish list successfully updated!')
+        },
+        () => {
+          this.alertService.error('Something wrong')
+        });
+    }
     this.wishListService.update(this.wishList).subscribe(() => {
       this.alertService.success('Wish list successfully updated!');
     }, () => {

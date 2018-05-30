@@ -1,6 +1,7 @@
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
   <a routerLink="" class="navbar-brand">Event Manager</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+          aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarText">
@@ -11,27 +12,36 @@
           <i class="fas fa-home"></i> Home
         </a>
       </li>
+      <li class="nav-item" *ngIf="navbar">
+        <a onclick="history.back()" class="nav-link" style="cursor: pointer">
+          <i class="fas fa-arrow-circle-left"></i> Back
+        </a>
+      </li>
     </ul>
 
     <ul class="nav navbar-nav navbar-right" *ngIf="navbar">
-    <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-user-alt"></i> Profile
-      </a>
-      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" routerLink="/profile">
-          <i class="fas fa-user-alt"></i> My profile
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-user-alt"></i> Profile
         </a>
-        <a class="dropdown-item" (click)="logout()" style="cursor: pointer">
-          <i class="fas fa-sign-out-alt"></i> Log Out
-        </a>
-      </div>
-    </li>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" routerLink="/profile">
+            <i class="fas fa-user-alt"></i> My profile
+          </a>
+          <a class="dropdown-item" routerLink="/profile/friends">
+            <i class="fas fa-user-friends"></i> Friends
+          </a>
+          <a class="dropdown-item" (click)="logout()" style="cursor: pointer">
+            <i class="fas fa-sign-out-alt"></i> Log Out
+          </a>
+        </div>
+      </li>
     </ul>
 
     <ul class="nav navbar-nav navbar-right" *ngIf="!navbar">
       <li class="nav-item">
-        <a class="nav-link"  style="cursor: pointer" routerLink="/register">
+        <a class="nav-link" style="cursor: pointer" routerLink="/register">
           <i class="far fa-plus-square"></i> Sign Up
         </a>
       </li>

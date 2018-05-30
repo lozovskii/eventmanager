@@ -93,7 +93,7 @@ export class CreateEventComponent implements OnInit {
 
   initEventForm(): FormGroup {
     return this.formBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40), Validators.pattern("^[ a-zA-Zа-яА-ЯієїґІЄЇҐ]*$")]],
       description: ['', [Validators.maxLength(2048)]],
       startTime: new FormControl(),
       endTime: new FormControl(),
@@ -124,6 +124,11 @@ export class CreateEventComponent implements OnInit {
   }
 
   createEventForm(eventDTO: EventDTOModel) {
+    if (this.eventForm.invalid || this.additionEventForm.invalid) {
+      this.alertService.error("You input is wrong. Please, check and try again", false);
+      return;
+    }
+    this.isValidFormSubmitted = true;
     if (eventDTO.event.name == null) {
       eventDTO.event.name = this.eventDTO.event.name;
     }
@@ -131,11 +136,6 @@ export class CreateEventComponent implements OnInit {
       eventDTO.event.description = this.eventDTO.event.description;
     }
     this.isValidFormSubmitted = false;
-    if (this.eventForm.invalid || this.additionEventForm.invalid) {
-      this.alertService.error("You input is wrong. Please, check and try again", false);
-      return;
-    }
-    this.isValidFormSubmitted = true;
     if (eventDTO.event.startTime != null) {
       eventDTO.event.startTime = (eventDTO.event.startTime).slice(0, 10) + ' ' + (eventDTO.event.startTime).slice(11, 16) + ':00';
     }
@@ -180,6 +180,11 @@ export class CreateEventComponent implements OnInit {
   }
 
   saveAsADraft(eventDTO: EventDTOModel) {
+    if (this.eventForm.invalid || this.additionEventForm.invalid) {
+      this.alertService.error("You input is wrong. Please, check and try again", false);
+      return;
+    }
+    this.isValidFormSubmitted = true;
     console.log('In create-ivent/ saveAsDraft 1: ' + JSON.stringify(eventDTO));
     if (eventDTO.event.name == null) {
       eventDTO.event.name = this.eventDTO.event.name;

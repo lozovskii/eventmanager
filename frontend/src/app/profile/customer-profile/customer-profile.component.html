@@ -10,7 +10,7 @@
       <br>
       <p> Username: {{customer.login}}</p>
       <p> E-mail: {{customer.email}}</p>
-      <p> Phone: {{customer.phone}}</p>
+      <p *ngIf="customer.phone"> Phone: {{customer.phone}}</p>
     </div>
     <div class="col-8" *ngIf="isFriend">
       <h1>Timeline</h1>
@@ -26,7 +26,18 @@
           </div>
         </div>
       </div>
-      <calendar-component  [type]="'timeline'" [login]="customer.login"></calendar-component>
+      <calendar-component [type]="'timeline'" [login]="customer.login"></calendar-component>
     </div>
+  </div>
+
+  <div *ngIf="folders">
+    <table *ngFor="let folder of folders" class="col-md-2">
+      <td>
+        <a [routerLink]="['/folder-content', 'folder', folder.id]">
+          <img src="../assets/img/folder.png" width="65" height="77"/>
+          {{folder.name}}
+        </a>
+      </td>
+    </table>
   </div>
 </main>

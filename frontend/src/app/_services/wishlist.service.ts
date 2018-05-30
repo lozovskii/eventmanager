@@ -131,8 +131,15 @@ export class WishListService {
         catchError(this.handleError));
   }
 
-  getPageAllItems(page: number, size: number) {
-    const url = `${this.itemsUrl}/pageAll`;
-    return this.http.get(url, {headers: AuthenticationService.getAuthHeader()});
+  searchItems(search: string) {
+    const url = `${this.itemsUrl}/search?search=${search}`;
+    return this.http.get<Item[]>(url,{headers: AuthenticationService.getAuthHeader()})
+      .pipe(
+        catchError(this.handleError));
   }
+
+  // getPageAllItems(page: number, size: number) {
+  //   const url = `${this.itemsUrl}/pageAll`;
+  //   return this.http.get(url, {headers: AuthenticationService.getAuthHeader()});
+  // }
 }

@@ -33,8 +33,4 @@ export class UserService {
   getCurrentId() {
     return JSON.parse(sessionStorage.getItem('currentUser')).id;
   }
-
-
-
 }
-

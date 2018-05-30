@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
-import {Event} from '../_models/event';
+import {Event} from '../_models';
 import {Observable} from 'rxjs';
 import {UserService} from "./user.service";
 import {EventDTOModel} from "../_models/dto/eventDTOModel";
@@ -55,6 +55,12 @@ export class EventService {
   getAllFriendsEventsInMonth(): Observable<EventDTOModel[]> {
     let custId = this.userService.getCurrentId();
     const url = `${this.eventsUrl}/allFriends${custId}`;
+    return this.http.get<EventDTOModel[]>(url, {headers: AuthenticationService.getAuthHeader()})
+  }
+
+  getAllByCustId(): Observable<EventDTOModel[]> {
+    let custId = this.userService.getCurrentId();
+    const url = `${this.eventsUrl}/allEvents${custId}`;
     return this.http.get<EventDTOModel[]>(url, {headers: AuthenticationService.getAuthHeader()})
   }
 
@@ -113,7 +119,7 @@ export class EventService {
 
   updateEvent(updatEventDTO: UpdateEventDTO) {
     const url = `${this.eventsUrl}/update`;
-    console.log('Service EV '+JSON.stringify(updatEventDTO))
+    console.log('Service EV '+JSON.stringify(updatEventDTO));
     return this.http.put<UpdateEventDTO>(url, updatEventDTO, {headers: AuthenticationService.getAuthHeader()});
   }
 
@@ -144,8 +150,8 @@ export class EventService {
     return this.http.get<Event[]>(url, {headers: AuthenticationService.getAuthHeader()});
   }
 
-  importEventsToPDF() {
-    return this.http.get(`api/import/pdf`,
+  importEventsToPDF(email) {
+    return this.http.get(`api/import/pdf?email=${email}`,
       {headers: AuthenticationService.getAuthHeader()})
   }
 

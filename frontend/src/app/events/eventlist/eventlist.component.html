@@ -1,4 +1,4 @@
-<script src="eventlist.component.ts"></script>
+<script src="eventlist.component.ts" xmlns:paginate="http://www.w3.org/1999/xhtml"></script>
 
 <sidebar></sidebar>
 
@@ -19,23 +19,7 @@
         </div>
       </div>
       <div class="col-2">
-        <button data-toggle="collapse" data-target="#export" class="btn btn-outline-info">Export to PDF</button>
-      </div>
-      <div class="collapse" id="export">
-        <span>Please select the date range for export</span>
-        <div class="form-row">
-          <div class="col-2">
-            <label>From</label>
-            <input type="date" formControlName="startDate" class="dateTimeInput">
-          </div>
-          <div class="col-2">
-            <label>To</label>
-            <input type="date" formControlName="endDate" class="dateTimeInput">
-          </div>
-          <div class="col-2">
-            <button class="btn btn-outline-success" (click)="importToPDF()">Export</button>
-          </div>
-        </div>
+        <button data-toggle="collapse" data-target="#export" class="btn btn-outline-info" (click)="importToPDF()">Export to PDF</button>
       </div>
     </div>
   </form>
@@ -63,33 +47,34 @@
     </div>
   </div>
   <br>
-  <table *ngIf="!isEmpty" class="table table-striped">
-    <thead>
-    <tr>
-      <th scope="col" [routerLink]="['/eventlist','my/sorted/title']"><i class="fas fa-sort"></i> Title</th>
-      <th scope="col" [routerLink]="['/eventlist','my']"><i class="fas fa-sort"></i> Start time</th>
-      <th scope="col">End time</th>
-      <th scope="col" [routerLink]="['/eventlist','my/sorted/type']"><i class="fas fa-sort"></i> Visibility</th>
-      <th scope="col">Status</th>
-      <th scope="col" *ngIf="isMy">Priority</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let event of eventsDTO" [routerLink]="['/event-container',event.event.id]">
-      <td>{{event.event.name}}</td>
-      <td>{{event.event.startTime}}</td>
-      <td>{{event.event.endTime}}</td>
-      <td>{{event.event.visibility}}</td>
-      <td>{{event.event.status}}</td>
-      <td class="text-center" *ngIf="isMy">
-        <div class="dot"
-             [style.background-color]="event.additionEvent.priority === 'HIGH' ? '#d14242':
-             event.additionEvent.priority === 'AVERAGE' ? 'green':'gray'">
-        </div>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+    <table *ngIf="!isEmpty" class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col" [routerLink]="['/eventlist','my/sorted/title']"><i class="fas fa-sort"></i> Title</th>
+        <th scope="col" [routerLink]="['/eventlist','my']"><i class="fas fa-sort"></i> Start time</th>
+        <th scope="col">End time</th>
+        <th scope="col" [routerLink]="['/eventlist','my/sorted/type']"><i class="fas fa-sort"></i> Visibility</th>
+        <th scope="col">Status</th>
+        <th scope="col" *ngIf="isMy">Priority</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let event of eventsDTO | paginate: { itemsPerPage: 10, currentPage: p }; let i = index" [routerLink]="['/event-container',event.event.id]">
+        <td>{{event.event.name}}</td>
+        <td>{{event.event.startTime}}</td>
+        <td>{{event.event.endTime}}</td>
+        <td>{{event.event.visibility}}</td>
+        <td>{{event.event.status}}</td>
+        <td class="text-center" *ngIf="isMy">
+          <div class="dot"
+               [style.background-color]="event.additionEvent.priority === 'HIGH' ? '#d14242':
+               event.additionEvent.priority === 'AVERAGE' ? 'green':'gray'">
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
 </main>
 
 

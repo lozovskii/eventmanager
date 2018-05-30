@@ -5,6 +5,7 @@ import { AlertService } from '../_services/index';
 @Component({
   moduleId: module.id.toString(),
   selector: 'alert',
+  styleUrls: ['./alert.component.css'],
   templateUrl: 'alert.component.html'
 })
 

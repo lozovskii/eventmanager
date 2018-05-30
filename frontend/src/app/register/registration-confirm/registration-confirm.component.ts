@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {AlertService, RegistrationService} from "../_services";
+import {AlertService, RegistrationService} from "../../_services";
 import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-registration-confirm',
-  templateUrl: './registration-confirm.component.html',
-  styleUrls: ['./registration-confirm.component.css']
+  template:''
 })
 export class RegistrationConfirmComponent implements OnInit {
   token: string;
@@ -19,10 +18,12 @@ export class RegistrationConfirmComponent implements OnInit {
   ngOnInit() {
     this.getParams();
     this.registrationService.verifyEmail(this.token).subscribe(() => {
-        this.alertService.success('Your email is verified! Please, login with your credentials');
+        this.alertService.success('Your email is verified! Please, login with your credentials',true);
+        return this.router.navigate(['/']);
       },
       (error) => {
         this.alertService.error(error.error, true);
+        return this.router.navigate(['/']);
       });
   }
 

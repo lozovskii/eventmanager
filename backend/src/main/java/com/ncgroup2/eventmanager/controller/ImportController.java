@@ -21,8 +21,8 @@ public class ImportController {
     }
 
     @GetMapping(value = "pdf", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public HttpStatus importEventsToPDF() {
-        ImportEventService.createPDF(ImportEventService.getCustomerEvents());
+    public HttpStatus importEventsToPDF(@RequestParam String email) {
+        ImportEventService.createPDF(ImportEventService.getCustomerEvents(), email);
         return HttpStatus.OK;
     }
 }

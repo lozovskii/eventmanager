@@ -18,9 +18,8 @@ import {FooterComponent} from './footer/footer.component';
 import {ReCaptchaModule} from 'angular2-recaptcha';
 import {CreateEventComponent} from './events/create-event/create-event.component';
 import {EventService} from "./_services/event.service";
-import {LocationService} from "./_services/location.service";
 import {EventlistComponent} from './events/eventlist/eventlist.component';
-import {RegistrationConfirmComponent} from './registration-confirm/registration-confirm.component';
+import {RegistrationConfirmComponent} from './register/registration-confirm/registration-confirm.component';
 import {ProfileComponent} from './profile/profile.component';
 import {SidebarComponent} from './sidebar/sidebar.component';
 import {SendLinkComponent} from './reset-password/send-link/send-link.component';
@@ -74,11 +73,12 @@ import {MessageService} from "./_services/message.service";
 import { EditFolderComponent } from './folders/edit-folder/edit-folder.component';
 import {CopyMoveComponent} from "./wishlist/copy-move-item/copy-move.component";
 import {CustomerProfileComponent} from "./profile/customer-profile/customer-profile.component";
-
+import {NgxPaginationModule} from "ngx-pagination";
 
 @NgModule({
   imports: [
     BrowserModule,
+    NgxPaginationModule,
     FormsModule,
     HttpClientModule,
     routing,
@@ -164,10 +164,8 @@ import {CustomerProfileComponent} from "./profile/customer-profile/customer-prof
     ProfileService,
     NotificationService,
     FolderService,
-    LocationService,
     MessageService,
     // provider used to create fake backend
-    LocationService,
 
   ],
   entryComponents: [

@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {EventService} from "../../_services";
-import {Event} from "../../_models";
+import {Event, User} from "../../_models";
 import {ActivatedRoute} from "@angular/router";
-import {AlertService} from "../../_services/alert.service";
+import {AlertService} from "../../_services";
 import {VISIBILITY} from "../../event-visibility";
 import {EventDTOModel} from "../../_models/dto/eventDTOModel";
 import {FormControl, FormGroup} from "@angular/forms";
-import {UserService} from "../../_services/user.service";
+import {UserService} from "../../_services";
+import 'rxjs/add/operator/map'
 
 @Component({
   selector: 'app-eventlist',
@@ -19,8 +20,6 @@ export class EventlistComponent implements OnInit {
   eventsDTO: EventDTOModel[];
   visibilityList: string[] = VISIBILITY;
   isMy:boolean = false;
-  from = '';
-  to = '';
   isEmpty:boolean = false;
   pdfForm = new FormGroup({
     startDate:  new FormControl(),
@@ -30,6 +29,8 @@ export class EventlistComponent implements OnInit {
   filteredEventsDTO: EventDTOModel[];
   backupEventsDTO: EventDTOModel[];
   currentId: string;
+  currentUser: User;
+  p: number = 1;
 
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute,
@@ -86,6 +87,7 @@ export class EventlistComponent implements OnInit {
       }
     });
     this.currentId = this.userService.getCurrentId();
+    this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
   }
 
   getEvents(): void {
@@ -98,7 +100,7 @@ export class EventlistComponent implements OnInit {
           this.isEmpty = true;
           this.alertService.info('No events exist yet.',true);
         }
-          });
+      });
   }
 
   getEventsByCustId(): void {
@@ -158,9 +160,9 @@ export class EventlistComponent implements OnInit {
   }
 
   importToPDF(): void {
-    this.eventService.importEventsToPDF()
+    this.eventService.importEventsToPDF(this.currentUser.email)
       .subscribe(() => {
-        this.alertService.info('You imported your events.', true);
+        this.alertService.info('You imported your events');
       })
   }
 

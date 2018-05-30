@@ -106,6 +106,29 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
     }
 
     @Override
+    public Collection<Item> searchItems(String query) {
+        String squery = query + "%";
+        String sql =
+                "SELECT COUNT(DISTINCT i.id), i.*,\n" +
+                        "  array_agg(DISTINCT row(itag.id,t.*)) filter (where itag.id is not null) as tags,\n" +
+                        "  array_agg(DISTINCT r.*) FILTER (WHERE r.id IS NOT NULL) as rating\n" +
+                        "FROM \"Item\" i\n" +
+                        "  LEFT JOIN \"Item_Tag\" itag ON (itag.item_id = i.id)\n" +
+                        "  LEFT JOIN \"Tag\" t ON (itag.tag_id = t.id)\n" +
+                        "  LEFT JOIN \"Rating_Item\" r ON (r.item_id = i.id)\n" +
+                        "WHERE i.id IN (\n" +
+                        "SELECT it.item_id FROM \"Item_Tag\" it WHERE it.tag_id IN " +
+                        "(SElECT t.id FROM \"Tag\" t WHERE t.name LIKE ?))\n" +
+                        "GROUP BY i.id\n" +
+                        "ORDER BY COUNT(i.id) DESC";
+
+        Object[] params = new Object[] {squery};
+
+        return this.getJdbcTemplate().query(sql, params, new ItemMapExtractor());
+    }
+
+
+    @Override
     public Item getById(Object id) {
         return Objects.requireNonNull(
                 getEntitiesByField("i.id", id).iterator().next(),
@@ -198,17 +221,6 @@ public class ItemDaoImpl extends JdbcDaoSupport implements ItemDao {
                     tagDeleteSql, trash, trash.size(),
                     (ps, tagDto) -> {
                         ps.setString(1, tagDto.getItemTagId());
-                    });
-
-            String decreaseTagCount =
-                    "UPDATE \"Tag\" " +
-                            "SET count = \"Tag\".count-1 " +
-                            "WHERE id = ?::UUID; ";
-
-            this.getJdbcTemplate().batchUpdate(
-                    decreaseTagCount, trash, trash.size(),
-                    (ps, tagDto) -> {
-                        ps.setString(1, tagDto.getTag().getId());
                     });
         }
     }

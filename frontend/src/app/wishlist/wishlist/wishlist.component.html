@@ -1,6 +1,6 @@
 <div *ngIf="wishList">
   <div class="row justify-content-between">
-    <div class="col-auto">
+    <div class="col-auto" *ngIf="isEventCreator || editMode">
       <button class="btn btn-outline-info" data-toggle="modal" data-target="#create">
         <i class="fas fa-plus"></i> Create new item
       </button>

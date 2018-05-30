@@ -2,8 +2,10 @@ package com.ncgroup2.eventmanager.dao.impl;
 
 import com.ncgroup2.eventmanager.dao.CustomerDao;
 import com.ncgroup2.eventmanager.entity.Customer;
+import com.ncgroup2.eventmanager.entity.Friends;
 import com.ncgroup2.eventmanager.entity.Page;
 import com.ncgroup2.eventmanager.entity.Relationship;
+import com.ncgroup2.eventmanager.mapper.ButtonMapper;
 import com.ncgroup2.eventmanager.mapper.CustomerMapper;
 import com.ncgroup2.eventmanager.mapper.RelationshipMapper;
 import com.ncgroup2.eventmanager.util.PaginationHelper;
@@ -22,6 +24,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -68,14 +71,17 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
     private String countCustomerEmptyField;
     @Value("${searchCustomerEmptyField}")
     private String searchCustomerEmptyField;
-
+    @Value("${isFriend}")
+    private String isFriend;
+    @Value("${cancelRequest}")
+    private String cancelRequest;
     @Value("${create}")
     private String create;
     @Value("${update}")
     private String update;
     @Value("${delete}")
     private String delete;
-    @Value("$isExist")
+    @Value("${isExist}")
     private String isExist;
 
     @PostConstruct
@@ -94,7 +100,6 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
     @Override
     public Customer getById(Object id) {
-
         String sql = BASE_SQL + "WHERE id = CAST (? AS uuid) ";
 
         Object[] params = new Object[]{id};
@@ -237,15 +242,18 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
     @Override
     public synchronized void addFriend(String login) {
-        try {
-            if (!checkAddFriend(login)) {
-                Object[] params = new Object[] {SecurityContextHolder.getContext().getAuthentication().getName(), login};
+        if (!checkAddFriend(login)) {
+            Object[] params = new Object[] {SecurityContextHolder.getContext().getAuthentication().getName(), login};
 
-                this.getJdbcTemplate().update(addFriend, params);
-            }
-        } catch (Exception e) {
-            System.out.println("Unique columns");
+            this.getJdbcTemplate().update(addFriend, params);
         }
+    }
+
+    @Override
+    public void cancelRequest(String login) {
+        Object[] params = new Object[] {SecurityContextHolder.getContext().getAuthentication().getName(), login};
+
+        this.getJdbcTemplate().update(cancelRequest, params);
     }
 
     @Override
@@ -257,21 +265,21 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
 
     @Override
     public void rejectFriend(String token) {
-        Object[] params = new Object[]{UUID.fromString(token)};
+        Object[] params = new Object[] {UUID.fromString(token)};
 
         this.getJdbcTemplate().update(rejectFriend, params);
     }
 
     @Override
     public List<Relationship> getNotifications(String login) {
-        Object[] params = new Object[]{login, login};
+        Object[] params = new Object[] {login, login};
 
         return this.getJdbcTemplate().query(getNotifications, params, new RelationshipMapper());
     }
 
     @Override
     public void uploadAvatar(Customer customer) {
-        Object[] params = new Object[]{"data:image/png;base64," + customer.getAvatar(),
+        Object[] params = new Object[] {"data:image/png;base64," + customer.getAvatar(),
                 SecurityContextHolder.getContext().getAuthentication().getName()};
 
         this.getJdbcTemplate().update(uploadAvatar, params);
@@ -333,7 +341,35 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao {
                 currentCustomerId,
                 customerId
         };
-        return this.getJdbcTemplate().query(sql,params,(resultSet, i) -> resultSet.getBoolean("isFriends")).get(0);
+        return this.getJdbcTemplate().queryForObject(sql,params,Boolean.class);
     }
 
+    @Override
+    public List<Friends> getFriendOrRequest(String login) {
+        String sql =
+                "SELECT ? AS current, ? AS another, \"isFriendsByLogin\"(?,?) AS isfriends, \"isRequest\"(?,?) AS isrequest";
+
+        List<Customer> customers = getCustomer(login);
+
+        List<Friends> friends = new ArrayList<>();
+
+        for (Customer customer : customers) {
+            Object[] params = new Object[] {
+                    login, customer.getLogin(), login, customer.getLogin(), login, customer.getLogin()};
+
+            Friends friend = this.getJdbcTemplate().query(sql, params, new ButtonMapper()).get(0);
+
+            friends.add(friend);
+        }
+
+        return friends;
+    }
+
+    private List<Customer> getCustomer(String login) {
+        String sql = "SELECT * FROM \"Customer\" WHERE login != ?";
+
+        Object[] params = new Object[] {login};
+
+        return this.getJdbcTemplate().query(sql, params, new CustomerMapper());
+    }
 }

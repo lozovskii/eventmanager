@@ -4,7 +4,9 @@
 <main role="main">
   <h2 class="text-center">Create event</h2>
   <form [formGroup]="eventDTOForm">
-
+    <p class="text-sm-right text-muted">
+      Required <span style="color: red;">*</span>
+    </p>
     <form [formGroup]="eventForm">
       <div class="form-group">
         <label>Title<span style="color: red;">*</span></label>
@@ -13,7 +15,9 @@
         <input *ngIf="!isDraft && !isNote" formControlName="name" type="text" class="form-control" required/>
         <div *ngIf="name.invalid && (name.dirty || name.touched)"
              class="alert alert-danger">
-
+          <div *ngIf="name?.errors?.pattern">
+            First name must consist only of latin or cyrillic letters.
+          </div>
           <div *ngIf="name?.errors?.required">
             Title is required.
           </div>

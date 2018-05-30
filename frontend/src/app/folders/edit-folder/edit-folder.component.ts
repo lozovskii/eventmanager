@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {FolderService} from "../../_services/folder.service";
 import {AlertService} from "../../_services/alert.service";
 import {Folder} from "../../_models/folder";
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-edit-folder',
@@ -28,7 +28,7 @@ export class EditFolderComponent implements OnInit {
   initFolderForm(): FormGroup {
     return this.formBuilder.group({
       id : new FormControl(),
-      name: new FormControl()
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20), Validators.pattern("^[ a-zA-Zа-яА-ЯієїґІЄЇҐ]*$")]]
     })
   }
 
@@ -50,4 +50,7 @@ export class EditFolderComponent implements OnInit {
       });
   }
 
+  get name() {
+    return this.folderForm.get('name');
+  }
 }

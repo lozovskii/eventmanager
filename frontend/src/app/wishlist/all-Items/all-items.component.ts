@@ -9,7 +9,7 @@ import {WishListItem} from "../../_models/wishList/wishListItem";
 @Component({
   selector: 'app-all-items',
   templateUrl: './all-items.component.html',
-  styleUrls: ['../wishlist/wishlist.component.css','./all-items.component.css']
+  styleUrls: ['../wishlist/wishlist.component.css', './all-items.component.css']
 })
 export class AllItemsComponent implements OnInit {
   @Input('included') isIncluded: boolean = false;
@@ -23,6 +23,8 @@ export class AllItemsComponent implements OnInit {
   copiedItem: Item;
   favoriteItem: Item;
   wishList: WishList;
+  backupItems: Item[];
+  popularItems: Item[];
   item: Item;
   items: Item[];
   trash: Item[];
@@ -33,6 +35,9 @@ export class AllItemsComponent implements OnInit {
   queryString: string;
   page: number = 1;
   pages: Number[];
+  searchedItems: Item[];
+  request = '';
+  p: number = 1;
 
   constructor(private wishListService: WishListService,
               private userService: UserService,
@@ -46,6 +51,9 @@ export class AllItemsComponent implements OnInit {
     this.editableItem = new Item();
     this.copiedItem = new Item();
     this.queryString = '';
+    this.backupItems = [];
+    this.popularItems = [];
+    this.searchedItems = [];
   }
 
   ngOnInit() {
@@ -59,14 +67,23 @@ export class AllItemsComponent implements OnInit {
     this.getAllItems();
   }
 
-  copyItem(item: Item){
+  copyItem(item: Item) {
     this.isIncluded ?
       this.outCopiedItem.emit(item) :
       this.copiedItem = item;
   }
 
-  chooseArray(){
-    this.checkBoxOrder == 1 ? this.getPopularItems() : this.getAllItems();
+  chooseArray() {
+    if (this.checkBoxOrder == 1) {
+      if (this.popularItems.length > 0)
+        this.items = this.popularItems;
+      else {
+        this.getPopularItems();
+      }
+    }
+    else {
+      this.items = this.backupItems;
+    }
     this.checkBoxOrder = this.checkBoxOrder * (-1);
   }
 
@@ -108,17 +125,6 @@ export class AllItemsComponent implements OnInit {
     wishListItem.priority = 3;
     this.wishList.items.push(wishListItem);
   }
-  //
-  // deleteItem(item: Item): void {
-  //   let index = this.items.indexOf(item);
-  //   this.items.splice(index, 1);
-  //   let trash: Item[] = [];
-  //   trash.push(item);
-  //   this.wishListService.deleteItems(trash).subscribe(() =>
-  //       this.alertService.success('Item successfully deleted!'),
-  //     () => this.alertService.error('Something wrong'));
-  // }
-
 
   deleteItem(item: Item): void {
     let index = this.items.indexOf(item);
@@ -155,36 +161,49 @@ export class AllItemsComponent implements OnInit {
     this.wishListService.getAllItems()
       .subscribe((items) => {
         this.items = items;
+        Object.assign(this.backupItems, items);
       }, () => {
         this.alertService.info('Items not found');
       });
   }
 
   getPopularItems(): void {
-    this.sortItems('');
-    
+    this.path = [];
+
     this.wishListService.getPopularItems()
       .subscribe((items) => {
         this.items = items;
+        Object.assign(this.popularItems, items);
       }, () => {
         this.alertService.info('Items not found');
       });
   }
 
 
-  getPageAllItems(): void {
-    this.wishListService.getPageAllItems(this.page, 6)
-      .subscribe(data => {
-        this.items = data['pageItems'];
-        this.pages = new Array(data['pagesAvailable']);
-      })
+  searchItems(event) {
+    this.request = event.target.value;
+    this.request.length == 0 ?
+      this.items = this.backupItems :
+      this.wishListService.searchItems(this.request)
+      .subscribe((items) => {
+        this.items = items;
+      });
   }
-
-  setPage(i,event:any) {
-    event.preventDefault();
-    this.page=i;
-    this.getPageAllItems();
-  }
+  //
+  //
+  // getPageAllItems(): void {
+  //   this.wishListService.getPageAllItems(this.page, 6)
+  //     .subscribe(data => {
+  //       this.items = data['pageItems'];
+  //       this.pages = new Array(data['pagesAvailable']);
+  //     })
+  // }
+  //
+  // setPage(i, event: any) {
+  //   event.preventDefault();
+  //   this.page = i;
+  //   this.getPageAllItems();
+  // }
 
   sortItems(prop: string) {
     this.path = prop.split('.');

@@ -1,6 +1,7 @@
 package com.ncgroup2.eventmanager.dao;
 
 import com.ncgroup2.eventmanager.entity.Customer;
+import com.ncgroup2.eventmanager.entity.Friends;
 import com.ncgroup2.eventmanager.entity.Page;
 import com.ncgroup2.eventmanager.entity.Relationship;
 
@@ -8,26 +9,9 @@ import java.util.List;
 
 public interface CustomerDao extends DAO<Customer, Object> {
 
-//    void addCustomer(Customer customer);
-//
-//    void deleteCustomer(Customer customer);
-//
-//    Customer getByField(String fieldName, String fieldValue);
-//
-//    Collection<Customer> getCustomers(String fieldName, String fieldValue);
-//
-//    Collection<Customer> getCustomers();
-//
-//    void updateCustomer(Customer customer);
-//
-//    void updateField(Customer customer, String fieldName, Object fieldValue);
-
-    // PROFILE METHODS
     Customer getByLogin(String login);
 
     void edit(Customer customer);
-
-//    List<Customer> search(String search);
 
     Page<Customer> search(int pageNo, int pageSize, String search);
 
@@ -38,6 +22,8 @@ public interface CustomerDao extends DAO<Customer, Object> {
     List<Relationship> getNotifications(String login);
 
     void addFriend(String login);
+
+    void cancelRequest(String login);
 
     void acceptFriend(String token);
 
@@ -52,4 +38,6 @@ public interface CustomerDao extends DAO<Customer, Object> {
     void addGoogleId(String email, String id);
 
     boolean isFriends (String currentCustomerId, String customerId);
+
+    List<Friends> getFriendOrRequest(String login);
 }

@@ -2,13 +2,13 @@ package com.ncgroup2.eventmanager.dao.impl;
 
 import com.ncgroup2.eventmanager.dao.ImportEventDao;
 import com.ncgroup2.eventmanager.dto.ImportEventDTO;
+import com.ncgroup2.eventmanager.service.sender.MyMailSender;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
+import java.io.File;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -26,9 +27,12 @@ public class ImportEventDaoImpl extends JdbcDaoSupport implements ImportEventDao
 
     private final DataSource dataSource;
 
+    private final MyMailSender mailMyMailSender;
+
     @Autowired
-    public ImportEventDaoImpl(DataSource dataSource) {
+    public ImportEventDaoImpl(DataSource dataSource, MyMailSender mailMyMailSender) {
         this.dataSource = dataSource;
+        this.mailMyMailSender = mailMyMailSender;
     }
 
     @PostConstruct
@@ -50,7 +54,7 @@ public class ImportEventDaoImpl extends JdbcDaoSupport implements ImportEventDao
     }
 
     @Override
-    public PDDocument createPDF(List<ImportEventDTO> data) {
+    public PDDocument createPDF(List<ImportEventDTO> data, String email) {
         PDDocument document = null;
 
         try {
@@ -105,8 +109,9 @@ public class ImportEventDaoImpl extends JdbcDaoSupport implements ImportEventDao
 
             setDocumentProperties(document);
 
-            document.save("/home/akybenko/test.pdf");
-            System.out.println("Document saved!");
+            document.save(SecurityContextHolder.getContext().getAuthentication().getName() + ".pdf");
+            mailMyMailSender.sendMessage(email);
+            new File(SecurityContextHolder.getContext().getAuthentication().getName() + ".pdf").delete();
         } catch (IOException e) {
             System.out.println("Document not saved!");
         } finally {
@@ -120,11 +125,6 @@ public class ImportEventDaoImpl extends JdbcDaoSupport implements ImportEventDao
         }
 
         return document;
-    }
-
-    @Override
-    public Workbook createXLS(List<ImportEventDTO> data) {
-        return null;
     }
 
     private void setDocumentProperties(PDDocument document) {

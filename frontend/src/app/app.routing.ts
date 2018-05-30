@@ -8,7 +8,7 @@ import {AuthGuard} from './_guards/index';
 import {LandingPageComponent} from "./landing-page/landing-page.component";
 import {CreateEventComponent} from "./events/create-event/create-event.component";
 import {EventlistComponent} from "./events/eventlist/eventlist.component";
-import {RegistrationConfirmComponent} from "./registration-confirm/registration-confirm.component";
+import {RegistrationConfirmComponent} from "./register/registration-confirm/registration-confirm.component";
 import {ProfileComponent} from "./profile/profile.component";
 import {SidebarComponent} from "./sidebar/sidebar.component";
 import {SendLinkComponent} from "./reset-password/send-link/send-link.component";

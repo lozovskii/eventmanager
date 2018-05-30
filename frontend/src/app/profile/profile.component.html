@@ -10,12 +10,13 @@
         </label>
       </form>
       <h3>{{currentUser.name}} {{currentUser.secondName}}</h3>
-      <img src={{currentUser.avatar}} height="300" width="250"/>
+        <img *ngIf="currentUser.avatar" src={{currentUser.avatar}} height="300" width="250"/>
+        <img *ngIf="!currentUser.avatar" src="../../assets/img/profile-picture.png" height="300" width="250"/>
       <br>
       <br>
       <p> Username: {{currentUser.login}}</p>
       <p> E-mail: {{currentUser.email}}</p>
-      <p> Phone: {{currentUser.phone}}</p>
+      <p *ngIf="currentUser.phone"> Phone: {{currentUser.phone}}</p>
 
       <div>
         <div>
@@ -30,8 +31,7 @@
       <button class="btn btn-outline-success" (click)="closeUsers()">Close</button>
       <thead>
       <tr>
-        <th scope="col">FirstName</th>
-        <th scope="col">SecondName</th>
+        <th scope="col">Name</th>
         <th scope="col">Login</th>
         <th scope="col">Phone</th>
         <th scope="col">Avatar</th>
@@ -40,14 +40,15 @@
       </thead>
       <tbody>
       <tr *ngFor="let user of users">
-        <td>{{user.name}}</td>
-        <td>{{user.secondName}}</td>
+        <td routerLink="/customer/{{user.login}}">{{user.name}} {{user.secondName}}</td>
         <td>{{user.login}}</td>
         <td>{{user.phone}}</td>
-        <img src={{user.avatar}} height="55" width="50" class="center-img">
+        <img *ngIf="user.avatar" src={{user.avatar}} height="55" width="50" class="center-img">
+        <img *ngIf="!user.avatar" src="../../assets/img/profile-picture.png" height="55" width="50" class="center-img">
         <td>
-          <button class="btn btn-outline-success" (click)="addFriend(user.login)">Add</button>
-          <button class="btn btn-outline-success" routerLink="/customer/{{user.login}}">Show</button>
+          <button *ngIf="!getIsFriends(user.login) && !getIsRequest(user.login)" class="btn btn-outline-success" (click)="addFriend(user.login)">Add</button>
+          <button *ngIf="getIsRequest(user.login)" class="btn btn-outline-dark" (click)="cancelRequest(user.login)">Cancel</button>
+          <button *ngIf="getIsFriends(user.login)" class="btn btn-outline-danger" (click)="deleteFriend(user.login)">Delete</button>
         </td>
       </tr>
       </tbody>
