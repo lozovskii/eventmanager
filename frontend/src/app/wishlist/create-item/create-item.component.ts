@@ -16,7 +16,7 @@ import {ALLOWED_IMG_FORMATS} from "../../app.config";
 export class CreateItemComponent implements OnInit {
 
   itemForm = this.formBuilder.group({
-    name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40), Validators.pattern("^[ a-zA-Zа-яА-ЯієїґІЄЇҐ]*$")]],
+    name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40), Validators.pattern("^[ a-zA-Zа-яА-ЯієїґІЄЇҐ0-9]*$")]],
     description: ['', [Validators.maxLength(2048)]],
     link: ['', [Validators.minLength(4), Validators.maxLength(128),
       Validators.pattern("^(ftp|http|https):\\/\\/[^ \"]+$")]],
