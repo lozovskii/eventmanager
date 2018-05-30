@@ -1,4 +1,4 @@
-<script src="eventlist.component.ts"></script>
+<script src="eventlist.component.ts" xmlns:paginate="http://www.w3.org/1999/xhtml"></script>
 
 <sidebar></sidebar>
 
@@ -59,7 +59,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let event of eventsDTO" [routerLink]="['/event-container',event.event.id]">
+      <tr *ngFor="let event of eventsDTO | paginate: { itemsPerPage: 10, currentPage: p }; let i = index" [routerLink]="['/event-container',event.event.id]">
         <td>{{event.event.name}}</td>
         <td>{{event.event.startTime}}</td>
         <td>{{event.event.endTime}}</td>
@@ -74,6 +74,7 @@
       </tr>
       </tbody>
     </table>
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
 </main>
 
 

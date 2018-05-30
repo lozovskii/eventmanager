@@ -38,6 +38,7 @@ export class AllItemsComponent implements OnInit {
   searchPath: string[] = ['items'];
   searchedItems: Item[];
   request = '';
+  p: number = 1;
 
   constructor(private wishListService: WishListService,
               private userService: UserService,

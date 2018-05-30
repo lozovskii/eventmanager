@@ -30,6 +30,7 @@ export class EventlistComponent implements OnInit {
   backupEventsDTO: EventDTOModel[];
   currentId: string;
   currentUser: User;
+  p: number = 1;
 
   constructor(private eventService: EventService,
               private activatedRoute: ActivatedRoute,
