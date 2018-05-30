@@ -104,6 +104,7 @@ export class CopyMoveComponent implements OnChanges, OnInit {
       }, () => {
         this.alertService.error('Something wrong')
       });
+    document.getElementById("closeCopyModal").click();
   }
 
 }
