@@ -31,7 +31,7 @@ public class EventServiceImpl implements EventService {
     private final EventDao eventDao;
     private final CustomerDao customerDao;
     private final GoogleCalendarService googleCalendarService;
-    private  final LocationServiceImpl locationService;
+    private final LocationServiceImpl locationService;
 
     @Autowired
     public EventServiceImpl(MyMailSender mailSender, EventDao eventDao, CustomerDao customerDao,
@@ -97,7 +97,7 @@ public class EventServiceImpl implements EventService {
     }
 
     private void addLocation(EventDTO eventDTO, UUID eventId, UUID locationId) {
-        if(eventDTO.getAdditionEvent().getLocation() != null) {
+        if (eventDTO.getAdditionEvent().getLocation() != null) {
             eventDTO.getAdditionEvent().getLocation().setEvent_id(eventId.toString());
             eventDTO.getAdditionEvent().getLocation().setId(locationId.toString());
             locationService.create(eventDTO.getAdditionEvent().getLocation());
@@ -114,56 +114,56 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventDTO> getEventsByCustId(String custId) {
-        List<Event> events =  eventDao.getEventsByCustId(custId);
+        List<Event> events = eventDao.getEventsByCustId(custId);
         return setAdditionForEachEvent(events, custId);
     }
 
     @Override
     public List<EventDTO> getAllPublicEventsInMonth(String custId) {
-        List<Event> events =  eventDao.getAllPublicEventsInMonth(custId);
+        List<Event> events = eventDao.getAllPublicEventsInMonth(custId);
         return setAdditionForEachEvent(events, custId);
     }
 
     @Override
     public List<EventDTO> getAllPrivateEventsInMonth(String custId) {
-        List<Event> events =  eventDao.getAllPrivateEventsInMonth(custId);
+        List<Event> events = eventDao.getAllPrivateEventsInMonth(custId);
         return setAdditionForEachEvent(events, custId);
     }
 
     @Override
     public List<EventDTO> getAllFriendsEventsInMonth(String custId) {
-        List<Event> events =  eventDao.getAllFriendsEventsInMonth(custId);
+        List<Event> events = eventDao.getAllFriendsEventsInMonth(custId);
         return setAdditionForEachEvent(events, custId);
     }
 
     @Override
     public List<EventDTO> getEventsByCustIdSorted(String custId) {
-        List<Event> events =  eventDao.getEventsByCustIdSorted(custId);
-        return setAdditionForEachEvent(events,custId);
+        List<Event> events = eventDao.getEventsByCustIdSorted(custId);
+        return setAdditionForEachEvent(events, custId);
     }
 
     @Override
     public List<EventDTO> getAllEventsByCustId(String custId) {
-        List<Event> events =  eventDao.getAllByCustId(custId);
-        return setAdditionForEachEvent(events,custId);
+        List<Event> events = eventDao.getAllByCustId(custId);
+        return setAdditionForEachEvent(events, custId);
     }
 
     @Override
     public List<EventDTO> getEventsByCustIdSortedByType(String custId) {
-        List<Event> events =  eventDao.getEventsByCustIdSortedByType(custId);
-        return setAdditionForEachEvent(events,custId);
+        List<Event> events = eventDao.getEventsByCustIdSortedByType(custId);
+        return setAdditionForEachEvent(events, custId);
     }
 
     @Override
     public List<EventDTO> getEventsByCustIdFilterByType(String custId, String type) {
-        List<Event> events =  eventDao.getEventsByCustIdFilterByType(custId,type);
-        return setAdditionForEachEvent(events,custId);
+        List<Event> events = eventDao.getEventsByCustIdFilterByType(custId, type);
+        return setAdditionForEachEvent(events, custId);
     }
 
     @Override
     public EventDTO getEventById(String eventId, String custId) {
         Event event = eventDao.getEventById(eventId);
-        AdditionalEventModelDTO additionalEventModelDTO = eventDao.getAdditionById(eventId,custId);
+        AdditionalEventModelDTO additionalEventModelDTO = eventDao.getAdditionById(eventId, custId);
         List<String> listParticipants = eventDao.getParticipants(eventId);
         Location location = locationService.getByEventId(eventId);
         EventDTO eventDTO = new EventDTO();
@@ -179,9 +179,9 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventDTO getNoteById(String noteId,String custId) {
+    public EventDTO getNoteById(String noteId, String custId) {
         Event event = eventDao.getNoteById(noteId);
-        AdditionalEventModelDTO additionalEventModelDTO = eventDao.getAdditionById(noteId,custId);
+        AdditionalEventModelDTO additionalEventModelDTO = eventDao.getAdditionById(noteId, custId);
         EventDTO eventDTO = new EventDTO();
         eventDTO.setEvent(event);
         eventDTO.setAdditionEvent(additionalEventModelDTO);
@@ -215,9 +215,9 @@ public class EventServiceImpl implements EventService {
         String priority = updateEventDTO.getPriority();
         eventDao.updateEvent(event, priority);
         Location location = updateEventDTO.getLocation();
-            if (location != null) {
+        if (location != null) {
             locationService.update(location);
-            }
+        }
         getExistingCustomers(updateEventDTO.getNewPeople()).
                 forEach(login -> eventDao.createEventInvitation(login, UUID.fromString(event.getId())));
 
@@ -277,7 +277,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventDTO> getTimeline(String login, LocalDateTime from, LocalDateTime to) {
         String customerId = customerDao.getEntityByField("login", login).getId();
-        List<Event> list =  eventDao.getTimelineEvents(customerId, from, to);
+        List<Event> list = eventDao.getTimelineEvents(customerId, from, to);
         List<EventDTO> dtoList = new ArrayList<>();
         list.forEach((event) -> {
             EventDTO dto = new EventDTO();
@@ -385,11 +385,8 @@ public class EventServiceImpl implements EventService {
 
             String priority = idsPriorities.stream()
                     .map(x -> {
-                        if (x.getEventId().equals(id)) {
-                            return x.getPriority();
-                        }else{
-                            return "";
-                        }
+                        if (x.getEventId().equals(id)) return x.getPriority();
+                        else return "";
                     }).collect(Collectors.joining(""));
             AdditionalEventModelDTO additionalEventModelDTO = new AdditionalEventModelDTO();
             additionalEventModelDTO.setPriority(priority);

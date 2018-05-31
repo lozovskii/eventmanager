@@ -5,12 +5,9 @@
   <form [formGroup]="profileForm">
     <div class="col-md-4">
       <div class="form-group">
-        <label>First Name<span style="color: red;">*</span></label>
-        <input type="text" class="form-control" formControlName="name" [(ngModel)]="currentUser.name" required/>
+        <label>First Name</label>
+        <input type="text" class="form-control" formControlName="name" [(ngModel)]="currentUser.name" >
         <div *ngIf="getName.invalid && (getName.dirty || getName.touched)" class="alert alert-danger">
-          <div *ngIf="getName?.errors?.required">
-            First Name is required.
-          </div>
           <div *ngIf="getName?.errors?.pattern">
             First name must consist only of latin or cyrillic letters.
           </div>
@@ -25,14 +22,11 @@
 
 
       <div class="form-group">
-        <label>Last Name<span style="color: red;">*</span></label>
+        <label>Last Name</label>
         <input type="text" class="form-control" formControlName="lastName"
-               [(ngModel)]="currentUser.secondName" required/>
+               [(ngModel)]="currentUser.secondName" >
         <div *ngIf="getLastName.invalid && (getLastName.dirty ||getLastName.touched)"
              class="alert alert-danger">
-          <div *ngIf="getLastName?.errors?.required">
-            Last Name is required.
-          </div>
           <div *ngIf="getLastName?.errors?.pattern">
             Last name must consist only of latin or cyrillic letters.
           </div>
