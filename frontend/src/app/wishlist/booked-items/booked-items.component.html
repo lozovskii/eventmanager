@@ -68,10 +68,10 @@
                [style.background-color]="
                     wishListItem.priority === 1 ? '#d14242':
                     wishListItem.priority === 2 ? 'green':'gray'">
-            <select (change)="updatedPriority(wishListItem)">
-              <option value="1" (click)="wishListItem.priority = 1">High</option>
-              <option value="2" (click)="wishListItem.priority = 2">Avg</option>
-              <option value="3" (click)="wishListItem.priority = 3">Low</option>
+            <select (change)="updatedPriority(wishListItem)" [(ngModel)]="itemPriorityO">>
+              <option value="1">High</option>
+              <option value="2">Avg</option>
+              <option value="3">Low</option>
             </select>
           </div>
         </td>

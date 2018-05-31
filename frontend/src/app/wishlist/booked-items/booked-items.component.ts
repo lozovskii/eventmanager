@@ -25,6 +25,7 @@ export class BookedItemsComponent implements OnInit {
   order: number = 1;
   queryString: string;
   customerLogin: string;
+  itemPriorityO: string;
 
   constructor(private wishListService: WishListService,
               private alertService: AlertService,
@@ -66,6 +67,7 @@ export class BookedItemsComponent implements OnInit {
   }
 
   updatedPriority(item: WishListItem): void{
+    item.priority = +this.itemPriorityO;
     this.updatableWishList.items.push(item);
     this.hasChanges = true;
   }
