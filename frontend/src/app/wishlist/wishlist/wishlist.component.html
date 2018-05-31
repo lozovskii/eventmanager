@@ -42,7 +42,8 @@
     <input class="form-control" type="text" [(ngModel)]="queryString"
            placeholder="You can filter values by name, description, due date and creator login"/>
   </div>
-
+  <br>
+  <small *ngIf="editMode" class="text-muted">After add new item you can save changes after setting priority</small>
   <table class="table table-hover">
     <thead>
     <tr>
@@ -78,10 +79,10 @@
              [style.background-color]="
                     wishListItem.priority === 1 ? '#d14242':
                     wishListItem.priority === 2 ? 'green':'gray'">
-          <select *ngIf="editMode || isBooker(wishListItem.booker_customer_login)" (change)="hasChanges = true">
-            <option value="1" (click)="wishListItem.priority = 1">High</option>
-            <option value="2" (click)="wishListItem.priority = 2">Avg</option>
-            <option value="3" (click)="wishListItem.priority = 3">Low</option>
+          <select *ngIf="editMode || isBooker(wishListItem.booker_customer_login)" [(ngModel)]="itemPriority" (change)="changeItemPriority(wishListItem)">
+            <option value="1">High</option>
+            <option value="2">Avg</option>
+            <option value="3">Low</option>
           </select>
         </div>
       </td>
@@ -109,7 +110,7 @@
       <app-item-details-view
         [wishListItemView]="wishListItemView"
         (cancelledItem)="cancelBooking($event)"
-        (updatedItem)="updatePriority($event)"
+        (updatedItem)="updateEmittedPriority($event)"
         (bookedItem)="bookItem($event)">
       </app-item-details-view>
     </div>

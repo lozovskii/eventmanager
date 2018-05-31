@@ -76,11 +76,11 @@
             </a>
           </small>
           <small>
-            <label for="selectPriority">Priority:</label>
-            <select [disabled]="!isBooker" (change)="updatePriority()" id="selectPriority">
-              <option value="1" (click)="wishListItem.priority = 1">High</option>
-              <option value="2" (click)="wishListItem.priority = 2">Avg</option>
-              <option value="3" (click)="wishListItem.priority = 3">Low</option>
+            <label for="selectPriority1">Priority:</label>
+            <select [disabled]="!isBooker" (change)="changeItemPriorityOut()" id="selectPriority1" [(ngModel)]="itemPriorityO">
+              <option value="1">High</option>
+              <option value="2">Avg</option>
+              <option value="3">Low</option>
             </select>
           </small>
         </h6>

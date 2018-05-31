@@ -31,6 +31,7 @@ export class WishListComponent implements OnInit {
   path: string[] = [''];
   order: number = 1;
   queryString: string;
+  itemPriority: string;
 
   constructor(private wishListService: WishListService,
               private userService: UserService,
@@ -42,7 +43,6 @@ export class WishListComponent implements OnInit {
   ngOnInit() {
     if (this.editMode) {
       this.wishListService.wishList$.subscribe(wishList => this.wishList = wishList);
-      this.hasChanges = true;
     } else {
       this.getWishListByEventId(this.eventId);
     }
@@ -122,7 +122,12 @@ export class WishListComponent implements OnInit {
     this.hasChanges = true;
   }
 
-  updatePriority(wishListItem: WishListItem): void {
+  updateEmittedPriority(wishListItem: WishListItem): void {
+    this.hasChanges = true;
+  }
+
+  changeItemPriority(wishListItem: WishListItem){
+    wishListItem.priority = +this.itemPriority;
     this.hasChanges = true;
   }
 

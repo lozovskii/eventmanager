@@ -31,6 +31,7 @@ export class ItemDetailsViewComponent implements OnInit, OnChanges {
   isBooker: boolean = false;
   rated: boolean;
   rating: ItemRater;
+  itemPriorityO: string;
 
   constructor(private wishListService: WishListService,
               private userService: UserService) {
@@ -85,7 +86,8 @@ export class ItemDetailsViewComponent implements OnInit, OnChanges {
     this.isBooker = false;
   }
 
-  updatePriority(): void {
+  changeItemPriorityOut(): void {
+    this.wishListItem.priority = +this.itemPriorityO;
     this.updatedItem.emit(this.wishListItem);
   }
 
