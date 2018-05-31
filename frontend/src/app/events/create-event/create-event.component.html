@@ -48,7 +48,7 @@
       <div class="form-group">
         <label>Start time</label>
         <input *ngIf="isDraft"
-               value="{{eventDTO.event.endTime | slice : 0 : 4}}-{{eventDTO.event.endTime | slice : 5 : 7}}-{{eventDTO.event.endTime |slice : 8 : 10}}T{{eventDTO.event.endTime | slice : 11 : 16}}"
+               value="{{eventDTO.event.startTime | slice : 0 : 4}}-{{eventDTO.event.startTime | slice : 5 : 7}}-{{eventDTO.event.startTime |slice : 8 : 10}}T{{eventDTO.event.startTime | slice : 11 : 16}}"
                formControlName="startTime" type="datetime-local" class="form-control"/>
         <input *ngIf="!isDraft" formControlName="startTime" type="datetime-local" class="form-control"/>
       </div>
@@ -56,7 +56,7 @@
         <label>End time</label>
         <input *ngIf="isDraft"
                value="{{eventDTO.event.endTime | slice : 0 : 4}}-{{eventDTO.event.endTime | slice : 5 : 7}}-{{eventDTO.event.endTime |slice : 8 : 10}}T{{eventDTO.event.endTime | slice : 11 : 16}}"
-               formControlName="startTime" type="datetime-local" class="form-control"/>
+               formControlName="endTime" type="datetime-local" class="form-control"/>
         <input *ngIf="!isDraft" formControlName="endTime" type="datetime-local" class="form-control"/>
         <div *ngIf="eventForm?.errors" class="alert-danger">
           <div *ngIf="eventForm?.errors?.endLessThanStart">Start time should be less than end time.</div>
